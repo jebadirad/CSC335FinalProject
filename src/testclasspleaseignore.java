@@ -1,6 +1,8 @@
 
 public class testclasspleaseignore {
 
+	private int IgotanewvariableYO;
+	
 	public testclasspleaseignore(){
 		System.out.println("Hello all");
 	}
