@@ -10,8 +10,7 @@ public enum Terrain {
 	// What kind of terrain do we want yo?
 	
 	// Instance variables, should both be doubles
-	private double movement;
-	private double movementModifier;
+	private int movement;
 	
 	// Constructor takes the movement we want to give it as a parameter:
 	private Terrain(int movement) {
@@ -23,15 +22,10 @@ public enum Terrain {
 		return movement;
 	}
 	// setMovement uses the movementModifier instance variable which we can set in game
-	public void setMovement() {
-		movement = movement*movementModifier;
+	public void setMovement(int newMovement) {
+		movement = newMovement;
 	}
-	public double getMovementModifier() {
-		return movementModifier;
-	}
-	public void setMovementModifier(double movementModifier) {
-		this.movementModifier = movementModifier;
-	}
+	
 	
 	
 }
