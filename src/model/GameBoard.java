@@ -1,4 +1,4 @@
-package David;
+package model;
 // The GameBoard class creates the board for the game:
 
 public class GameBoard {

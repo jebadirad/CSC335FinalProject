@@ -1,4 +1,4 @@
-package David;
+package model;
 // Cell class creates the cell object needed for the gameBoard:
 
 public class Cell {

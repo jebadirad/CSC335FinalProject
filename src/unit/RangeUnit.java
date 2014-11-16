@@ -1,4 +1,4 @@
-package KalPackage;
+package unit;
 
 import java.awt.Image;
 import java.awt.Point;
