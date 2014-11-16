@@ -1,9 +1,9 @@
-package KalPackage;
+package unit;
 
 import java.awt.Image;
 import java.awt.Point;
 
-abstract class Unit
+public abstract class Unit
 {
   private int attackRange, damage, health, moveRange;
   private Image iconImage;

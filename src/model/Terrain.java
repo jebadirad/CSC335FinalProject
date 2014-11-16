@@ -1,4 +1,4 @@
-package David;
+package model;
 // This enum contains the types of terrain that will be in a cell object:
 
 public enum Terrain {
