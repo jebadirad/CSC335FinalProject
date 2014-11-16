@@ -10,6 +10,8 @@ public abstract class Unit
   private Point location;
   private String username;
 
+  // This is the Constructor of Unit which is the abstract class that all units
+  // call.
   public Unit(int attackRange, int damage, int health, int moveRange,
       Image iconImage, Point location, String username)
   {
@@ -20,13 +22,14 @@ public abstract class Unit
     this.iconImage = iconImage;
     this.location = location;
     this.username = username;
-
   }
 
+  // Each Type of Unit will have a different attack() and levelUp()
   public abstract void attack();
 
   public abstract void levelUp();
 
+  // Getters for all instance variables.
   public int getAttackRange()
   {
     return attackRange;
@@ -62,6 +65,7 @@ public abstract class Unit
     return username;
   }
 
+  // Setters for all instance variables
   public void setAttackRange(int attackrange)
   {
     this.attackRange = attackrange;
@@ -96,5 +100,4 @@ public abstract class Unit
   {
     this.username = username;
   }
-
 }

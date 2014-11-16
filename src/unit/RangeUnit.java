@@ -6,9 +6,9 @@ import java.awt.Point;
 public class RangeUnit extends Unit
 {
   
-  public RangeUnit(Image iconImage, Point location)
+  public RangeUnit(Image iconImage, Point location, String username)
   {
-    super(10, 5, 10, 5, iconImage, location, "User1");
+    super(10, 5, 10, 5, iconImage, location, username);
 
   }
 
