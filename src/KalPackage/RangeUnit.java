@@ -5,11 +5,11 @@ import java.awt.Point;
 
 public class RangeUnit extends Unit
 {
-
-  public RangeUnit(int attackRange, int damage, int health, int moveRange,
-      Image iconImage, Point location, String username)
+  
+  public RangeUnit(Image iconImage, Point location)
   {
-    super(attackRange, damage, health, moveRange, iconImage, location, username);
+    super(10, 5, 10, 5, iconImage, location, "User1");
+
   }
 
   public void attack()

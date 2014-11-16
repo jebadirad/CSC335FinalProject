@@ -6,11 +6,14 @@ import java.awt.Point;
 public class CloneTrooper extends RangeUnit
 {
 
-  public CloneTrooper(int attackRange, int damage, int health, int moveRange,
-      Image iconImage, Point location, String username)
+  public CloneTrooper(Image i, Point p)
   {
-    super(attackRange, damage, health, moveRange, iconImage, location, username);
-    // TODO Auto-generated constructor stub
+    super(i, p);
+  }
+
+  public String toString()
+  {
+    return "CT";
   }
 
 }
