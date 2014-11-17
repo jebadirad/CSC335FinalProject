@@ -1,4 +1,6 @@
 package model;
+
+import unit.Unit;
 // This enum contains the types of terrain that will be in a cell object:
 
 public enum Terrain {
@@ -16,20 +18,21 @@ public enum Terrain {
 	// What kind of terrain do we want yo?
 	
 	// Instance variables, should both be doubles
-	private int movement;
+	private int moveRange;
 	
 	// Constructor takes the movement we want to give it as a parameter:
-	private Terrain(int movement) {
-		this.movement = movement;
+	private Terrain(int moveRange) {
+		this.moveRange = moveRange;
 	}
 	
 	// Getters/Setters:
-	public double getMovement() {
-		return movement;
+	public int getMoveRange() {
+		return moveRange;
 	}
-	// setMovement uses the movementModifier instance variable which we can set in game
-	public void setMovement(int newMovement) {
-		movement = newMovement;
+
+	// setMoveRange changes the MoveRange of the unitStandingInThisTerrain Unit,
+	public void setMoveRange(Unit unitStandingInThisTerrain) {
+		unitStandingInThisTerrain.setMoveRange(unitStandingInThisTerrain.getMoveRange()-moveRange);
 	}
 	
 	
