@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 
 public abstract class Unit implements Serializable
 {
-  private int attackRange, damage, health, moveRange;
+  private int attackRange, damage, health, moveRange, movesLeft;
   private Image iconImage;
   private String username;
 
@@ -23,6 +23,7 @@ public abstract class Unit implements Serializable
     this.damage = damage;
     this.health = health;
     this.moveRange = moveRange;
+    this.movesLeft = this.moveRange;
     try
     {
       this.iconImage = ImageIO.read(new File("src\\images\\" + imagestring));
@@ -61,6 +62,11 @@ public abstract class Unit implements Serializable
     return moveRange;
   }
 
+  public int getMovesLeft()
+  {
+    return movesLeft;
+  }
+
   public Image getIconImage()
   {
     return iconImage;
@@ -90,6 +96,11 @@ public abstract class Unit implements Serializable
   public void setMoveRange(int moverange)
   {
     this.moveRange = moverange;
+  }
+
+  public void setMovesLeft(int movesLeft)
+  {
+    this.movesLeft = movesLeft;
   }
 
   public void setIconImage(Image icon)
