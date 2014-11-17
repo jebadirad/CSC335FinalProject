@@ -6,7 +6,13 @@ public enum Terrain {
 	// Boulder type has zero movement, implying that you can't pass through it
 	Boulder(0),
 	// Nothing type for empty terrain, assuming 10 is fast movement (scale from 0 to 10)
-	Nothing(10);
+	Nothing(10),
+	QuickSand(5),
+	Lava(5),
+	Forest(5),
+	Desert(5),
+	Ice(5);
+
 	// What kind of terrain do we want yo?
 	
 	// Instance variables, should both be doubles
