@@ -18,9 +18,9 @@ public class GameBoard {
 			createMap1();
 		else if (mapName.equals("Map 2"))
 			createMap2();
-		
+
 	}
-	
+
 	// Creates Map1
 	public void createMap1() {
 		// board is 20 by 20 for now:
@@ -31,7 +31,7 @@ public class GameBoard {
 				board[i][j].setUnit(null);
 				board[i][j].setTerrain(Terrain.Desert);
 				// Give each cell a location
-				board[i][j].setLocation(new Point(i,j));
+				board[i][j].setLocation(new Point(i, j));
 			}
 		}
 		// Generate actual terrain:
@@ -41,10 +41,10 @@ public class GameBoard {
 			// Sets the seventh row for of this board to all Boulders
 			board[i][6].setTerrain(Terrain.Boulder);
 		}
-		
+
 		// Generate Units:
 		generateUnits();
-		
+
 	}
 
 	// Creates Map2
@@ -57,7 +57,7 @@ public class GameBoard {
 				board[i][j].setUnit(null);
 				board[i][j].setTerrain(Terrain.Forest);
 				// Give each cell a location
-				board[i][j].setLocation(new Point(i,j));
+				board[i][j].setLocation(new Point(i, j));
 			}
 		}
 		// Generate Units:
@@ -69,8 +69,6 @@ public class GameBoard {
 	public void generateUnits() {
 		// Creating one single unit for now:
 		UnitFactory factory = new UnitFactory();
-		// Set Location for the unit:
-		Point p = new Point(0,0);
 		// Last parameter is UserName obtained from the GUI
 		Unit aUnit = factory.makeUnit("CloneTrooper", "");
 
@@ -80,7 +78,7 @@ public class GameBoard {
 	public String toString() {
 		String str = "";
 		for (int i = 0; i < 20; i++) {
-			if (i != 0) 
+			if (i != 0)
 				str += "/n";
 			for (int j = 0; j < 20; j++) {
 				str += board[i][j].getTerrain();
@@ -88,9 +86,12 @@ public class GameBoard {
 		}
 		return str;
 	}
-	
-	// This method moves the unit in the cell given, it is GUARENTEED that the cell contains a unit!
+
+	// This method moves the unit in the cell given, it is GUARENTEED that the
+	// cell contains a unit!
 	public boolean move(Cell cellWithUnit, String direction) {
+
+		// DEAL WITH BOULDER:
 		
 		// theUnit will be my reference to this Unit.
 		Unit theUnit = cellWithUnit.getUnit();
@@ -101,50 +102,74 @@ public class GameBoard {
 			// Unit moves north:
 			if (direction.equals("N")) {
 				// Can't move farther north:
-				if (cellWithUnit.getLocation().y==20)
+				if (cellWithUnit.getLocation().x == 0)
 					return false;
 				// Can move north:
 				else {
 					// Add theUnit to the cell above it:
-					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y-1].setUnit(theUnit);
+					board[cellWithUnit.getLocation().x - 1][cellWithUnit
+							.getLocation().y].setUnit(theUnit);
 					// Remove unit from the current cell:
-					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].removeUnit();
+					board[cellWithUnit.getLocation().x][cellWithUnit
+							.getLocation().y].removeUnit();
 					// Reduce the Units movement by 1:
-					theUnit.setMovesLeft(theUnit.getMovesLeft()-1);
+					theUnit.setMovesLeft(theUnit.getMovesLeft() - 1);
+					// Deal with the Terrain theUnit is now standing in:
+
+					// My reference to the terrain the unit is now standing in
+					Terrain terrain = board[cellWithUnit.getLocation().x - 1][cellWithUnit
+							.getLocation().y].getTerrain();
+					// Finish this:
+
+				}
+			} else if (direction.equals("S")) {
+				// Can't move farther south:
+				if (cellWithUnit.getLocation().x == 20)
+					return false;
+				// Can move north:
+				else {
+					// Add theUnit to the cell above it:
+					board[cellWithUnit.getLocation().x + 1][cellWithUnit
+							.getLocation().y].setUnit(theUnit);
+					// Remove unit from the current cell:
+					board[cellWithUnit.getLocation().x][cellWithUnit
+							.getLocation().y].removeUnit();
+					// Reduce the Units movement by 1:
+					theUnit.setMovesLeft(theUnit.getMovesLeft() - 1);
 					// Deal with the Terrain theUnit is now standing in:
 					
-					
+					// My reference to the terrain the unit is now standing in
+					Terrain terrain = board[cellWithUnit.getLocation().x - 1][cellWithUnit
+							.getLocation().y].getTerrain();
+					// Finish this:
 				}
 			}
-			else if (direction.equals("S")) {
-				
-			}
-
-				
-				
+			// FINISH WEST AND EAST MOVE:
 
 		}
-		
-		
+
 		return false;
 	}
 	
-	public void turnOver() {
-		// update movesLeft
+	// When the turn is over, update movesLeft:
+	// Assuming GUI passes an array of the cells with units in it to be updated
+	public void turnOver(Cell[][] cellsContaingUnitsToBeUpdated) {
+		for (int i = 0; i < cellsContaingUnitsToBeUpdated.length; i++) {
+			for (int j = 0; j < cellsContaingUnitsToBeUpdated.length; j++) {
+				cellsContaingUnitsToBeUpdated[i][j].getUnit().setMovesLeft(cellsContaingUnitsToBeUpdated[i][j].getUnit().getMoveRange());
+			}
+		}
 	}
-	
-	
-	
-	
-	
-	// Returns a the unit in this cell, or null if there is no unit in this cell:
+
+	// Returns a the unit in this cell, or null if there is no unit in this
+	// cell:
 	public Unit getUnit(Cell cell) {
 		if (cell.hasUnit())
 			return cell.getUnit();
 		else
 			return null;
 	}
-	
+
 	// Getters/Setters:
 	public Cell[][] getBoard() {
 		return board;
