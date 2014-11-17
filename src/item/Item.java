@@ -5,7 +5,7 @@ public enum Item {
 	
 	//example superitem will give +1 to hp +2 to attack +3attack range and +4 to moverange
 	//[1,2,3,4]
-	superitem(new int[] {1,2,3,4}, "/mycomputer/csc335/images/thisisacoolimage.jpg");
+	superitem(new int[] {1,2,3,4}, "/images/thisisacoolimage.jpg");
 	
 	private int[] modifiers;
 	private String path;
