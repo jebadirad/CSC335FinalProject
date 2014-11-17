@@ -204,6 +204,7 @@ public class GameBoard {
 	public void setPlaying(boolean playing) {
 		this.playing = playing;
 	}
+	//simple getter that fetches the cell that i need so we can play with the data. 
 	public Cell getCell(int x, int y){
 		return board[x][y];
 	}
