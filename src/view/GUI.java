@@ -15,6 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GUI extends JFrame implements Observer {
+	private static final long serialVersionUID = -2853985771911325020L;
+
 	public static String username; 
 	
 	JFrame frame;
