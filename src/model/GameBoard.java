@@ -72,8 +72,12 @@ public class GameBoard {
 		UnitFactory factory = new UnitFactory();
 		// Last parameter is UserName obtained from the GUI
 		//added default username 
-		Unit aUnit = factory.makeUnit("CloneTrooper", "fdsa");
-
+		Unit aUnit = factory.makeUnit("CloneTrooper", "Player1");
+		Unit anotherUnit = factory.makeUnit("CloneTrooper", "Player2");
+		board[0][0].setUnit(aUnit);
+		board[0][0].setHasUnit(true);
+		board[10][10].setUnit(anotherUnit);
+		board[10][10].setHasUnit(true);
 	}
 
 	// Responsible for returning a text version of the current GameBoard:
@@ -82,21 +86,27 @@ public class GameBoard {
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
 				str += "[ ";
-				if(board[i][j].getTerrain().equals(Terrain.Desert)){
-					str += "D";
+				if(board[i][j].hasUnit()){
+					str += board[i][j].getUnit().toString();
 				}
-				else if (board[i][j].getTerrain().equals(Terrain.Boulder)){
-					str += "B";
-				}
-				else if (board[i][j].getTerrain().equals(Terrain.Lava)){
-					str += "L";
+				else{
+					if(board[i][j].getTerrain().equals(Terrain.Desert)){
+						str += "D";
+					}
+					else if (board[i][j].getTerrain().equals(Terrain.Boulder)){
+						str += "B";
+					}
+					else if (board[i][j].getTerrain().equals(Terrain.Lava)){
+						str += "L";
+						
+					}
+					else if (board[i][j].getTerrain().equals(Terrain.Forest)){
+						str += "F";
+					}
+					else { 
+						str += " ";
+					}
 					
-				}
-				else if (board[i][j].getTerrain().equals(Terrain.Forest)){
-					str += "F";
-				}
-				else { 
-					str += " ";
 				}
 				str +=" ] ";
 			}
@@ -149,16 +159,22 @@ public class GameBoard {
 					// Add theUnit to the cell above it:
 					board[cellWithUnit.getLocation().x + 1][cellWithUnit
 							.getLocation().y].setUnit(theUnit);
+					board[cellWithUnit.getLocation().x + 1][cellWithUnit
+					            							.getLocation().y].setHasUnit(true);
 					// Remove unit from the current cell:
 					board[cellWithUnit.getLocation().x][cellWithUnit
 							.getLocation().y].removeUnit();
+					board[cellWithUnit.getLocation().x][cellWithUnit
+					        							.getLocation().y].setHasUnit(false);
 					// Reduce the Units movement by 1:
 					theUnit.setMovesLeft(theUnit.getMovesLeft() - 1);
+					
+					return true;
 					// Deal with the Terrain theUnit is now standing in:
 					
 					// My reference to the terrain the unit is now standing in
-					Terrain terrain = board[cellWithUnit.getLocation().x - 1][cellWithUnit
-							.getLocation().y].getTerrain();
+					//Terrain terrain = board[cellWithUnit.getLocation().x - 1][cellWithUnit
+						//	.getLocation().y].getTerrain();
 					// Finish this:
 				}
 			}

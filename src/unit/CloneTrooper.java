@@ -13,7 +13,7 @@ public class CloneTrooper extends RangeUnit
 
   public String toString()
   {
-    return "CT";
+    return "C";
   }
 
 }
