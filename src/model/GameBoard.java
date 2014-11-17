@@ -72,7 +72,7 @@ public class GameBoard {
 		// Set Location for the unit:
 		Point p = new Point(0,0);
 		// Last parameter is UserName obtained from the GUI
-		Unit aUnit = factory.makeUnit("CloneTrooper", p , "");
+		Unit aUnit = factory.makeUnit("CloneTrooper", "");
 
 	}
 
@@ -94,7 +94,7 @@ public class GameBoard {
 		
 		// theUnit will be my reference to this Unit.
 		Unit theUnit = cellWithUnit.getUnit();
-		if (theUnit.getMoveRange() <= 0)
+		if (theUnit.getMovesLeft() <= 0)
 			return false;
 		// theUnit can move:
 		else {
@@ -110,7 +110,7 @@ public class GameBoard {
 					// Remove unit from the current cell:
 					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].removeUnit();
 					// Reduce the Units movement by 1:
-					theUnit.setMoveRange(theUnit.getMoveRange()-1);
+					theUnit.setMovesLeft(theUnit.getMovesLeft()-1);
 					// Deal with the Terrain theUnit is now standing in:
 					
 					
