@@ -3,6 +3,9 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
@@ -57,34 +60,43 @@ public class GUI extends JFrame implements Observer {
 	
 	private void layoutGUI(){
 		
+		JPanel contentContainer = new JPanel();
+		contentContainer.setPreferredSize(new Dimension(1280,800));
+		contentContainer.setLayout(new BorderLayout());
+		
+		
+		JPanel playerContainer = new JPanel();
+		playerContainer.setLayout(new GridBagLayout());
+		playerContainer.setSize(1280,300);
+		
 		
 		
 		usernamestring = new JLabel("Current Player: " + username);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(800,800);
+		setSize(1280,800);
 		setResizable(false);
 		setLayout(new BorderLayout());
-		moveUp = new JButton();
-		moveDown = new JButton();
-		moveLeft = new JButton();
-		moveRight = new JButton();
-		moveUp.setPreferredSize(new Dimension(75, 66));
-		moveDown.setPreferredSize(new Dimension(75, 66));
-		moveLeft.setPreferredSize(new Dimension(75, 66));
-		moveRight.setPreferredSize(new Dimension(75, 66));
+		moveUp = new JButton("up");
+		moveDown = new JButton("down");
+		moveLeft = new JButton("left");
+		moveRight = new JButton("right");
+		moveUp.setPreferredSize(new Dimension(50, 50));
+		moveDown.setPreferredSize(new Dimension(50, 50));
+		moveLeft.setPreferredSize(new Dimension(50,50));
+		moveRight.setPreferredSize(new Dimension(50, 50));
 		
 		
 		textPanel = new JPanel();
 		textPanel.setBackground(Color.BLACK);
-		textPanel.setPreferredSize(new Dimension(800,500));
+		textPanel.setPreferredSize(new Dimension(1280,500));
 		
 		
 		
 		movePanel = new JPanel();
 		movePanel.setLayout(new BorderLayout());
-		movePanel.setSize(200,200);
-		movePanel.add(moveUp, BorderLayout.CENTER);
-		movePanel.add(moveDown, BorderLayout.SOUTH);
+		movePanel.setPreferredSize(new Dimension(50,200));
+		movePanel.add(moveUp, BorderLayout.NORTH);
+		movePanel.add(moveDown, BorderLayout.CENTER);
 		movePanel.add(moveLeft, BorderLayout.WEST);
 		movePanel.add(moveRight, BorderLayout.EAST);
 		
@@ -92,9 +104,17 @@ public class GUI extends JFrame implements Observer {
 		
 		
 		
-		add(usernamestring, BorderLayout.CENTER);
-		add(textPanel, BorderLayout.NORTH);
-		add(movePanel, BorderLayout.SOUTH);
+		contentContainer.add(textPanel, BorderLayout.NORTH);
+		contentContainer.add(playerContainer, BorderLayout.SOUTH);
+		
+		
+		
+		playerContainer.add(movePanel);
+		playerContainer.add(usernamestring);
+		
+		
+		
+		add(contentContainer);
 		
 		
 		
