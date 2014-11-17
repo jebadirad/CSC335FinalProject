@@ -4,20 +4,20 @@ import java.awt.Image;
 import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.imageio.ImageIO;
 
-public abstract class Unit
+public abstract class Unit implements Serializable
 {
   private int attackRange, damage, health, moveRange;
   private Image iconImage;
-  private Point location;
   private String username;
 
   // This is the Constructor of Unit which is the abstract class that all units
   // call.
   public Unit(int attackRange, int damage, int health, int moveRange,
-      String imagestring, Point location, String username)
+      String imagestring, String username)
   {
     this.attackRange = attackRange;
     this.damage = damage;
@@ -32,12 +32,11 @@ public abstract class Unit
       System.out.println("Unit image not found!");
       e.printStackTrace();
     }
-    this.location = location;
     this.username = username;
   }
 
   // Each Type of Unit will have a different attack() and levelUp()
-  public abstract void attack();
+  public abstract void attack(Unit victim);
 
   public abstract void levelUp();
 
@@ -65,11 +64,6 @@ public abstract class Unit
   public Image getIconImage()
   {
     return iconImage;
-  }
-
-  public Point getLocation()
-  {
-    return location;
   }
 
   public String getUsername()
@@ -101,11 +95,6 @@ public abstract class Unit
   public void setIconImage(Image icon)
   {
     this.iconImage = icon;
-  }
-
-  public void setLocation(Point location)
-  {
-    this.location = location;
   }
 
   public void setUsername(String username)
