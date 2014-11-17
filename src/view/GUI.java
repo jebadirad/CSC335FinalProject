@@ -15,17 +15,20 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import model.GameBoard;
+import model.Terrain;
+
 public class GUI extends JFrame implements Observer {
 	private static final long serialVersionUID = -2853985771911325020L;
 
 	public static String username; 
 	
 	JFrame frame;
-	JPanel textPanel;
+	JPanel textPanel = new GraphicsPanel();
 	JPanel graphicsPanel;
 	JPanel movePanel;
 	JPanel unitPanel;
-	
+	public static GameBoard gameboard = new GameBoard("Map 1");
 	JLabel usernamestring; 
 	
 	JButton moveUp;
@@ -39,6 +42,11 @@ public class GUI extends JFrame implements Observer {
 	LeftButtonListener LeftButtonListener = new LeftButtonListener();
 	UpButtonListener UpButtonListener = new UpButtonListener();
 	RightButtonListener RightButtonListener = new RightButtonListener();
+	
+	//things to run the game
+	
+	
+	
 	public GUI(){
 		super();
 		frame = new JFrame();
@@ -46,10 +54,12 @@ public class GUI extends JFrame implements Observer {
 		layoutGUI();
 		registerListeners();
 		setUpObservers();
+		System.out.println(gameboard.toString());
 		
 	}
 	
 	public static void main(String[] args) {
+		
 		new GUI();
 		
 	}
@@ -88,8 +98,6 @@ public class GUI extends JFrame implements Observer {
 		moveRight.setPreferredSize(new Dimension(75, 50));
 		
 		
-		textPanel = new JPanel();
-		textPanel.setBackground(Color.BLACK);
 		textPanel.setPreferredSize(new Dimension(1280,500));
 		
 		
@@ -190,7 +198,10 @@ public class GUI extends JFrame implements Observer {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			
+			gameboard.getCell(1,1).setTerrain(Terrain.Desert);
+			gameboard.getCell(1,2).setTerrain(Terrain.Desert);
+			gameboard.getCell(1,3).setTerrain(Terrain.Desert);
+			textPanel.repaint();
 		}
 		
 	}
@@ -199,7 +210,10 @@ public class GUI extends JFrame implements Observer {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			
+			gameboard.getCell(2,1).setTerrain(Terrain.Forest);
+			gameboard.getCell(3,2).setTerrain(Terrain.Forest);
+			gameboard.getCell(4,3).setTerrain(Terrain.Forest);
+			textPanel.repaint();
 		}
 		
 	}

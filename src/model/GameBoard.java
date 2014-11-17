@@ -28,8 +28,9 @@ public class GameBoard {
 		// initialize all cells to contain no units, and create desert map
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
+				//need to create the cells before we add them to the board and try to access them.
+				board[i][j] = new Cell(Terrain.Nothing, i,j);
 				board[i][j].setUnit(null);
-				board[i][j].setTerrain(Terrain.Desert);
 				// Give each cell a location
 				board[i][j].setLocation(new Point(i, j));
 			}
@@ -70,7 +71,8 @@ public class GameBoard {
 		// Creating one single unit for now:
 		UnitFactory factory = new UnitFactory();
 		// Last parameter is UserName obtained from the GUI
-		Unit aUnit = factory.makeUnit("CloneTrooper", "");
+		//added default username 
+		Unit aUnit = factory.makeUnit("CloneTrooper", "fdsa");
 
 	}
 
@@ -78,11 +80,27 @@ public class GameBoard {
 	public String toString() {
 		String str = "";
 		for (int i = 0; i < 20; i++) {
-			if (i != 0)
-				str += "/n";
 			for (int j = 0; j < 20; j++) {
-				str += board[i][j].getTerrain();
+				str += "[ ";
+				if(board[i][j].getTerrain().equals(Terrain.Desert)){
+					str += "D";
+				}
+				else if (board[i][j].getTerrain().equals(Terrain.Boulder)){
+					str += "B";
+				}
+				else if (board[i][j].getTerrain().equals(Terrain.Lava)){
+					str += "L";
+					
+				}
+				else if (board[i][j].getTerrain().equals(Terrain.Forest)){
+					str += "F";
+				}
+				else { 
+					str += " ";
+				}
+				str +=" ] ";
 			}
+			str+= "\n";
 		}
 		return str;
 	}
@@ -185,6 +203,9 @@ public class GameBoard {
 
 	public void setPlaying(boolean playing) {
 		this.playing = playing;
+	}
+	public Cell getCell(int x, int y){
+		return board[x][y];
 	}
 
 }

@@ -26,7 +26,8 @@ public abstract class Unit implements Serializable
     this.movesLeft = this.moveRange;
     try
     {
-      this.iconImage = ImageIO.read(new File("src\\images\\" + imagestring));
+    	//fixed file path
+      this.iconImage = ImageIO.read(new File("images/" + imagestring));
     }
     catch (IOException e)
     {
