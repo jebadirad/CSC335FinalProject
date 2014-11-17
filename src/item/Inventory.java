@@ -13,9 +13,16 @@ public class Inventory implements Serializable {
 		username = GUI.getUsername();
 		credits = 0;
 	}
-	
+
 	public boolean addItem(String s) {
-		return items.put(s, Item.superitem) != null;
+		if(s.equalsIgnoreCase("superitem")) {
+			return items.put(s, Item.superitem) != null;
+		}
+		else if(s.equalsIgnoreCase("" /*item name*/)) {
+			return items.put(s, Item.superitem) != null;  // TODO change the Item enum to
+														  // whatever the string is, add other item types 
+		}
+		else return false;
 	}
 	
 	public boolean removeItem(String s) {
