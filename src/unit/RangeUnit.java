@@ -5,10 +5,10 @@ import java.awt.Point;
 
 public class RangeUnit extends Unit
 {
-  
-  public RangeUnit(Image iconImage, Point location, String username)
+
+  public RangeUnit(String imagestring, Point location, String username)
   {
-    super(10, 5, 10, 5, iconImage, location, username);
+    super(10, 5, 10, 5, imagestring, location, username);
 
   }
 

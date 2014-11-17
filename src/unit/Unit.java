@@ -2,6 +2,11 @@ package unit;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public abstract class Unit
 {
@@ -13,13 +18,21 @@ public abstract class Unit
   // This is the Constructor of Unit which is the abstract class that all units
   // call.
   public Unit(int attackRange, int damage, int health, int moveRange,
-      Image iconImage, Point location, String username)
+      String imagestring, Point location, String username)
   {
     this.attackRange = attackRange;
     this.damage = damage;
     this.health = health;
     this.moveRange = moveRange;
-    this.iconImage = iconImage;
+    try
+    {
+      this.iconImage = ImageIO.read(new File("src\\images\\" + imagestring));
+    }
+    catch (IOException e)
+    {
+      System.out.println("Unit image not found!");
+      e.printStackTrace();
+    }
     this.location = location;
     this.username = username;
   }
