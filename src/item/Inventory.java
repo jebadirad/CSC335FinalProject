@@ -24,7 +24,7 @@ public class Inventory implements Serializable {
 		}
 		else return false;
 	}
-	
+
 	public boolean removeItem(String s) {
 		return items.remove(s) != null;
 	}
@@ -36,13 +36,23 @@ public class Inventory implements Serializable {
 	public String getUsername() {
 		return username;
 	}
-	
-	public void setCredits(int i) {
-		if(i>=0) {
-			credits = i;
+
+	/**
+	 * This method expects a subtraction or an addition operation as its argument.
+	 * Since your credit balance cannot be less than zero, arguments that result
+	 * in a negative balance will be ignored.
+	 * 
+	 *  
+	 * @param newBalance
+	 * 
+	 * Arguments should look like {@code totalCredits - itemCost}
+	 */
+	public void setCredits(int newBalance) {
+		if(newBalance>=0) {
+			credits = newBalance;
 		} else return;
 	}
-	
+
 	public int getCredits() {
 		return credits;
 	}
