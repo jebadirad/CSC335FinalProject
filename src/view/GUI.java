@@ -3,6 +3,7 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import model.GameBoard;
 import model.Terrain;
@@ -21,14 +23,15 @@ import model.Terrain;
 public class GUI extends JFrame implements Observer {
 	private static final long serialVersionUID = -2853985771911325020L;
 
-	public static String username; 
+	public static String player1;
+	public static String player2;
 	
 	JFrame frame;
 	JPanel textPanel = new GraphicsPanel();
 	JPanel graphicsPanel;
 	JPanel movePanel;
 	JPanel unitPanel;
-	public static GameBoard gameboard = new GameBoard("Map 1");
+	
 	JLabel usernamestring; 
 	
 	JButton moveUp;
@@ -42,20 +45,26 @@ public class GUI extends JFrame implements Observer {
 	LeftButtonListener LeftButtonListener = new LeftButtonListener();
 	UpButtonListener UpButtonListener = new UpButtonListener();
 	RightButtonListener RightButtonListener = new RightButtonListener();
+	MapButtonListener MapButtonListener = new MapButtonListener();
 	
 	//things to run the game
+	public static GameBoard gameboard;
 	
+	
+	//pregame lobby GUI items
+	
+	JPanel teamSelect;
+	JButton Map;
+	JLabel usernamelabel1;
+	JLabel usernamelabel2;
+	JTextField username1;
+	JTextField username2;
 	
 	
 	public GUI(){
 		super();
 		frame = new JFrame();
-		loginGUI();
-		layoutGUI();
-		registerListeners();
-		setUpObservers();
-		System.out.println(gameboard.toString());
-		
+		layoutPregameGUI();	
 	}
 	
 	public static void main(String[] args) {
@@ -64,14 +73,49 @@ public class GUI extends JFrame implements Observer {
 		
 	}
 	
+	
+	public void newGame(){
+		gameboard  = new GameBoard("Map 1");
+		
+	}
+	
+	
+	
+	
+	
+	
 	private void loginGUI(){
-		username = JOptionPane.showInputDialog("Username");
+		player1 = JOptionPane.showInputDialog("Username");
+		
+	}
+	
+	
+	private void layoutPregameGUI(){
+		
+		frame.setSize(350,400);
+		teamSelect = new JPanel();
+		teamSelect.setPreferredSize(new Dimension(800,600));
+		teamSelect.setLayout(new FlowLayout());
+		usernamelabel1 = new JLabel("Team 1 username: ");
+		username1 = new JTextField(15);
+		usernamelabel2 = new JLabel("Team 2 username: ");
+		username2 = new JTextField(15);
+		teamSelect.add(usernamelabel1);
+		teamSelect.add(username1);
+		teamSelect.add(usernamelabel2);
+		teamSelect.add(username2);
+		Map = new JButton("Map 1");
+		Map.addActionListener(MapButtonListener);
+		teamSelect.add(Map);
+		frame.add(teamSelect);
+		
+		frame.setVisible(true);
 		
 	}
 	
 	
 	private void layoutGUI(){
-		
+		frame.removeAll();
 		JPanel contentContainer = new JPanel();
 		contentContainer.setPreferredSize(new Dimension(1280,800));
 		contentContainer.setLayout(new BorderLayout());
@@ -83,7 +127,7 @@ public class GUI extends JFrame implements Observer {
 		
 		
 		
-		usernamestring = new JLabel("Current Player: " + username);
+		usernamestring = new JLabel("Current Player: " + player1);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1280,800);
 		setResizable(false);
@@ -171,8 +215,11 @@ public class GUI extends JFrame implements Observer {
 		setVisible(true);
 	}
 	
-	public static String getUsername(){
-		return username;
+	public static String getPlayer1(){
+		return player1;
+	}
+	public static String getPlayer2(){
+		return player2;
 	}
 	
 	private void registerListeners(){
@@ -181,9 +228,6 @@ public class GUI extends JFrame implements Observer {
 		moveLeft.addActionListener(LeftButtonListener);
 		moveRight.addActionListener(RightButtonListener);
 		moveDown.addActionListener(DownButtonListener);
-		
-	}
-	private void setUpObservers(){
 		
 	}
 
@@ -241,6 +285,20 @@ public class GUI extends JFrame implements Observer {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			
+		}
+		
+	}
+	private class MapButtonListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			frame.setVisible(false);
+			player1 = username1.getText();
+			player2 = username2.getText();
+			newGame();
+			layoutGUI();
+			registerListeners();
 		}
 		
 	}

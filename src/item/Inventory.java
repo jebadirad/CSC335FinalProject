@@ -10,7 +10,8 @@ public class Inventory implements Serializable {
 
 	public Inventory() {
 		items = new HashMap<String, Item>();
-		username = GUI.getUsername();
+		//will need to handle how to get the different usernames when switching teams, for right now its static but im sure we can make it dynamic ezpz 
+		username = GUI.getPlayer1();
 		credits = 0;
 	}
 
