@@ -4,11 +4,13 @@ import java.awt.Point;
 
 public class UnitFactory
 {
-  public Unit makeUnit(String unittype, Point location, String username)
+  public Unit makeUnit(String unitType, String username)
   {
-    if (unittype.equals("CloneTrooper"))
-      return new CloneTrooper("CT_IMAGE.png", location, username);
+    // Code to make new CloneTrooper. Need to get correct Image.
+    if (unitType.equals("CloneTrooper"))
+      return new CloneTrooper("CloneTrooper.png", username);
 
+    // Return null if unitType does not exist.
     return null;
   }
 }

@@ -6,9 +6,9 @@ import java.awt.Point;
 public class CloneTrooper extends RangeUnit
 {
 
-  public CloneTrooper(String imagestring, Point location, String username)
+  public CloneTrooper(String imagestring, String username)
   {
-    super(imagestring, location, username);
+    super(imagestring, username);
   }
 
   public String toString()

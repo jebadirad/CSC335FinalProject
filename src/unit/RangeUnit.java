@@ -6,16 +6,15 @@ import java.awt.Point;
 public class RangeUnit extends Unit
 {
 
-  public RangeUnit(String imagestring, Point location, String username)
+  public RangeUnit(String imagestring, String username)
   {
-    super(10, 5, 10, 5, imagestring, location, username);
+    super(10, 5, 10, 5, imagestring, username);
 
   }
 
-  public void attack()
+  public void attack(Unit victim)
   {
-    // TODO Auto-generated method stub
-
+    victim.setHealth(victim.getHealth() - this.getDamage());
   }
 
   public void levelUp()
