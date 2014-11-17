@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GUI extends JFrame implements Observer {
-	public String username; 
+	public static String username; 
 	
 	JFrame frame;
 	JPanel textPanel;
@@ -106,7 +106,7 @@ public class GUI extends JFrame implements Observer {
 		setVisible(true);
 	}
 	
-	public String getUsername(){
+	public static String getUsername(){
 		return username;
 	}
 	
