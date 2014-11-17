@@ -10,15 +10,20 @@ import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GUI extends JFrame implements Observer {
+	public String username; 
+	
 	JFrame frame;
 	JPanel textPanel;
 	JPanel graphicsPanel;
 	JPanel movePanel;
 	JPanel unitPanel;
 	
+	JLabel usernamestring; 
 	
 	JButton moveUp;
 	JButton moveDown;
@@ -32,7 +37,7 @@ public class GUI extends JFrame implements Observer {
 	public GUI(){
 		super();
 		frame = new JFrame();
-		
+		loginGUI();
 		layoutGUI();
 		registerListeners();
 		setUpObservers();
@@ -44,11 +49,17 @@ public class GUI extends JFrame implements Observer {
 		
 	}
 	
+	private void loginGUI(){
+		username = JOptionPane.showInputDialog("Username");
+		
+	}
+	
+	
 	private void layoutGUI(){
 		
 		
 		
-		
+		usernamestring = new JLabel("Current Player: " + username);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(800,800);
 		setResizable(false);
@@ -61,12 +72,15 @@ public class GUI extends JFrame implements Observer {
 		moveDown.setPreferredSize(new Dimension(75, 66));
 		moveLeft.setPreferredSize(new Dimension(75, 66));
 		moveRight.setPreferredSize(new Dimension(75, 66));
+		
+		
 		textPanel = new JPanel();
 		textPanel.setBackground(Color.BLACK);
 		textPanel.setPreferredSize(new Dimension(800,500));
-		movePanel = new JPanel();
-		add(textPanel, BorderLayout.NORTH);
 		
+		
+		
+		movePanel = new JPanel();
 		movePanel.setLayout(new BorderLayout());
 		movePanel.setSize(200,200);
 		movePanel.add(moveUp, BorderLayout.CENTER);
@@ -74,6 +88,12 @@ public class GUI extends JFrame implements Observer {
 		movePanel.add(moveLeft, BorderLayout.WEST);
 		movePanel.add(moveRight, BorderLayout.EAST);
 		
+		
+		
+		
+		
+		add(usernamestring, BorderLayout.CENTER);
+		add(textPanel, BorderLayout.NORTH);
 		add(movePanel, BorderLayout.SOUTH);
 		
 		
@@ -84,6 +104,10 @@ public class GUI extends JFrame implements Observer {
 		
 		
 		setVisible(true);
+	}
+	
+	public String getUsername(){
+		return username;
 	}
 	
 	private void registerListeners(){
