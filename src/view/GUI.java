@@ -3,7 +3,7 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
@@ -32,7 +32,9 @@ public class GUI extends JFrame implements Observer {
 	JButton moveDown;
 	JButton moveLeft;
 	JButton moveRight;
+	JButton attack;
 	
+	AttackButtonListener AttackButtonListener = new AttackButtonListener();
 	DownButtonListener DownButtonListener = new DownButtonListener();
 	LeftButtonListener LeftButtonListener = new LeftButtonListener();
 	UpButtonListener UpButtonListener = new UpButtonListener();
@@ -66,7 +68,7 @@ public class GUI extends JFrame implements Observer {
 		
 		
 		JPanel playerContainer = new JPanel();
-		playerContainer.setLayout(new GridBagLayout());
+		playerContainer.setLayout(new GridLayout(1,3,0,0));
 		playerContainer.setSize(1280,300);
 		
 		
@@ -80,10 +82,10 @@ public class GUI extends JFrame implements Observer {
 		moveDown = new JButton("down");
 		moveLeft = new JButton("left");
 		moveRight = new JButton("right");
-		moveUp.setPreferredSize(new Dimension(50, 50));
+		moveUp.setPreferredSize(new Dimension(50, 100));
 		moveDown.setPreferredSize(new Dimension(50, 50));
-		moveLeft.setPreferredSize(new Dimension(50,50));
-		moveRight.setPreferredSize(new Dimension(50, 50));
+		moveLeft.setPreferredSize(new Dimension(75,50));
+		moveRight.setPreferredSize(new Dimension(75, 50));
 		
 		
 		textPanel = new JPanel();
@@ -93,24 +95,59 @@ public class GUI extends JFrame implements Observer {
 		
 		
 		movePanel = new JPanel();
+		
+		
 		movePanel.setLayout(new BorderLayout());
-		movePanel.setPreferredSize(new Dimension(50,200));
-		movePanel.add(moveUp, BorderLayout.NORTH);
-		movePanel.add(moveDown, BorderLayout.CENTER);
-		movePanel.add(moveLeft, BorderLayout.WEST);
-		movePanel.add(moveRight, BorderLayout.EAST);
 		
 		
+		JPanel DirectionPanel = new JPanel();
+		DirectionPanel.setPreferredSize(new Dimension(250,75));
+		DirectionPanel.setLayout(new GridLayout(2,3,0,0));
+		JPanel blankPanel = new JPanel();
+		JPanel blankpanel1 = new JPanel();
+					DirectionPanel.add(blankPanel);
+					DirectionPanel.add(moveUp);
+					DirectionPanel.add(blankpanel1);
+					DirectionPanel.add(moveDown);
+					DirectionPanel.add(moveLeft);
+					DirectionPanel.add(moveRight);
+					
+		JPanel unitPanel = new JPanel();
+		unitPanel.setPreferredSize(new Dimension(175,75));
+		unitPanel.setBackground(Color.BLUE);
 		
+		
+		movePanel.add(DirectionPanel, BorderLayout.WEST);
+		movePanel.add(unitPanel, BorderLayout.CENTER);
+		
+		JPanel AttackPanel = new JPanel();
+		AttackPanel.setLayout(new BorderLayout());
+		AttackPanel.setBackground(Color.YELLOW);
+		JPanel attackButtonPanel = new JPanel();
+		attackButtonPanel.setLayout(new GridLayout(1,3,0,0));
+		
+		JPanel blank = new JPanel();
+		JPanel blank1 = new JPanel();
+		JPanel filler = new JPanel();
+		filler.setBackground(Color.YELLOW);
+		
+		
+		attack = new JButton("Attack");
+		attackButtonPanel.add(blank);
+		attackButtonPanel.add(attack);
+		attackButtonPanel.add(blank1);
+		AttackPanel.add(attackButtonPanel, BorderLayout.NORTH);
+		AttackPanel.add(filler, BorderLayout.CENTER);
 		
 		
 		contentContainer.add(textPanel, BorderLayout.NORTH);
-		contentContainer.add(playerContainer, BorderLayout.SOUTH);
+		contentContainer.add(playerContainer, BorderLayout.CENTER);
 		
 		
 		
 		playerContainer.add(movePanel);
 		playerContainer.add(usernamestring);
+		playerContainer.add(AttackPanel);
 		
 		
 		
@@ -131,6 +168,7 @@ public class GUI extends JFrame implements Observer {
 	}
 	
 	private void registerListeners(){
+		attack.addActionListener(AttackButtonListener);
 		moveUp.addActionListener(UpButtonListener);
 		moveLeft.addActionListener(LeftButtonListener);
 		moveRight.addActionListener(RightButtonListener);
@@ -175,6 +213,15 @@ public class GUI extends JFrame implements Observer {
 		
 	}
 	private class RightButtonListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	private class AttackButtonListener implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
