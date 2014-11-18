@@ -42,9 +42,10 @@ public class Cell {
 	public void setHasUnit(boolean hasUnit) {
 		this.hasUnit = hasUnit;
 	}
-	
+	// Sets the Unit to null, and sets hasUnit to false:
 	public void removeUnit() {
 		setUnit(null);
+		hasUnit = false;
 	}
 	
 	public Unit getUnit() {
