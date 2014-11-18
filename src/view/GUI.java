@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -15,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 import unit.CloneTrooper;
@@ -29,12 +32,19 @@ public class GUI extends JFrame implements Observer {
 	public static String player1;
 	public static String player2;
 
+	public ArrayList<Cell> playerunits = new ArrayList<Cell>();
+	
 	JFrame frame;
+
+	
 	JPanel textPanel = new GraphicsPanel();
 	JPanel graphicsPanel;
 	JPanel movePanel;
 	JPanel unitPanel;
-
+	JPanel playerstatus;
+	
+	JTabbedPane tabbedpane; 
+	
 	JLabel usernamestring;
 
 	JButton moveUp;
@@ -77,6 +87,13 @@ public class GUI extends JFrame implements Observer {
 
 	public void newGame() {
 		gameboard = new GameBoard("Map 1");
+		playerunits.add(gameboard.getCell(0,0));
+		playerunits.add(gameboard.getCell(10,10));
+		Iterator<Cell> iter = playerunits.iterator();
+		while(iter.hasNext()){
+			Cell cell = iter.next();
+			//gameboard.generateUnitatCell(cell, unit, player1);
+		}
 		CurrentUnitSelected = gameboard.getCell(0, 0);
 	}
 
@@ -110,6 +127,9 @@ public class GUI extends JFrame implements Observer {
 
 	private void layoutGUI() {
 		frame.removeAll();
+		tabbedpane = new JTabbedPane();
+		tabbedpane.setPreferredSize(new Dimension(1280,800));
+		
 		JPanel contentContainer = new JPanel();
 		contentContainer.setPreferredSize(new Dimension(1280, 800));
 		contentContainer.setLayout(new BorderLayout());
@@ -182,7 +202,9 @@ public class GUI extends JFrame implements Observer {
 		playerContainer.add(usernamestring);
 		playerContainer.add(AttackPanel);
 
-		add(contentContainer);
+		tabbedpane.add(contentContainer, "Game");
+		
+		add(tabbedpane);
 
 		setVisible(true);
 	}

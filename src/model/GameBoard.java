@@ -44,7 +44,8 @@ public class GameBoard {
 		}
 
 		// Generate Units:
-		generateUnits();
+		//going to call generate units from the newgame method in GUI
+		//generateUnits();
 
 	}
 
@@ -67,6 +68,7 @@ public class GameBoard {
 	}
 
 	// Responsible for adding a Unit to cells who we desire to have a unit
+	//can you change this to have take in 1 cell and 1 unit type and 1 username ? 
 	public void generateUnits() {
 		// Creating one single unit for now:
 		UnitFactory factory = new UnitFactory();
@@ -78,6 +80,13 @@ public class GameBoard {
 		board[0][0].setHasUnit(true);
 		board[10][10].setUnit(anotherUnit);
 		board[10][10].setHasUnit(true);
+	}
+	// i think we should add units this way, that way i can loop through them on a newgame method.
+	public void generateUnitatCell(Cell cell, String unit, String username){
+		UnitFactory factory = new UnitFactory();
+		Unit aUnit = factory.makeUnit(unit,username);
+		cell.setHasUnit(true);
+		cell.setUnit(aUnit);
 	}
 
 	// Responsible for returning a text version of the current GameBoard:
