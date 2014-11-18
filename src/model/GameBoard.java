@@ -20,7 +20,6 @@ public class GameBoard {
 	private String player1Name;
 	// Player 2's name, obtained somehow from the GUI:
 	private String player2Name;
-	
 
 	// Takes "Map 1" or "Map 2" as a parameter
 	public GameBoard(String mapName) {
@@ -168,8 +167,9 @@ public class GameBoard {
 	// This method moves the unit in the cell given, it is GUARENTEED that the
 	// cell contains a unit!
 	public boolean move(Cell cellWithUnit, String direction) {
-		// NEEDS TO ADJUST PLAYER 1 OR 2'S CELL ARRAYS, ALSO WHICH PLAYER IS MOVING?
-		
+		// NEEDS TO ADJUST PLAYER 1 OR 2'S CELL ARRAYS, ALSO WHICH PLAYER IS
+		// MOVING?
+
 		// theUnit will be my reference to this Unit.
 		Unit theUnit = cellWithUnit.getUnit();
 		if (theUnit.getMovesLeft() <= 0)
@@ -190,6 +190,8 @@ public class GameBoard {
 					// Add theUnit to the cell above it:
 					board[cellWithUnit.getLocation().x - 1][cellWithUnit
 							.getLocation().y].setUnit(theUnit);
+					board[cellWithUnit.getLocation().x - 1][cellWithUnit
+					         .getLocation().y].setHasUnit(true);
 					// Remove unit from the current cell:
 					board[cellWithUnit.getLocation().x][cellWithUnit
 							.getLocation().y].removeUnit();
@@ -240,8 +242,7 @@ public class GameBoard {
 					// Remove unit from the current cell:
 					board[cellWithUnit.getLocation().x][cellWithUnit
 							.getLocation().y].removeUnit();
-					board[cellWithUnit.getLocation().x][cellWithUnit
-							.getLocation().y].setHasUnit(false);
+					
 					// Reduce the Units movement by 1:
 					theUnit.setMovesLeft(theUnit.getMovesLeft() - 1);
 
@@ -273,7 +274,106 @@ public class GameBoard {
 				}
 			}
 
-			// FINISH WEST AND EAST MOVE:
+			// Left move:
+			else if (direction.equals("L")) {
+				// Can't move farther left:
+				if (cellWithUnit.getLocation().y == 0)
+					return false;
+				// Trying to move into a Boulder, return false.
+				if (board[cellWithUnit.getLocation().x][cellWithUnit
+						.getLocation().y - 1].getTerrain() == Terrain.Boulder)
+					return false;
+				// Can move left:
+				else {
+					// Add theUnit to the cell to the left of it:
+					board[cellWithUnit.getLocation().x][cellWithUnit
+							.getLocation().y - 1].setUnit(theUnit);
+					board[cellWithUnit.getLocation().x][cellWithUnit
+							.getLocation().y - 1].setHasUnit(true);
+					// Remove unit from the current cell:
+					board[cellWithUnit.getLocation().x][cellWithUnit
+							.getLocation().y].removeUnit();
+					
+					// Reduce the Units movement by 1:
+					theUnit.setMovesLeft(theUnit.getMovesLeft() - 1);
+
+					// Deal with the Terrain theUnit is now standing in:
+
+					// My reference to the terrain the unit is now standing in
+					Terrain terrain = board[cellWithUnit.getLocation().x][cellWithUnit
+							.getLocation().y-1].getTerrain();
+
+					// Will be more here depending on future design decisions
+					// about the game's terrain:
+					// For now deal with lava as it is the only thing on the map
+					// other than boulders:
+					// For now lava reduces movement by 2, and causes 2 damage:
+					if (terrain == Terrain.Lava) {
+						board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y-1]
+								.getUnit()
+								.setHealth(
+										board[cellWithUnit.getLocation().x][cellWithUnit
+												.getLocation().y-1].getUnit()
+												.getHealth() - 2);
+					}
+
+					// Finish this for more terrain later on
+
+					// Return true at very end:
+					return true;
+				}
+			}
+			// Right move:
+			else if (direction.equals("L")) {
+				// Can't move farther left:
+				if (cellWithUnit.getLocation().y == 20)
+					return false;
+				// Trying to move into a Boulder, return false.
+				if (board[cellWithUnit.getLocation().x][cellWithUnit
+						.getLocation().y + 1].getTerrain() == Terrain.Boulder)
+					return false;
+				// Can move right:
+				else {
+					// Add theUnit to the cell to the right of it:
+					board[cellWithUnit.getLocation().x][cellWithUnit
+							.getLocation().y + 1].setUnit(theUnit);
+					board[cellWithUnit.getLocation().x][cellWithUnit
+							.getLocation().y + 1].setHasUnit(true);
+					// Remove unit from the current cell:
+					board[cellWithUnit.getLocation().x][cellWithUnit
+							.getLocation().y].removeUnit();
+					
+					// Reduce the Units movement by 1:
+					theUnit.setMovesLeft(theUnit.getMovesLeft() - 1);
+
+					// Deal with the Terrain theUnit is now standing in:
+
+					// My reference to the terrain the unit is now standing in
+					Terrain terrain = board[cellWithUnit.getLocation().x][cellWithUnit
+							.getLocation().y + 1].getTerrain();
+
+					// Will be more here depending on future design decisions
+					// about the game's terrain:
+					// For now deal with lava as it is the only thing on the map
+					// other than boulders:
+					// For now lava reduces movement by 2, and causes 2 damage:
+					if (terrain == Terrain.Lava) {
+						board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y + 1]
+								.getUnit()
+								.setHealth(
+										board[cellWithUnit.getLocation().x][cellWithUnit
+												.getLocation().y + 1].getUnit()
+												.getHealth() - 2);
+					}
+
+					// Finish this for more terrain later on
+
+					// Return true at very end:
+					return true;
+				}
+			}
 
 		}
 
@@ -283,18 +383,25 @@ public class GameBoard {
 	// When the turn is over, update movesLeft:
 	// Assuming GUI passes an the name of the player to be updated as a string
 	public void turnOver(String playerName) {
-		
+
 		if (playerName.equals(player1Name)) {
 			for (int i = 0; i < player1Units.size(); i++) {
-				player1Units.get(i).getUnit().setMovesLeft(player1Units.get(i).getUnit().getMoveRange());
+				player1Units
+						.get(i)
+						.getUnit()
+						.setMovesLeft(
+								player1Units.get(i).getUnit().getMoveRange());
 			}
-		}
-		else if (playerName.equals(player2Name)) {
+		} else if (playerName.equals(player2Name)) {
 			for (int i = 0; i < player2Units.size(); i++) {
-				player2Units.get(i).getUnit().setMovesLeft(player2Units.get(i).getUnit().getMoveRange());
+				player2Units
+						.get(i)
+						.getUnit()
+						.setMovesLeft(
+								player2Units.get(i).getUnit().getMoveRange());
 			}
 		}
-		
+
 	}
 
 	// Returns the unit in this cell, or null if there is no unit in this
@@ -345,7 +452,5 @@ public class GameBoard {
 	public void setPlayer2Name(String player2Name) {
 		this.player2Name = player2Name;
 	}
-
-	
 
 }
