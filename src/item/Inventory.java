@@ -5,13 +5,28 @@ import view.GUI;
 public class Inventory implements Serializable {
 	private static final long serialVersionUID = 4612177081063302900L;
 	private HashMap<String, Item> items;
-	private static String username;
+	private String username;
 	private int credits;
 
+	/**
+	 * @deprecated
+	 */
 	public Inventory() {
 		items = new HashMap<String, Item>();
 		//will need to handle how to get the different usernames when switching teams, for right now its static but im sure we can make it dynamic ezpz 
 		username = GUI.getPlayer1();
+		credits = 0;
+	}
+
+	/**
+	 * The username is passed as an argument to the constructor.
+	 * Each player will have their own inventory that no one but they need to know.
+	 *  
+	 * @param username
+	 */
+	public Inventory(String username) {		// username is now passed as an argument to the constructor
+		items = new HashMap<String, Item>();
+		this.username = username;			// no longer needs to be static
 		credits = 0;
 	}
 
