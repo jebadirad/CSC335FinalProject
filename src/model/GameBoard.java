@@ -94,6 +94,14 @@ public class GameBoard {
 		board[0][0].setHasUnit(true);
 		// Adds this to player1Units list:
 		player1Units.add(board[0][0]);
+		
+		Unit bUnit = factory.makeUnit("Medic", "Player1");
+		board[0][1].setUnit(bUnit);
+		board[0][1].setHasUnit(true);
+		// Adds this to player1Units list:
+		player1Units.add(board[0][1]);
+		
+		
 
 	}
 
@@ -153,134 +161,205 @@ public class GameBoard {
 		}
 		return str;
 	}
-	
+
 	// Checks to see if the unit in this cell can move or not:
 	public boolean canMove(Cell cellWithUnit, String direction) {
 		boolean result = true;
-		if (direction.equals("N")) {
-			// Can't move farther north:
-			if (cellWithUnit.getLocation().x == 0)
-				result = false;
-			// Trying to move into a Boulder, return false.
-			else if (board[cellWithUnit.getLocation().x - 1][cellWithUnit
-					.getLocation().y].getTerrain() == Terrain.Boulder)
-				result = false;
-		} else if (direction.equals("S")) {
-			// Can't move farther south:
-			if (cellWithUnit.getLocation().x == 19)
-				return false;
-			// Trying to move into a Boulder, return false.
-			else if (board[cellWithUnit.getLocation().x + 1][cellWithUnit
-					.getLocation().y].getTerrain() == Terrain.Boulder)
-				result = false;
+		Unit unit = cellWithUnit.getUnit();
+		if (unit.getMovesLeft() <= 0) {
+			return false;
+		} else {
+			
+			if (direction.equals("N")) {
+				// Can't move farther north:
+				if (cellWithUnit.getLocation().x == 0)
+					result = false;
+				// Trying to move into a Boulder, return false.
+				else if (board[cellWithUnit.getLocation().x - 1][cellWithUnit
+						.getLocation().y].getTerrain() == Terrain.Boulder || board[cellWithUnit.getLocation().x - 1][cellWithUnit.getLocation().y].hasUnit() == true)
+					result = false;
+			} else if (direction.equals("S")) {
+				// Can't move farther south:
+				if (cellWithUnit.getLocation().x == 19)
+					return false;
+				// Trying to move into a Boulder, return false.
+				else if (board[cellWithUnit.getLocation().x + 1][cellWithUnit
+						.getLocation().y].getTerrain() == Terrain.Boulder || board[cellWithUnit.getLocation().x + 1][cellWithUnit.getLocation().y].hasUnit() == true)
+					result = false;
 
-		} else if (direction.equals("L")) {
-			// Can't move farther left:
-			if (cellWithUnit.getLocation().y == 0)
-				result = false;
-			// Trying to move into a Boulder, return false.
-			else if (board[cellWithUnit.getLocation().x][cellWithUnit
-					.getLocation().y - 1].getTerrain() == Terrain.Boulder)
-				result = false;
+			} else if (direction.equals("L")) {
+				// Can't move farther left:
+				if (cellWithUnit.getLocation().y == 0)
+					result = false;
+				// Trying to move into a Boulder, return false.
+				else if (board[cellWithUnit.getLocation().x][cellWithUnit
+						.getLocation().y - 1].getTerrain() == Terrain.Boulder || board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y - 1].hasUnit() == true)
+					result = false;
 
-		} else if (direction.equals("R")) {
-			// Can't move farther right:
-			if (cellWithUnit.getLocation().y == 19)
-				return false;
-			// Trying to move into a Boulder, return false.
-			else if (board[cellWithUnit.getLocation().x][cellWithUnit
-					.getLocation().y + 1].getTerrain() == Terrain.Boulder)
-				result = false;
+			} else if (direction.equals("R")) {
+				// Can't move farther right:
+				if (cellWithUnit.getLocation().y == 19)
+					return false;
+				// Trying to move into a Boulder, return false.
+				else if (board[cellWithUnit.getLocation().x][cellWithUnit
+						.getLocation().y + 1].getTerrain() == Terrain.Boulder || board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y + 1].hasUnit()==true)
+					result = false;
+			}
 		}
 
 		return result;
 	}
-	
-	
+
 	public Cell move(Cell cellWithUnit, String direction) {
 		if (direction.equals("N")) {
-			
+
 			// Check to see what terrain we are about to step in:
-			Terrain t = board[cellWithUnit.getLocation().x - 1][cellWithUnit.getLocation().y].getTerrain();
+			Terrain t = board[cellWithUnit.getLocation().x - 1][cellWithUnit
+					.getLocation().y].getTerrain();
 			// Lava reduced moves left and health left by 2:
-			if (t==Terrain.Lava) {
-				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setMovesLeft(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().getMovesLeft()-2);
-				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setHealth(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().getHealth()-2);
+			if (t == Terrain.Lava) {
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.getUnit()
+						.setMovesLeft(
+								board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit()
+										.getMovesLeft() - 2);
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.getUnit()
+						.setHealth(
+								board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit().getHealth() - 2);
 			}
 			// Reduce movement by 1:
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setMovesLeft(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().getMovesLeft()-1);
+			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+					.getUnit()
+					.setMovesLeft(
+							board[cellWithUnit.getLocation().x][cellWithUnit
+									.getLocation().y].getUnit().getMovesLeft() - 1);
 
 			// Add unit to the cell above it
-			board[cellWithUnit.getLocation().x - 1][cellWithUnit.getLocation().y].setUnit(cellWithUnit.getUnit());
-			board[cellWithUnit.getLocation().x - 1][cellWithUnit.getLocation().y].setHasUnit(true);
+			board[cellWithUnit.getLocation().x - 1][cellWithUnit.getLocation().y]
+					.setUnit(cellWithUnit.getUnit());
+			board[cellWithUnit.getLocation().x - 1][cellWithUnit.getLocation().y]
+					.setHasUnit(true);
 			// Remove Unit from old cell
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].removeUnit();
+			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+					.removeUnit();
 			// return the cell the unit moved to:
-			return board[cellWithUnit.getLocation().x - 1][cellWithUnit.getLocation().y];
-		}
-		else if (direction.equals("S")) {
+			return board[cellWithUnit.getLocation().x - 1][cellWithUnit
+					.getLocation().y];
+		} else if (direction.equals("S")) {
 			// Check to see what terrain we are about to step in:
-			Terrain t = board[cellWithUnit.getLocation().x + 1][cellWithUnit.getLocation().y].getTerrain();
+			Terrain t = board[cellWithUnit.getLocation().x + 1][cellWithUnit
+					.getLocation().y].getTerrain();
 			// Lava reduced moves left and health left by 2:
-			if (t==Terrain.Lava) {
-				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setMovesLeft(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().getMovesLeft()-2);
-				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setHealth(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().getHealth()-2);
+			if (t == Terrain.Lava) {
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.getUnit()
+						.setMovesLeft(
+								board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit()
+										.getMovesLeft() - 2);
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.getUnit()
+						.setHealth(
+								board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit().getHealth() - 2);
 			}
 			// Reduce movement by 1:
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setMovesLeft(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().getMovesLeft()-1);
+			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+					.getUnit()
+					.setMovesLeft(
+							board[cellWithUnit.getLocation().x][cellWithUnit
+									.getLocation().y].getUnit().getMovesLeft() - 1);
 
-			
 			// Add unit to the cell below it
-			board[cellWithUnit.getLocation().x + 1][cellWithUnit.getLocation().y].setUnit(cellWithUnit.getUnit());
-			board[cellWithUnit.getLocation().x + 1][cellWithUnit.getLocation().y].setHasUnit(true);
+			board[cellWithUnit.getLocation().x + 1][cellWithUnit.getLocation().y]
+					.setUnit(cellWithUnit.getUnit());
+			board[cellWithUnit.getLocation().x + 1][cellWithUnit.getLocation().y]
+					.setHasUnit(true);
 			// Remove Unit from old cell
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].removeUnit();
+			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+					.removeUnit();
 			// return the cell the unit moved to:
-			return board[cellWithUnit.getLocation().x + 1][cellWithUnit.getLocation().y];
-		}
-		else if (direction.equals("L")) {
+			return board[cellWithUnit.getLocation().x + 1][cellWithUnit
+					.getLocation().y];
+		} else if (direction.equals("L")) {
 			// Check to see what terrain we are about to step in:
-			Terrain t = board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y - 1].getTerrain();
+			Terrain t = board[cellWithUnit.getLocation().x][cellWithUnit
+					.getLocation().y - 1].getTerrain();
 			// Lava reduced moves left and health left by 2:
-			if (t==Terrain.Lava) {
-				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setMovesLeft(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().getMovesLeft()-2);
-				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setHealth(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().getHealth()-2);
+			if (t == Terrain.Lava) {
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.getUnit()
+						.setMovesLeft(
+								board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit()
+										.getMovesLeft() - 2);
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.getUnit()
+						.setHealth(
+								board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit().getHealth() - 2);
 			}
 			// Reduce movement by 1:
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setMovesLeft(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().getMovesLeft()-1);
+			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+					.getUnit()
+					.setMovesLeft(
+							board[cellWithUnit.getLocation().x][cellWithUnit
+									.getLocation().y].getUnit().getMovesLeft() - 1);
 
-			
 			// Add unit to the cell to the left
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y-1].setUnit(cellWithUnit.getUnit());
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y-1].setHasUnit(true);
+			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y - 1]
+					.setUnit(cellWithUnit.getUnit());
+			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y - 1]
+					.setHasUnit(true);
 			// Remove Unit from old cell
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].removeUnit();
+			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+					.removeUnit();
 			// return the cell the unit moved to:
-			return board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y-1];
-		}
-		else {
+			return board[cellWithUnit.getLocation().x][cellWithUnit
+					.getLocation().y - 1];
+		} else {
 			// Check to see what terrain we are about to step in:
-			Terrain t = board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y + 1].getTerrain();
+			Terrain t = board[cellWithUnit.getLocation().x][cellWithUnit
+					.getLocation().y + 1].getTerrain();
 			// Lava reduced moves left and health left by 2:
-			if (t==Terrain.Lava) {
-				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setMovesLeft(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().getMovesLeft()-2);
-				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setHealth(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().getHealth()-2);
+			if (t == Terrain.Lava) {
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.getUnit()
+						.setMovesLeft(
+								board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit()
+										.getMovesLeft() - 2);
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.getUnit()
+						.setHealth(
+								board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit().getHealth() - 2);
 			}
 			// Reduce movement by 1:
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setMovesLeft(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().getMovesLeft()-1);
+			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+					.getUnit()
+					.setMovesLeft(
+							board[cellWithUnit.getLocation().x][cellWithUnit
+									.getLocation().y].getUnit().getMovesLeft() - 1);
 
 			// Better be Right, adds unit to the cell to the right
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y + 1].setUnit(cellWithUnit.getUnit());
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y + 1].setHasUnit(true);
+			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y + 1]
+					.setUnit(cellWithUnit.getUnit());
+			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y + 1]
+					.setHasUnit(true);
 			// Remove Unit from old cell
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].removeUnit();
+			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+					.removeUnit();
 			// return the cell the unit moved to:
-			return board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y + 1];
+			return board[cellWithUnit.getLocation().x][cellWithUnit
+					.getLocation().y + 1];
 		}
 
-		
 	}
-	
+
 	// Get player1's list of cells that contain units:
 	public ArrayList<Cell> getPlayer1Untis() {
 		return player1Units;

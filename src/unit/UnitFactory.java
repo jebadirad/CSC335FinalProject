@@ -12,7 +12,7 @@ public class UnitFactory
 
     // Code to make new CloneTrooper. Need to get correct Image.
     if (unitType.equals("Medic"))
-      return new CloneTrooper("Medic.png", username);
+      return new Medic("Medic.png", username);
 
     // Return null if unitType does not exist.
     return null;

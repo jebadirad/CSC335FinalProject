@@ -67,13 +67,15 @@ public class GUI extends JFrame{
 	AttackButtonListener AttackButtonListener = new AttackButtonListener();
 	DownButtonListener DownButtonListener = new DownButtonListener();
 	LeftButtonListener LeftButtonListener = new LeftButtonListener();
-	UpButtonListener UpButtonListener = new UpButtonListener();
+	LeftButtonListener UpButtonListener = new LeftButtonListener();
 	RightButtonListener RightButtonListener = new RightButtonListener();
 	MapButtonListener MapButtonListener = new MapButtonListener();
+	ButtonGroupListener ButtonGroupListener = new ButtonGroupListener();
 
 	// things to run the game
 	public static GameBoard gameboard;
 	public static Cell CurrentUnitSelected;
+	private ArrayList<Cell> player1units;
 
 	// pregame lobby GUI items
 
@@ -98,10 +100,8 @@ public class GUI extends JFrame{
 
 	public void newGame() {
 		gameboard = new GameBoard("Map 1");
-		ArrayList<Cell> player1units = new ArrayList<Cell>();
-		player1units.add(gameboard.getCell(0,0));
-		
-		CurrentUnitSelected = gameboard.getCell(10, 10);
+		player1units = gameboard.getPlayer1Untis();
+		CurrentUnitSelected = player1units.get(0);
 	}
 
 	private void loginGUI() {
@@ -247,10 +247,12 @@ public class GUI extends JFrame{
 
 	private void registerListeners() {
 		attack.addActionListener(AttackButtonListener);
-		moveUp.addActionListener(UpButtonListener);
-		moveLeft.addActionListener(LeftButtonListener);
+		moveUp.addActionListener( new LeftButtonListener());
+		moveLeft.addActionListener( new LeftButtonListener ());
 		moveRight.addActionListener(RightButtonListener);
 		moveDown.addActionListener(DownButtonListener);
+		unitgroup.addActionListener(ButtonGroupListener);
+		
 
 	}
 
@@ -260,8 +262,17 @@ public class GUI extends JFrame{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
+			/*if(e.getSource() == moveUp){
+				return;
+			}*/
 			if (gameboard.canMove(CurrentUnitSelected, "L")) {
+				int i = player1units.indexOf(CurrentUnitSelected);
+				player1units.remove(i);
+				
+				
+				
 				CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "L");
+				player1units.add(CurrentUnitSelected);
 				textPanel.repaint();
 			}
 			else{
@@ -277,7 +288,13 @@ public class GUI extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			if (gameboard.canMove(CurrentUnitSelected, "S")) {
+				int i = player1units.indexOf(CurrentUnitSelected);
+				player1units.remove(i);
+				
+				
+				
 				CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "S");
+				player1units.add(i,CurrentUnitSelected);
 				textPanel.repaint();
 			}
 			else{
@@ -293,7 +310,13 @@ public class GUI extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			if (gameboard.canMove(CurrentUnitSelected, "N")) {
+				int i = player1units.indexOf(CurrentUnitSelected);
+				player1units.remove(i);
+				
+				
+				
 				CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "N");
+				player1units.add(i,CurrentUnitSelected);
 				textPanel.repaint();
 			}
 			else{
@@ -310,7 +333,13 @@ public class GUI extends JFrame{
 			// TODO Auto-generated method stub
 
 			if (gameboard.canMove(CurrentUnitSelected, "R")) {
+				int i = player1units.indexOf(CurrentUnitSelected);
+				player1units.remove(i);
+				
+				
+				
 				CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "R");
+				player1units.add(i,CurrentUnitSelected);
 				textPanel.repaint();
 			}
 			else{
@@ -343,6 +372,16 @@ public class GUI extends JFrame{
 			registerListeners();
 		}
 
+	}
+	private class ButtonGroupListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		
 	}
 
 	private void repaintEverything(){
