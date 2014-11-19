@@ -2,8 +2,10 @@ package model;
 
 import java.awt.Point;
 import java.util.ArrayList;
+
 import unit.Unit;
 import unit.UnitFactory;
+import view.GUI;
 
 // The GameBoard class creates the board for the game:
 
@@ -89,13 +91,13 @@ public class GameBoard {
 		UnitFactory factory = new UnitFactory();
 		// Last parameter is UserName obtained from the GUI, is "Player1" for
 		// now:
-		Unit aUnit = factory.makeUnit("CloneTrooper", "Player1");
+		Unit aUnit = factory.makeUnit("CloneTrooper", GUI.getPlayer1());
 		board[0][0].setUnit(aUnit);
 		board[0][0].setHasUnit(true);
 		// Adds this to player1Units list:
 		player1Units.add(board[0][0]);
 		
-		Unit bUnit = factory.makeUnit("Medic", "Player1");
+		Unit bUnit = factory.makeUnit("Medic", GUI.getPlayer1());
 		board[0][1].setUnit(bUnit);
 		board[0][1].setHasUnit(true);
 		// Adds this to player1Units list:
@@ -116,7 +118,7 @@ public class GameBoard {
 		UnitFactory factory = new UnitFactory();
 		// Last parameter is UserName obtained from the GUI, is "Player2" for
 		// now:
-		Unit anotherUnit = factory.makeUnit("CloneTrooper", "Player2");
+		Unit anotherUnit = factory.makeUnit("CloneTrooper", GUI.getPlayer2());
 		board[10][10].setUnit(anotherUnit);
 		board[10][10].setHasUnit(true);
 		// Adds this to player1Units list:
@@ -206,7 +208,6 @@ public class GameBoard {
 					result = false;
 			}
 		}
-
 		return result;
 	}
 

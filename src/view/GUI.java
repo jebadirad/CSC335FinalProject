@@ -46,6 +46,7 @@ public class GUI extends JFrame{
 	JPanel movePanel;
 	JPanel unitPanel;
 	JPanel playerstatus;
+	JPanel imagePanel = new imageview();
 	
 	JTabbedPane tabbedpane; 
 	
@@ -140,12 +141,18 @@ public class GUI extends JFrame{
 	private void layoutGUI() {
 		frame.removeAll();
 		tabbedpane = new JTabbedPane();
-		tabbedpane.setPreferredSize(new Dimension(1280,800));
+		tabbedpane.setPreferredSize(new Dimension(1280,500));
+		
+		
 		
 		JPanel contentContainer = new JPanel();
-		contentContainer.setPreferredSize(new Dimension(1280, 800));
+		contentContainer.setPreferredSize(new Dimension(1280, 500));
 		contentContainer.setLayout(new BorderLayout());
-
+		
+		imagePanel = new JPanel();
+		imagePanel.setPreferredSize(new Dimension(1280,500));
+		
+		
 		JPanel playerContainer = new JPanel();
 		playerContainer.setLayout(new GridLayout(1, 3, 0, 0));
 		playerContainer.setSize(1280, 300);
@@ -169,7 +176,7 @@ public class GUI extends JFrame{
 		movePanel = new JPanel();
 
 		movePanel.setLayout(new BorderLayout());
-
+		
 		JPanel DirectionPanel = new JPanel();
 		DirectionPanel.setPreferredSize(new Dimension(250, 75));
 		DirectionPanel.setLayout(new GridLayout(2, 3, 0, 0));
@@ -223,16 +230,17 @@ public class GUI extends JFrame{
 		AttackPanel.add(attackButtonPanel, BorderLayout.NORTH);
 		AttackPanel.add(filler, BorderLayout.CENTER);
 
-		contentContainer.add(textPanel, BorderLayout.NORTH);
+		contentContainer.add(tabbedpane, BorderLayout.NORTH);
 		contentContainer.add(playerContainer, BorderLayout.CENTER);
 
 		playerContainer.add(movePanel);
 		playerContainer.add(usernamestring);
 		playerContainer.add(AttackPanel);
 
-		tabbedpane.add(contentContainer, "Game");
+		tabbedpane.add(textPanel, "Game");
+		tabbedpane.add(imagePanel, "Graphical View");
 		
-		add(tabbedpane);
+		add(contentContainer);
 
 		setVisible(true);
 	}
@@ -251,7 +259,7 @@ public class GUI extends JFrame{
 		moveLeft.addActionListener( new LeftButtonListener ());
 		moveRight.addActionListener(RightButtonListener);
 		moveDown.addActionListener(DownButtonListener);
-		unitgroup.addActionListener(ButtonGroupListener);
+		//unitgroup.addActionListener(ButtonGroupListener);
 		
 
 	}

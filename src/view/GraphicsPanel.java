@@ -32,7 +32,5 @@ public class GraphicsPanel extends JPanel {
 			g2.drawString(line,  0, y+=g.getFontMetrics().getHeight());
 		}
 	}
-	public void forcerepaint(){
-		
-	}
+	
 }
