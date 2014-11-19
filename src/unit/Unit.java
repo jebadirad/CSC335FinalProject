@@ -27,7 +27,7 @@ public abstract class Unit implements Serializable
     try
     {
     	//fixed file path
-      this.iconImage = ImageIO.read(new File("images/" + imagestring));
+      this.iconImage = ImageIO.read(new File("Images/" + imagestring));
     }
     catch (IOException e)
     {

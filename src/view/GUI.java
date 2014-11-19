@@ -12,11 +12,13 @@ import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
@@ -26,12 +28,14 @@ import model.Cell;
 import model.GameBoard;
 import model.Terrain;
 
-public class GUI extends JFrame implements Observer {
+public class GUI extends JFrame{
 	private static final long serialVersionUID = -2853985771911325020L;
 
 	public static String player1;
 	public static String player2;
 
+	
+	
 	public ArrayList<Cell> playerunits = new ArrayList<Cell>();
 	
 	JFrame frame;
@@ -47,6 +51,13 @@ public class GUI extends JFrame implements Observer {
 	
 	JLabel usernamestring;
 
+	JRadioButton unit1;
+	JRadioButton unit2;
+	JRadioButton unit3;
+	JRadioButton unit4;
+	JRadioButton unit5;
+	ButtonGroup unitgroup;
+	
 	JButton moveUp;
 	JButton moveDown;
 	JButton moveLeft;
@@ -87,19 +98,20 @@ public class GUI extends JFrame implements Observer {
 
 	public void newGame() {
 		gameboard = new GameBoard("Map 1");
-		playerunits.add(gameboard.getCell(0,0));
-		playerunits.add(gameboard.getCell(10,10));
-		Iterator<Cell> iter = playerunits.iterator();
-		while(iter.hasNext()){
-			Cell cell = iter.next();
-			//gameboard.generateUnitatCell(cell, unit, player1);
-		}
-		CurrentUnitSelected = gameboard.getCell(0, 0);
+		ArrayList<Cell> player1units = new ArrayList<Cell>();
+		player1units.add(gameboard.getCell(0,0));
+		
+		CurrentUnitSelected = gameboard.getCell(10, 10);
 	}
 
 	private void loginGUI() {
 		player1 = JOptionPane.showInputDialog("Username");
-
+		
+	}
+	
+	
+	private void layoutAttackScreen(){
+		
 	}
 
 	private void layoutPregameGUI() {
@@ -172,7 +184,23 @@ public class GUI extends JFrame implements Observer {
 
 		JPanel unitPanel = new JPanel();
 		unitPanel.setPreferredSize(new Dimension(175, 75));
-		unitPanel.setBackground(Color.BLUE);
+		unit1 = new JRadioButton("Unit1");
+		unit2 = new JRadioButton("Unit2");
+		unit3 = new JRadioButton("Unit3");
+		unit4 = new JRadioButton("Unit4");
+		unit5 = new JRadioButton("Unit5");
+		unitgroup = new ButtonGroup();
+		unitgroup.add(unit1);
+		unitgroup.add(unit2);
+		unitgroup.add(unit3);
+		unitgroup.add(unit4);
+		unitgroup.add(unit5);
+		
+		unitPanel.add(unit1);
+		unitPanel.add(unit2);
+		unitPanel.add(unit3);
+		unitPanel.add(unit4);
+		unitPanel.add(unit5);
 
 		movePanel.add(DirectionPanel, BorderLayout.WEST);
 		movePanel.add(unitPanel, BorderLayout.CENTER);
@@ -226,21 +254,19 @@ public class GUI extends JFrame implements Observer {
 
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-
-	}
 
 	private class LeftButtonListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			gameboard.getCell(1, 1).setTerrain(Terrain.Desert);
-			gameboard.getCell(1, 2).setTerrain(Terrain.Desert);
-			gameboard.getCell(1, 3).setTerrain(Terrain.Desert);
-			textPanel.repaint();
+			if (gameboard.canMove(CurrentUnitSelected, "L")) {
+				CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "L");
+				textPanel.repaint();
+			}
+			else{
+				JOptionPane.showMessageDialog(frame, "Move failed");
+			}
 		}
 
 	}
@@ -250,11 +276,12 @@ public class GUI extends JFrame implements Observer {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			if (gameboard.move(CurrentUnitSelected, "S")) {
+			if (gameboard.canMove(CurrentUnitSelected, "S")) {
+				CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "S");
 				textPanel.repaint();
 			}
 			else{
-				JOptionPane.showMessageDialog(frame, "failed");
+				JOptionPane.showMessageDialog(frame, "Move failed");
 			}
 		}
 
@@ -265,7 +292,13 @@ public class GUI extends JFrame implements Observer {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-
+			if (gameboard.canMove(CurrentUnitSelected, "N")) {
+				CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "N");
+				textPanel.repaint();
+			}
+			else{
+				JOptionPane.showMessageDialog(frame, "Move failed");
+			}
 		}
 
 	}
@@ -276,10 +309,13 @@ public class GUI extends JFrame implements Observer {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 
-			gameboard.getCell(2, 1).setTerrain(Terrain.Forest);
-			gameboard.getCell(3, 2).setTerrain(Terrain.Forest);
-			gameboard.getCell(4, 3).setTerrain(Terrain.Forest);
-			textPanel.repaint();
+			if (gameboard.canMove(CurrentUnitSelected, "R")) {
+				CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "R");
+				textPanel.repaint();
+			}
+			else{
+				JOptionPane.showMessageDialog(frame, "Move failed");
+			}
 		}
 
 	}
@@ -289,7 +325,7 @@ public class GUI extends JFrame implements Observer {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-
+			
 		}
 
 	}
@@ -309,4 +345,8 @@ public class GUI extends JFrame implements Observer {
 
 	}
 
+	private void repaintEverything(){
+		frame.repaint();
+	}
+	
 }

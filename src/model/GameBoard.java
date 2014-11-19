@@ -156,7 +156,7 @@ public class GameBoard {
 	
 	// Checks to see if the unit in this cell can move or not:
 	public boolean canMove(Cell cellWithUnit, String direction) {
-		boolean result = false;
+		boolean result = true;
 		if (direction.equals("N")) {
 			// Can't move farther north:
 			if (cellWithUnit.getLocation().x == 0)
@@ -167,8 +167,8 @@ public class GameBoard {
 				result = false;
 		} else if (direction.equals("S")) {
 			// Can't move farther south:
-			if (cellWithUnit.getLocation().x == 20)
-				result = false;
+			if (cellWithUnit.getLocation().x == 19)
+				return false;
 			// Trying to move into a Boulder, return false.
 			else if (board[cellWithUnit.getLocation().x + 1][cellWithUnit
 					.getLocation().y].getTerrain() == Terrain.Boulder)
@@ -185,8 +185,8 @@ public class GameBoard {
 
 		} else if (direction.equals("R")) {
 			// Can't move farther right:
-			if (cellWithUnit.getLocation().y == 20)
-				result = false;
+			if (cellWithUnit.getLocation().y == 19)
+				return false;
 			// Trying to move into a Boulder, return false.
 			else if (board[cellWithUnit.getLocation().x][cellWithUnit
 					.getLocation().y + 1].getTerrain() == Terrain.Boulder)
