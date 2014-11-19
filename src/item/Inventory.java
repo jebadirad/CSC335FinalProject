@@ -16,12 +16,17 @@ public class Inventory implements Serializable {
 	}
 
 	public boolean addItem(String s) {
-		if(s.equalsIgnoreCase("superitem")) {
+		if(s.equalsIgnoreCase("Super Item")) {
 			return items.put(s, Item.superitem) != null;
 		}
-		else if(s.equalsIgnoreCase("" /*item name*/)) {
-			return items.put(s, Item.superitem) != null;  // TODO change the Item enum to
-														  // whatever the string is, add other item types 
+		else if(s.equalsIgnoreCase("Hyper Potion")) {
+			return items.put(s, Item.hyperpotion) != null;
+		}
+		else if(s.equalsIgnoreCase("Apollo's Helm")) {
+			return items.put(s, Item.attackRange) != null;
+		}
+		else if(s.equalsIgnoreCase("Speed Enhancer")) {
+			return items.put(s, Item.moveRange) != null;
 		}
 		else return false;
 	}
