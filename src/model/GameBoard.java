@@ -365,7 +365,9 @@ public class GameBoard {
 	public ArrayList<Cell> getPlayer2Untis() {
 		return player2Units;
 	}
-
+	
+	// This method returns a list of cells with units in it that 
+	// can be attacked by a cell containing a unit given to it
 	public ArrayList<Cell> getUnitsInAttackRange(Cell cellWithUnit) {
 		ArrayList<Cell> unitsInRange = new ArrayList<Cell>();
 		int range = cellWithUnit.getUnit().getAttackRange();
@@ -398,7 +400,65 @@ public class GameBoard {
 		return unitsInRange;
 	}
 	
+	// Attack method for two cells containing units being given:
+	// returns the cell of unitBeingAttacked to the GUI, that updates the unit info in that cell:
+	public Cell attack(Cell cellWithUnitAtacking, Cell cellWithUnitBeingAttacked) {
+		
+		cellWithUnitBeingAttacked.getUnit().setHealth(cellWithUnitBeingAttacked.getUnit().getHealth()-cellWithUnitAtacking.getUnit().getDamage());
+		// unitBeingAttacked has died:
+		if (cellWithUnitBeingAttacked.getUnit().getHealth() <= 0) {
+			// remove this unit from whomever owns this unit:
+			if (cellWithUnitBeingAttacked.getUnit().getUsername().equals(GUI.getPlayer1())) {
+				// If Player 1 owns this unit, remove it from player1Units list:
+				player1Units.remove(cellWithUnitBeingAttacked);
+			}
+			if (cellWithUnitBeingAttacked.getUnit().getUsername().equals(GUI.getPlayer2())) {
+				// If Player 2 owns this unit, remove it from player2Units list:
+				player2Units.remove(cellWithUnitBeingAttacked);
+			}
+			// Remove the unit from the Cell
+			cellWithUnitBeingAttacked.removeUnit();
+			
+			// Return the new cell that now has no unit in it
+			return cellWithUnitBeingAttacked;
+		}
+		// else return cellWithUnitBeingAttacked with updated info
+		else 
+			return cellWithUnitBeingAttacked;
+		
+	}
 	
+	// Checks to see if the game is over by looking at player1Untis List, and player2Units List 
+	// to see if either one of them is empty, this verison returns a String explainig who lost:
+	public String gameOverStringVersion() {
+		
+		if (player1Units.isEmpty()) {
+			// Player 1 has lost:
+			return GUI.getPlayer1() + " Has Lost The Game!";
+		}
+		if (player2Units.isEmpty()) {
+			// Player 2 has lost:
+			return GUI.getPlayer2() + " Has Lost The Game!";
+		}
+		
+		return "";
+	}
+	
+	// Checks to see if the game is over by looking at player1Untis List, and player2Units List 
+	// to see if either one of them is empty, this verison returns a boolean, we dont know who lost:
+	public boolean gameOverBooleanVersion() {
+		
+		if (player1Units.isEmpty()) {
+			// Player 1 has lost:
+			return true;
+		}
+		else if (player2Units.isEmpty()) {
+			// Player 2 has lost:
+			return true;
+		}
+		else 
+			return false;
+	}
 	
 	// When the turn is over, update movesLeft:
 	// Assuming GUI passes an the name of the player to be updated as a string
