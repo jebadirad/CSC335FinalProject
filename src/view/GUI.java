@@ -47,7 +47,7 @@ public class GUI extends JFrame{
 	JPanel movePanel;
 	JPanel unitPanel;
 	JPanel playerstatus;
-	JPanel imagePanel = new imageview();
+	JPanel imagePanel = new Imageview();
 	
 	JTabbedPane tabbedpane; 
 	

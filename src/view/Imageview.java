@@ -17,10 +17,10 @@ import model.Cell;
 import model.GameBoard;
 import model.Terrain;
 
-public class imageview extends JPanel
+public class Imageview extends JPanel
 {
-
-  private BufferedImage image;
+	private static final long serialVersionUID = -4162356814719738349L;
+private BufferedImage image;
   private Point pos;
   private BufferedImage hunterImage, grass, bloodImage, goopImage, slimeImage,
       slimePitImage, wumpusImage, blackImage;
@@ -28,7 +28,7 @@ public class imageview extends JPanel
   private GameBoard theModel;
   private JLabel message;
 
-  public imageview()
+  public Imageview()
   {
     setLayout(null);
     message = new JLabel("");
