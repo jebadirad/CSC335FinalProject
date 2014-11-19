@@ -14,6 +14,7 @@ import java.util.Observer;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -284,7 +285,11 @@ public class GUI extends JFrame{
 				textPanel.repaint();
 			}
 			else{
-				JOptionPane.showMessageDialog(frame, "Move failed");
+				JOptionPane optionPane = new JOptionPane();
+				optionPane.setMessage("Move failed");
+				JDialog dialog = optionPane.createDialog(":~(");
+				dialog.setAlwaysOnTop(true);
+				dialog.setVisible(true);
 			}
 		}
 
@@ -306,7 +311,12 @@ public class GUI extends JFrame{
 				textPanel.repaint();
 			}
 			else{
-				JOptionPane.showMessageDialog(frame, "Move failed");
+//				JOptionPane.showMessageDialog(null, ":~(", "Move failed", JOptionPane.ERROR_MESSAGE); 
+				JOptionPane optionPane = new JOptionPane();
+				optionPane.setMessage("Move failed");
+				JDialog dialog = optionPane.createDialog(":~(");
+				dialog.setAlwaysOnTop(true);
+				dialog.setVisible(true);
 			}
 		}
 
@@ -328,7 +338,11 @@ public class GUI extends JFrame{
 				textPanel.repaint();
 			}
 			else{
-				JOptionPane.showMessageDialog(frame, "Move failed");
+				JOptionPane optionPane = new JOptionPane();
+				optionPane.setMessage("Move failed");
+				JDialog dialog = optionPane.createDialog(":~(");
+				dialog.setAlwaysOnTop(true);
+				dialog.setVisible(true);
 			}
 		}
 
@@ -351,7 +365,11 @@ public class GUI extends JFrame{
 				textPanel.repaint();
 			}
 			else{
-				JOptionPane.showMessageDialog(frame, "Move failed");
+				JOptionPane optionPane = new JOptionPane();
+				optionPane.setMessage("Move failed");
+				JDialog dialog = optionPane.createDialog(":~(");
+				dialog.setAlwaysOnTop(true);
+				dialog.setVisible(true);
 			}
 		}
 
