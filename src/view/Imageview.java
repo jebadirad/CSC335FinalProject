@@ -133,6 +133,20 @@ private BufferedImage jediSheet;
 		} catch (IOException e) {
 			System.out.println("Could not find 'jedi-spritesheet.png'");
 		}
+		try {
+			itemSheet = ImageIO.read(new File("images" + File.separator
+					+ "range-tank-spritesheet.png"));
+
+		} catch (IOException e) {
+			System.out.println("Could not find 'range-tank-spritesheet.png'");
+		}
+		try {
+			itemSheet = ImageIO.read(new File("images" + File.separator
+					+ "Medic.png"));
+
+		} catch (IOException e) {
+			System.out.println("Could not find 'Medic.png'");
+		}
   }
 
 }
