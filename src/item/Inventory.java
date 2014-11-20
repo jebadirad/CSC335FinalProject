@@ -50,6 +50,10 @@ public class Inventory implements Serializable {
 		return items.remove(s) != null;
 	}
 
+	public boolean hasItem(String item) {
+		return items.containsKey(item);
+	}
+
 	public Item getItem(String s) {
 		return items.get(s);
 	}

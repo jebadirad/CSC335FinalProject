@@ -23,10 +23,14 @@ public class Imageview extends JPanel
 private BufferedImage image;
   private Point pos;
   private BufferedImage hunterImage, grass, bloodImage, goopImage, slimeImage,
-      slimePitImage, wumpusImage, blackImage;
+      slimePitImage, wumpusImage, blackImage; // lol wumpus?? we need to review these variables
   private Cell[][] board;
   private GameBoard theModel;
   private JLabel message;
+private BufferedImage grassTile;
+private BufferedImage itemSheet;
+private BufferedImage cloneTrooper;
+private BufferedImage jediSheet;
 
   public Imageview()
   {
@@ -99,6 +103,36 @@ private BufferedImage image;
         // }
       }
     }
+  }
+
+  public void loadImages() {
+		try {
+			grassTile = ImageIO.read(new File("images" + File.separator
+					+ "Grass.png"));
+		} catch (IOException e) {
+			System.out.println("Could not find 'Grass.png'");
+		}
+		try {
+			itemSheet = ImageIO.read(new File("images" + File.separator
+					+ "all_items.png"));
+
+		} catch (IOException e) {
+			System.out.println("Could not find 'all_items.png'");
+		}
+		try {
+			cloneTrooper = ImageIO.read(new File("images" + File.separator
+					+ "CloneTrooper.png"));
+
+		} catch (IOException e) {
+			System.out.println("Could not find 'CloneTrooper.png'");
+		}
+		try {
+			jediSheet = ImageIO.read(new File("images" + File.separator
+					+ "jedi-spritesheet.png"));
+
+		} catch (IOException e) {
+			System.out.println("Could not find 'jedi-spritesheet.png'");
+		}
   }
 
 }

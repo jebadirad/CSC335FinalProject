@@ -8,19 +8,19 @@ public enum Item {
 	//path is relative to the OS and current directory
 	superitem(new int[] {4,4,4,4},
 			System.getProperty("user.dir") + System.getProperty("file.separator") + "Images"
-					+ System.getProperty("file.separator") + "superitem.png",
+					+ System.getProperty("file.separator") + "all_items.png",
 			"Super Item"),
 	hyperpotion(new int[] {4,0,0,0},
 			System.getProperty("user.dir") + System.getProperty("file.separator") + "Images"
-					+ System.getProperty("file.separator") + "hyperpotion.png", 
+					+ System.getProperty("file.separator") + "all_items.png", 
 			"Hyper Potion"),
 	attackRange(new int[] {1,2,4,0}, 
 			System.getProperty("user.dir") + System.getProperty("file.separator") + "Images"
-					+ System.getProperty("file.separator") + "attackRange.png",
+					+ System.getProperty("file.separator") + "all_items.png",
 			"Apollo's Helm"),
 	moveRange(new int[] {2,1,1,4},
 			System.getProperty("user.dir") + System.getProperty("file.separator") + "Images"
-					+ System.getProperty("file.separator") + "moveRange.png",
+					+ System.getProperty("file.separator") + "all_items.png",
 			"Speed Enhancer");
 
 	private int[] modifiers;
