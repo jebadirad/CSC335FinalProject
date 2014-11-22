@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -13,14 +12,13 @@ import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.*;
+import model.Cell;
+import model.Terrain;
 
 public class Imageview extends JPanel
 {
   private BufferedImage image;
-  private Point pos;
   private Cell[][] theModel;
-  private JLabel message;
 
   private BufferedImage grassTile;
   private BufferedImage itemSheet;
@@ -32,7 +30,7 @@ public class Imageview extends JPanel
   private BufferedImage iceSheet;
   private BufferedImage quicksandSheet;
   private BufferedImage desertSheet;
-  private BufferedImage backgroundSheet;
+  private static BufferedImage backgroundSheet;
 
   private static final String imageDir = System.getProperty("user.dir")
       + File.separator + "images" + File.separator;
@@ -106,11 +104,21 @@ public class Imageview extends JPanel
     }
   }
 
-  public void setBackground(String imagestring)
+  public static void setBackground(String imagestring)
   {
+
     try
     {
-      backgroundSheet = ImageIO.read(new File(imageDir + "imagestring"));
+      if (imagestring.equals("Grass.png"))
+      {
+        backgroundSheet = ImageIO.read(new File(imageDir + "Grass.png"));
+
+      }
+      if (imagestring.equals("desert.png"))
+      {
+        backgroundSheet = ImageIO.read(new File(imageDir + "desert.png"));
+      }
+
     }
     catch (IOException e)
     {
@@ -132,9 +140,7 @@ public class Imageview extends JPanel
       lavaSheet = ImageIO.read(new File(imageDir + "Lava.png"));
       boulderSheet = ImageIO.read(new File(imageDir + "Boulder.png"));
       iceSheet = ImageIO.read(new File(imageDir + "Ice.png"));
-      // quicksandSheet = ImageIO.read(new File(imageDir + "sand.png"));
-      // desertSheet = ImageIO.read(new File(imageDir + "sand.png"));
-
+      quicksandSheet = ImageIO.read(new File(imageDir + "sand.png"));
     }
     catch (IOException e)
     {
