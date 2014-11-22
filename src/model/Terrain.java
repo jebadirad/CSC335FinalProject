@@ -1,9 +1,11 @@
 package model;
 
+import java.io.Serializable;
+
 import unit.Unit;
 // This enum contains the types of terrain that will be in a cell object:
 
-public enum Terrain {
+public enum Terrain implements Serializable{
 	// Possible terrain types:
 	// Boulder type has zero movement, implying that you can't pass through it
 	Boulder(0),

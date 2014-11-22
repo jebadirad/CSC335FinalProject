@@ -35,10 +35,7 @@ public class Inventory implements Serializable {
 		items = new HashMap<String, Item>();
 		this.username = username;			// no longer needs to be static
 		credits = 0;
-	}
-
-	public Inventory(String username, boolean loadGame) {
-		loadData();
+		saveData();
 	}
 
 	public boolean addItem(String s) {
@@ -94,15 +91,14 @@ public class Inventory implements Serializable {
 	}
 
 	/**
-	 * This method attempts to load account data from "./inventory.dat"
+	 * This method attempts to load inventory data from "./<username>-inventory.dat"
 	 * 
 	 * @return true if successful, false otherwise
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean loadData() {
-		// TODO 2: implement loadData
+	public boolean loadData(String username) {
 		try {
-			FileInputStream fileIn = new FileInputStream(new File(saveDir + "inventory.dat"));
+			FileInputStream fileIn = new FileInputStream(new File(saveDir + username + "-inventory.dat"));
 			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 			this.items = (HashMap<String, Item>) objectIn.readObject();
 			this.credits = (int) objectIn.readObject();
@@ -116,11 +112,11 @@ public class Inventory implements Serializable {
 	}
 
 	/**
-	 * This method attempts to save the account map in "./inventory.dat"
+	 * This method attempts to save the inventory map in "./<username>-inventory.dat"
 	 */
 	public void saveData() {
 		try {
-			FileOutputStream fileOut = new FileOutputStream(new File(saveDir + "inventory.dat"));
+			FileOutputStream fileOut = new FileOutputStream(new File(saveDir + username + "-inventory.dat"));
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 			objectOut.writeObject(items);
 			objectOut.writeObject(credits);

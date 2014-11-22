@@ -1,13 +1,14 @@
 package model;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 import unit.*;
 
 // Cell class creates the cell object needed for the gameBoard:
 
-public class Cell {
-
+public class Cell implements Serializable{
+	private static final long serialVersionUID = 6683828659087047035L;
 	// Cell will contain a terrain type:
 	private Terrain terrain;
 	// This boolean lets us know if cell has a unit in it

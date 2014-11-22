@@ -1,14 +1,17 @@
 package model;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
+
 import unit.Unit;
 import unit.UnitFactory;
 import view.GUI;
 
 // The GameBoard class creates the board for the game:
 
-public class GameBoard {
+public class GameBoard implements Serializable {
+	private static final long serialVersionUID = -3079556358722781506L;
 	// board will be the most important thing in this class
 	private Cell[][] board;
 	// Not sure how to do end of game conditions yet, for now its this boolean
