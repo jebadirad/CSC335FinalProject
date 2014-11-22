@@ -40,6 +40,12 @@ public enum Item {
 	public String getPath(){
 		return path;
 	}
+
+	/**
+	 * 
+	 * @return the name of the current item.
+	 * one of "Super Item", "Hyper Potion", "Apollo's Helm", "Speed Enhancer".
+	 */
 	public String getName(){
 		return name;
 	}

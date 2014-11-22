@@ -37,6 +37,11 @@ public class Inventory implements Serializable {
 		credits = 0;
 	}
 
+	/**
+	 * 
+	 * @param s the item's name as a string. See {@link Item#getName()} for valid item names.
+	 * @return {@code true} if the item was added to the inventory, {@code false} otherwise
+	 */
 	public boolean addItem(String s) {
 		if(s.equalsIgnoreCase("Super Item")) {
 			return items.put(s, Item.superitem) != null;
@@ -53,12 +58,41 @@ public class Inventory implements Serializable {
 		else return false;
 	}
 
+	/**
+	 * 
+	 * @param item the item object to be added to the inventory. 
+	 * @return {@code true} if the item was added, {@code false} otherwise
+	 */
+	public boolean addItem(Item item) {
+		return items.put(item.getName(), item) != null;
+	}
+
+	/**
+	 * 
+	 * @param s the item's name as a string. See {@link Item#getName()} for valid item names.
+	 * @return {@code true} if the item was removed from the inventory, {@code false} otherwise
+	 */
 	public boolean removeItem(String s) {
 		return items.remove(s) != null;
 	}
 
+	/**
+	 * 
+	 * @param item the item object to be added to the inventory.
+	 * @return {@code true} if the item was removed, {@code false} otherwise
+	 */
+	public boolean removeItem(Item item) {
+		if(items.containsValue(item)) {
+			return items.remove(item.getName()) != null;			
+		} else return false;
+	}
+
 	public boolean hasItem(String item) {
 		return items.containsKey(item);
+	}
+
+	public boolean hasItem(Item item) {
+		return items.containsKey(item.getName());
 	}
 
 	public Item getItem(String s) {
