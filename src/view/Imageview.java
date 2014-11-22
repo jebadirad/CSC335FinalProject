@@ -47,14 +47,14 @@ public class Imageview extends JPanel
     {
       for (int j = 0; j < theModel[i].length; j++)
       {
+        System.out.println(theModel[i][j].hasUnit());
 
         image = grassTile;
         g2.drawImage(image, j * 64, i * 23, 64, 23, null);
 
         if (theModel[i][j].hasUnit())
         {
-          if (theModel[i][j].getUnit().getIconImage()
-              .equals("CloneTrooper.png"))
+          if (theModel[i][j].getUnit().getIconImage().equals("CloneTrooper.png"))
           {
             image = cloneTrooper;
             g2.drawImage(image, j * 64, i * 23, 64, 23, null);

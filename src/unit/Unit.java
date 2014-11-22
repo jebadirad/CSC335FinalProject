@@ -24,6 +24,7 @@ public abstract class Unit implements Serializable
     this.health = health;
     this.moveRange = moveRange;
     this.movesLeft = this.moveRange;
+    this.iconImage = imagestring;
     this.username = username;
   }
 
