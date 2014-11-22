@@ -1,5 +1,7 @@
 package view;
 
+import item.Item;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,7 +9,15 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
@@ -32,6 +42,7 @@ import model.Terrain;
 public class GUI extends JFrame
 {
   private static final long serialVersionUID = -2853985771911325020L;
+  private static final String saveDir = System.getProperty("user.dir") + File.separator + "gamesaves" + File.separator;
 
   public static String player1;
   public static String player2;
@@ -257,6 +268,7 @@ public class GUI extends JFrame
 
   private void registerListeners()
   {
+	this.addWindowListener(new SaveDataListener());
     attack.addActionListener(new ButtonListener());
     moveUp.addActionListener(new ButtonListener());
     moveLeft.addActionListener(new ButtonListener());
@@ -459,5 +471,54 @@ public class GUI extends JFrame
     frame.repaint();
     imagePanel.repaint();
   }
+
+	/**
+	 * This listener triggers when the frame is closed, and saves the gameboard data.
+	 */
+	private class SaveDataListener implements WindowListener {
+		@Override
+		public void windowClosing(WindowEvent arg0) {
+			saveData();
+		}
+		public void windowActivated(WindowEvent arg0) {}
+		public void windowClosed(WindowEvent arg0) {}
+		public void windowDeactivated(WindowEvent arg0) {}
+		public void windowDeiconified(WindowEvent arg0) {}
+		public void windowIconified(WindowEvent arg0) {}
+		public void windowOpened(WindowEvent arg0) {}
+	}
+
+	/**
+	 * This method attempts to load gameboard data from "./gameboard.dat"
+	 * 
+	 * @return true if successful, false otherwise
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean loadData(String username) {
+		try {
+			FileInputStream fileIn = new FileInputStream(new File(saveDir + "gameboard.dat"));
+			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+			gameboard = (GameBoard) objectIn.readObject();
+			objectIn.close();
+			return true;
+		} catch (Exception e){
+			System.err.println("Unable to load data!");
+		}
+		return false;
+	}
+
+	/**
+	 * This method attempts to save the gameboard in "./gameboard.dat"
+	 */
+	public void saveData() {
+		try {
+			FileOutputStream fileOut = new FileOutputStream(new File(saveDir + "gameboard.dat"));
+			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+			objectOut.writeObject(gameboard);
+			objectOut.close();
+		} catch (Exception e){
+			System.err.println("Error! Could not save data.");
+		}
+	}
 
 }

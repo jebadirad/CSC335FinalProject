@@ -35,7 +35,6 @@ public class Inventory implements Serializable {
 		items = new HashMap<String, Item>();
 		this.username = username;			// no longer needs to be static
 		credits = 0;
-		saveData();
 	}
 
 	public boolean addItem(String s) {
