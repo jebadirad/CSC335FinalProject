@@ -49,13 +49,9 @@ public class GUI extends JFrame
 
   JTabbedPane tabbedpane;
 
+  JPanel listOfTargets;
   JLabel usernamestring;
-
-  JRadioButton unit1;
-  JRadioButton unit2;
-  JRadioButton unit3;
-  JRadioButton unit4;
-  JRadioButton unit5;
+  JPanel attackButtonPanel;
   ButtonGroup unitgroup;
 
   JButton moveUp;
@@ -65,6 +61,7 @@ public class GUI extends JFrame
   JButton attack;
 
   ArrayList<JRadioButton> radiobuttons = new ArrayList();
+  ArrayList<JRadioButton> targetButtons = new ArrayList();
 
   MapButtonListener MapButtonListener = new MapButtonListener();
   ButtonGroupListener ButtonGroupListener = new ButtonGroupListener();
@@ -74,6 +71,7 @@ public class GUI extends JFrame
   public static Cell CurrentUnitSelected;
   private ArrayList<Cell> player1units;
   private ArrayList<Cell> player2units;
+  private ArrayList<Cell> targets;
 
   // pregame lobby GUI items
 
@@ -109,6 +107,9 @@ public class GUI extends JFrame
 
   }
 
+  private void targets(Cell cellWithUnit){
+	  targets = gameboard.getUnitsInAttackRange(cellWithUnit);
+  }
   private void loginGUI()
   {
     player1 = JOptionPane.showInputDialog("Username");
@@ -117,7 +118,18 @@ public class GUI extends JFrame
 
   private void layoutAttackScreen()
   {
-
+	  listOfTargets.removeAll();
+	  ButtonGroup targetgroup = new ButtonGroup();
+	  
+	  for(int i = 0; i < targets.size(); i ++){
+		  int number = i+1;
+		  targetButtons.add(new JRadioButton("Unit" + number));
+	  }
+	  for(int i = 0; i < targetButtons.size(); i++){
+		  targetgroup.add(targetButtons.get(i));
+		  listOfTargets.add(targetButtons.get(i));
+		  targetButtons.get(i).addActionListener(new ButtonListener());
+	  }
   }
 
   private void layoutPregameGUI()
@@ -214,22 +226,19 @@ public class GUI extends JFrame
 
     AttackPanel = new JPanel();
     AttackPanel.setLayout(new BorderLayout());
-    AttackPanel.setBackground(Color.YELLOW);
-    JPanel attackButtonPanel = new JPanel();
+    attackButtonPanel = new JPanel();
     attackButtonPanel.setLayout(new GridLayout(1, 3, 0, 0));
-
+    listOfTargets = new JPanel();
     JPanel blank = new JPanel();
     JPanel blank1 = new JPanel();
-    JPanel filler = new JPanel();
-    filler.setBackground(Color.YELLOW);
 
     attack = new JButton("Attack");
     attackButtonPanel.add(blank);
     attackButtonPanel.add(attack);
     attackButtonPanel.add(blank1);
     AttackPanel.add(attackButtonPanel, BorderLayout.NORTH);
-    AttackPanel.add(filler, BorderLayout.CENTER);
-
+    AttackPanel.add(listOfTargets, BorderLayout.CENTER);
+    
     contentContainer.add(tabbedpane, BorderLayout.NORTH);
     contentContainer.add(playerContainer, BorderLayout.CENTER);
 
@@ -419,12 +428,17 @@ public class GUI extends JFrame
         {
           CurrentUnitSelected = player1units.get(i);
           System.out.println("This is my current unit: " + i);
+          targets(CurrentUnitSelected);
+          layoutAttackScreen();
+          
         }
       }
 
     }
   }
 
+  
+  
   private class MapButtonListener implements ActionListener
   {
 
