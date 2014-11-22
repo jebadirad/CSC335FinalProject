@@ -49,6 +49,18 @@ public class GameBoard {
 			// Sets the seventh row for of this board to all Boulders
 			board[i][6].setTerrain(Terrain.Boulder);
 		}
+		
+		board[10][10].setTerrain(Terrain.Ice);
+		board[10][9].setTerrain(Terrain.QuickSand);
+		board[11][9].setTerrain(Terrain.QuickSand);
+		board[9][9].setTerrain(Terrain.QuickSand);
+		board[9][10].setTerrain(Terrain.QuickSand);
+		board[11][10].setTerrain(Terrain.QuickSand);	
+		board[11][11].setTerrain(Terrain.QuickSand);
+		board[9][11].setTerrain(Terrain.QuickSand);
+		board[10][11].setTerrain(Terrain.QuickSand);
+		
+		
 
 		// Generate Units:
 		generatePlayer1Units();
@@ -177,7 +189,13 @@ public class GameBoard {
 
 					} else if (board[i][j].getTerrain().equals(Terrain.Forest)) {
 						str += "F";
-					} else {
+					} else if (board[i][j].getTerrain().equals(Terrain.QuickSand)) {
+						str += "Q";
+					}
+					else if (board[i][j].getTerrain().equals(Terrain.Ice)) {
+						str += "I";
+					}
+					else {
 						str += " ";
 					}
 
