@@ -65,7 +65,6 @@ public class GUI extends JFrame
   JButton attack;
 
   ArrayList<JRadioButton> radiobuttons = new ArrayList();
- 
 
   MapButtonListener MapButtonListener = new MapButtonListener();
   ButtonGroupListener ButtonGroupListener = new ButtonGroupListener();
@@ -107,7 +106,7 @@ public class GUI extends JFrame
     player1units = gameboard.getPlayer1Untis();
     player2units = gameboard.getPlayer2Untis();
     CurrentUnitSelected = null;
-    
+
   }
 
   private void loginGUI()
@@ -195,20 +194,20 @@ public class GUI extends JFrame
     JPanel unitPanel = new JPanel();
     unitPanel.setPreferredSize(new Dimension(175, 75));
     unitgroup = new ButtonGroup();
-   
-    for(int i = 0; i < player1units.size(); i++){
 
-    	int number = i +1;
-    	radiobuttons.add(new JRadioButton("Unit" + number));
+    for (int i = 0; i < player1units.size(); i++)
+    {
+
+      int number = i + 1;
+      radiobuttons.add(new JRadioButton("Unit" + number));
 
     }
-    for(int i =0; i < radiobuttons.size(); i ++){
-    	unitgroup.add(radiobuttons.get(i));
-    	unitPanel.add(radiobuttons.get(i));
-    	radiobuttons.get(i).addActionListener(new ButtonListener());
+    for (int i = 0; i < radiobuttons.size(); i++)
+    {
+      unitgroup.add(radiobuttons.get(i));
+      unitPanel.add(radiobuttons.get(i));
+      radiobuttons.get(i).addActionListener(new ButtonListener());
     }
-
-  
 
     movePanel.add(DirectionPanel, BorderLayout.WEST);
     movePanel.add(unitPanel, BorderLayout.CENTER);
@@ -263,7 +262,6 @@ public class GUI extends JFrame
     moveLeft.addActionListener(new ButtonListener());
     moveRight.addActionListener(new ButtonListener());
     moveDown.addActionListener(new ButtonListener());
-    
 
   }
 
@@ -276,147 +274,154 @@ public class GUI extends JFrame
       // TODO Auto-generated method stub
       if (e.getSource() == moveUp)
       {
-    	  if(CurrentUnitSelected == null){
-    		  JOptionPane optionPane = new JOptionPane();
-	          optionPane.setMessage("Please Select a Unit");
-	          JDialog dialog = optionPane.createDialog(":~(");
-	          dialog.setAlwaysOnTop(true);
-	          dialog.setVisible(true);
-    	  }
-    	  else{
-    		  if (gameboard.canMove(CurrentUnitSelected, "N"))
-  	        {
-  	          int i = player1units.indexOf(CurrentUnitSelected);
-  	          player1units.remove(i);
+        if (CurrentUnitSelected == null)
+        {
+          JOptionPane optionPane = new JOptionPane();
+          optionPane.setMessage("Please Select a Unit");
+          JDialog dialog = optionPane.createDialog(":~(");
+          dialog.setAlwaysOnTop(true);
+          dialog.setVisible(true);
+        }
+        else
+        {
+          if (gameboard.canMove(CurrentUnitSelected, "N"))
+          {
+            int i = player1units.indexOf(CurrentUnitSelected);
+            player1units.remove(i);
 
-  	          CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "N");
-  	          player1units.add(i, CurrentUnitSelected);
-  	          textPanel.repaint();
-  	          imagePanel.repaint();
-  	        }
-  	        else
-  	        {
-  	          JOptionPane optionPane = new JOptionPane();
-  	          optionPane.setMessage("Move failed");
-  	          JDialog dialog = optionPane.createDialog(":~(");
-  	          dialog.setAlwaysOnTop(true);
-  	          dialog.setVisible(true);
-  	        }
-    	  }
-        
+            CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "N");
+            player1units.add(i, CurrentUnitSelected);
+            textPanel.repaint();
+            imagePanel.repaint();
+          }
+          else
+          {
+            JOptionPane optionPane = new JOptionPane();
+            optionPane.setMessage("Move failed");
+            JDialog dialog = optionPane.createDialog(":~(");
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(true);
+          }
+        }
+
       }
 
       if (e.getSource() == moveLeft)
       {
-    	  if(CurrentUnitSelected == null){
-    		  JOptionPane optionPane = new JOptionPane();
-	          optionPane.setMessage("Please Select a Unit");
-	          JDialog dialog = optionPane.createDialog(":~(");
-	          dialog.setAlwaysOnTop(true);
-	          dialog.setVisible(true);
-    	  }
-    	  else{
-    		  if (gameboard.canMove(CurrentUnitSelected, "L"))
-    	        {
-    	          int i = player1units.indexOf(CurrentUnitSelected);
-    	          player1units.remove(i);
+        if (CurrentUnitSelected == null)
+        {
+          JOptionPane optionPane = new JOptionPane();
+          optionPane.setMessage("Please Select a Unit");
+          JDialog dialog = optionPane.createDialog(":~(");
+          dialog.setAlwaysOnTop(true);
+          dialog.setVisible(true);
+        }
+        else
+        {
+          if (gameboard.canMove(CurrentUnitSelected, "L"))
+          {
+            int i = player1units.indexOf(CurrentUnitSelected);
+            player1units.remove(i);
 
-    	          CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "L");
-    	          player1units.add(CurrentUnitSelected);
-    	          textPanel.repaint();
-    	          imagePanel.repaint();
-    	        }
-    	        else
-    	        {
-    	          JOptionPane optionPane = new JOptionPane();
-    	          optionPane.setMessage("Move failed");
-    	          JDialog dialog = optionPane.createDialog(":~(");
-    	          dialog.setAlwaysOnTop(true);
-    	          dialog.setVisible(true);
-    	        }
-    	  }
-       
+            CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "L");
+            player1units.add(i, CurrentUnitSelected);
+            textPanel.repaint();
+            imagePanel.repaint();
+          }
+          else
+          {
+            JOptionPane optionPane = new JOptionPane();
+            optionPane.setMessage("Move failed");
+            JDialog dialog = optionPane.createDialog(":~(");
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(true);
+          }
+        }
+
       }
 
       if (e.getSource() == moveDown)
       {
-    	  if(CurrentUnitSelected == null){
-    		  JOptionPane optionPane = new JOptionPane();
-	          optionPane.setMessage("Please Select a Unit");
-	          JDialog dialog = optionPane.createDialog(":~(");
-	          dialog.setAlwaysOnTop(true);
-	          dialog.setVisible(true);
-    	  }
-    	  else{
-    		  if (gameboard.canMove(CurrentUnitSelected, "S"))
-    	        {
-    	          int i = player1units.indexOf(CurrentUnitSelected);
-    	          player1units.remove(i);
+        if (CurrentUnitSelected == null)
+        {
+          JOptionPane optionPane = new JOptionPane();
+          optionPane.setMessage("Please Select a Unit");
+          JDialog dialog = optionPane.createDialog(":~(");
+          dialog.setAlwaysOnTop(true);
+          dialog.setVisible(true);
+        }
+        else
+        {
+          if (gameboard.canMove(CurrentUnitSelected, "S"))
+          {
+            int i = player1units.indexOf(CurrentUnitSelected);
+            player1units.remove(i);
 
-    	          CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "S");
-    	          player1units.add(i, CurrentUnitSelected);
-    	          textPanel.repaint();
-    	          imagePanel.repaint();
-    	          
-    	        }
-    	        else
-    	        {
-    	          JOptionPane optionPane = new JOptionPane();
-    	          optionPane.setMessage("Move failed");
-    	          JDialog dialog = optionPane.createDialog(":~(");
-    	          dialog.setAlwaysOnTop(true);
-    	          dialog.setVisible(true);
-    	        }
-    	  }
+            CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "S");
+            player1units.add(i, CurrentUnitSelected);
+            textPanel.repaint();
+            imagePanel.repaint();
 
-      
+          }
+          else
+          {
+            JOptionPane optionPane = new JOptionPane();
+            optionPane.setMessage("Move failed");
+            JDialog dialog = optionPane.createDialog(":~(");
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(true);
+          }
+        }
+
       }
 
       if (e.getSource() == moveRight)
       {
-    	  if(CurrentUnitSelected == null){
-    		  JOptionPane optionPane = new JOptionPane();
-	          optionPane.setMessage("Please Select a Unit");
-	          JDialog dialog = optionPane.createDialog(":~(");
-	          dialog.setAlwaysOnTop(true);
-	          dialog.setVisible(true);
-    	  }
-    	  else{
-    		  if (gameboard.canMove(CurrentUnitSelected, "R"))
-    	        {
-    	          int i = player1units.indexOf(CurrentUnitSelected);
-    	          player1units.remove(i);
+        if (CurrentUnitSelected == null)
+        {
+          JOptionPane optionPane = new JOptionPane();
+          optionPane.setMessage("Please Select a Unit");
+          JDialog dialog = optionPane.createDialog(":~(");
+          dialog.setAlwaysOnTop(true);
+          dialog.setVisible(true);
+        }
+        else
+        {
+          if (gameboard.canMove(CurrentUnitSelected, "R"))
+          {
+            int i = player1units.indexOf(CurrentUnitSelected);
+            player1units.remove(i);
 
-    	          CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "R");
-    	          player1units.add(i, CurrentUnitSelected);
-    	          textPanel.repaint();
-    	          imagePanel.repaint();
-    	        }
-    	        else
-    	        {
-    	          JOptionPane optionPane = new JOptionPane();
-    	          optionPane.setMessage("Move failed");
-    	          JDialog dialog = optionPane.createDialog(":~(");
-    	          dialog.setAlwaysOnTop(true);
-    	          dialog.setVisible(true);
-    	        }
-    	  }
-        
+            CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "R");
+            player1units.add(i, CurrentUnitSelected);
+            textPanel.repaint();
+            imagePanel.repaint();
+          }
+          else
+          {
+            JOptionPane optionPane = new JOptionPane();
+            optionPane.setMessage("Move failed");
+            JDialog dialog = optionPane.createDialog(":~(");
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(true);
+          }
+        }
+
       }
 
       if (e.getSource() == attack)
       {
         // TODO Auto-generated method stub
       }
-      for(int i = 0; i < radiobuttons.size(); i++){
-    	  if(e.getSource() == radiobuttons.get(i)){
-    		  CurrentUnitSelected = player1units.get(i);
-    		  System.out.println("This is my current unit: "+i);
-    	  }
+      for (int i = 0; i < radiobuttons.size(); i++)
+      {
+        if (e.getSource() == radiobuttons.get(i))
+        {
+          CurrentUnitSelected = player1units.get(i);
+          System.out.println("This is my current unit: " + i);
+        }
       }
-  
-      
-      
+
     }
   }
 
