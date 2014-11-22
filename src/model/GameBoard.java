@@ -48,7 +48,7 @@ public class GameBoard implements Serializable {
 			}
 		}
 		// Call SetBackGround grass for Map1:
-		Imageview.setBackground("Grass.png");
+		//Imageview.setBackground("Grass.png");
 		
 		// Generate actual terrain:
 		for (int i = 0; i < 20; i++) {
@@ -90,7 +90,7 @@ public class GameBoard implements Serializable {
 			}
 		}
 		// Call SetBackGround Desert for Map2:
-		Imageview.setBackground("desert.png");
+		//Imageview.setBackground("desert.png");
 				
 		// Generate Units:
 		generatePlayer1Units();
@@ -117,8 +117,8 @@ public class GameBoard implements Serializable {
 		board[0][1].setHasUnit(true);
 		
 		Unit cUnit = factory.makeUnit("CloneTrooper", GUI.getPlayer1());
-		board[19][19].setUnit(cUnit);
-		board[19][19].setHasUnit(true);
+		board[8][8].setUnit(cUnit);
+		board[8][8].setHasUnit(true);
 		
 		// Adds this to player1Units list:
 		player1Units.add(board[0][0]);
