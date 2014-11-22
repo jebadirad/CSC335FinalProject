@@ -17,13 +17,10 @@ import model.*;
 
 public class Imageview extends JPanel
 {
-  private static final long serialVersionUID = -4162356814719738349L;
   private BufferedImage image;
   private Point pos;
-  private Cell[][] board;
-  private GameBoard theModel;
+  private Cell[][] theModel;
   private JLabel message;
-  private BufferedImage grass;
 
   private BufferedImage grassTile;
   private BufferedImage itemSheet;
@@ -32,31 +29,16 @@ public class Imageview extends JPanel
 
   public Imageview()
   {
-    setLayout(null);
-    message = new JLabel("Test");
-    message.setFont(new Font("Algerian", Font.BOLD, 32));
-    message.setBounds(0, 0, 800, 800);
-    message.setForeground(Color.RED);
-    GameBoard g = GUI.gameboard;
-    add(message);
-    pos = new Point(0, 0);
-    try
-    {
-
-      grass = ImageIO.read(new File("Images/Grass.png"));
-    }
-    catch (IOException e)
-    {
-      e.printStackTrace();
-    }
+    loadImages();
     this.setVisible(true);
+    repaint();
 
   }
 
-  @Override
   public void paintComponent(Graphics g)
   {
     super.paintComponent(g);
+    theModel = GUI.gameboard.getBoard();
     Graphics2D g2 = (Graphics2D) g;
     g2.setPaint(Color.WHITE);
     g2.fillRect(0, 0, 1280, 500);
@@ -67,14 +49,13 @@ public class Imageview extends JPanel
     {
       for (int j = 0; j < 10; j++)
       {
-        pos.x = j;
-        pos.y = i;
+        // pos.x = j;
+        // pos.y = i;
 
-        image = grass;
-        g2.drawImage(image, pos.x * 50, pos.y * 50, 50, 50, null);
-
-        if (board[i][j].getTerrain() == Terrain.Nothing)
+        if (theModel[i][j].getTerrain() == Terrain.Nothing)
         {
+          image = grassTile;
+          g2.drawImage(image, pos.x * 50, pos.y * 50, 50, 50, null);
         }
 
         else

@@ -8,7 +8,7 @@ public class HealerUnit extends Unit
 
   public HealerUnit(String imagestring, String username)
   {
-    super(15, 5, 8, 5, imagestring, username);
+    super(2, 5, 8, 5, imagestring, username);
   }
 
   public void attack(Unit target)
