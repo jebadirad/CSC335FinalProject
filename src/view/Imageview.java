@@ -26,7 +26,13 @@ public class Imageview extends JPanel
   private BufferedImage itemSheet;
   private BufferedImage cloneTrooper;
   private BufferedImage jediSheet;
-  private static final String imageDir = System.getProperty("user.dir") + File.separator + "images" + File.separator;
+  private BufferedImage lavaSheet;
+  private BufferedImage boulderSheet;
+  private BufferedImage medicSheet;
+  private BufferedImage iceSheet;
+
+  private static final String imageDir = System.getProperty("user.dir")
+      + File.separator + "images" + File.separator;
 
   public Imageview()
   {
@@ -55,12 +61,35 @@ public class Imageview extends JPanel
 
         if (theModel[i][j].hasUnit())
         {
-          if (theModel[i][j].getUnit().getIconImage().equals("CloneTrooper.png"))
+          String unitName = theModel[i][j].getUnit().getIconImage();
+          if (unitName.equals("CloneTrooper.png"))
           {
             image = cloneTrooper;
             g2.drawImage(image, j * 64, i * 23, 64, 23, null);
           }
+
+          if (unitName.equals("Medic.png"))
+          {
+            image = medicSheet;
+            g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+          }
         }
+        if (theModel[i][j].getTerrain() == Terrain.Boulder)
+        {
+          image = boulderSheet;
+          g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+        }
+        if (theModel[i][j].getTerrain() == Terrain.Ice)
+        {
+          // image = boulderSheet;
+          // g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+        }
+        if (theModel[i][j].getTerrain() == Terrain.Lava)
+        {
+          image = lavaSheet;
+          g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+        }
+
       }
     }
   }
@@ -69,63 +98,23 @@ public class Imageview extends JPanel
   {
     try
     {
-      grassTile = ImageIO.read(new File(imageDir
-    	 + "Grass.png"));
-    }
-    catch (IOException e)
-    {
-      System.out.println("Could not find 'Grass.png'");
-    }
-    try
-    {
-      itemSheet = ImageIO.read(new File(imageDir
-          + "all_items.png"));
-
-    }
-    catch (IOException e)
-    {
-      System.out.println("Could not find 'all_items.png'");
-    }
-    try
-    {
-      cloneTrooper = ImageIO.read(new File(imageDir
-          + "CloneTrooper.png"));
+      grassTile = ImageIO.read(new File(imageDir + "Grass.png"));
+      itemSheet = ImageIO.read(new File(imageDir + "all_items.png"));
+      cloneTrooper = ImageIO.read(new File(imageDir + "CloneTrooper.png"));
+      jediSheet = ImageIO.read(new File(imageDir + "jedi-spritesheet.png"));
+      itemSheet = ImageIO
+          .read(new File(imageDir + "range-tank-spritesheet.png"));
+      medicSheet = ImageIO.read(new File(imageDir + "Medic.png"));
+      lavaSheet = ImageIO.read(new File(imageDir + "Lava.png"));
+      boulderSheet = ImageIO.read(new File(imageDir + "Boulder.png"));
+      iceSheet = ImageIO.read(new File(imageDir + "Ice.png"));
 
     }
     catch (IOException e)
     {
       System.out.println("Could not find 'CloneTrooper.png'");
     }
-    try
-    {
-      jediSheet = ImageIO.read(new File(imageDir
-          + "jedi-spritesheet.png"));
 
-    }
-    catch (IOException e)
-    {
-      System.out.println("Could not find 'jedi-spritesheet.png'");
-    }
-    try
-    {
-      itemSheet = ImageIO.read(new File(imageDir
-          + "range-tank-spritesheet.png"));
-
-    }
-    catch (IOException e)
-    {
-      System.out.println("Could not find 'range-tank-spritesheet.png'");
-    }
-    try
-    {
-      itemSheet = ImageIO.read(new File(imageDir
-    	  + "Medic.png"));
-
-    }
-    catch (IOException e)
-    {
-      System.out.println("Could not find 'Medic.png'");
-    }
   }
 
 }
