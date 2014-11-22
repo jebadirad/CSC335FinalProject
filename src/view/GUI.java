@@ -3,7 +3,6 @@ package view;
 import item.Item;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -17,10 +16,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -33,11 +28,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
-import unit.CloneTrooper;
-import unit.Unit;
 import model.Cell;
 import model.GameBoard;
-import model.Terrain;
 
 public class GUI extends JFrame
 {
@@ -57,7 +49,7 @@ public class GUI extends JFrame
   JPanel unitPanel;
   JPanel playerstatus;
   JPanel imagePanel = new Imageview();
-
+  JPanel contentContainer;
   JTabbedPane tabbedpane;
 
   JPanel listOfTargets;
@@ -71,8 +63,8 @@ public class GUI extends JFrame
   JButton moveRight;
   JButton attack;
 
-  ArrayList<JRadioButton> radiobuttons = new ArrayList();
-  ArrayList<JRadioButton> targetButtons = new ArrayList();
+  ArrayList<JRadioButton> radiobuttons;
+  ArrayList<JRadioButton> targetButtons;
 
   MapButtonListener MapButtonListener = new MapButtonListener();
   ButtonGroupListener ButtonGroupListener = new ButtonGroupListener();
@@ -80,6 +72,7 @@ public class GUI extends JFrame
   // things to run the game
   public static GameBoard gameboard;
   public static Cell CurrentUnitSelected;
+  public static Cell EnemyUnitSelected;
   private ArrayList<Cell> player1units;
   private ArrayList<Cell> player2units;
   private ArrayList<Cell> targets;
@@ -115,11 +108,13 @@ public class GUI extends JFrame
     player1units = gameboard.getPlayer1Untis();
     player2units = gameboard.getPlayer2Untis();
     CurrentUnitSelected = null;
+    EnemyUnitSelected = null;
 
   }
 
   private void targets(Cell cellWithUnit){
 	  targets = gameboard.getUnitsInAttackRange(cellWithUnit);
+	  
   }
   private void loginGUI()
   {
@@ -129,9 +124,13 @@ public class GUI extends JFrame
 
   private void layoutAttackScreen()
   {
-	  listOfTargets.removeAll();
+	  if(targets.size() <= 0){
+		  EnemyUnitSelected = null;
+	  }
+	  targetButtons = new ArrayList();
+	  AttackPanel.remove(listOfTargets);
+	  listOfTargets = new JPanel();
 	  ButtonGroup targetgroup = new ButtonGroup();
-	  
 	  for(int i = 0; i < targets.size(); i ++){
 		  int number = i+1;
 		  targetButtons.add(new JRadioButton("Unit" + number));
@@ -141,6 +140,9 @@ public class GUI extends JFrame
 		  listOfTargets.add(targetButtons.get(i));
 		  targetButtons.get(i).addActionListener(new ButtonListener());
 	  }
+	  AttackPanel.add(listOfTargets, BorderLayout.CENTER);
+	  listOfTargets.setVisible(true);
+	  revalidate();
   }
 
   private void layoutPregameGUI()
@@ -173,7 +175,7 @@ public class GUI extends JFrame
     tabbedpane = new JTabbedPane();
     tabbedpane.setPreferredSize(new Dimension(1280, 500));
 
-    JPanel contentContainer = new JPanel();
+    contentContainer = new JPanel();
     contentContainer.setPreferredSize(new Dimension(1280, 500));
     contentContainer.setLayout(new BorderLayout());
 
@@ -217,7 +219,7 @@ public class GUI extends JFrame
     JPanel unitPanel = new JPanel();
     unitPanel.setPreferredSize(new Dimension(175, 75));
     unitgroup = new ButtonGroup();
-
+    radiobuttons = new ArrayList();
     for (int i = 0; i < player1units.size(); i++)
     {
 
@@ -240,6 +242,8 @@ public class GUI extends JFrame
     attackButtonPanel = new JPanel();
     attackButtonPanel.setLayout(new GridLayout(1, 3, 0, 0));
     listOfTargets = new JPanel();
+    JRadioButton test = new JRadioButton("tesT");
+    listOfTargets.add(test);
     JPanel blank = new JPanel();
     JPanel blank1 = new JPanel();
 
@@ -312,6 +316,8 @@ public class GUI extends JFrame
 
             CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "N");
             player1units.add(i, CurrentUnitSelected);
+            targets(CurrentUnitSelected);
+            layoutAttackScreen();
             textPanel.repaint();
             imagePanel.repaint();
           }
@@ -346,6 +352,8 @@ public class GUI extends JFrame
 
             CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "L");
             player1units.add(i, CurrentUnitSelected);
+            targets(CurrentUnitSelected);
+            layoutAttackScreen();            
             textPanel.repaint();
             imagePanel.repaint();
           }
@@ -380,8 +388,11 @@ public class GUI extends JFrame
 
             CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "S");
             player1units.add(i, CurrentUnitSelected);
+            targets(CurrentUnitSelected);
+            layoutAttackScreen();
             textPanel.repaint();
             imagePanel.repaint();
+            
 
           }
           else
@@ -415,6 +426,8 @@ public class GUI extends JFrame
 
             CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "R");
             player1units.add(i, CurrentUnitSelected);
+            targets(CurrentUnitSelected);
+            layoutAttackScreen();
             textPanel.repaint();
             imagePanel.repaint();
           }
@@ -432,6 +445,23 @@ public class GUI extends JFrame
 
       if (e.getSource() == attack)
       {
+    	  if(EnemyUnitSelected == null){
+    		  JOptionPane optionPane = new JOptionPane();
+              optionPane.setMessage("Please Select an Enemy Unit");
+              JDialog dialog = optionPane.createDialog(":~(");
+              dialog.setAlwaysOnTop(true);
+              dialog.setVisible(true);
+    	  }
+    	  else if(CurrentUnitSelected == null){
+    		  JOptionPane optionPane = new JOptionPane();
+              optionPane.setMessage("Please Select a Friendly Unit to attack with");
+              JDialog dialog = optionPane.createDialog(":~(");
+              dialog.setAlwaysOnTop(true);
+              dialog.setVisible(true);
+    	  }
+    	  else{
+    		  gameboard.attack(CurrentUnitSelected, EnemyUnitSelected);
+    	  }
         // TODO Auto-generated method stub
       }
       for (int i = 0; i < radiobuttons.size(); i++)
@@ -444,6 +474,14 @@ public class GUI extends JFrame
           layoutAttackScreen();
           
         }
+      }
+      for(int i =0; i < targetButtons.size(); i ++){
+    	  if(e.getSource() == targetButtons.get(i)){
+    		  EnemyUnitSelected = targets.get(i);
+    		  System.out.println("This is the enemy unit im selecting: " + i);
+    		  targets(CurrentUnitSelected);
+    		  layoutAttackScreen();
+    	  }
       }
 
     }
