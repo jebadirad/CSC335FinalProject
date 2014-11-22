@@ -30,6 +30,7 @@ public class Imageview extends JPanel
   private BufferedImage boulderSheet;
   private BufferedImage medicSheet;
   private BufferedImage iceSheet;
+  private BufferedImage sandSheet;
 
   private static final String imageDir = System.getProperty("user.dir")
       + File.separator + "images" + File.separator;
@@ -59,6 +60,26 @@ public class Imageview extends JPanel
         image = grassTile;
         g2.drawImage(image, j * 64, i * 23, 64, 23, null);
 
+        if (theModel[i][j].getTerrain() == Terrain.Boulder)
+        {
+          image = boulderSheet;
+          g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+        }
+        if (theModel[i][j].getTerrain() == Terrain.Ice)
+        {
+          image = iceSheet;
+          g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+        }
+        if (theModel[i][j].getTerrain() == Terrain.Lava)
+        {
+          image = lavaSheet;
+          g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+        }
+        if (theModel[i][j].getTerrain() == Terrain.QuickSand)
+        {
+          image = sandSheet;
+          g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+        }
         if (theModel[i][j].hasUnit())
         {
           String unitName = theModel[i][j].getUnit().getIconImage();
@@ -73,21 +94,6 @@ public class Imageview extends JPanel
             image = medicSheet;
             g2.drawImage(image, j * 64, i * 23, 64, 23, null);
           }
-        }
-        if (theModel[i][j].getTerrain() == Terrain.Boulder)
-        {
-          image = boulderSheet;
-          g2.drawImage(image, j * 64, i * 23, 64, 23, null);
-        }
-        if (theModel[i][j].getTerrain() == Terrain.Ice)
-        {
-          // image = boulderSheet;
-          // g2.drawImage(image, j * 64, i * 23, 64, 23, null);
-        }
-        if (theModel[i][j].getTerrain() == Terrain.Lava)
-        {
-          image = lavaSheet;
-          g2.drawImage(image, j * 64, i * 23, 64, 23, null);
         }
 
       }
@@ -108,6 +114,7 @@ public class Imageview extends JPanel
       lavaSheet = ImageIO.read(new File(imageDir + "Lava.png"));
       boulderSheet = ImageIO.read(new File(imageDir + "Boulder.png"));
       iceSheet = ImageIO.read(new File(imageDir + "Ice.png"));
+      sandSheet = ImageIO.read(new File(imageDir + "sand.png"));
 
     }
     catch (IOException e)
