@@ -136,28 +136,22 @@ public class GameBoard implements Serializable {
 		board[1][0].setHasUnit(true);
 		*/
 		Unit eUnit = factory.makeUnit("Medic", GUI.getPlayer2());
-		board[19][18].setUnit(eUnit);
-		board[19][18].setHasUnit(true);
+		board[1][1].setUnit(eUnit);
+		board[1][1].setHasUnit(true);
 		
 		// Adds this to player2Units list:
 		//player2Units.add(board[1][0]);
-		player2Units.add(board[19][18]);
+		player2Units.add(board[1][1]);
 		
 		// Testing getUnitsInAttackRange: 
-		System.out.println("Enemies of board[1][0] ");
-		//getUnitsInAttackRange(board[1][0]);
-		System.out.println();
 		System.out.println("Enemies of board[0][0] ");
 		getUnitsInAttackRange(board[0][0]);
 		System.out.println();
 		System.out.println("Enemies of board[0][1] ");
 		getUnitsInAttackRange(board[0][1]);
 		System.out.println();
-		System.out.println("Enemies of board[19][19] ");
-		getUnitsInAttackRange(board[19][19]);
-		System.out.println();
-		System.out.println("Enemies of board[19][18] ");
-		getUnitsInAttackRange(board[19][18]);
+		System.out.println("Enemies of board[1][1] ");
+		getUnitsInAttackRange(board[1][1]);
 		
 		
 
