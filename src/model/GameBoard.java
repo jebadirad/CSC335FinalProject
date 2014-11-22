@@ -84,19 +84,23 @@ public class GameBoard {
 
 		// Creating one single unit for now:
 		UnitFactory factory = new UnitFactory();
-		// Last parameter is UserName obtained from the GUI, is "Player1" for
-		// now:
+		// Last parameter is UserName obtained from the GUI
 		Unit aUnit = factory.makeUnit("CloneTrooper", GUI.getPlayer1());
 		board[0][0].setUnit(aUnit);
 		board[0][0].setHasUnit(true);
-		// Adds this to player1Units list:
-		player1Units.add(board[0][0]);
-		
-		Unit bUnit = factory.makeUnit("Medic", GUI.getPlayer1());
+	
+		Unit bUnit = factory.makeUnit("CloneTrooper", GUI.getPlayer1());
 		board[0][1].setUnit(bUnit);
 		board[0][1].setHasUnit(true);
+		
+		Unit cUnit = factory.makeUnit("CloneTrooper", GUI.getPlayer1());
+		board[19][19].setUnit(cUnit);
+		board[19][19].setHasUnit(true);
+		
 		// Adds this to player1Units list:
+		player1Units.add(board[0][0]);
 		player1Units.add(board[0][1]);
+		player1Units.add(board[19][19]);
 		
 		
 
@@ -111,13 +115,39 @@ public class GameBoard {
 
 		// Creating one single unit for now:
 		UnitFactory factory = new UnitFactory();
-		// Last parameter is UserName obtained from the GUI, is "Player2" for
-		// now:
-		Unit anotherUnit = factory.makeUnit("CloneTrooper", GUI.getPlayer2());
-		board[10][10].setUnit(anotherUnit);
-		board[10][10].setHasUnit(true);
-		// Adds this to player1Units list:
-		player2Units.add(board[10][10]);
+		// Last parameter is UserName obtained from the GUI
+		Unit dUnit = factory.makeUnit("Medic", GUI.getPlayer2());
+		board[1][0].setUnit(dUnit);
+		board[1][0].setHasUnit(true);
+		
+		Unit eUnit = factory.makeUnit("Medic", GUI.getPlayer2());
+		board[19][18].setUnit(eUnit);
+		board[19][18].setHasUnit(true);
+		
+		// Adds this to player2Units list:
+		player2Units.add(board[1][0]);
+		player2Units.add(board[19][18]);
+		
+		// Testing getUnitsInAttackRange: 
+		System.out.println("Enemies of board[1][0] ");
+		getUnitsInAttackRange(board[1][0]);
+		System.out.println();
+		System.out.println("Enemies of board[0][0] ");
+		getUnitsInAttackRange(board[0][0]);
+		System.out.println();
+		System.out.println("Enemies of board[0][1] ");
+		getUnitsInAttackRange(board[0][1]);
+		System.out.println();
+		System.out.println("Enemies of board[19][19] ");
+		getUnitsInAttackRange(board[19][19]);
+		System.out.println();
+		System.out.println("Enemies of board[19][18] ");
+		getUnitsInAttackRange(board[19][18]);
+		
+		
+
+
+		
 	}
 
 	// i think we should add units this way, that way i can loop through them on
@@ -386,17 +416,25 @@ public class GameBoard {
 		if (finishCol > 19)
 			finishCol = 19;
 		
-		for (int i = startRow; i < finishRow; i ++) {
-			for (int j = startCol; j < finishCol; j ++) {
+		for (int i = startRow; i <= finishRow; i ++) {
+			for (int j = startCol; j <= finishCol; j ++) {
 				// Have located a unit in the range of the unit given:
 				if (board[i][j].hasUnit()) {
-					// See if this unit is an enemy
-					if (board[i][j].getUnit().getUsername() != cellWithUnit.getUnit().getUsername())
+					// Make sure it is not the unit in cellWithUnit:
+					if (i==cellWithUnit.getLocation().x && j==cellWithUnit.getLocation().y) {
+						// Do Nothing!
+					}
+					// See if this unit is an enemy:
+					else if (board[i][j].getUnit().getUsername() != cellWithUnit.getUnit().getUsername())
 						unitsInRange.add(board[i][j]);
+					
 				}
 			}
 		}
-			
+		
+		for (int i = 0; i < unitsInRange.size(); i++) {
+			System.out.print(unitsInRange.get(i).getUnit() + " ");
+		}
 		return unitsInRange;
 	}
 	
