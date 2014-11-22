@@ -64,13 +64,8 @@ public class GUI extends JFrame
   JButton moveRight;
   JButton attack;
 
-  // Not sure if needed with changed button system.
-
-  // AttackButtonListener AttackButtonListener = new AttackButtonListener();
-  // DownButtonListener DownButtonListener = new DownButtonListener();
-  // LeftButtonListener LeftButtonListener = new LeftButtonListener();
-  // LeftButtonListener UpButtonListener = new LeftButtonListener();
-  // RightButtonListener RightButtonListener = new RightButtonListener();
+  ArrayList<JRadioButton> radiobuttons = new ArrayList();
+ 
 
   MapButtonListener MapButtonListener = new MapButtonListener();
   ButtonGroupListener ButtonGroupListener = new ButtonGroupListener();
@@ -199,23 +194,19 @@ public class GUI extends JFrame
 
     JPanel unitPanel = new JPanel();
     unitPanel.setPreferredSize(new Dimension(175, 75));
-    unit1 = new JRadioButton("Unit1");
-    unit2 = new JRadioButton("Unit2");
-    unit3 = new JRadioButton("Unit3");
-    unit4 = new JRadioButton("Unit4");
-    unit5 = new JRadioButton("Unit5");
     unitgroup = new ButtonGroup();
-    unitgroup.add(unit1);
-    unitgroup.add(unit2);
-    unitgroup.add(unit3);
-    unitgroup.add(unit4);
-    unitgroup.add(unit5);
+   
+    for(int i = 0; i < player1units.size(); i++){
+    	int number = i +1;
+    	radiobuttons.add(new JRadioButton("Unit" + number));
 
-    unitPanel.add(unit1);
-    unitPanel.add(unit2);
-    unitPanel.add(unit3);
-    unitPanel.add(unit4);
-    unitPanel.add(unit5);
+    }
+    for(int i =0; i < radiobuttons.size(); i ++){
+    	unitgroup.add(radiobuttons.get(i));
+    	unitPanel.add(radiobuttons.get(i));
+    	radiobuttons.get(i).addActionListener(new ButtonListener());
+    }
+  
 
     movePanel.add(DirectionPanel, BorderLayout.WEST);
     movePanel.add(unitPanel, BorderLayout.CENTER);
@@ -270,10 +261,7 @@ public class GUI extends JFrame
     moveLeft.addActionListener(new ButtonListener());
     moveRight.addActionListener(new ButtonListener());
     moveDown.addActionListener(new ButtonListener());
-    unit1.addActionListener(new ButtonListener());
-    unit2.addActionListener(new ButtonListener());
-    unit3.addActionListener(new ButtonListener());
-    // unitgroup.addActionListener(ButtonGroupListener);
+    
 
   }
 
@@ -382,18 +370,15 @@ public class GUI extends JFrame
       {
         // TODO Auto-generated method stub
       }
-      if(e.getSource() == unit1){
-    	  CurrentUnitSelected = player1units.get(0);
-    	  System.out.print("THIS IS MY CURRENT UNIT");
+      for(int i = 0; i < radiobuttons.size(); i++){
+    	  if(e.getSource() == radiobuttons.get(i)){
+    		  CurrentUnitSelected = player1units.get(i);
+    		  System.out.println("This is my current unit: "+i);
+    	  }
       }
-      else if(e.getSource() == unit2){
-    	  CurrentUnitSelected = player1units.get(1);
-    	  System.out.print("THIS IS MY CURRENT UNIT2");
-      }
-      else if (e.getSource() == unit3){
-    	  CurrentUnitSelected = player1units.get(2);
-    	  
-      }
+  
+      
+      
     }
   }
 
