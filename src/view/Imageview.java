@@ -30,7 +30,8 @@ public class Imageview extends JPanel
   private BufferedImage boulderSheet;
   private BufferedImage medicSheet;
   private BufferedImage iceSheet;
-  private BufferedImage sandSheet;
+  private BufferedImage quicksandSheet;
+  private BufferedImage desertSheet;
 
   private static final String imageDir = System.getProperty("user.dir")
       + File.separator + "images" + File.separator;
@@ -40,7 +41,6 @@ public class Imageview extends JPanel
     loadImages();
     this.setVisible(true);
     repaint();
-
   }
 
   public void paintComponent(Graphics g)
@@ -65,6 +65,11 @@ public class Imageview extends JPanel
           image = boulderSheet;
           g2.drawImage(image, j * 64, i * 23, 64, 23, null);
         }
+        if (theModel[i][j].getTerrain() == Terrain.Desert)
+        {
+          image = desertSheet;
+          g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+        }
         if (theModel[i][j].getTerrain() == Terrain.Ice)
         {
           image = iceSheet;
@@ -77,7 +82,7 @@ public class Imageview extends JPanel
         }
         if (theModel[i][j].getTerrain() == Terrain.QuickSand)
         {
-          image = sandSheet;
+          image = quicksandSheet;
           g2.drawImage(image, j * 64, i * 23, 64, 23, null);
         }
         if (theModel[i][j].hasUnit())
@@ -114,12 +119,13 @@ public class Imageview extends JPanel
       lavaSheet = ImageIO.read(new File(imageDir + "Lava.png"));
       boulderSheet = ImageIO.read(new File(imageDir + "Boulder.png"));
       iceSheet = ImageIO.read(new File(imageDir + "Ice.png"));
-      sandSheet = ImageIO.read(new File(imageDir + "sand.png"));
+      quicksandSheet = ImageIO.read(new File(imageDir + "sand.png"));
+      desertSheet = ImageIO.read(new File(imageDir + "sand.png"));
 
     }
     catch (IOException e)
     {
-      System.out.println("Could not find 'CloneTrooper.png'");
+      System.out.println("Could not find an Image!");
     }
 
   }
