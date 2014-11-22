@@ -26,6 +26,7 @@ public class Imageview extends JPanel
   private BufferedImage itemSheet;
   private BufferedImage cloneTrooper;
   private BufferedImage jediSheet;
+  private static final String imageDir = System.getProperty("user.dir") + File.separator + "images" + File.separator;
 
   public Imageview()
   {
@@ -68,8 +69,8 @@ public class Imageview extends JPanel
   {
     try
     {
-      grassTile = ImageIO
-          .read(new File(System.getProperty("user.dir") + File.separator + "images" + File.separator + "Grass.png"));
+      grassTile = ImageIO.read(new File(imageDir
+    	 + "Grass.png"));
     }
     catch (IOException e)
     {
@@ -77,7 +78,7 @@ public class Imageview extends JPanel
     }
     try
     {
-      itemSheet = ImageIO.read(new File(System.getProperty("user.dir") + File.separator + "images" + File.separator
+      itemSheet = ImageIO.read(new File(imageDir
           + "all_items.png"));
 
     }
@@ -87,7 +88,7 @@ public class Imageview extends JPanel
     }
     try
     {
-      cloneTrooper = ImageIO.read(new File(System.getProperty("user.dir") + File.separator + "images" + File.separator
+      cloneTrooper = ImageIO.read(new File(imageDir
           + "CloneTrooper.png"));
 
     }
@@ -97,7 +98,7 @@ public class Imageview extends JPanel
     }
     try
     {
-      jediSheet = ImageIO.read(new File(System.getProperty("user.dir") + File.separator + "images" + File.separator
+      jediSheet = ImageIO.read(new File(imageDir
           + "jedi-spritesheet.png"));
 
     }
@@ -107,7 +108,7 @@ public class Imageview extends JPanel
     }
     try
     {
-      itemSheet = ImageIO.read(new File(System.getProperty("user.dir") + File.separator + "images" + File.separator
+      itemSheet = ImageIO.read(new File(imageDir
           + "range-tank-spritesheet.png"));
 
     }
@@ -117,8 +118,8 @@ public class Imageview extends JPanel
     }
     try
     {
-      itemSheet = ImageIO
-          .read(new File(System.getProperty("user.dir") + File.separator + "images" + File.separator + "Medic.png"));
+      itemSheet = ImageIO.read(new File(imageDir
+    	  + "Medic.png"));
 
     }
     catch (IOException e)
