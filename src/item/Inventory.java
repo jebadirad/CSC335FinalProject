@@ -1,15 +1,22 @@
 package item;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
+
 import view.GUI;
 public class Inventory implements Serializable {
 	private static final long serialVersionUID = 4612177081063302900L;
+	private static final String saveDir = System.getProperty("user.dir") + File.separator + "gamesaves" + File.separator;
 	private HashMap<String, Item> items;
 	private String username;
 	private int credits;
 
 	/**
-	 * @deprecated
+	 * @deprecated pls do not use.
 	 */
 	public Inventory() {
 		items = new HashMap<String, Item>();
@@ -28,6 +35,10 @@ public class Inventory implements Serializable {
 		items = new HashMap<String, Item>();
 		this.username = username;			// no longer needs to be static
 		credits = 0;
+	}
+
+	public Inventory(String username, boolean loadGame) {
+		loadData();
 	}
 
 	public boolean addItem(String s) {
@@ -81,4 +92,43 @@ public class Inventory implements Serializable {
 	public int getCredits() {
 		return credits;
 	}
+
+	/**
+	 * This method attempts to load account data from "./inventory.dat"
+	 * 
+	 * @return true if successful, false otherwise
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean loadData() {
+		// TODO 2: implement loadData
+		try {
+			FileInputStream fileIn = new FileInputStream(new File(saveDir + "inventory.dat"));
+			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+			this.items = (HashMap<String, Item>) objectIn.readObject();
+			this.credits = (int) objectIn.readObject();
+			this.username = (String) objectIn.readObject();
+			objectIn.close();
+			return true;
+		} catch (Exception e){
+			System.err.println("Unable to load data!");
+		}
+		return false;
+	}
+
+	/**
+	 * This method attempts to save the account map in "./inventory.dat"
+	 */
+	public void saveData() {
+		try {
+			FileOutputStream fileOut = new FileOutputStream(new File(saveDir + "inventory.dat"));
+			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+			objectOut.writeObject(items);
+			objectOut.writeObject(credits);
+			objectOut.writeObject(username);
+			objectOut.close();
+		} catch (Exception e){
+			System.err.println("Error! Could not save data.");
+		}
+	}
+
 }
