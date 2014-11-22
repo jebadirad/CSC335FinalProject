@@ -69,7 +69,7 @@ public class Imageview extends JPanel
     try
     {
       grassTile = ImageIO
-          .read(new File("images" + File.separator + "Grass.png"));
+          .read(new File(System.getProperty("user.dir") + "images" + File.separator + "Grass.png"));
     }
     catch (IOException e)
     {
@@ -77,7 +77,7 @@ public class Imageview extends JPanel
     }
     try
     {
-      itemSheet = ImageIO.read(new File("images" + File.separator
+      itemSheet = ImageIO.read(new File(System.getProperty("user.dir") + "images" + File.separator
           + "all_items.png"));
 
     }
@@ -87,7 +87,7 @@ public class Imageview extends JPanel
     }
     try
     {
-      cloneTrooper = ImageIO.read(new File("images" + File.separator
+      cloneTrooper = ImageIO.read(new File(System.getProperty("user.dir") + "images" + File.separator
           + "CloneTrooper.png"));
 
     }
@@ -97,7 +97,7 @@ public class Imageview extends JPanel
     }
     try
     {
-      jediSheet = ImageIO.read(new File("images" + File.separator
+      jediSheet = ImageIO.read(new File(System.getProperty("user.dir") + "images" + File.separator
           + "jedi-spritesheet.png"));
 
     }
@@ -107,7 +107,7 @@ public class Imageview extends JPanel
     }
     try
     {
-      itemSheet = ImageIO.read(new File("images" + File.separator
+      itemSheet = ImageIO.read(new File(System.getProperty("user.dir") + "images" + File.separator
           + "range-tank-spritesheet.png"));
 
     }
@@ -118,7 +118,7 @@ public class Imageview extends JPanel
     try
     {
       itemSheet = ImageIO
-          .read(new File("images" + File.separator + "Medic.png"));
+          .read(new File(System.getProperty("user.dir") + "images" + File.separator + "Medic.png"));
 
     }
     catch (IOException e)
