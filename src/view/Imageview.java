@@ -32,12 +32,14 @@ public class Imageview extends JPanel
   private BufferedImage iceSheet;
   private BufferedImage quicksandSheet;
   private BufferedImage desertSheet;
+  private BufferedImage backgroundSheet;
 
   private static final String imageDir = System.getProperty("user.dir")
       + File.separator + "images" + File.separator;
 
   public Imageview()
   {
+    // Loads all the images into BufferedImaged
     loadImages();
     this.setVisible(true);
     repaint();
@@ -55,9 +57,8 @@ public class Imageview extends JPanel
     {
       for (int j = 0; j < theModel[i].length; j++)
       {
-        System.out.println(theModel[i][j].hasUnit());
-
-        image = grassTile;
+        // Places
+        image = backgroundSheet;
         g2.drawImage(image, j * 64, i * 23, 64, 23, null);
 
         if (theModel[i][j].getTerrain() == Terrain.Boulder)
@@ -105,6 +106,18 @@ public class Imageview extends JPanel
     }
   }
 
+  public void setBackground(String imagestring)
+  {
+    try
+    {
+      backgroundSheet = ImageIO.read(new File(imageDir + "imagestring"));
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+    }
+  }
+
   public void loadImages()
   {
     try
@@ -119,8 +132,8 @@ public class Imageview extends JPanel
       lavaSheet = ImageIO.read(new File(imageDir + "Lava.png"));
       boulderSheet = ImageIO.read(new File(imageDir + "Boulder.png"));
       iceSheet = ImageIO.read(new File(imageDir + "Ice.png"));
-      quicksandSheet = ImageIO.read(new File(imageDir + "sand.png"));
-      desertSheet = ImageIO.read(new File(imageDir + "sand.png"));
+      // quicksandSheet = ImageIO.read(new File(imageDir + "sand.png"));
+      // desertSheet = ImageIO.read(new File(imageDir + "sand.png"));
 
     }
     catch (IOException e)

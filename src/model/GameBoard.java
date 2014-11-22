@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import unit.Unit;
 import unit.UnitFactory;
 import view.GUI;
+import view.Imageview;
 
 // The GameBoard class creates the board for the game:
 
@@ -34,6 +35,7 @@ public class GameBoard implements Serializable {
 	public void createMap1() {
 		// board is 20 by 20 for now:
 		board = new Cell[20][20];
+		
 		// initialize all cells to contain no units, and create desert map
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
@@ -45,6 +47,9 @@ public class GameBoard implements Serializable {
 				board[i][j].setLocation(new Point(i, j));
 			}
 		}
+		// Call SetBackGround grass for Map1:
+		//Imageview.setBackground("Grass.png");
+		
 		// Generate actual terrain:
 		for (int i = 0; i < 20; i++) {
 			// Sets the third row for of this board to all lavas
@@ -84,6 +89,9 @@ public class GameBoard implements Serializable {
 				board[i][j].setLocation(new Point(i, j));
 			}
 		}
+		// Call SetBackGround Desert for Map2:
+		//Imageview.setBackground("desert.png");
+				
 		// Generate Units:
 		generatePlayer1Units();
 		generatePlayer2Units();
@@ -109,13 +117,13 @@ public class GameBoard implements Serializable {
 		board[0][1].setHasUnit(true);
 		
 		Unit cUnit = factory.makeUnit("CloneTrooper", GUI.getPlayer1());
-		board[19][19].setUnit(cUnit);
-		board[19][19].setHasUnit(true);
+		board[8][8].setUnit(cUnit);
+		board[8][8].setHasUnit(true);
 		
 		// Adds this to player1Units list:
 		player1Units.add(board[0][0]);
 		player1Units.add(board[0][1]);
-		player1Units.add(board[19][19]);
+		player1Units.add(board[8][8]);
 		
 		
 
@@ -271,6 +279,16 @@ public class GameBoard implements Serializable {
 								board[cellWithUnit.getLocation().x][cellWithUnit
 										.getLocation().y].getUnit().getHealth() - 2);
 			}
+			// Quick-sand reduces moves by 4:
+			if (t == Terrain.QuickSand) {
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.getUnit()
+						.setMovesLeft(
+								board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit()
+										.getMovesLeft() - 4);
+				
+			}
 			// Reduce movement by 1:
 			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
 					.getUnit()
@@ -306,6 +324,16 @@ public class GameBoard implements Serializable {
 						.setHealth(
 								board[cellWithUnit.getLocation().x][cellWithUnit
 										.getLocation().y].getUnit().getHealth() - 2);
+			}
+			// Quick-sand reduces moves by 4:
+			if (t == Terrain.QuickSand) {
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.getUnit()
+						.setMovesLeft(
+								board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit()
+										.getMovesLeft() - 4);
+				
 			}
 			// Reduce movement by 1:
 			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
@@ -343,6 +371,16 @@ public class GameBoard implements Serializable {
 								board[cellWithUnit.getLocation().x][cellWithUnit
 										.getLocation().y].getUnit().getHealth() - 2);
 			}
+			// Quick-sand reduces moves by 4:
+			if (t == Terrain.QuickSand) {
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.getUnit()
+						.setMovesLeft(
+								board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit()
+										.getMovesLeft() - 4);
+				
+			}
 			// Reduce movement by 1:
 			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
 					.getUnit()
@@ -378,6 +416,16 @@ public class GameBoard implements Serializable {
 						.setHealth(
 								board[cellWithUnit.getLocation().x][cellWithUnit
 										.getLocation().y].getUnit().getHealth() - 2);
+			}
+			// Quick-sand reduces moves by 4:
+			if (t == Terrain.QuickSand) {
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.getUnit()
+						.setMovesLeft(
+								board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit()
+										.getMovesLeft() - 4);
+				
 			}
 			// Reduce movement by 1:
 			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
