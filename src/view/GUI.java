@@ -79,6 +79,7 @@ public class GUI extends JFrame
   public static GameBoard gameboard;
   public static Cell CurrentUnitSelected;
   private ArrayList<Cell> player1units;
+  private ArrayList<Cell> player2units;
 
   // pregame lobby GUI items
 
@@ -109,7 +110,9 @@ public class GUI extends JFrame
   {
     gameboard = new GameBoard("Map 1");
     player1units = gameboard.getPlayer1Untis();
-    CurrentUnitSelected = player1units.get(0);
+    player2units = gameboard.getPlayer2Untis();
+    CurrentUnitSelected = null;
+    
   }
 
   private void loginGUI()
@@ -267,6 +270,9 @@ public class GUI extends JFrame
     moveLeft.addActionListener(new ButtonListener());
     moveRight.addActionListener(new ButtonListener());
     moveDown.addActionListener(new ButtonListener());
+    unit1.addActionListener(new ButtonListener());
+    unit2.addActionListener(new ButtonListener());
+    unit3.addActionListener(new ButtonListener());
     // unitgroup.addActionListener(ButtonGroupListener);
 
   }
@@ -288,6 +294,7 @@ public class GUI extends JFrame
           CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "N");
           player1units.add(i, CurrentUnitSelected);
           textPanel.repaint();
+          imagePanel.repaint();
         }
         else
         {
@@ -310,6 +317,7 @@ public class GUI extends JFrame
           CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "L");
           player1units.add(CurrentUnitSelected);
           textPanel.repaint();
+          imagePanel.repaint();
         }
         else
         {
@@ -332,6 +340,8 @@ public class GUI extends JFrame
           CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "S");
           player1units.add(i, CurrentUnitSelected);
           textPanel.repaint();
+          imagePanel.repaint();
+          
         }
         else
         {
@@ -356,6 +366,7 @@ public class GUI extends JFrame
           CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "R");
           player1units.add(i, CurrentUnitSelected);
           textPanel.repaint();
+          imagePanel.repaint();
         }
         else
         {
@@ -370,6 +381,18 @@ public class GUI extends JFrame
       if (e.getSource() == attack)
       {
         // TODO Auto-generated method stub
+      }
+      if(e.getSource() == unit1){
+    	  CurrentUnitSelected = player1units.get(0);
+    	  System.out.print("THIS IS MY CURRENT UNIT");
+      }
+      else if(e.getSource() == unit2){
+    	  CurrentUnitSelected = player1units.get(1);
+    	  System.out.print("THIS IS MY CURRENT UNIT2");
+      }
+      else if (e.getSource() == unit3){
+    	  CurrentUnitSelected = player1units.get(2);
+    	  
       }
     }
   }
@@ -406,6 +429,7 @@ public class GUI extends JFrame
   private void repaintEverything()
   {
     frame.repaint();
+    imagePanel.repaint();
   }
 
 }

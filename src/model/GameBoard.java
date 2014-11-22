@@ -116,21 +116,21 @@ public class GameBoard {
 		// Creating one single unit for now:
 		UnitFactory factory = new UnitFactory();
 		// Last parameter is UserName obtained from the GUI
-		Unit dUnit = factory.makeUnit("Medic", GUI.getPlayer2());
+		/*Unit dUnit = factory.makeUnit("Medic", GUI.getPlayer2());
 		board[1][0].setUnit(dUnit);
 		board[1][0].setHasUnit(true);
-		
+		*/
 		Unit eUnit = factory.makeUnit("Medic", GUI.getPlayer2());
 		board[19][18].setUnit(eUnit);
 		board[19][18].setHasUnit(true);
 		
 		// Adds this to player2Units list:
-		player2Units.add(board[1][0]);
+		//player2Units.add(board[1][0]);
 		player2Units.add(board[19][18]);
 		
 		// Testing getUnitsInAttackRange: 
 		System.out.println("Enemies of board[1][0] ");
-		getUnitsInAttackRange(board[1][0]);
+		//getUnitsInAttackRange(board[1][0]);
 		System.out.println();
 		System.out.println("Enemies of board[0][0] ");
 		getUnitsInAttackRange(board[0][0]);
