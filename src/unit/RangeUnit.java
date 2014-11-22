@@ -8,7 +8,7 @@ public class RangeUnit extends Unit
 
   public RangeUnit(String imagestring, String username)
   {
-    super(3, 5, 10, 5, imagestring, username);
+    super(3, 5, 10, 10, imagestring, username);
   }
 
   public void attack(Unit victim)

@@ -65,13 +65,13 @@ public class GUI extends JFrame
   JButton attack;
 
   // Not sure if needed with changed button system.
-  
-//  AttackButtonListener AttackButtonListener = new AttackButtonListener();
-//  DownButtonListener DownButtonListener = new DownButtonListener();
-//  LeftButtonListener LeftButtonListener = new LeftButtonListener();
-//  LeftButtonListener UpButtonListener = new LeftButtonListener();
-//  RightButtonListener RightButtonListener = new RightButtonListener();
-  
+
+  // AttackButtonListener AttackButtonListener = new AttackButtonListener();
+  // DownButtonListener DownButtonListener = new DownButtonListener();
+  // LeftButtonListener LeftButtonListener = new LeftButtonListener();
+  // LeftButtonListener UpButtonListener = new LeftButtonListener();
+  // RightButtonListener RightButtonListener = new RightButtonListener();
+
   MapButtonListener MapButtonListener = new MapButtonListener();
   ButtonGroupListener ButtonGroupListener = new ButtonGroupListener();
 
@@ -88,6 +88,8 @@ public class GUI extends JFrame
   JLabel usernamelabel2;
   JTextField username1;
   JTextField username2;
+
+  private JPanel AttackPanel;
 
   public GUI()
   {
@@ -155,9 +157,6 @@ public class GUI extends JFrame
     contentContainer.setPreferredSize(new Dimension(1280, 500));
     contentContainer.setLayout(new BorderLayout());
 
-    imagePanel = new JPanel();
-    imagePanel.setPreferredSize(new Dimension(1280, 500));
-
     JPanel playerContainer = new JPanel();
     playerContainer.setLayout(new GridLayout(1, 3, 0, 0));
     playerContainer.setSize(1280, 300);
@@ -177,6 +176,7 @@ public class GUI extends JFrame
     moveRight.setPreferredSize(new Dimension(75, 50));
 
     textPanel.setPreferredSize(new Dimension(1280, 500));
+    imagePanel.setPreferredSize(new Dimension(1280, 500));
 
     movePanel = new JPanel();
 
@@ -217,7 +217,7 @@ public class GUI extends JFrame
     movePanel.add(DirectionPanel, BorderLayout.WEST);
     movePanel.add(unitPanel, BorderLayout.CENTER);
 
-    JPanel AttackPanel = new JPanel();
+    AttackPanel = new JPanel();
     AttackPanel.setLayout(new BorderLayout());
     AttackPanel.setBackground(Color.YELLOW);
     JPanel attackButtonPanel = new JPanel();

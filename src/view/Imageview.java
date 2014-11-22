@@ -42,37 +42,24 @@ public class Imageview extends JPanel
     Graphics2D g2 = (Graphics2D) g;
     g2.setPaint(Color.WHITE);
     g2.fillRect(0, 0, 1280, 500);
-    g2.setPaint(Color.BLACK);
-    g2.setFont(new Font("Courier New", Font.BOLD, 17));
-    int y = 0;
-    for (int i = 0; i < 10; i++)
+
+    for (int i = 0; i < theModel.length; i++)
     {
-      for (int j = 0; j < 10; j++)
+      for (int j = 0; j < theModel[i].length; j++)
       {
-        // pos.x = j;
-        // pos.y = i;
 
-        if (theModel[i][j].getTerrain() == Terrain.Nothing)
+        image = grassTile;
+        g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+
+        if (theModel[i][j].hasUnit())
         {
-          image = grassTile;
-          g2.drawImage(image, pos.x * 50, pos.y * 50, 50, 50, null);
+          if (theModel[i][j].getUnit().getIconImage()
+              .equals("CloneTrooper.png"))
+          {
+            image = cloneTrooper;
+            g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+          }
         }
-
-        else
-        {
-
-        }
-        // pos.x = theModel.getHunter().y;
-        // pos.y = theModel.getHunter().x;
-        // Point hunter = new Point(theModel.getHunter().x,
-        // theModel.getHunter().y);
-        // image = hunterImage;
-        // g.drawImage(image, pos.x * 50, pos.y * 50, 50, 50, null);
-
-        // if (theModel.isGameOver() == false)
-        // {
-        // message.setText(theModel.gameOverReason);
-        // }
       }
     }
   }

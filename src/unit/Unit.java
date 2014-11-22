@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 public abstract class Unit implements Serializable
 {
   private int attackRange, damage, health, moveRange, movesLeft;
-  private Image iconImage;
+  private String iconImage;
   private String username;
 
   // This is the Constructor of Unit which is the abstract class that all units
@@ -24,16 +24,6 @@ public abstract class Unit implements Serializable
     this.health = health;
     this.moveRange = moveRange;
     this.movesLeft = this.moveRange;
-    try
-    {
-    	//fixed file path
-      this.iconImage = ImageIO.read(new File("Images/" + imagestring));
-    }
-    catch (IOException e)
-    {
-      System.out.println("Unit image not found!");
-      e.printStackTrace();
-    }
     this.username = username;
   }
 
@@ -68,7 +58,7 @@ public abstract class Unit implements Serializable
     return movesLeft;
   }
 
-  public Image getIconImage()
+  public String getIconImage()
   {
     return iconImage;
   }
@@ -104,7 +94,7 @@ public abstract class Unit implements Serializable
     this.movesLeft = movesLeft;
   }
 
-  public void setIconImage(Image icon)
+  public void setIconImage(String icon)
   {
     this.iconImage = icon;
   }
