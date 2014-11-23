@@ -62,6 +62,7 @@ public class GUI extends JFrame
   JButton moveLeft;
   JButton moveRight;
   JButton attack;
+  JButton endTurn;
 
   ArrayList<JRadioButton> radiobuttons;
   ArrayList<JRadioButton> targetButtons;
@@ -248,9 +249,10 @@ public class GUI extends JFrame
     JPanel blank1 = new JPanel();
 
     attack = new JButton("Attack");
+    endTurn = new JButton("End turn");
     attackButtonPanel.add(blank);
     attackButtonPanel.add(attack);
-    attackButtonPanel.add(blank1);
+    attackButtonPanel.add(endTurn);
     AttackPanel.add(attackButtonPanel, BorderLayout.NORTH);
     AttackPanel.add(listOfTargets, BorderLayout.CENTER);
     
@@ -442,7 +444,18 @@ public class GUI extends JFrame
         }
 
       }
-
+      if(e.getSource() == endTurn){
+    	  gameboard.turnOver2(player1units, player2units,player1,player2);
+    	  player1units = gameboard.getPlayer1Untis();
+    	  player2units = gameboard.getPlayer2Untis();
+    	  
+    	  layoutAttackScreen();
+    	  revalidate();
+    	  textPanel.repaint();
+    	  imagePanel.repaint();
+      }
+      
+      
       if (e.getSource() == attack)
       {
     	  if(EnemyUnitSelected == null){

@@ -13,6 +13,7 @@ import unit.UnitFactory;
 import view.GUI;
 import view.Imageview;
 
+
 // The GameBoard class creates the board for the game:
 
 public class GameBoard extends JFrame implements Serializable {
@@ -623,7 +624,19 @@ public class GameBoard extends JFrame implements Serializable {
 		}
 
 	}
-
+	public void turnOver2(ArrayList<Cell> player1units, ArrayList<Cell> player2units, String player1username, String player2username){
+		for(int i =0; i < player1units.size(); i ++){
+			player1units.get(i).getUnit().setMovesLeft(player1Units.get(i).getUnit().getMoveRange());
+			player1units.get(i).getUnit().setCanAttack(true);
+		}
+		player1Units = player2units;
+		player2Units = player1units;
+		GUI.player1 = player2username;
+		GUI.player2 = player1username;
+	    GUI.CurrentUnitSelected = null;
+	    GUI.EnemyUnitSelected = null;
+		
+	}
 	// Returns the unit in this cell, or null if there is no unit in this
 	// cell:
 	public Unit getUnit(Cell cell) {
