@@ -56,7 +56,7 @@ public class GUI extends JFrame
   JLabel usernamestring;
   JPanel attackButtonPanel;
   ButtonGroup unitgroup;
-
+  ButtonGroup targetGroup;
   JButton moveUp;
   JButton moveDown;
   JButton moveLeft;
@@ -130,13 +130,13 @@ public class GUI extends JFrame
 	  targetButtons = new ArrayList();
 	  AttackPanel.remove(listOfTargets);
 	  listOfTargets = new JPanel();
-	  ButtonGroup targetgroup = new ButtonGroup();
+	  targetGroup = new ButtonGroup();
 	  for(int i = 0; i < targets.size(); i ++){
 		  int number = i+1;
-		  targetButtons.add(new JRadioButton("Unit" + number));
+		  targetButtons.add(new JRadioButton(targets.get(i).getUnit().toString()));
 	  }
 	  for(int i = 0; i < targetButtons.size(); i++){
-		  targetgroup.add(targetButtons.get(i));
+		  targetGroup.add(targetButtons.get(i));
 		  listOfTargets.add(targetButtons.get(i));
 		  targetButtons.get(i).addActionListener(new ButtonListener());
 	  }
@@ -459,8 +459,21 @@ public class GUI extends JFrame
               dialog.setAlwaysOnTop(true);
               dialog.setVisible(true);
     	  }
+    	  else if(!gameboard.CanAttack(CurrentUnitSelected)){
+    		  JOptionPane optionPane = new JOptionPane();
+              optionPane.setMessage("You have attacked already!");
+              JDialog dialog = optionPane.createDialog(":~(");
+              dialog.setAlwaysOnTop(true);
+              dialog.setVisible(true);
+    	  }
     	  else{
+    		  System.out.println(EnemyUnitSelected.getUnit().getHealth());
+    		  
     		  gameboard.attack(CurrentUnitSelected, EnemyUnitSelected);
+    		  targets(CurrentUnitSelected);
+    		  layoutAttackScreen();
+    		  revalidate();
+    		  repaint();
     	  }
         // TODO Auto-generated method stub
       }
@@ -469,7 +482,7 @@ public class GUI extends JFrame
         if (e.getSource() == radiobuttons.get(i))
         {
           CurrentUnitSelected = player1units.get(i);
-          System.out.println("This is my current unit: " + i);
+          System.out.println(CurrentUnitSelected.getUnit().getUnitStatus());
           targets(CurrentUnitSelected);
           layoutAttackScreen();
           
@@ -478,9 +491,7 @@ public class GUI extends JFrame
       for(int i =0; i < targetButtons.size(); i ++){
     	  if(e.getSource() == targetButtons.get(i)){
     		  EnemyUnitSelected = targets.get(i);
-    		  System.out.println("This is the enemy unit im selecting: " + i);
-    		  targets(CurrentUnitSelected);
-    		  layoutAttackScreen();
+    		  System.out.println(EnemyUnitSelected.getUnit().getUnitStatus());
     	  }
       }
 
