@@ -37,10 +37,10 @@ public class Imageview extends JPanel
   private static final String imageDir = System.getProperty("user.dir")
       + File.separator + "images" + File.separator;
 
-  public Imageview()
+  public Imageview(String background)
   {
     // Loads all the images into BufferedImaged with selected BackGround.
-    setBackground("Grass.png");
+    setBackground(background);
     loadImages();
     this.setVisible(true);
     repaint();

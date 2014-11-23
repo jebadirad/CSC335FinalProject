@@ -49,7 +49,7 @@ public class GUI extends JFrame
   JPanel movePanel;
   JPanel unitPanel;
   JPanel playerstatus;
-  JPanel imagePanel = new Imageview();
+  JPanel imagePanel;
   JPanel contentContainer;
   JTabbedPane tabbedpane;
 
@@ -245,6 +245,7 @@ public class GUI extends JFrame
     moveRight.setPreferredSize(new Dimension(75, 50));
 
     textPanel.setPreferredSize(new Dimension(1280, 500));
+    imagePanel = new Imageview(GameBoard.background);
     imagePanel.setPreferredSize(new Dimension(1280, 500));
 
     movePanel = new JPanel();

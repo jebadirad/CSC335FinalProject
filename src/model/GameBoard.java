@@ -26,7 +26,7 @@ public class GameBoard extends JFrame implements Serializable {
 	private ArrayList<Cell> player1Units;
 	// Player 2 Units:
 	private ArrayList<Cell> player2Units;
-
+	public static String background;
 	// Takes "Map 1" or "Map 2" as a parameter
 	public GameBoard(String mapName) {
 		if (mapName.equals("Map 1"))
@@ -38,6 +38,7 @@ public class GameBoard extends JFrame implements Serializable {
 
 	// Creates Map1
 	public void createMap1() {
+		background = "Grass.png";
 		// board is 20 by 20 for now:
 		board = new Cell[20][20];
 		
@@ -83,6 +84,7 @@ public class GameBoard extends JFrame implements Serializable {
 
 	// Creates Map2
 	public void createMap2() {
+		background = "desert.png";
 		// board is 100 by 100 for now:
 		board = new Cell[20][20];
 		// initialize all cells to contain no units, and create forest map
