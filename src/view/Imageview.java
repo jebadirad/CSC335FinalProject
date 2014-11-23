@@ -19,25 +19,26 @@ public class Imageview extends JPanel
 {
   private BufferedImage image;
   private Cell[][] theModel;
-
-  private BufferedImage grassTile;
-  private BufferedImage itemSheet;
-  private BufferedImage cloneTrooper;
-  private BufferedImage jediSheet;
-  private BufferedImage lavaSheet;
-  private BufferedImage boulderSheet;
-  private BufferedImage medicSheet;
-  private BufferedImage iceSheet;
-  private BufferedImage quicksandSheet;
-  private BufferedImage desertSheet;
+  private static String backGroundString;
+  private static BufferedImage itemSheet;
+  private static BufferedImage cloneTrooper;
+  private static BufferedImage jediSheet;
+  private static BufferedImage lavaSheet;
+  private static BufferedImage boulderSheet;
+  private static BufferedImage medicSheet;
+  private static BufferedImage iceSheet;
+  private static BufferedImage quicksandSheet;
   private static BufferedImage backgroundSheet;
+  private static BufferedImage grassSheet;
+  private static BufferedImage desertSheet;
 
   private static final String imageDir = System.getProperty("user.dir")
       + File.separator + "images" + File.separator;
 
   public Imageview()
   {
-    // Loads all the images into BufferedImaged
+    // Loads all the images into BufferedImaged with selected BackGround.
+    setBackground("Grass.png");
     loadImages();
     this.setVisible(true);
     repaint();
@@ -62,11 +63,6 @@ public class Imageview extends JPanel
         if (theModel[i][j].getTerrain() == Terrain.Boulder)
         {
           image = boulderSheet;
-          g2.drawImage(image, j * 64, i * 23, 64, 23, null);
-        }
-        if (theModel[i][j].getTerrain() == Terrain.Desert)
-        {
-          image = desertSheet;
           g2.drawImage(image, j * 64, i * 23, 64, 23, null);
         }
         if (theModel[i][j].getTerrain() == Terrain.Ice)
@@ -106,31 +102,14 @@ public class Imageview extends JPanel
 
   public static void setBackground(String imagestring)
   {
+    backGroundString = imagestring;
 
-    try
-    {
-      if (imagestring.equals("Grass.png"))
-      {
-        backgroundSheet = ImageIO.read(new File(imageDir + "Grass.png"));
-
-      }
-      if (imagestring.equals("desert.png"))
-      {
-        backgroundSheet = ImageIO.read(new File(imageDir + "desert.png"));
-      }
-
-    }
-    catch (IOException e)
-    {
-      e.printStackTrace();
-    }
   }
 
-  public void loadImages()
+  public static void loadImages()
   {
     try
     {
-      grassTile = ImageIO.read(new File(imageDir + "Grass.png"));
       itemSheet = ImageIO.read(new File(imageDir + "all_items.png"));
       cloneTrooper = ImageIO.read(new File(imageDir + "CloneTrooper.png"));
       jediSheet = ImageIO.read(new File(imageDir + "jedi-spritesheet.png"));
@@ -141,6 +120,19 @@ public class Imageview extends JPanel
       boulderSheet = ImageIO.read(new File(imageDir + "Boulder.png"));
       iceSheet = ImageIO.read(new File(imageDir + "Ice.png"));
       quicksandSheet = ImageIO.read(new File(imageDir + "sand.png"));
+      desertSheet = ImageIO.read(new File(imageDir + "desert.png"));
+      grassSheet = ImageIO.read(new File(imageDir + "Grass.png"));
+
+      if (backGroundString.equals("Grass.png"))
+      {
+        backgroundSheet = grassSheet;
+
+      }
+      if (backGroundString.equals("desert.png"))
+      {
+        backgroundSheet = desertSheet;
+      }
+
     }
     catch (IOException e)
     {
