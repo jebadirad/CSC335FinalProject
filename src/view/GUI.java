@@ -9,6 +9,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -90,6 +93,8 @@ public class GUI extends JFrame
 
   private JPanel AttackPanel;
   private Inventory p1inv, p2inv;
+public boolean loadGame;
+private JButton load;
 
   public GUI()
   {
@@ -209,6 +214,22 @@ public class GUI extends JFrame
     Map = new JButton("Map 1");
     Map.addActionListener(MapButtonListener);
     teamSelect.add(Map);
+    load = new JButton("Load game");
+    load.addActionListener(MapButtonListener);
+    teamSelect.add(load);
+    // begin persistence code
+//  if(new File(saveDir + player1 + "-" + player2 + "-" + "gameboard.dat").exists()) {
+//  	JPanel loadSave = new JPanel();
+//  	JCheckBox chkLoad = new JCheckBox("Load saved game?");
+//  	chkLoad.addItemListener(new ItemListener() {
+//			public void itemStateChanged(ItemEvent e) {
+//				loadGame = e.getStateChange() == 1 ? true : false;
+//			}
+//		});
+//  	loadSave.add(chkLoad).setVisible(true);
+//  	teamSelect.add(loadSave);
+//  }
+  // end persistence code
     frame.add(teamSelect);
 
     frame.setVisible(true);
@@ -586,17 +607,26 @@ public class GUI extends JFrame
   private class MapButtonListener implements ActionListener
   {
 
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-      // TODO Auto-generated method stub
-      frame.setVisible(false);
-      player1 = username1.getText();
-      player2 = username2.getText();
-      newGame();
-      layoutGUI();
-      registerListeners();
-    }
+	     @Override
+	     public void actionPerformed(ActionEvent e)
+	     {
+	       // TODO Auto-generated method stub
+	     	if(e.getSource() == Map) {
+	       frame.setVisible(false);
+	       player1 = username1.getText();
+	       player2 = username2.getText();
+	       newGame();
+	       layoutGUI();
+	       registerListeners();
+	     	} else if(e.getSource() == load) {
+	     	      frame.setVisible(false);
+	     	      player1 = username1.getText();
+	     	      player2 = username2.getText();
+	     		loadData();
+	     		layoutGUI();
+	     		registerListeners();
+	     	}
+	     }
 
   }
 
@@ -640,9 +670,9 @@ public class GUI extends JFrame
 	 * @return true if successful, false otherwise
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean loadData(String username) {
+	public boolean loadData() {
 		try {
-			FileInputStream fileIn = new FileInputStream(new File(saveDir + "gameboard.dat"));
+			FileInputStream fileIn = new FileInputStream(new File(saveDir + player1 + "-" + player2 + "-" + "gameboard.dat"));
 			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 			gameboard = (GameBoard) objectIn.readObject();
 			objectIn.close();
@@ -658,7 +688,7 @@ public class GUI extends JFrame
 	 */
 	public void saveData() {
 		try {
-			FileOutputStream fileOut = new FileOutputStream(new File(saveDir + "gameboard.dat"));
+			FileOutputStream fileOut = new FileOutputStream(new File(saveDir + player1 + "-" + player2 + "-" + "gameboard.dat"));
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 			objectOut.writeObject(gameboard);
 			objectOut.close();
