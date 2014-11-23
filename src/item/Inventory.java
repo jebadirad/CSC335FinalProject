@@ -134,7 +134,7 @@ public class Inventory implements Serializable {
 	}
 
 	/**
-	 * This method attempts to load inventory data from "./<username>-inventory.dat"
+	 * This method attempts to load inventory data from "./username-inventory.dat"
 	 * 
 	 * @return savedInventory if successful, a new Inventory otherwise
 	 */
@@ -155,7 +155,7 @@ public class Inventory implements Serializable {
 	}
 
 	/**
-	 * This method attempts to save the inventory map in "./<username>-inventory.dat"
+	 * This method attempts to save the inventory map in "./username-inventory.dat"
 	 */
 	public void saveData() {
 		try {
