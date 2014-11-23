@@ -89,6 +89,7 @@ public class GUI extends JFrame
 
   private JPanel AttackPanel;
   private Inventory p1inv, p2inv;
+  private JLabel inventorystring;
 
   public GUI()
   {
@@ -192,6 +193,7 @@ public class GUI extends JFrame
     playerContainer.setSize(1280, 300);
 
     usernamestring = new JLabel("Current Player: " + player1);
+    inventorystring = new JLabel(player1 + "'s inventory: " + p1inv.toString());
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(1280, 800);
     setResizable(false);
@@ -267,6 +269,7 @@ public class GUI extends JFrame
 
     playerContainer.add(movePanel);
     playerContainer.add(usernamestring);
+    playerContainer.add(inventorystring);
     playerContainer.add(AttackPanel);
 
     tabbedpane.add(textPanel, "Game");
