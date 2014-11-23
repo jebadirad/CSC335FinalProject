@@ -13,6 +13,7 @@ public abstract class Unit implements Serializable
   private int attackRange, damage, health, moveRange, movesLeft;
   private String iconImage;
   private String username;
+  private Boolean canAttack;
 
   // This is the Constructor of Unit which is the abstract class that all units
   // call.
@@ -26,6 +27,8 @@ public abstract class Unit implements Serializable
     this.movesLeft = this.moveRange;
     this.iconImage = imagestring;
     this.username = username;
+    canAttack = true;
+
   }
 
   // Each Type of Unit will have a different attack() and levelUp()
@@ -81,6 +84,11 @@ public abstract class Unit implements Serializable
     return username;
   }
 
+  public Boolean getCanAttack()
+  {
+    return canAttack;
+  }
+
   // Setters for all instance variables
   public void setAttackRange(int attackrange)
   {
@@ -116,4 +124,10 @@ public abstract class Unit implements Serializable
   {
     this.username = username;
   }
+
+  public void setCanAttack(Boolean value)
+  {
+    canAttack = value;
+  }
+
 }
