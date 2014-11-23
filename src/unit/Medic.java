@@ -1,8 +1,5 @@
 package unit;
 
-import java.awt.Image;
-import java.awt.Point;
-
 public class Medic extends HealerUnit
 {
 

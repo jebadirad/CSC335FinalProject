@@ -1,8 +1,5 @@
 package unit;
 
-import java.awt.Image;
-import java.awt.Point;
-
 /**
  * Subclass of RangerUnit. Makes a CloneTrooper unit which has own image.
  * 

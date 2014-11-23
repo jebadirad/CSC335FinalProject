@@ -1,12 +1,6 @@
 package unit;
 
-import java.awt.Image;
-import java.awt.Point;
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
-
-import javax.imageio.ImageIO;
 
 /**
  * This class is the super class for all Unit types. It has attackRange, damage,
