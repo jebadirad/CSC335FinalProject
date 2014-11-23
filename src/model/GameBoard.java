@@ -547,6 +547,7 @@ public class GameBoard extends JFrame implements Serializable {
 			cell.getUnit().setDamage(cell.getUnit().getDamage()+ item.getModifiers()[1]);
 			cell.getUnit().setHealth(cell.getUnit().getHealth()+ item.getModifiers()[2]);
 			cell.getUnit().setMoveRange(cell.getUnit().getMoveRange()+ item.getModifiers()[3]);
+			cell.getUnit().setMovesLeft(cell.getUnit().getMovesLeft() + item.getModifiers()[3]);
 		}
 		
 		return cell;
