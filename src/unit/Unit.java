@@ -33,6 +33,19 @@ public abstract class Unit implements Serializable
 
   public abstract void levelUp();
 
+  // Method to get Unit statuses.
+  public String getUnitStatus()
+  {
+    String status = "";
+    status += "Unit Type: " + this.toString() + "\n";
+    status += "Attack Range: " + this.getAttackRange() + "\n";
+    status += "Damage: " + this.getDamage() + "\n";
+    status += "Remaining Health: " + this.getHealth() + "\n";
+    status += "Moves Left: " + this.getMovesLeft() + "\n";
+    System.out.println(status);
+    return status;
+  }
+
   // Getters for all instance variables.
   public int getAttackRange()
   {
