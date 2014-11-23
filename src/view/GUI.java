@@ -131,11 +131,32 @@ public class GUI extends JFrame
 
   }
 
+  private void UpdateUnitScreen(){
+	  unitPanel.removeAll();
+	  unitgroup = new ButtonGroup();
+	    radiobuttons = new ArrayList();
+	    for (int i = 0; i < player1units.size(); i++)
+	    {
+
+	      radiobuttons.add(new JRadioButton(player1units.get(i).getUnit().toString()));
+
+	    }
+	    for (int i = 0; i < radiobuttons.size(); i++)
+	    {
+	      unitgroup.add(radiobuttons.get(i));
+	      unitPanel.add(radiobuttons.get(i));
+	      radiobuttons.get(i).addActionListener(new ButtonListener());
+	    }
+	    movePanel.add(unitPanel, BorderLayout.CENTER);
+	    revalidate();
+  }
   private void layoutAttackScreen()
   {
 	  if(targets.size() <= 0){
 		  EnemyUnitSelected = null;
 	  }
+	 
+	  
 	  targetButtons = new ArrayList();
 	  AttackPanel.remove(listOfTargets);
 	  listOfTargets = new JPanel();
@@ -149,6 +170,19 @@ public class GUI extends JFrame
 		  listOfTargets.add(targetButtons.get(i));
 		  targetButtons.get(i).addActionListener(new ButtonListener());
 	  }
+	  
+	  AttackPanel.add(listOfTargets, BorderLayout.CENTER);
+	  listOfTargets.setVisible(true);
+	  revalidate();
+  }
+  private void clearAttackScreen(){
+	  targetButtons = new ArrayList();
+	  AttackPanel.remove(listOfTargets);
+	  listOfTargets = new JPanel();
+	  targetGroup = new ButtonGroup();
+	 
+	 
+	  
 	  AttackPanel.add(listOfTargets, BorderLayout.CENTER);
 	  listOfTargets.setVisible(true);
 	  revalidate();
@@ -193,7 +227,7 @@ public class GUI extends JFrame
     playerContainer.setSize(1280, 300);
 
     usernamestring = new JLabel("Current Player: " + player1);
-    setDefaultCloseOperation(EXIT_ON_CLOSE);
+    frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(1280, 800);
     setResizable(false);
     setLayout(new BorderLayout());
@@ -225,7 +259,7 @@ public class GUI extends JFrame
     DirectionPanel.add(moveDown);
     DirectionPanel.add(moveRight);
 
-    JPanel unitPanel = new JPanel();
+    unitPanel = new JPanel();
     unitPanel.setPreferredSize(new Dimension(175, 75));
     unitgroup = new ButtonGroup();
     radiobuttons = new ArrayList();
@@ -233,7 +267,7 @@ public class GUI extends JFrame
     {
 
       int number = i + 1;
-      radiobuttons.add(new JRadioButton("Unit" + number));
+      radiobuttons.add(new JRadioButton(player1units.get(i).getUnit().toString()));
 
     }
     for (int i = 0; i < radiobuttons.size(); i++)
@@ -251,8 +285,6 @@ public class GUI extends JFrame
     attackButtonPanel = new JPanel();
     attackButtonPanel.setLayout(new GridLayout(1, 3, 0, 0));
     listOfTargets = new JPanel();
-    JRadioButton test = new JRadioButton("tesT");
-    listOfTargets.add(test);
     JPanel blank = new JPanel();
     JPanel blank1 = new JPanel();
 
@@ -297,6 +329,7 @@ public class GUI extends JFrame
     moveLeft.addActionListener(new ButtonListener());
     moveRight.addActionListener(new ButtonListener());
     moveDown.addActionListener(new ButtonListener());
+    endTurn.addActionListener(new ButtonListener());
 
   }
 
@@ -453,11 +486,15 @@ public class GUI extends JFrame
 
       }
       if(e.getSource() == endTurn){
+    	  System.out.println("end of " + player1 + " turn");
     	  gameboard.turnOver2(player1units, player2units,player1,player2);
     	  player1units = gameboard.getPlayer1Untis();
     	  player2units = gameboard.getPlayer2Untis();
-    	  
-    	  layoutAttackScreen();
+    	  usernamestring.setText("Current Player: " + player1);
+    	  UpdateUnitScreen();
+    	  clearAttackScreen();
+    	  CurrentUnitSelected = null;
+    	  EnemyUnitSelected = null;
     	  revalidate();
     	  textPanel.repaint();
     	  imagePanel.repaint();
@@ -493,6 +530,22 @@ public class GUI extends JFrame
     		  gameboard.attack(CurrentUnitSelected, EnemyUnitSelected);
     		  targets(CurrentUnitSelected);
     		  layoutAttackScreen();
+    		  if(gameboard.CheckgameOverBooleanVersion(player2units)){
+    			 Object[] options = {"New Game", "Quit"};
+    			 int n = JOptionPane.showOptionDialog(frame, player1 + " HAS WON THE GAME!!! Would you like to start a new game?", "VICTORY!!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,options[1]);
+    			 if(n == JOptionPane.YES_OPTION){
+    				 System.out.println("new game");
+    				 dispose();
+    				 new GUI();
+    			 }
+    			 else {
+    				 if(n == JOptionPane.NO_OPTION){
+    					 System.out.println("no option");
+    					 frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+    				 }
+    			 }
+    		  }
+    		  
     		  revalidate();
     		  repaint();
     	  }

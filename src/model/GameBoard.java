@@ -122,13 +122,13 @@ public class GameBoard extends JFrame implements Serializable {
 		board[0][1].setHasUnit(true);
 		
 		Unit cUnit = factory.makeUnit("CloneTrooper", GUI.getPlayer1());
-		board[8][8].setUnit(cUnit);
-		board[8][8].setHasUnit(true);
+		board[1][0].setUnit(cUnit);
+		board[1][0].setHasUnit(true);
 		
 		// Adds this to player1Units list:
 		player1Units.add(board[0][0]);
 		player1Units.add(board[0][1]);
-		player1Units.add(board[8][8]);
+		player1Units.add(board[1][0]);
 		
 		
 
@@ -144,35 +144,33 @@ public class GameBoard extends JFrame implements Serializable {
 		// Creating one single unit for now:
 		UnitFactory factory = new UnitFactory();
 		// Last parameter is UserName obtained from the GUI
-		Unit dUnit = factory.makeUnit("Medic", GUI.getPlayer2());
+		/*Unit dUnit = factory.makeUnit("Medic", GUI.getPlayer2());
 		board[3][1].setUnit(dUnit);
 		board[3][1].setHasUnit(true);
-		
+		*/
 		Unit eUnit = factory.makeUnit("Medic", GUI.getPlayer2());
 		board[1][1].setUnit(eUnit);
 		board[1][1].setHasUnit(true);
-		
+		/*
 		Unit fUnit = factory.makeUnit("Medic", GUI.getPlayer2());
 		board[2][0].setUnit(fUnit);
 		board[2][0].setHasUnit(true);
-		
+		*/
 		
 		// Adds this to player2Units list:
-		player2Units.add(board[3][1]);
 		player2Units.add(board[1][1]);
-		player2Units.add(board[2][0]);
 
 		
 		
 		// Testing getUnitsInAttackRange: 
-		System.out.println("Enemies of board[0][0] ");
+		//System.out.println("Enemies of board[0][0] ");
 		getUnitsInAttackRange(board[0][0]);
 		System.out.println();
-		System.out.println("Enemies of board[0][1] ");
+		//System.out.println("Enemies of board[0][1] ");
 		getUnitsInAttackRange(board[0][1]);
 		System.out.println();
 		System.out.println("Enemies of board[1][1] ");
-		getUnitsInAttackRange(board[1][1]);
+		//getUnitsInAttackRange(board[1][1]);
 		
 		
 
@@ -540,6 +538,8 @@ public class GameBoard extends JFrame implements Serializable {
 	        	dialog.setAlwaysOnTop(true);
 	        	dialog.setVisible(true);
 				player1Units.remove(cellWithUnitBeingAttacked);
+				
+				
 			}
 			if (cellWithUnitBeingAttacked.getUnit().getUsername().equals(GUI.getPlayer2())) {
 				// If Player 2 owns this unit, remove it from player2Units list:
@@ -549,6 +549,7 @@ public class GameBoard extends JFrame implements Serializable {
 	        	dialog.setAlwaysOnTop(true);
 	        	dialog.setVisible(true);
 				player2Units.remove(cellWithUnitBeingAttacked);
+				
 			}
 			// Remove the unit from the Cell
 			cellWithUnitBeingAttacked.removeUnit();
@@ -587,19 +588,17 @@ public class GameBoard extends JFrame implements Serializable {
 	
 	// Checks to see if the game is over by looking at player1Untis List, and player2Units List 
 	// to see if either one of them is empty, this verison returns a boolean, we dont know who lost:
-	public boolean gameOverBooleanVersion() {
+	public boolean CheckgameOverBooleanVersion(ArrayList<Cell> enemyunits) {
 		
-		if (player1Units.isEmpty()) {
+		if (enemyunits.isEmpty()) {
 			// Player 1 has lost:
-			return true;
-		}
-		else if (player2Units.isEmpty()) {
-			// Player 2 has lost:
 			return true;
 		}
 		else 
 			return false;
 	}
+	
+	
 	
 	// When the turn is over, update movesLeft:
 	// Assuming GUI passes an the name of the player to be updated as a string
