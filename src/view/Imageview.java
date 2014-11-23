@@ -31,6 +31,8 @@ public class Imageview extends JPanel
   private static BufferedImage backgroundSheet;
   private static BufferedImage grassSheet;
   private static BufferedImage desertSheet;
+  private static final int WIDTH = 23;
+  private static final int HEIGHT = 64;
 
   private static final String imageDir = System.getProperty("user.dir")
       + File.separator + "images" + File.separator;
@@ -58,27 +60,27 @@ public class Imageview extends JPanel
       {
         // Places
         image = backgroundSheet;
-        g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+        g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
 
         if (theModel[i][j].getTerrain() == Terrain.Boulder)
         {
           image = boulderSheet;
-          g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+          g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
         }
         if (theModel[i][j].getTerrain() == Terrain.Ice)
         {
           image = iceSheet;
-          g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+          g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
         }
         if (theModel[i][j].getTerrain() == Terrain.Lava)
         {
           image = lavaSheet;
-          g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+          g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
         }
         if (theModel[i][j].getTerrain() == Terrain.QuickSand)
         {
           image = quicksandSheet;
-          g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+          g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
         }
         if (theModel[i][j].hasUnit())
         {
@@ -86,13 +88,13 @@ public class Imageview extends JPanel
           if (unitName.equals("CloneTrooper.png"))
           {
             image = cloneTrooper;
-            g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+            g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
           }
 
           if (unitName.equals("Medic.png"))
           {
             image = medicSheet;
-            g2.drawImage(image, j * 64, i * 23, 64, 23, null);
+            g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
           }
         }
 
