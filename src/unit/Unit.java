@@ -42,7 +42,6 @@ public abstract class Unit implements Serializable
     status += "Damage: " + this.getDamage() + "\n";
     status += "Remaining Health: " + this.getHealth() + "\n";
     status += "Moves Left: " + this.getMovesLeft() + "\n";
-    System.out.println(status);
     return status;
   }
 
