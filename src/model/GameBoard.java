@@ -1,5 +1,7 @@
 package model;
 
+import item.Item;
+
 import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -489,6 +491,21 @@ public class GameBoard extends JFrame implements Serializable {
 			finishRow = 19;
 		if (finishCol > 19)
 			finishCol = 19;
+		// If we want to only be able to attack in the same row:
+		
+//		for (int i = startCol; i <= finishCol; i++) {
+//			if (board[cellWithUnit.getLocation().x][i].hasUnit()) {
+//				if (i==cellWithUnit.getLocation().y) {
+//					// Do Nothing!
+//				}
+//				// See if this unit is an enemy:
+//				else if (board[cellWithUnit.getLocation().x][i].getUnit().getUsername() != cellWithUnit.getUnit().getUsername())
+//					unitsInRange.add(board[cellWithUnit.getLocation().x][i]);
+//				
+//			}
+//		}
+		
+		
 		
 		for (int i = startRow; i <= finishRow; i ++) {
 			for (int j = startCol; j <= finishCol; j ++) {
@@ -520,6 +537,21 @@ public class GameBoard extends JFrame implements Serializable {
 		return false;
 		
 	}
+	// This method uses the item selected on the unit in this cell, 
+	// and returns the cell with the updated unit:
+	public Cell useItem(Item item, Cell cell) {
+		if (item==Item.superitem) {
+			cell.getUnit().setAttackRange(cell.getUnit().getAttackRange()+ item.getModifiers()[0]);
+			cell.getUnit().setDamage(cell.getUnit().getDamage()+ item.getModifiers()[1]);
+			cell.getUnit().setHealth(cell.getUnit().getHealth()+ item.getModifiers()[2]);
+			cell.getUnit().setMoveRange(cell.getUnit().getMoveRange()+ item.getModifiers()[3]);
+		}
+		
+		return cell;
+	}
+	
+	
+	
 	// Attack method for two cells containing units being given:
 	// returns the cell of unitBeingAttacked to the GUI, that updates the unit info in that cell:
 	public Cell attack(Cell cellWithUnitAtacking, Cell cellWithUnitBeingAttacked) {
