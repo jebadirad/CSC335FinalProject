@@ -1,34 +1,35 @@
 package model;
 
 import item.Item;
-
 import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
 import unit.Unit;
 import unit.UnitFactory;
 import view.GUI;
 
-
-// The GameBoard class creates the board for the game:
-
+/**
+ * Creating the GameBoard object needed to play this game
+ * @author David Aaron
+ *
+ */
 public class GameBoard extends JFrame implements Serializable {
 	private static final long serialVersionUID = -3079556358722781506L;
 	// board will be the most important thing in this class
 	private Cell[][] board;
-	// Not sure how to do end of game conditions yet, for now its this boolean
-	private boolean playing;
 	// Player 1 units:
 	private ArrayList<Cell> player1Units;
 	// Player 2 Units:
 	private ArrayList<Cell> player2Units;
 	public static String background;
-	// Takes "Map 1" or "Map 2" as a parameter
+
+	/**
+	 * Constructor for the GameBoard object
+	 * @param mapName Name of Map, either "Map 1" or "Map 2"
+	 */
 	public GameBoard(String mapName) {
 		if (mapName.equals("Map 1"))
 			createMap1();
@@ -37,7 +38,9 @@ public class GameBoard extends JFrame implements Serializable {
 
 	}
 
-	// Creates Map1
+	/**
+	 * Creates Map1
+	 */
 	public void createMap1() {
 		background = "Grass.png";
 		// board is 20 by 20 for now:
@@ -58,13 +61,16 @@ public class GameBoard extends JFrame implements Serializable {
 		//Imageview.setBackground("Grass.png");
 		
 		// Generate actual terrain:
-		for (int i = 0; i < 20; i++) {
-			// Sets the third row for of this board to all lavas
+		for (int i = 5; i < 15; i++) {
+			// Places lavas in the third row
 			board[i][2].setTerrain(Terrain.Lava);
-			// Sets the seventh row for of this board to all Boulders
-			board[i][6].setTerrain(Terrain.Boulder);
+		}
+		for (int i = 0; i < 5; i++) {
+			// Places boudlers in the 
+			board[i][5].setTerrain(Terrain.Boulder);
 		}
 		
+		// Creates a QickSand pit, with Ice in the middle
 		board[10][10].setTerrain(Terrain.Ice);
 		board[10][9].setTerrain(Terrain.QuickSand);
 		board[11][9].setTerrain(Terrain.QuickSand);
@@ -83,7 +89,9 @@ public class GameBoard extends JFrame implements Serializable {
 
 	}
 
-	// Creates Map2
+	/**
+	 * Creates Map 2
+	 */
 	public void createMap2() {
 		background = "desert.png";
 		// board is 100 by 100 for now:
@@ -106,9 +114,10 @@ public class GameBoard extends JFrame implements Serializable {
 
 	}
 
-	// Responsible for adding Units to Cells who we desire to have a unit
-	// For now creates one unit at board[0][0] and adds it to player1's units
-	// list
+	
+	/**
+	 * Responsible for adding Units to Cells who we desire to have a unit, these are Player1's units
+	 */
 	public void generatePlayer1Units() {
 		// Instantiate player1Units:
 		player1Units = new ArrayList<Cell>();
@@ -137,9 +146,9 @@ public class GameBoard extends JFrame implements Serializable {
 
 	}
 
-	// Responsible for adding Units to Cells who we desire to have a unit
-	// For now creates one unit at board[10][10] and adds it to player2's units
-	// list
+	/**
+	 * Responsible for adding Units to Cells who we desire to have a unit, these are Player2's units
+	 */
 	public void generatePlayer2Units() {
 		// Instantiate player1Units:
 		player2Units = new ArrayList<Cell>();
@@ -151,7 +160,7 @@ public class GameBoard extends JFrame implements Serializable {
 		board[3][1].setUnit(dUnit);
 		board[3][1].setHasUnit(true);
 		*/
-		Unit eUnit = factory.makeUnit("Medic", GUI.getPlayer2());
+		Unit eUnit = factory.makeUnit("LukeSkywalker", GUI.getPlayer2());
 		board[1][1].setUnit(eUnit);
 		board[1][1].setHasUnit(true);
 		/*
@@ -181,16 +190,9 @@ public class GameBoard extends JFrame implements Serializable {
 		
 	}
 
-	// i think we should add units this way, that way i can loop through them on
-	// a newgame method.
-	public void generateUnitatCell(Cell cell, String unit, String username) {
-		UnitFactory factory = new UnitFactory();
-		Unit aUnit = factory.makeUnit(unit, username);
-		cell.setHasUnit(true);
-		cell.setUnit(aUnit);
-	}
-
-	// Responsible for returning a text version of the current GameBoard:
+	/**
+	 * Responsible for returning a text version of the current GameBoard:
+	 */
 	public String toString() {
 		String str = "";
 		for (int i = 0; i < 20; i++) {
@@ -226,7 +228,12 @@ public class GameBoard extends JFrame implements Serializable {
 		return str;
 	}
 
-	// Checks to see if the unit in this cell can move or not:
+	/**
+	 * Checks to see if the unit in this cell can move or not:
+	 * @param cellWithUnit This is given to me from the GUI contains a unit
+	 * @param direction Direction of Movement desired
+	 * @return true is this unit can move, false if it can't
+	 */
 	public boolean canMove(Cell cellWithUnit, String direction) {
 		boolean result = true;
 		Unit unit = cellWithUnit.getUnit();
@@ -272,7 +279,13 @@ public class GameBoard extends JFrame implements Serializable {
 		}
 		return result;
 	}
-
+	/**
+	 * This method moves the unit to a new cell, and returns the new cell with the unit in it
+	 * It check for terrain that reduces health or movement, or both
+	 * @param cellWithUnit This is given to me from the GUI contains a unit
+	 * @param direction Direction of movement desired
+	 * @return Returns the new cell with the unit in it
+	 */
 	public Cell move(Cell cellWithUnit, String direction) {
 		if (direction.equals("N")) {
 
@@ -309,14 +322,10 @@ public class GameBoard extends JFrame implements Serializable {
 			        optionPane.setMessage("Your Unit " + board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().toString() + " Has Died!");
 			        dialog.setAlwaysOnTop(true);
 			        dialog.setVisible(true);
-					// Will always be player1Units since this is in the move method:
+			        // Will always be player1Units since this is in the move method:
 			        player1Units.remove(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]);
-			        // Check if game is over:
-			        if (CheckgameOverBooleanVersion(player1Units)) {
-						optionPane = new JOptionPane();
-				        optionPane.setMessage("You have lost");
-			        }
-			        
+			        board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].removeUnit();
+			        return board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y];
 			        
 				}
 				
@@ -368,7 +377,7 @@ public class GameBoard extends JFrame implements Serializable {
 						.getUnit()
 						.setHealth(
 								board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit().getHealth() - 20);
+										.getLocation().y].getUnit().getHealth() - 2);
 				// Tell the user of their foolish actions:
 				JOptionPane optionPane = new JOptionPane();
 		        optionPane.setMessage("Your Unit " + board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().toString() + " has lost 2 heath due to lava, fool");
@@ -390,7 +399,6 @@ public class GameBoard extends JFrame implements Serializable {
 			        player1Units.remove(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]);
 			        board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].removeUnit();
 			        return board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y];
-			        // Check if game is over:
 			       
 			        
 			        
@@ -457,13 +465,10 @@ public class GameBoard extends JFrame implements Serializable {
 			        optionPane.setMessage("Your Unit " + board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().toString() + " Has Died!");
 			        dialog.setAlwaysOnTop(true);
 			        dialog.setVisible(true);
-					// Will always be player1Units since this is in the move method:
+			        // Will always be player1Units since this is in the move method:
 			        player1Units.remove(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]);
-			        // Check if game is over:
-			        if (CheckgameOverBooleanVersion(player1Units)) {
-						optionPane = new JOptionPane();
-				        optionPane.setMessage("You have lost");
-			        }
+			        board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].removeUnit();
+			        return board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y];
 			        
 			        
 				}
@@ -529,13 +534,10 @@ public class GameBoard extends JFrame implements Serializable {
 			        optionPane.setMessage("Your Unit " + board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().toString() + " Has Died!");
 			        dialog.setAlwaysOnTop(true);
 			        dialog.setVisible(true);
-					// Will always be player1Units since this is in the move method:
+			        // Will always be player1Units since this is in the move method:
 			        player1Units.remove(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]);
-			        // Check if game is over:
-			        if (CheckgameOverBooleanVersion(player1Units)) {
-						optionPane = new JOptionPane();
-				        optionPane.setMessage("You have lost");
-			        }
+			        board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].removeUnit();
+			        return board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y];
 			        
 			        
 				}
@@ -572,18 +574,29 @@ public class GameBoard extends JFrame implements Serializable {
 
 	}
 
-	// Get player1's list of cells that contain units:
+	/**
+	 * Get player1's list of cells that contain units:
+	 * @return Returns the list of player1Units:
+	 */
 	public ArrayList<Cell> getPlayer1Untis() {
 		return player1Units;
 	}
 
-	// Get player1's list of cells that contain units:
+	/**
+	 * Get player2's list of cells that contain units:
+	 * @return Returns the list of player2Units
+	 */
 	public ArrayList<Cell> getPlayer2Untis() {
 		return player2Units;
 	}
 	
-	// This method returns a list of cells with units in it that 
-	// can be attacked by a cell containing a unit given to it
+	
+	/**
+	 * This method returns a list of cells with units in it, that 
+	 * can be attacked by a cell containing a unit given to it
+	 * @param cellWithUnit The cell containing the unit given to this method
+	 * @return Returns an ArrayList<Cell> that contains all Cells that can be attacked by this unit
+	 */
 	public ArrayList<Cell> getUnitsInAttackRange(Cell cellWithUnit) {
 		ArrayList<Cell> unitsInRange = new ArrayList<Cell>();
 		int range = cellWithUnit.getUnit().getAttackRange();
@@ -638,7 +651,11 @@ public class GameBoard extends JFrame implements Serializable {
 		}
 		return unitsInRange;
 	}
-	
+	/**
+	 * Gets the boolean can attack from the Cell class
+	 * @param cell
+	 * @return true is cell CanAttack, false else
+	 */
 	public boolean CanAttack(Cell cell){
 		if(cell.getUnit().getCanAttack()){
 			return true;
@@ -647,8 +664,14 @@ public class GameBoard extends JFrame implements Serializable {
 		return false;
 		
 	}
-	// This method uses the item selected on the unit in this cell, 
-	// and returns the cell with the updated unit:
+	
+	/**
+	 * This method uses the item selected on the unit in this cell, 
+	 * and returns the cell with the updated unit:
+	 * @param item The Item to be used
+	 * @param cell The cell containing the unit the item is being used on
+	 * @return Returns the new cell with the updated unit information
+	 */
 	public Cell useItem(Item item, Cell cell) {
 		if (item==Item.superitem) {
 			cell.getUnit().setAttackRange(cell.getUnit().getAttackRange()+ item.getModifiers()[0]);
@@ -663,8 +686,14 @@ public class GameBoard extends JFrame implements Serializable {
 	
 	
 	
-	// Attack method for two cells containing units being given:
-	// returns the cell of unitBeingAttacked to the GUI, that updates the unit info in that cell:
+	
+	/**
+	 * Attack method for two cells containing units being given:
+	*  returns the cell of unitBeingAttacked to the GUI, that updates the unit info in that cell:
+	 * @param cellWithUnitAtacking The cell containing the unit that is attacking
+	 * @param cellWithUnitBeingAttacked The cell containing the unit to be attacked
+	 * @return Returns cellWithUnitBeingAttacked with updated information about the unit in it
+	 */
 	public Cell attack(Cell cellWithUnitAtacking, Cell cellWithUnitBeingAttacked) {
 		
 		cellWithUnitBeingAttacked.getUnit().setHealth(cellWithUnitBeingAttacked.getUnit().getHealth()-cellWithUnitAtacking.getUnit().getDamage());
@@ -713,11 +742,16 @@ public class GameBoard extends JFrame implements Serializable {
 		
 	}
 	
-	// Checks to see if the game is over by looking at player1Untis List, and player2Units List 
-	// to see if either one of them is empty, this verison returns a boolean, we dont know who lost:
-	public boolean CheckgameOverBooleanVersion(ArrayList<Cell> enemyunits) {
+	
+	/**
+	 * Checks to see if the game is over by looking at player1Untis List, and player2Units List 
+	 * to see if either one of them is empty, this verison returns a boolean, we dont know who lost:
+	 * @param units If any ArrayList<Cell> given (assumed to be from a player) isEmpty, game is over
+	 * @return true is ArrayList<Cell> given is empty, then game is over, else false
+	 */
+	public boolean CheckgameOverBooleanVersion(ArrayList<Cell> units) {
 		
-		if (enemyunits.isEmpty()) {
+		if (units.isEmpty()) {
 			// Player 1 has lost:
 			return true;
 		}
@@ -727,8 +761,13 @@ public class GameBoard extends JFrame implements Serializable {
 	
 	
 	
-	// When the turn is over, update movesLeft, and setCanAttack, and change units out:
-	
+	/**
+	 * When the turn is over, update movesLeft, and setCanAttack, and change units out:
+	 * @param player1units Player1's Cell's with units list
+	 * @param player2units Player2's Cell's with units list
+	 * @param player1username Player1's userName
+	 * @param player2username Player2's userName
+	 */
 	public void turnOver2(ArrayList<Cell> player1units, ArrayList<Cell> player2units, String player1username, String player2username){
 		for(int i =0; i < player1units.size(); i ++){
 			player1units.get(i).getUnit().setMovesLeft(player1Units.get(i).getUnit().getMoveRange());
@@ -742,8 +781,11 @@ public class GameBoard extends JFrame implements Serializable {
 	    GUI.EnemyUnitSelected = null;
 		
 	}
-	// Returns the unit in this cell, or null if there is no unit in this
-	// cell:
+	/**
+	 * 	Returns the unit in this cell, or null if there is no unit in this cell:
+	 * @param cell Cell given to get the unit from
+	 * @return null if there is no Unit in this cell, else returns the Unit in the cell
+	 */
 	public Unit getUnit(Cell cell) {
 		if (cell.hasUnit())
 			return cell.getUnit();
@@ -752,27 +794,33 @@ public class GameBoard extends JFrame implements Serializable {
 	}
 
 	// Getters/Setters:
+	
+	/**
+	 * Getter for the board
+	 * @return the Cell[][] which represents the game
+	 */
 	public Cell[][] getBoard() {
 		return board;
 	}
-
+	/**
+	 * Setter for board
+	 * @param board the new board to set Cell[][] to
+	 */
 	public void setBoard(Cell[][] board) {
 		this.board = board;
 	}
 
-	public boolean isPlaying() {
-		return playing;
-	}
-
-	public void setPlaying(boolean playing) {
-		this.playing = playing;
-	}
-
-	// simple getter that fetches the cell that i need so we can play with the
-	// data.
+	
+	/**
+	 * Getter for a Cell at a specified location:
+	 * @param x x-coordinate of needed cell
+	 * @param y y-coordinate of needed cell
+	 * @return the cell at those coordinates:
+	 */
 	public Cell getCell(int x, int y) {
 		return board[x][y];
 	}
 
 
 }
+

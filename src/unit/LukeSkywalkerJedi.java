@@ -3,18 +3,17 @@ package unit;
 import java.awt.Image;
 import java.awt.Point;
 
-public class Medic extends HealerUnit
+public class LukeSkywalkerJedi extends JediUnit
 {
 
-  public Medic(String imagestring, String username)
+  public LukeSkywalkerJedi(String imagestring, String username)
   {
-    //
     super(imagestring, username);
   }
 
   public String toString()
   {
-    return "M";
+    return "L";
   }
 
 }

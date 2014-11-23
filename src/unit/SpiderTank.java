@@ -3,18 +3,17 @@ package unit;
 import java.awt.Image;
 import java.awt.Point;
 
-public class Medic extends HealerUnit
+public class SpiderTank extends TankUnit
 {
 
-  public Medic(String imagestring, String username)
+  public SpiderTank(String imagestring, String username)
   {
-    //
     super(imagestring, username);
   }
 
   public String toString()
   {
-    return "M";
+    return "S";
   }
 
 }

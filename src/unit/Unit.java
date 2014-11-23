@@ -8,6 +8,12 @@ import java.io.Serializable;
 
 import javax.imageio.ImageIO;
 
+/**
+ * This class is the super class for all Unit types. It has attackRange, damage,
+ * health, moveRange, movesLeft, iconImage(String), username, and canAttack.
+ * 
+ * @author Kal
+ */
 public abstract class Unit implements Serializable
 {
   private int attackRange, damage, health, moveRange, movesLeft;
@@ -15,8 +21,17 @@ public abstract class Unit implements Serializable
   private String username;
   private Boolean canAttack;
 
-  // This is the Constructor of Unit which is the abstract class that all units
-  // call.
+  /**
+   * This is the constructor of the unit class. This sets all the instance
+   * variables to what is send by each individual type of Unit.
+   * 
+   * @param attackRange
+   * @param damage
+   * @param health
+   * @param moveRange
+   * @param imagestring
+   * @param username
+   */
   public Unit(int attackRange, int damage, int health, int moveRange,
       String imagestring, String username)
   {
@@ -32,11 +47,23 @@ public abstract class Unit implements Serializable
   }
 
   // Each Type of Unit will have a different attack() and levelUp()
+  /**
+   * Used by units to attack other units. Either increases or decreases health.
+   * 
+   * @param victim
+   */
   public abstract void attack(Unit victim);
 
+  /**
+   * Used to increase status of unit when they kill another unit.
+   * 
+   */
   public abstract void levelUp();
 
-  // Method to get Unit statuses.
+  /**
+   * Method to get Unit status.
+   * 
+   */
   public String getUnitStatus()
   {
     String status = "";

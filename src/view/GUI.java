@@ -355,6 +355,8 @@ private JButton load;
     add(contentContainer);
 
     setVisible(true);
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
+    revalidate();
   }
 
   public static String getPlayer1()
@@ -742,31 +744,41 @@ private JButton load;
   }
   
   
-  private class MapButtonListener implements ActionListener
-  {
+	private class MapButtonListener implements ActionListener {
 
-	     @Override
-	     public void actionPerformed(ActionEvent e)
-	     {
-	       // TODO Auto-generated method stub
-	     	if(e.getSource() == Map) {
-	       frame.setVisible(false);
-	       player1 = username1.getText();
-	       player2 = username2.getText();
-	       newGame();
-	       layoutGUI();
-	       registerListeners();
-	     	} else if(e.getSource() == load) {
-	     	      frame.setVisible(false);
-	     	      player1 = username1.getText();
-	     	      player2 = username2.getText();
-	     		loadData();
-	     		layoutGUI();
-	     		registerListeners();
-	     	}
-	     }
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			// frame.setVisible(false);
+			// player1 = username1.getText();
+			// player2 = username2.getText();
+			// newGame();
+			// layoutGUI();
+			// registerListeners();
+			if (e.getSource() == Map) {
+				frame.setVisible(false);
+				player1 = username1.getText();
+				player2 = username2.getText();
+				newGame();
+				layoutGUI();
+				registerListeners();
+			} else if (e.getSource() == load) {
+					frame.setVisible(false);
+					player1 = username1.getText();
+					player2 = username2.getText();
+					if (new File(saveDir + player1 + "-" + player2 + "-"
+							+ "gameboard.dat").exists()) {
+					loadData();
+					} else {
+						System.out.println("You don't have a save file! Creating new game...");
+						newGame();
+					}
+					layoutGUI();
+					registerListeners();
+			}
+		}
 
-  }
+	}
 
   private class ButtonGroupListener implements ActionListener
   {
@@ -814,6 +826,28 @@ private JButton load;
 			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 			gameboard = (GameBoard) objectIn.readObject();
 			objectIn.close();
+
+		    // create inventories for both players
+			// both players start with a super item. WOW. how generous of us.
+		    p1inv = new Inventory(player1);
+		    if(new File(saveDir + player1 + "-inventory.dat").exists()) {
+		    	p1inv.loadData(player1);
+		    } else {
+		    	p1inv.addItem(Item.superitem);
+		    }
+		    p2inv = new Inventory(player2);
+		    if(new File(saveDir + player2 + "-inventory.dat").exists()) {
+		    	p2inv.loadData(player2);
+		    } else {
+		    	p2inv.addItem(Item.superitem);
+		    }		    
+		    System.out.println(player1 + "'s inventory: " + p1inv.toString());
+		    System.out.println(player2 + "'s inventory: " + p2inv.toString());
+		    player1units = gameboard.getPlayer1Untis();
+		    player2units = gameboard.getPlayer2Untis();
+		    CurrentUnitSelected = null;
+		    EnemyUnitSelected = null;
+
 			return true;
 		} catch (Exception e){
 			System.err.println("Unable to load data!");
