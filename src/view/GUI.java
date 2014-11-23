@@ -338,8 +338,8 @@ private JButton load;
 
     add(contentContainer);
 
-    setDefaultCloseOperation(EXIT_ON_CLOSE);
     setVisible(true);
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
     revalidate();
   }
 
@@ -767,6 +767,28 @@ private JButton load;
 			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 			gameboard = (GameBoard) objectIn.readObject();
 			objectIn.close();
+
+		    // create inventories for both players
+			// both players start with a super item. WOW. how generous of us.
+		    p1inv = new Inventory(player1);
+		    if(new File(saveDir + player1 + "-inventory.dat").exists()) {
+		    	p1inv.loadData(player1);
+		    } else {
+		    	p1inv.addItem(Item.superitem);
+		    }
+		    p2inv = new Inventory(player2);
+		    if(new File(saveDir + player2 + "-inventory.dat").exists()) {
+		    	p2inv.loadData(player2);
+		    } else {
+		    	p2inv.addItem(Item.superitem);
+		    }		    
+		    System.out.println(player1 + "'s inventory: " + p1inv.toString());
+		    System.out.println(player2 + "'s inventory: " + p2inv.toString());
+		    player1units = gameboard.getPlayer1Untis();
+		    player2units = gameboard.getPlayer2Untis();
+		    CurrentUnitSelected = null;
+		    EnemyUnitSelected = null;
+
 			return true;
 		} catch (Exception e){
 			System.err.println("Unable to load data!");

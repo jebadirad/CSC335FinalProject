@@ -139,7 +139,7 @@ public class Inventory implements Serializable {
 	 * @return true if successful, false otherwise
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean loadData(String username) {
+	public Inventory loadData(String username) {
 		try {
 			FileInputStream fileIn = new FileInputStream(new File(saveDir + username + "-inventory.dat"));
 			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
@@ -147,11 +147,11 @@ public class Inventory implements Serializable {
 			this.credits = (int) objectIn.readObject();
 			this.username = (String) objectIn.readObject();
 			objectIn.close();
-			return true;
+			return this;
 		} catch (Exception e){
 			System.err.println("Unable to load data!");
 		}
-		return false;
+		return new Inventory(username);
 	}
 
 	/**
