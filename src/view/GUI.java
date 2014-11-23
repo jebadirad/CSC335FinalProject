@@ -58,6 +58,7 @@ public class GUI extends JFrame
 
   JPanel listOfTargets;
   JLabel usernamestring, inventorystring;
+  JPanel inventoryPanel;
   JPanel attackButtonPanel;
   ButtonGroup unitgroup;
   ButtonGroup targetGroup;
@@ -247,7 +248,7 @@ private JButton load;
     contentContainer.setLayout(new BorderLayout());
 
     JPanel playerContainer = new JPanel();
-    playerContainer.setLayout(new GridLayout(1, 3, 0, 0));
+    playerContainer.setLayout(new GridLayout(1, 4, 0, 0));
     playerContainer.setSize(1280, 300);
 
     usernamestring = new JLabel("Current Player: " + player1);
@@ -292,7 +293,6 @@ private JButton load;
     for (int i = 0; i < player1units.size(); i++)
     {
 
-      int number = i + 1;
       radiobuttons.add(new JRadioButton(player1units.get(i).getUnit().toString()));
 
     }
@@ -312,7 +312,6 @@ private JButton load;
     attackButtonPanel.setLayout(new GridLayout(1, 3, 0, 0));
     listOfTargets = new JPanel();
     JPanel blank = new JPanel();
-    JPanel blank1 = new JPanel();
 
     attack = new JButton("Attack");
     endTurn = new JButton("End turn");
@@ -324,10 +323,14 @@ private JButton load;
     
     contentContainer.add(tabbedpane, BorderLayout.NORTH);
     contentContainer.add(playerContainer, BorderLayout.CENTER);
-
+    
+    
+    inventoryPanel=new JPanel();
+    
+    
     playerContainer.add(movePanel);
     playerContainer.add(usernamestring);
-    playerContainer.add(inventorystring);
+    playerContainer.add(inventoryPanel);
     playerContainer.add(AttackPanel);
 
     tabbedpane.add(textPanel, "Game");
@@ -335,7 +338,9 @@ private JButton load;
 
     add(contentContainer);
 
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
     setVisible(true);
+    revalidate();
   }
 
   public static String getPlayer1()
@@ -385,11 +390,30 @@ private JButton load;
             player1units.remove(i);
 
             CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "N");
-            player1units.add(i, CurrentUnitSelected);
-            targets(CurrentUnitSelected);
+            if(CurrentUnitSelected.hasUnit()){
+           	 player1units.add(i, CurrentUnitSelected);
+                targets(CurrentUnitSelected);
+                targets.clear();
+           }
             layoutAttackScreen();
+            
             textPanel.repaint();
             imagePanel.repaint();
+            if(gameboard.CheckgameOverBooleanVersion(player1units)){
+      			 Object[] options = {"New Game", "Quit"};
+      			 int n = JOptionPane.showOptionDialog(frame, player1 + " HAS WON THE GAME!! Would you like to start a new game?", "VICTORY!!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,options[1]);
+      			 if(n == JOptionPane.YES_OPTION){
+      				 System.out.println("new game");
+      				 dispose();
+      				 new GUI();
+      			 }
+      			 else {
+      				 if(n == JOptionPane.NO_OPTION){
+      					 System.out.println("no option");
+      					 frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+      				 }
+      			 }
+      		  }
           }
           else
           {
@@ -421,11 +445,29 @@ private JButton load;
             player1units.remove(i);
 
             CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "L");
-            player1units.add(i, CurrentUnitSelected);
-            targets(CurrentUnitSelected);
+            if(CurrentUnitSelected.hasUnit()){
+           	 player1units.add(i, CurrentUnitSelected);
+                targets(CurrentUnitSelected);
+                targets.clear();
+           }
             layoutAttackScreen();            
             textPanel.repaint();
             imagePanel.repaint();
+            if(gameboard.CheckgameOverBooleanVersion(player1units)){
+      			 Object[] options = {"New Game", "Quit"};
+      			 int n = JOptionPane.showOptionDialog(frame, player1 + " HAS WON THE GAME!! Would you like to start a new game?", "VICTORY!!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,options[1]);
+      			 if(n == JOptionPane.YES_OPTION){
+      				 System.out.println("new game");
+      				 dispose();
+      				 new GUI();
+      			 }
+      			 else {
+      				 if(n == JOptionPane.NO_OPTION){
+      					 System.out.println("no option");
+      					 frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+      				 }
+      			 }
+      		  }
           }
           else
           {
@@ -457,12 +499,33 @@ private JButton load;
             player1units.remove(i);
 
             CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "S");
-            player1units.add(i, CurrentUnitSelected);
-            targets(CurrentUnitSelected);
+            
+            if(CurrentUnitSelected.hasUnit()){
+            	 player1units.add(i, CurrentUnitSelected);
+                 targets(CurrentUnitSelected);
+                 targets.clear();
+            }
+           
             layoutAttackScreen();
             textPanel.repaint();
             imagePanel.repaint();
-            
+            System.out.println("before chcek");
+            if(gameboard.CheckgameOverBooleanVersion(player1units)){
+      			 Object[] options = {"New Game", "Quit"};
+      			 System.out.println("after check");
+      			 int n = JOptionPane.showOptionDialog(frame, player2 + " HAS WON THE GAME!! Would you like to start a new game?", "VICTORY!!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,options[1]);
+      			 if(n == JOptionPane.YES_OPTION){
+      				 System.out.println("new game");
+      				 dispose();
+      				 new GUI();
+      			 }
+      			 else {
+      				 if(n == JOptionPane.NO_OPTION){
+      					 System.out.println("no option");
+      					 frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+      				 }
+      			 }
+      		  }
 
           }
           else
@@ -495,11 +558,29 @@ private JButton load;
             player1units.remove(i);
 
             CurrentUnitSelected = gameboard.move(CurrentUnitSelected, "R");
-            player1units.add(i, CurrentUnitSelected);
-            targets(CurrentUnitSelected);
+            if(CurrentUnitSelected.hasUnit()){
+           	 player1units.add(i, CurrentUnitSelected);
+                targets(CurrentUnitSelected);
+                targets.clear();
+           }
             layoutAttackScreen();
             textPanel.repaint();
             imagePanel.repaint();
+            if(gameboard.CheckgameOverBooleanVersion(player1units)){
+   			 Object[] options = {"New Game", "Quit"};
+   			 int n = JOptionPane.showOptionDialog(frame, player1 + " HAS WON THE GAME!! Would you like to start a new game?", "VICTORY!!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,options[1]);
+   			 if(n == JOptionPane.YES_OPTION){
+   				 System.out.println("new game");
+   				 dispose();
+   				 new GUI();
+   			 }
+   			 else {
+   				 if(n == JOptionPane.NO_OPTION){
+   					 System.out.println("no option");
+   					 frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+   				 }
+   			 }
+   		  }
           }
           else
           {
@@ -604,31 +685,41 @@ private JButton load;
 
   
   
-  private class MapButtonListener implements ActionListener
-  {
+	private class MapButtonListener implements ActionListener {
 
-	     @Override
-	     public void actionPerformed(ActionEvent e)
-	     {
-	       // TODO Auto-generated method stub
-	     	if(e.getSource() == Map) {
-	       frame.setVisible(false);
-	       player1 = username1.getText();
-	       player2 = username2.getText();
-	       newGame();
-	       layoutGUI();
-	       registerListeners();
-	     	} else if(e.getSource() == load) {
-	     	      frame.setVisible(false);
-	     	      player1 = username1.getText();
-	     	      player2 = username2.getText();
-	     		loadData();
-	     		layoutGUI();
-	     		registerListeners();
-	     	}
-	     }
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			// frame.setVisible(false);
+			// player1 = username1.getText();
+			// player2 = username2.getText();
+			// newGame();
+			// layoutGUI();
+			// registerListeners();
+			if (e.getSource() == Map) {
+				frame.setVisible(false);
+				player1 = username1.getText();
+				player2 = username2.getText();
+				newGame();
+				layoutGUI();
+				registerListeners();
+			} else if (e.getSource() == load) {
+					frame.setVisible(false);
+					player1 = username1.getText();
+					player2 = username2.getText();
+					if (new File(saveDir + player1 + "-" + player2 + "-"
+							+ "gameboard.dat").exists()) {
+					loadData();
+					} else {
+						System.out.println("You don't have a save file! Creating new game...");
+						newGame();
+					}
+					layoutGUI();
+					registerListeners();
+			}
+		}
 
-  }
+	}
 
   private class ButtonGroupListener implements ActionListener
   {
