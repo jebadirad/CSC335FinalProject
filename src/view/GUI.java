@@ -502,6 +502,8 @@ public class GUI extends JFrame
     	  CurrentUnitSelected = null;
     	  EnemyUnitSelected = null;
     	  revalidate();
+    	  movePanel.repaint();
+    	  AttackPanel.repaint();
     	  textPanel.repaint();
     	  imagePanel.repaint();
       }
@@ -538,7 +540,7 @@ public class GUI extends JFrame
     		  layoutAttackScreen();
     		  if(gameboard.CheckgameOverBooleanVersion(player2units)){
     			 Object[] options = {"New Game", "Quit"};
-    			 int n = JOptionPane.showOptionDialog(frame, player1 + " HAS WON THE GAME!!! Would you like to start a new game?", "VICTORY!!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,options[1]);
+    			 int n = JOptionPane.showOptionDialog(frame, player1 + " HAS WON THE GAME!! Would you like to start a new game?", "VICTORY!!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,options[1]);
     			 if(n == JOptionPane.YES_OPTION){
     				 System.out.println("new game");
     				 dispose();
