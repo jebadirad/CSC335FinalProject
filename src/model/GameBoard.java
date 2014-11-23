@@ -352,6 +352,7 @@ public class GameBoard extends JFrame implements Serializable {
 			return board[cellWithUnit.getLocation().x - 1][cellWithUnit
 					.getLocation().y];
 		} else if (direction.equals("S")) {
+			System.out.println(player1Units.size());
 			// Check to see what terrain we are about to step in:
 			Terrain t = board[cellWithUnit.getLocation().x + 1][cellWithUnit
 					.getLocation().y].getTerrain();
@@ -367,7 +368,7 @@ public class GameBoard extends JFrame implements Serializable {
 						.getUnit()
 						.setHealth(
 								board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit().getHealth() - 2);
+										.getLocation().y].getUnit().getHealth() - 20);
 				// Tell the user of their foolish actions:
 				JOptionPane optionPane = new JOptionPane();
 		        optionPane.setMessage("Your Unit " + board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().toString() + " has lost 2 heath due to lava, fool");
@@ -382,15 +383,15 @@ public class GameBoard extends JFrame implements Serializable {
 					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setCanAttack(false);
 					// Check which player owned the unit:
 			        optionPane.setMessage("Your Unit " + board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().toString() + " Has Died!");
+			        
 			        dialog.setAlwaysOnTop(true);
 			        dialog.setVisible(true);
 					// Will always be player1Units since this is in the move method:
 			        player1Units.remove(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]);
+			        board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].removeUnit();
+			        return board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y];
 			        // Check if game is over:
-			        if (CheckgameOverBooleanVersion(player1Units)) {
-						optionPane = new JOptionPane();
-				        optionPane.setMessage("You have lost");
-			        }
+			       
 			        
 			        
 				}
