@@ -54,7 +54,7 @@ public class GUI extends JFrame
   JTabbedPane tabbedpane;
 
   JPanel listOfTargets;
-  JLabel usernamestring;
+  JLabel usernamestring, inventorystring;
   JPanel attackButtonPanel;
   ButtonGroup unitgroup;
   ButtonGroup targetGroup;
@@ -113,7 +113,9 @@ public class GUI extends JFrame
     p2inv = new Inventory(player2);
     // both players start with a super item. WOW. how generous of us.
     p1inv.addItem(Item.superitem);
+    System.out.println(player1 + "'s inventory: " + p1inv.toString());
     p2inv.addItem(Item.superitem);
+    System.out.println(player2 + "'s inventory: " + p2inv.toString());
     player1units = gameboard.getPlayer1Untis();
     player2units = gameboard.getPlayer2Untis();
     CurrentUnitSelected = null;
@@ -227,7 +229,7 @@ public class GUI extends JFrame
     playerContainer.setSize(1280, 300);
 
     usernamestring = new JLabel("Current Player: " + player1);
-    JLabel inventorystring = new JLabel(player1 + "'s inventory: " + p1inv.toString());
+    inventorystring = new JLabel(player1 + "'s inventory: " + p1inv.toString());
     frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(1280, 800);
     setResizable(false);
@@ -302,6 +304,7 @@ public class GUI extends JFrame
 
     playerContainer.add(movePanel);
     playerContainer.add(usernamestring);
+    playerContainer.add(inventorystring);
     playerContainer.add(AttackPanel);
 
     tabbedpane.add(textPanel, "Game");
@@ -492,6 +495,7 @@ public class GUI extends JFrame
     	  player1units = gameboard.getPlayer1Untis();
     	  player2units = gameboard.getPlayer2Untis();
     	  usernamestring.setText("Current Player: " + player1);
+    	  inventorystring.setText(player1 + "'s inventory: " + p1inv.toString());
     	  UpdateUnitScreen();
     	  clearAttackScreen();
     	  CurrentUnitSelected = null;
