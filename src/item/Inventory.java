@@ -99,9 +99,9 @@ public class Inventory implements Serializable {
 		return items.get(s);
 	}
 
-	public HashMap getInventory() {
-		HashMap<String, Item> inv;
-		return inv = new HashMap<String, Item>(items);
+	public HashMap<String, Item> getInventory() {
+		HashMap<String, Item> inv = new HashMap<String, Item>(items);
+		return inv;
 	}
 
 	public String getUsername() {
