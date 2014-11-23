@@ -31,6 +31,8 @@ public class Imageview extends JPanel
   private static BufferedImage backgroundSheet;
   private static BufferedImage grassSheet;
   private static BufferedImage desertSheet;
+  private static BufferedImage lukeSkyWalkerJedi;
+  private static BufferedImage spiderTank;
   private static final int WIDTH = 23;
   private static final int HEIGHT = 64;
 
@@ -96,6 +98,18 @@ public class Imageview extends JPanel
             image = medicSheet;
             g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
           }
+
+          if (unitName.equals("Luke_Skywalker_stance.png"))
+          {
+            image = lukeSkyWalkerJedi;
+            g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
+          }
+
+          if (unitName.equals("SpiderTank.png"))
+          {
+            image = spiderTank;
+            g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
+          }
         }
 
       }
@@ -114,7 +128,9 @@ public class Imageview extends JPanel
     {
       itemSheet = ImageIO.read(new File(imageDir + "all_items.png"));
       cloneTrooper = ImageIO.read(new File(imageDir + "CloneTrooper.png"));
-      jediSheet = ImageIO.read(new File(imageDir + "jedi-spritesheet.png"));
+      lukeSkyWalkerJedi = ImageIO.read(new File(imageDir
+          + "Luke_Skywalker_stance.png"));
+      spiderTank = ImageIO.read(new File(imageDir + "SpiderTank.png"));
       itemSheet = ImageIO
           .read(new File(imageDir + "range-tank-spritesheet.png"));
       medicSheet = ImageIO.read(new File(imageDir + "Medic.png"));
