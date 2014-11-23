@@ -101,7 +101,7 @@ public class GUI extends JFrame
   public static void main(String[] args)
   {
 
-    new GUI();
+    new GUI().setDefaultCloseOperation(EXIT_ON_CLOSE);
 
   }
 
@@ -194,6 +194,7 @@ public class GUI extends JFrame
   {
 
     frame.setSize(350, 400);
+    frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
     teamSelect = new JPanel();
     teamSelect.setPreferredSize(new Dimension(800, 600));
     teamSelect.setLayout(new FlowLayout());
