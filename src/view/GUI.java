@@ -37,6 +37,10 @@ import javax.swing.JTextField;
 import model.Cell;
 import model.GameBoard;
 
+/** Public class that everything that has to do with user action with the game. 
+ * @author JonDavid Ebadirad
+ *
+ */
 public class GUI extends JFrame
 {
   private static final long serialVersionUID = -2853985771911325020L;
@@ -103,21 +107,30 @@ public class GUI extends JFrame
 public boolean loadGame;
 private JButton load;
 
-  public GUI()
+  /**
+ * Simple Constructor
+ */
+public GUI()
   {
     super();
     frame = new JFrame();
     layoutPregameGUI();
   }
 
-  public static void main(String[] args)
+  /** Main method that runs the whole program. 
+ * @param args does nothing in this case.
+ */
+public static void main(String[] args)
   {
 
     new GUI().setDefaultCloseOperation(EXIT_ON_CLOSE);
 
   }
 
-  public void newGame()
+  /**
+ * Officially creates a newgame().  
+ */
+public void newGame()
   {
     gameboard = new GameBoard("Map 1");
     // create inventories for both players
@@ -379,12 +392,18 @@ private JButton load;
     revalidate();
   }
 
-  public static String getPlayer1()
+  /**
+ * @return the username of the player that is set from the pregame lobby.
+ */
+public static String getPlayer1()
   {
     return player1;
   }
 
-  public static String getPlayer2()
+  /**
+ * @return the username of the player that is set from the pregame lobby.
+ */
+public static String getPlayer2()
   {
     return player2;
   }
@@ -813,11 +832,6 @@ private JButton load;
 
   }
 
-  private void repaintEverything()
-  {
-    frame.repaint();
-    imagePanel.repaint();
-  }
 
 	/**
 	 * This listener triggers when the frame is closed, and saves the gameboard data.
