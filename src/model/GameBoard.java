@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
 import unit.Unit;
 import unit.UnitFactory;
 import view.GUI;
-import view.Imageview;
 
 
 // The GameBoard class creates the board for the game:
@@ -606,22 +605,6 @@ public class GameBoard extends JFrame implements Serializable {
 	}
 	
 	// Checks to see if the game is over by looking at player1Untis List, and player2Units List 
-	// to see if either one of them is empty, this verison returns a String explainig who lost:
-	public String gameOverStringVersion() {
-		
-		if (player1Units.isEmpty()) {
-			// Player 1 has lost:
-			return GUI.getPlayer1() + " Has Lost The Game!";
-		}
-		if (player2Units.isEmpty()) {
-			// Player 2 has lost:
-			return GUI.getPlayer2() + " Has Lost The Game!";
-		}
-		
-		return "";
-	}
-	
-	// Checks to see if the game is over by looking at player1Untis List, and player2Units List 
 	// to see if either one of them is empty, this verison returns a boolean, we dont know who lost:
 	public boolean CheckgameOverBooleanVersion(ArrayList<Cell> enemyunits) {
 		
@@ -635,29 +618,8 @@ public class GameBoard extends JFrame implements Serializable {
 	
 	
 	
-	// When the turn is over, update movesLeft:
-	// Assuming GUI passes an the name of the player to be updated as a string
-	public void turnOver(String playerName) {
-
-		if (playerName.equals(GUI.getPlayer1())) {
-			for (int i = 0; i < player1Units.size(); i++) {
-				player1Units
-						.get(i)
-						.getUnit()
-						.setMovesLeft(
-								player1Units.get(i).getUnit().getMoveRange());
-			}
-		} else if (playerName.equals(GUI.getPlayer2())) {
-			for (int i = 0; i < player2Units.size(); i++) {
-				player2Units
-						.get(i)
-						.getUnit()
-						.setMovesLeft(
-								player2Units.get(i).getUnit().getMoveRange());
-			}
-		}
-
-	}
+	// When the turn is over, update movesLeft, and setCanAttack, and change units out:
+	
 	public void turnOver2(ArrayList<Cell> player1units, ArrayList<Cell> player2units, String player1username, String player2username){
 		for(int i =0; i < player1units.size(); i ++){
 			player1units.get(i).getUnit().setMovesLeft(player1Units.get(i).getUnit().getMoveRange());
