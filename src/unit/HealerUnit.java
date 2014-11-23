@@ -1,8 +1,5 @@
 package unit;
 
-import java.awt.Image;
-import java.awt.Point;
-
 /**
  * Subclass of Unit. Makes a Healer unit which takes in values from subclass.
  * 

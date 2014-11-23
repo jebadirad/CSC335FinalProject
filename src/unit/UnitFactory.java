@@ -1,7 +1,5 @@
 package unit;
 
-import java.awt.Point;
-
 public class UnitFactory
 {
   public Unit makeUnit(String unitType, String username)
