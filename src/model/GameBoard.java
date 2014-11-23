@@ -72,12 +72,13 @@ public class GameBoard extends JFrame implements Serializable {
 		//Imageview.setBackground("Grass.png");
 		
 		// Generate actual terrain:
-		for (int i = 5; i < 15; i++) {
+		for (int i = 0; i < 20; i++) {
 			// Places lavas in the third row
-			board[i][2].setTerrain(Terrain.Lava);
+			board[i][8].setTerrain(Terrain.Lava);
+			i++;
 		}
 		for (int i = 0; i < 5; i++) {
-			// Places boudlers in the 
+			// Places boulders in the 
 			board[i][5].setTerrain(Terrain.Boulder);
 		}
 		
@@ -93,6 +94,10 @@ public class GameBoard extends JFrame implements Serializable {
 		board[10][11].setTerrain(Terrain.QuickSand);
 		
 		
+		board[3][11].setTerrain(Terrain.Boulder);
+		board[5][11].setTerrain(Terrain.Boulder);
+
+
 
 		// Generate Units:
 		generatePlayer1Units();
@@ -137,16 +142,16 @@ public class GameBoard extends JFrame implements Serializable {
 		UnitFactory factory = new UnitFactory();
 		// Last parameter is UserName obtained from the GUI
 		Unit aUnit = factory.makeUnit("CloneTrooper", GUI.getPlayer1());
-		board[0][0].setUnit(aUnit);
-		board[0][0].setHasUnit(true);
+		board[7][7].setUnit(aUnit);
+		board[7][7].setHasUnit(true);
 	
 		Unit bUnit = factory.makeUnit("SpiderTank", GUI.getPlayer1());
-		board[0][1].setUnit(bUnit);
-		board[0][1].setHasUnit(true);
+		board[5][13].setUnit(bUnit);
+		board[5][13].setHasUnit(true);
 		
 		// Adds this to player1Units list:
-		player1Units.add(board[0][0]);
-		player1Units.add(board[0][1]);
+		player1Units.add(board[7][7]);
+		player1Units.add(board[5][13]);
 		
 		
 
@@ -167,17 +172,17 @@ public class GameBoard extends JFrame implements Serializable {
 		board[3][1].setHasUnit(true);
 		*/
 		Unit eUnit = factory.makeUnit("LukeSkywalker", GUI.getPlayer2());
-		board[1][1].setUnit(eUnit);
-		board[1][1].setHasUnit(true);
+		board[7][10].setUnit(eUnit);
+		board[7][10].setHasUnit(true);
 		
 		Unit fUnit = factory.makeUnit("LukeSkywalker", GUI.getPlayer2());
-		board[2][0].setUnit(fUnit);
-		board[2][0].setHasUnit(true);
+		board[2][12].setUnit(fUnit);
+		board[2][12].setHasUnit(true);
 	
 		
 		// Adds this to player2Units list:
-		player2Units.add(board[1][1]);
-		player2Units.add(board[2][0]);
+		player2Units.add(board[7][10]);
+		player2Units.add(board[2][12]);
 		
 	}
 
@@ -197,7 +202,7 @@ public class GameBoard extends JFrame implements Serializable {
 					} else if (board[i][j].getTerrain().equals(Terrain.Boulder)) {
 						str += "B";
 					} else if (board[i][j].getTerrain().equals(Terrain.Lava)) {
-						str += "L";
+						str += "V";
 
 					} else if (board[i][j].getTerrain().equals(Terrain.Forest)) {
 						str += "F";
