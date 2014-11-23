@@ -180,7 +180,7 @@ public void newGame()
   private void UpdateUnitScreen(){
 	  unitPanel.removeAll();
 	  unitgroup = new ButtonGroup();
-	    radiobuttons = new ArrayList();
+	    radiobuttons = new ArrayList<JRadioButton>();
 	    for (int i = 0; i < player1units.size(); i++)
 	    {
 
@@ -195,6 +195,7 @@ public void newGame()
 	    }
 	    movePanel.add(unitPanel, BorderLayout.CENTER);
 	    revalidate();
+	    movePanel.repaint();
   }
   private void layoutAttackScreen()
   {
@@ -466,9 +467,15 @@ public static String getPlayer2()
             if(CurrentUnitSelected.hasUnit()){
            	 player1units.add(i, CurrentUnitSelected);
                 targets(CurrentUnitSelected);
-                targets.clear();
+           
            }
-            UpdateUnitScreen();
+            else
+            {     
+            	targets.clear();
+            	UpdateUnitScreen();
+            	
+            }
+           
             layoutAttackScreen();
             
             textPanel.repaint();
@@ -522,9 +529,13 @@ public static String getPlayer2()
             if(CurrentUnitSelected.hasUnit()){
            	 player1units.add(i, CurrentUnitSelected);
                 targets(CurrentUnitSelected);
-                targets.clear();
+               
            }
-            UpdateUnitScreen();
+            else{
+            	 targets.clear();
+                 UpdateUnitScreen();
+            }
+            
             layoutAttackScreen();            
             textPanel.repaint();
             imagePanel.repaint();
@@ -582,8 +593,9 @@ public static String getPlayer2()
             }
             else{
             	targets.clear();
+            	 UpdateUnitScreen();
             }
-            UpdateUnitScreen();
+           
             layoutAttackScreen();
             textPanel.repaint();
             imagePanel.repaint();
@@ -639,10 +651,14 @@ public static String getPlayer2()
             if(CurrentUnitSelected.hasUnit()){
            	 player1units.add(i, CurrentUnitSelected);
                 targets(CurrentUnitSelected);
-                targets.clear();
+                
                 
            }
-            UpdateUnitScreen();
+            else{
+            	targets.clear();
+                UpdateUnitScreen();
+            }
+            
             layoutAttackScreen();
             textPanel.repaint();
             imagePanel.repaint();
