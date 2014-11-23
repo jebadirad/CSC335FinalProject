@@ -56,6 +56,7 @@ public class GUI extends JFrame
   JPanel playerstatus;
   JPanel imagePanel;
   JPanel contentContainer;
+  JPanel playerContainer;
   JTabbedPane tabbedpane;
 
   JPanel listOfTargets;
@@ -143,7 +144,26 @@ private JButton load;
     player1 = JOptionPane.showInputDialog("Username");
 
   }
-
+  private void UpdateItemScreen(){
+	  inventoryPanel.removeAll();
+	  itemBoxes = new ArrayList<JCheckBox>();
+	    items = new ArrayList<String>();
+	    Iterator it= p1inv.getInventory().entrySet().iterator();
+	    while(it.hasNext()){
+	    	Map.Entry pairs = (Map.Entry)it.next();
+	    	itemBoxes.add(new JCheckBox(pairs.getKey().toString()));
+	    }
+	    
+	    for(int i = 0; i < itemBoxes.size(); i ++){
+	    	itemBoxes.get(i).addItemListener(new itemListener());
+	    	inventoryPanel.add(itemBoxes.get(i));
+	    	
+	    }
+	    
+	    playerContainer.repaint();
+	    revalidate();
+	  
+  }
   private void UpdateUnitScreen(){
 	  unitPanel.removeAll();
 	  unitgroup = new ButtonGroup();
@@ -252,7 +272,7 @@ private JButton load;
     contentContainer.setPreferredSize(new Dimension(1280, 500));
     contentContainer.setLayout(new BorderLayout());
 
-    JPanel playerContainer = new JPanel();
+    playerContainer = new JPanel();
     playerContainer.setLayout(new GridLayout(1, 4, 0, 0));
     playerContainer.setSize(1280, 300);
 
@@ -401,6 +421,7 @@ private JButton load;
     				Item item = p1inv.getItem(items.get(i));
     				CurrentUnitSelected = gameboard.useItem(item, CurrentUnitSelected);
     				p1inv.removeItem(item);
+    				UpdateItemScreen();
     			}
     			items.clear();
     		}
