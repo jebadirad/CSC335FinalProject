@@ -1,5 +1,6 @@
 package view;
 
+import item.Inventory;
 import item.Item;
 
 import java.awt.BorderLayout;
@@ -88,6 +89,7 @@ public class GUI extends JFrame
   JTextField username2;
 
   private JPanel AttackPanel;
+  private Inventory p1inv, p2inv;
 
   public GUI()
   {
@@ -106,6 +108,12 @@ public class GUI extends JFrame
   public void newGame()
   {
     gameboard = new GameBoard("Map 1");
+    // create inventories for both players
+    p1inv = new Inventory(player1);
+    p2inv = new Inventory(player2);
+    // both players start with a super item. WOW. how generous of us.
+    p1inv.addItem(Item.superitem);
+    p2inv.addItem(Item.superitem);
     player1units = gameboard.getPlayer1Untis();
     player2units = gameboard.getPlayer2Untis();
     CurrentUnitSelected = null;

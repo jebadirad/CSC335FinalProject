@@ -123,6 +123,11 @@ public class Inventory implements Serializable {
 		return credits;
 	}
 
+	@Override
+	public String toString() {
+		return items.keySet().toString();
+	}
+
 	/**
 	 * This method attempts to load inventory data from "./<username>-inventory.dat"
 	 * 
@@ -159,5 +164,11 @@ public class Inventory implements Serializable {
 			System.err.println("Error! Could not save data.");
 		}
 	}
-
+//
+//	public static void main(String[] args) {
+//		Inventory i = new Inventory("a");
+//		i.addItem(Item.superitem);
+//		i.addItem(Item.attackRange);
+//		i.toString();
+//	}
 }
