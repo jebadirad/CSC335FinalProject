@@ -99,6 +99,11 @@ public class Inventory implements Serializable {
 		return items.get(s);
 	}
 
+	public HashMap getInventory() {
+		HashMap<String, Item> inv;
+		return inv = new HashMap<String, Item>(items);
+	}
+
 	public String getUsername() {
 		return username;
 	}
