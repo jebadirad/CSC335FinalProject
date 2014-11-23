@@ -4,6 +4,10 @@ import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import unit.Unit;
 import unit.UnitFactory;
 import view.GUI;
@@ -11,7 +15,7 @@ import view.Imageview;
 
 // The GameBoard class creates the board for the game:
 
-public class GameBoard implements Serializable {
+public class GameBoard extends JFrame implements Serializable {
 	private static final long serialVersionUID = -3079556358722781506L;
 	// board will be the most important thing in this class
 	private Cell[][] board;
@@ -509,20 +513,40 @@ public class GameBoard implements Serializable {
 		return unitsInRange;
 	}
 	
+	public boolean CanAttack(Cell cell){
+		if(cell.getUnit().getCanAttack()){
+			return true;
+		}
+		
+		return false;
+		
+	}
 	// Attack method for two cells containing units being given:
 	// returns the cell of unitBeingAttacked to the GUI, that updates the unit info in that cell:
 	public Cell attack(Cell cellWithUnitAtacking, Cell cellWithUnitBeingAttacked) {
 		
 		cellWithUnitBeingAttacked.getUnit().setHealth(cellWithUnitBeingAttacked.getUnit().getHealth()-cellWithUnitAtacking.getUnit().getDamage());
+		cellWithUnitAtacking.getUnit().setMovesLeft(0);
+		cellWithUnitAtacking.getUnit().setCanAttack(false);
 		// unitBeingAttacked has died:
 		if (cellWithUnitBeingAttacked.getUnit().getHealth() <= 0) {
 			// remove this unit from whomever owns this unit:
 			if (cellWithUnitBeingAttacked.getUnit().getUsername().equals(GUI.getPlayer1())) {
 				// If Player 1 owns this unit, remove it from player1Units list:
+				JOptionPane optionPane = new JOptionPane();
+	        	optionPane.setMessage("Your Unit " + cellWithUnitBeingAttacked.getUnit().toString() + " Has Died!");
+	        	JDialog dialog = optionPane.createDialog(":~(");
+	        	dialog.setAlwaysOnTop(true);
+	        	dialog.setVisible(true);
 				player1Units.remove(cellWithUnitBeingAttacked);
 			}
 			if (cellWithUnitBeingAttacked.getUnit().getUsername().equals(GUI.getPlayer2())) {
 				// If Player 2 owns this unit, remove it from player2Units list:
+				JOptionPane optionPane = new JOptionPane();
+	        	optionPane.setMessage("Enemy Unit " + cellWithUnitBeingAttacked.getUnit().toString() + "Has Died!");
+	        	JDialog dialog = optionPane.createDialog(":~D");
+	        	dialog.setAlwaysOnTop(true);
+	        	dialog.setVisible(true);
 				player2Units.remove(cellWithUnitBeingAttacked);
 			}
 			// Remove the unit from the Cell
@@ -532,8 +556,15 @@ public class GameBoard implements Serializable {
 			return cellWithUnitBeingAttacked;
 		}
 		// else return cellWithUnitBeingAttacked with updated info
-		else 
+		else {
+			JOptionPane optionPane = new JOptionPane();
+        	optionPane.setMessage("Enemy Unit has " + cellWithUnitBeingAttacked.getUnit().getHealth() + " Health Left");
+        	JDialog dialog = optionPane.createDialog(":~D");
+        	dialog.setAlwaysOnTop(true);
+        	dialog.setVisible(true);
 			return cellWithUnitBeingAttacked;
+		}
+		
 		
 	}
 	
