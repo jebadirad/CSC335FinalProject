@@ -37,6 +37,10 @@ import javax.swing.JTextField;
 import model.Cell;
 import model.GameBoard;
 
+/** Public class that everything that has to do with user action with the game. 
+ * @author JonDavid Ebadirad
+ *
+ */
 public class GUI extends JFrame
 {
   private static final long serialVersionUID = -2853985771911325020L;
@@ -56,6 +60,7 @@ public class GUI extends JFrame
   JPanel playerstatus;
   JPanel imagePanel;
   JPanel contentContainer;
+  JPanel playerContainer;
   JTabbedPane tabbedpane;
 
   JPanel listOfTargets;
@@ -102,21 +107,30 @@ public class GUI extends JFrame
 public boolean loadGame;
 private JButton load;
 
-  public GUI()
+  /**
+ * Simple Constructor
+ */
+public GUI()
   {
     super();
     frame = new JFrame();
     layoutPregameGUI();
   }
 
-  public static void main(String[] args)
+  /** Main method that runs the whole program. 
+ * @param args does nothing in this case.
+ */
+public static void main(String[] args)
   {
 
     new GUI().setDefaultCloseOperation(EXIT_ON_CLOSE);
 
   }
 
-  public void newGame()
+  /**
+ * Officially creates a newgame().  
+ */
+public void newGame()
   {
     gameboard = new GameBoard("Map 1");
     // create inventories for both players
@@ -143,7 +157,26 @@ private JButton load;
     player1 = JOptionPane.showInputDialog("Username");
 
   }
-
+  private void UpdateItemScreen(){
+	  inventoryPanel.removeAll();
+	  itemBoxes = new ArrayList<JCheckBox>();
+	    items = new ArrayList<String>();
+	    Iterator it= p1inv.getInventory().entrySet().iterator();
+	    while(it.hasNext()){
+	    	Map.Entry pairs = (Map.Entry)it.next();
+	    	itemBoxes.add(new JCheckBox(pairs.getKey().toString()));
+	    }
+	    
+	    for(int i = 0; i < itemBoxes.size(); i ++){
+	    	itemBoxes.get(i).addItemListener(new itemListener());
+	    	inventoryPanel.add(itemBoxes.get(i));
+	    	
+	    }
+	    
+	    playerContainer.repaint();
+	    revalidate();
+	  
+  }
   private void UpdateUnitScreen(){
 	  unitPanel.removeAll();
 	  unitgroup = new ButtonGroup();
@@ -252,7 +285,7 @@ private JButton load;
     contentContainer.setPreferredSize(new Dimension(1280, 500));
     contentContainer.setLayout(new BorderLayout());
 
-    JPanel playerContainer = new JPanel();
+    playerContainer = new JPanel();
     playerContainer.setLayout(new GridLayout(1, 4, 0, 0));
     playerContainer.setSize(1280, 300);
 
@@ -359,12 +392,18 @@ private JButton load;
     revalidate();
   }
 
-  public static String getPlayer1()
+  /**
+ * @return the username of the player that is set from the pregame lobby.
+ */
+public static String getPlayer1()
   {
     return player1;
   }
 
-  public static String getPlayer2()
+  /**
+ * @return the username of the player that is set from the pregame lobby.
+ */
+public static String getPlayer2()
   {
     return player2;
   }
@@ -401,6 +440,7 @@ private JButton load;
     				Item item = p1inv.getItem(items.get(i));
     				CurrentUnitSelected = gameboard.useItem(item, CurrentUnitSelected);
     				p1inv.removeItem(item);
+    				UpdateItemScreen();
     			}
     			items.clear();
     		}
@@ -792,11 +832,6 @@ private JButton load;
 
   }
 
-  private void repaintEverything()
-  {
-    frame.repaint();
-    imagePanel.repaint();
-  }
 
 	/**
 	 * This listener triggers when the frame is closed, and saves the gameboard data.
