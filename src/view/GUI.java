@@ -756,7 +756,7 @@ private JButton load;
 	}
 
 	/**
-	 * This method attempts to load gameboard data from "./gameboard.dat"
+	 * This method attempts to load gameboard data from "./<player 1>-<player 2>-gameboard.dat"
 	 * 
 	 * @return true if successful, false otherwise
 	 */
@@ -797,7 +797,7 @@ private JButton load;
 	}
 
 	/**
-	 * This method attempts to save the gameboard in "./gameboard.dat"
+	 * This method attempts to save the gameboard in "./<player 1>-<player 2>-gameboard.dat"
 	 */
 	public void saveData() {
 		try {
