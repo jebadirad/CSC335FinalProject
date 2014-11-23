@@ -129,18 +129,13 @@ public class GameBoard extends JFrame implements Serializable {
 		board[0][0].setUnit(aUnit);
 		board[0][0].setHasUnit(true);
 	
-		Unit bUnit = factory.makeUnit("CloneTrooper", GUI.getPlayer1());
+		Unit bUnit = factory.makeUnit("SpiderTank", GUI.getPlayer1());
 		board[0][1].setUnit(bUnit);
 		board[0][1].setHasUnit(true);
-		
-		Unit cUnit = factory.makeUnit("CloneTrooper", GUI.getPlayer1());
-		board[1][0].setUnit(cUnit);
-		board[1][0].setHasUnit(true);
 		
 		// Adds this to player1Units list:
 		player1Units.add(board[0][0]);
 		player1Units.add(board[0][1]);
-		player1Units.add(board[1][0]);
 		
 		
 
@@ -163,30 +158,15 @@ public class GameBoard extends JFrame implements Serializable {
 		Unit eUnit = factory.makeUnit("LukeSkywalker", GUI.getPlayer2());
 		board[1][1].setUnit(eUnit);
 		board[1][1].setHasUnit(true);
-		/*
-		Unit fUnit = factory.makeUnit("Medic", GUI.getPlayer2());
+		
+		Unit fUnit = factory.makeUnit("LukeSkywalker", GUI.getPlayer2());
 		board[2][0].setUnit(fUnit);
 		board[2][0].setHasUnit(true);
-		*/
+	
 		
 		// Adds this to player2Units list:
 		player2Units.add(board[1][1]);
-
-		
-		
-		// Testing getUnitsInAttackRange: 
-		//System.out.println("Enemies of board[0][0] ");
-		getUnitsInAttackRange(board[0][0]);
-		System.out.println();
-		//System.out.println("Enemies of board[0][1] ");
-		getUnitsInAttackRange(board[0][1]);
-		System.out.println();
-		System.out.println("Enemies of board[1][1] ");
-		//getUnitsInAttackRange(board[1][1]);
-		
-		
-
-
+		player2Units.add(board[2][0]);
 		
 	}
 
