@@ -292,6 +292,36 @@ public class GameBoard extends JFrame implements Serializable {
 						.setHealth(
 								board[cellWithUnit.getLocation().x][cellWithUnit
 										.getLocation().y].getUnit().getHealth() - 2);
+				
+				// Tell the user of their foolish actions:
+				JOptionPane optionPane = new JOptionPane();
+		        optionPane.setMessage("Your Unit " + board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().toString() + " has lost 2 heath due to lava, fool");
+		        JDialog dialog = optionPane.createDialog(":~(");
+		        dialog.setAlwaysOnTop(true);
+		        dialog.setVisible(true);
+		        
+				// Check see if unit has died:	
+				if (board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().getHealth() <= 0) {
+					// Unit has died:
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setMovesLeft(0);
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setCanAttack(false);
+					// Check which player owned the unit:
+			        optionPane.setMessage("Your Unit " + board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().toString() + " Has Died!");
+			        dialog.setAlwaysOnTop(true);
+			        dialog.setVisible(true);
+					// Will always be player1Units since this is in the move method:
+			        player1Units.remove(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]);
+			        // Check if game is over:
+			        if (CheckgameOverBooleanVersion(player1Units)) {
+						optionPane = new JOptionPane();
+				        optionPane.setMessage("You have lost");
+			        }
+			        
+			        
+				}
+				
+				
+				
 			}
 			// Quick-sand reduces moves by 4:
 			if (t == Terrain.QuickSand) {
@@ -338,6 +368,32 @@ public class GameBoard extends JFrame implements Serializable {
 						.setHealth(
 								board[cellWithUnit.getLocation().x][cellWithUnit
 										.getLocation().y].getUnit().getHealth() - 2);
+				// Tell the user of their foolish actions:
+				JOptionPane optionPane = new JOptionPane();
+		        optionPane.setMessage("Your Unit " + board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().toString() + " has lost 2 heath due to lava, fool");
+		        JDialog dialog = optionPane.createDialog(":~(");
+		        dialog.setAlwaysOnTop(true);
+		        dialog.setVisible(true);
+		        
+				// Check see if unit has died:	
+				if (board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().getHealth() <= 0) {
+					// Unit has died:
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setMovesLeft(0);
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setCanAttack(false);
+					// Check which player owned the unit:
+			        optionPane.setMessage("Your Unit " + board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().toString() + " Has Died!");
+			        dialog.setAlwaysOnTop(true);
+			        dialog.setVisible(true);
+					// Will always be player1Units since this is in the move method:
+			        player1Units.remove(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]);
+			        // Check if game is over:
+			        if (CheckgameOverBooleanVersion(player1Units)) {
+						optionPane = new JOptionPane();
+				        optionPane.setMessage("You have lost");
+			        }
+			        
+			        
+				}
 			}
 			// Quick-sand reduces moves by 4:
 			if (t == Terrain.QuickSand) {
@@ -384,6 +440,32 @@ public class GameBoard extends JFrame implements Serializable {
 						.setHealth(
 								board[cellWithUnit.getLocation().x][cellWithUnit
 										.getLocation().y].getUnit().getHealth() - 2);
+				// Tell the user of their foolish actions:
+				JOptionPane optionPane = new JOptionPane();
+		        optionPane.setMessage("Your Unit " + board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().toString() + " has lost 2 heath due to lava, fool");
+		        JDialog dialog = optionPane.createDialog(":~(");
+		        dialog.setAlwaysOnTop(true);
+		        dialog.setVisible(true);
+		        
+				// Check see if unit has died:	
+				if (board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().getHealth() <= 0) {
+					// Unit has died:
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setMovesLeft(0);
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setCanAttack(false);
+					// Check which player owned the unit:
+			        optionPane.setMessage("Your Unit " + board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().toString() + " Has Died!");
+			        dialog.setAlwaysOnTop(true);
+			        dialog.setVisible(true);
+					// Will always be player1Units since this is in the move method:
+			        player1Units.remove(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]);
+			        // Check if game is over:
+			        if (CheckgameOverBooleanVersion(player1Units)) {
+						optionPane = new JOptionPane();
+				        optionPane.setMessage("You have lost");
+			        }
+			        
+			        
+				}
 			}
 			// Quick-sand reduces moves by 4:
 			if (t == Terrain.QuickSand) {
@@ -430,6 +512,32 @@ public class GameBoard extends JFrame implements Serializable {
 						.setHealth(
 								board[cellWithUnit.getLocation().x][cellWithUnit
 										.getLocation().y].getUnit().getHealth() - 2);
+				// Tell the user of their foolish actions:
+				JOptionPane optionPane = new JOptionPane();
+		        optionPane.setMessage("Your Unit " + board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().toString() + " has lost 2 heath due to lava, fool");
+		        JDialog dialog = optionPane.createDialog(":~(");
+		        dialog.setAlwaysOnTop(true);
+		        dialog.setVisible(true);
+		        
+				// Check see if unit has died:	
+				if (board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().getHealth() <= 0) {
+					// Unit has died:
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setMovesLeft(0);
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().setCanAttack(false);
+					// Check which player owned the unit:
+			        optionPane.setMessage("Your Unit " + board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y].getUnit().toString() + " Has Died!");
+			        dialog.setAlwaysOnTop(true);
+			        dialog.setVisible(true);
+					// Will always be player1Units since this is in the move method:
+			        player1Units.remove(board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]);
+			        // Check if game is over:
+			        if (CheckgameOverBooleanVersion(player1Units)) {
+						optionPane = new JOptionPane();
+				        optionPane.setMessage("You have lost");
+			        }
+			        
+			        
+				}
 			}
 			// Quick-sand reduces moves by 4:
 			if (t == Terrain.QuickSand) {
