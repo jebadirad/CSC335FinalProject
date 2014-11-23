@@ -1,3 +1,9 @@
+# ignore dumb OS stuff #
+########################
 .DS_Store
 .DS_Store?
+
+# ignore data files,            #
+# no need to commit local saves #
+#################################
 /*.dat
