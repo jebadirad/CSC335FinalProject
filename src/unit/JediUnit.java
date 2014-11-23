@@ -8,6 +8,7 @@ public class JediUnit extends Unit
 
   public JediUnit(String imagestring, String username)
   {
+    // Base states for JediUnit
     super(2, 8, 15, 8, imagestring, username);
   }
 

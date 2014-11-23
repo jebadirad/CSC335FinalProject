@@ -3,7 +3,7 @@ package unit;
 import java.awt.Image;
 import java.awt.Point;
 
-public class LukeSkywalkerJedi extends RangeUnit
+public class LukeSkywalkerJedi extends JediUnit
 {
 
   public LukeSkywalkerJedi(String imagestring, String username)

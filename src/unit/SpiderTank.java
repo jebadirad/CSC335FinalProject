@@ -3,7 +3,7 @@ package unit;
 import java.awt.Image;
 import java.awt.Point;
 
-public class SpiderTank extends RangeUnit
+public class SpiderTank extends TankUnit
 {
 
   public SpiderTank(String imagestring, String username)
