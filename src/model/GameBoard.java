@@ -62,18 +62,15 @@ public class GameBoard extends JFrame implements Serializable {
 		
 		// Generate actual terrain:
 		for (int i = 5; i < 15; i++) {
-			// Sets the third row for of this board to all lavas
+			// Places lavas in the third row
 			board[i][2].setTerrain(Terrain.Lava);
 		}
 		for (int i = 0; i < 5; i++) {
-			// Sets the third row for of this board to all lavas
+			// Places boudlers in the 
 			board[i][5].setTerrain(Terrain.Boulder);
 		}
 		
-		
-		
-		
-		
+		// Creates a QickSand pit, with Ice in the middle
 		board[10][10].setTerrain(Terrain.Ice);
 		board[10][9].setTerrain(Terrain.QuickSand);
 		board[11][9].setTerrain(Terrain.QuickSand);
