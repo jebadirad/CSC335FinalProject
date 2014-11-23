@@ -1,12 +1,22 @@
 package model;
 
+import item.Inventory;
 import item.Item;
+
 import java.awt.Point;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
 import unit.Unit;
 import unit.UnitFactory;
 import view.GUI;
@@ -18,6 +28,7 @@ import view.GUI;
  */
 public class GameBoard extends JFrame implements Serializable {
 	private static final long serialVersionUID = -3079556358722781506L;
+	private static final String saveDir = System.getProperty("user.dir") + File.separator + "gamesaves" + File.separator;
 	// board will be the most important thing in this class
 	private Cell[][] board;
 	// Player 1 units:
@@ -558,7 +569,7 @@ public class GameBoard extends JFrame implements Serializable {
 	 * Get player1's list of cells that contain units:
 	 * @return Returns the list of player1Units:
 	 */
-	public ArrayList<Cell> getPlayer1Untis() {
+	public ArrayList<Cell> getPlayer1Units() {
 		return player1Units;
 	}
 
@@ -566,7 +577,7 @@ public class GameBoard extends JFrame implements Serializable {
 	 * Get player2's list of cells that contain units:
 	 * @return Returns the list of player2Units
 	 */
-	public ArrayList<Cell> getPlayer2Untis() {
+	public ArrayList<Cell> getPlayer2Units() {
 		return player2Units;
 	}
 	
@@ -724,8 +735,8 @@ public class GameBoard extends JFrame implements Serializable {
 	
 	
 	/**
-	 * Checks to see if the game is over by looking at player1Untis List, and player2Units List 
-	 * to see if either one of them is empty, this verison returns a boolean, we dont know who lost:
+	 * Checks to see if the game is over by looking at player1Units List, and player2Units List 
+	 * to see if either one of them is empty, this version returns a boolean, we dont know who lost:
 	 * @param units If any ArrayList<Cell> given (assumed to be from a player) isEmpty, game is over
 	 * @return true is ArrayList<Cell> given is empty, then game is over, else false
 	 */
@@ -801,6 +812,43 @@ public class GameBoard extends JFrame implements Serializable {
 		return board[x][y];
 	}
 
+	/**
+	 * This method attempts to load gameboard data from "./player 1-player 2-gameboard.dat"
+	 * 
+	 * @return savedGameBoard if successful, a new GameBoard otherwise
+	 */
+	@SuppressWarnings("unchecked")
+	public GameBoard loadData(String p1, String p2) {
+		try {
+			FileInputStream fileIn = new FileInputStream(new File(saveDir + p1 + "-" + p2 + "-" + "gameboard.dat"));
+			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+			this.board = (Cell[][]) objectIn.readObject();
+			this.player1Units = (ArrayList<Cell>) objectIn.readObject();
+			this.player2Units = (ArrayList<Cell>) objectIn.readObject();
+			GameBoard.background = (String) objectIn.readObject();
+			objectIn.close();
+			return this;
+		} catch (Exception e){
+			System.err.println("Unable to load data!");
+		}
+		return new GameBoard("Map 1");
+	}
 
+	/**
+	 * This method attempts to save the inventory map in "./player 1-player 2-gameboard.dat"
+	 */
+	public void saveData(String p1, String p2) {
+		try {
+			FileOutputStream fileOut = new FileOutputStream(new File(saveDir + p1 + "-" + p2 + "-" + "gameboard.dat"));
+			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+			objectOut.writeObject(board);
+			objectOut.writeObject(player1Units);
+			objectOut.writeObject(player2Units);
+			objectOut.writeObject(GameBoard.background);
+			objectOut.close();
+		} catch (Exception e){
+			System.err.println("Error! Could not save data.");
+		}
+	}
 }
 

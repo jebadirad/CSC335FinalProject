@@ -141,8 +141,8 @@ public void newGame()
     System.out.println(player1 + "'s inventory: " + p1inv.toString());
     p2inv.addItem(Item.superitem);
     System.out.println(player2 + "'s inventory: " + p2inv.toString());
-    player1units = gameboard.getPlayer1Untis();
-    player2units = gameboard.getPlayer2Untis();
+    player1units = gameboard.getPlayer1Units();
+    player2units = gameboard.getPlayer2Units();
     CurrentUnitSelected = null;
     EnemyUnitSelected = null;
 
@@ -599,7 +599,7 @@ public static String getPlayer2()
             layoutAttackScreen();
             textPanel.repaint();
             imagePanel.repaint();
-            System.out.println("before chcek");
+            System.out.println("before check");
             if(gameboard.CheckgameOverBooleanVersion(player1units)){
       			 Object[] options = {"New Game", "Quit"};
       			 System.out.println("after check");
@@ -692,8 +692,8 @@ public static String getPlayer2()
       if(e.getSource() == endTurn){
     	  System.out.println("end of " + player1 + " turn");
     	  gameboard.turnOver2(player1units, player2units,player1,player2);
-    	  player1units = gameboard.getPlayer1Untis();
-    	  player2units = gameboard.getPlayer2Untis();
+    	  player1units = gameboard.getPlayer1Units();
+    	  player2units = gameboard.getPlayer2Units();
     	  usernamestring.setText("Current Player: " + player1);
     	  inventorystring.setText(player1 + "'s inventory: " + p1inv.toString());
     	  UpdateUnitScreen();
@@ -866,17 +866,19 @@ public static String getPlayer2()
 	}
 
 	/**
-	 * This method attempts to load gameboard data from "./gameboard.dat"
+	 * This method attempts to load gameboard data from "./player 1-player 2-gameboard.dat"
 	 * 
 	 * @return true if successful, false otherwise
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean loadData() {
 		try {
-			FileInputStream fileIn = new FileInputStream(new File(saveDir + player1 + "-" + player2 + "-" + "gameboard.dat"));
-			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-			gameboard = (GameBoard) objectIn.readObject();
-			objectIn.close();
+
+			// loads saved data into the gameboard if there is a saved game
+			gameboard = new GameBoard("Map 1");
+			if(new File(saveDir + player1 + "-" + player2 + "-" + "gameboard.dat").exists()) {
+				gameboard.loadData(player1, player2);
+			}
 
 		    // create inventories for both players
 			// both players start with a super item. WOW. how generous of us.
@@ -894,8 +896,8 @@ public static String getPlayer2()
 		    }		    
 		    System.out.println(player1 + "'s inventory: " + p1inv.toString());
 		    System.out.println(player2 + "'s inventory: " + p2inv.toString());
-		    player1units = gameboard.getPlayer1Untis();
-		    player2units = gameboard.getPlayer2Untis();
+		    player1units = gameboard.getPlayer1Units();
+		    player2units = gameboard.getPlayer2Units();
 		    CurrentUnitSelected = null;
 		    EnemyUnitSelected = null;
 
@@ -907,14 +909,14 @@ public static String getPlayer2()
 	}
 
 	/**
-	 * This method attempts to save the gameboard in "./gameboard.dat"
+	 * This method attempts to save the gameboard and local inventories in "./player 1-player 2-gameboard.dat"
+	 * and "./player1-inventory.dat" respectively.
 	 */
 	public void saveData() {
 		try {
-			FileOutputStream fileOut = new FileOutputStream(new File(saveDir + player1 + "-" + player2 + "-" + "gameboard.dat"));
-			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-			objectOut.writeObject(gameboard);
-			objectOut.close();
+			gameboard.saveData(player1, player2);
+			p1inv.saveData();
+			p2inv.saveData();
 		} catch (Exception e){
 			System.err.println("Error! Could not save data.");
 		}

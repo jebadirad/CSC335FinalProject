@@ -136,7 +136,7 @@ public class Inventory implements Serializable {
 	/**
 	 * This method attempts to load inventory data from "./<username>-inventory.dat"
 	 * 
-	 * @return true if successful, false otherwise
+	 * @return savedInventory if successful, a new Inventory otherwise
 	 */
 	@SuppressWarnings("unchecked")
 	public Inventory loadData(String username) {
