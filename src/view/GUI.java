@@ -338,7 +338,9 @@ private JButton load;
 
     add(contentContainer);
 
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
     setVisible(true);
+    revalidate();
   }
 
   public static String getPlayer1()
