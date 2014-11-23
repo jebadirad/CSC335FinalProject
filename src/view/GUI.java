@@ -19,6 +19,8 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -68,9 +70,12 @@ public class GUI extends JFrame
   JButton moveRight;
   JButton attack;
   JButton endTurn;
+  JButton UseItem;
 
   ArrayList<JRadioButton> radiobuttons;
   ArrayList<JRadioButton> targetButtons;
+  ArrayList<JCheckBox> itemBoxes;
+  ArrayList<String> items;
 
   MapButtonListener MapButtonListener = new MapButtonListener();
   ButtonGroupListener ButtonGroupListener = new ButtonGroupListener();
@@ -312,10 +317,10 @@ private JButton load;
     attackButtonPanel.setLayout(new GridLayout(1, 3, 0, 0));
     listOfTargets = new JPanel();
     JPanel blank = new JPanel();
-
+    UseItem = new JButton("Use Item");
     attack = new JButton("Attack");
     endTurn = new JButton("End turn");
-    attackButtonPanel.add(blank);
+    attackButtonPanel.add(UseItem);
     attackButtonPanel.add(attack);
     attackButtonPanel.add(endTurn);
     AttackPanel.add(attackButtonPanel, BorderLayout.NORTH);
@@ -326,8 +331,19 @@ private JButton load;
     
     
     inventoryPanel=new JPanel();
+    itemBoxes = new ArrayList<JCheckBox>();
+    items = new ArrayList<String>();
+    Iterator it= p1inv.getInventory().entrySet().iterator();
+    while(it.hasNext()){
+    	Map.Entry pairs = (Map.Entry)it.next();
+    	itemBoxes.add(new JCheckBox(pairs.getKey().toString()));
+    }
     
-    
+    for(int i = 0; i < itemBoxes.size(); i ++){
+    	itemBoxes.get(i).addItemListener(new itemListener());
+    	inventoryPanel.add(itemBoxes.get(i));
+    	
+    }
     playerContainer.add(movePanel);
     playerContainer.add(usernamestring);
     playerContainer.add(inventoryPanel);
@@ -360,9 +376,9 @@ private JButton load;
     moveRight.addActionListener(new ButtonListener());
     moveDown.addActionListener(new ButtonListener());
     endTurn.addActionListener(new ButtonListener());
+    UseItem.addActionListener(new ButtonListener());
 
   }
-
   private class ButtonListener implements ActionListener
   {
 
@@ -370,6 +386,23 @@ private JButton load;
     public void actionPerformed(ActionEvent e)
     {
       // TODO Auto-generated method stub
+    	if(e.getSource() == UseItem){
+    		if(CurrentUnitSelected == null){
+    			JOptionPane optionPane = new JOptionPane();
+    	          optionPane.setMessage("Please Select a Unit");
+    	          JDialog dialog = optionPane.createDialog(":~(");
+    	          dialog.setAlwaysOnTop(true);
+    	          dialog.setVisible(true);
+    		}
+    		else{
+    			for(int i = 0; i < items.size(); i++){
+    				Item item = p1inv.getItem(items.get(i));
+    				CurrentUnitSelected = gameboard.useItem(item, CurrentUnitSelected);
+    				p1inv.removeItem(item);
+    			}
+    			items.clear();
+    		}
+    	}
       if (e.getSource() == moveUp)
       {
         if (CurrentUnitSelected == null)
@@ -393,6 +426,7 @@ private JButton load;
                 targets(CurrentUnitSelected);
                 targets.clear();
            }
+            UpdateUnitScreen();
             layoutAttackScreen();
             
             textPanel.repaint();
@@ -448,6 +482,7 @@ private JButton load;
                 targets(CurrentUnitSelected);
                 targets.clear();
            }
+            UpdateUnitScreen();
             layoutAttackScreen();            
             textPanel.repaint();
             imagePanel.repaint();
@@ -501,9 +536,12 @@ private JButton load;
             if(CurrentUnitSelected.hasUnit()){
             	 player1units.add(i, CurrentUnitSelected);
                  targets(CurrentUnitSelected);
-                 targets.clear();
+                 
             }
-           
+            else{
+            	targets.clear();
+            }
+            UpdateUnitScreen();
             layoutAttackScreen();
             textPanel.repaint();
             imagePanel.repaint();
@@ -560,7 +598,9 @@ private JButton load;
            	 player1units.add(i, CurrentUnitSelected);
                 targets(CurrentUnitSelected);
                 targets.clear();
+                
            }
+            UpdateUnitScreen();
             layoutAttackScreen();
             textPanel.repaint();
             imagePanel.repaint();
@@ -680,7 +720,26 @@ private JButton load;
 
     }
   }
+  private class itemListener implements ItemListener{
 
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		// TODO Auto-generated method stub
+		for(int i = 0; i < itemBoxes.size(); i ++){
+			if(e.getSource() == itemBoxes.get(i)){
+				if(e.getStateChange() == 1){
+					items.add(itemBoxes.get(i).getText());
+				}
+				else{
+					items.remove(itemBoxes.get(i).getText());
+				}
+				System.out.println(items.toString() + "\n");
+			}
+		}
+		
+	}
+	  
+  }
   
   
   private class MapButtonListener implements ActionListener
