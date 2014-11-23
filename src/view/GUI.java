@@ -83,7 +83,6 @@ public class GUI extends JFrame
   ArrayList<String> items;
 
   MapButtonListener MapButtonListener = new MapButtonListener();
-  ButtonGroupListener ButtonGroupListener = new ButtonGroupListener();
 
   // things to run the game
   public static GameBoard gameboard;
@@ -114,6 +113,7 @@ public GUI()
   {
     super();
     frame = new JFrame();
+    frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
     layoutPregameGUI();
   }
 
@@ -691,6 +691,9 @@ public static String getPlayer2()
       }
       if(e.getSource() == endTurn){
     	  System.out.println("end of " + player1 + " turn");
+    	  Inventory tempinventory = p1inv;
+    	  p1inv = p2inv;
+    	  p2inv = tempinventory;
     	  gameboard.turnOver2(player1units, player2units,player1,player2);
     	  player1units = gameboard.getPlayer1Units();
     	  player2units = gameboard.getPlayer2Units();
@@ -698,6 +701,7 @@ public static String getPlayer2()
     	  inventorystring.setText(player1 + "'s inventory: " + p1inv.toString());
     	  UpdateUnitScreen();
     	  clearAttackScreen();
+    	  UpdateItemScreen();
     	  CurrentUnitSelected = null;
     	  EnemyUnitSelected = null;
     	  revalidate();
@@ -805,48 +809,54 @@ public static String getPlayer2()
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			// frame.setVisible(false);
-			// player1 = username1.getText();
-			// player2 = username2.getText();
-			// newGame();
-			// layoutGUI();
-			// registerListeners();
 			if (e.getSource() == Map) {
-				frame.setVisible(false);
+				
+				
 				player1 = username1.getText();
 				player2 = username2.getText();
-				newGame();
-				layoutGUI();
-				registerListeners();
-			} else if (e.getSource() == load) {
+				if(player1.equals("") || player1.equals(null) || player2.equals("")|| player2.equals(null)){
+					JOptionPane optionPane = new JOptionPane();
+		              optionPane.setMessage("You need to enter valid usernames!");
+		              JDialog dialog = optionPane.createDialog(":~(");
+		              dialog.setAlwaysOnTop(true);
+		              dialog.setVisible(true);
+				}
+				else{
 					frame.setVisible(false);
-					player1 = username1.getText();
-					player2 = username2.getText();
-					if (new File(saveDir + player1 + "-" + player2 + "-"
-							+ "gameboard.dat").exists()) {
-					loadData();
-					} else {
-						System.out.println("You don't have a save file! Creating new game...");
-						newGame();
-					}
+					newGame();
 					layoutGUI();
 					registerListeners();
+				}
+				
+			} else if (e.getSource() == load) {
+					
+					player1 = username1.getText();
+					player2 = username2.getText();
+					if(player1.equals("") || player1.equals(null) || player2.equals("")|| player2.equals(null)){
+						JOptionPane optionPane = new JOptionPane();
+			              optionPane.setMessage("You need to enter valid usernames!");
+			              JDialog dialog = optionPane.createDialog(":~(");
+			              dialog.setAlwaysOnTop(true);
+			              dialog.setVisible(true);
+					}
+					else{
+						frame.setVisible(false);
+						if (new File(saveDir + player1 + "-" + player2 + "-"
+								+ "gameboard.dat").exists()) {
+						loadData();
+						} else {
+							System.out.println("You don't have a save file! Creating new game...");
+							newGame();
+						}
+						layoutGUI();
+						registerListeners();
+					}
+					
 			}
 		}
 
 	}
 
-  private class ButtonGroupListener implements ActionListener
-  {
-
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-      // TODO Auto-generated method stub
-
-    }
-
-  }
 
 
 	/**
