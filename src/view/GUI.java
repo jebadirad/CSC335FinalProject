@@ -683,31 +683,41 @@ private JButton load;
 
   
   
-  private class MapButtonListener implements ActionListener
-  {
+	private class MapButtonListener implements ActionListener {
 
-	     @Override
-	     public void actionPerformed(ActionEvent e)
-	     {
-	       // TODO Auto-generated method stub
-	     	if(e.getSource() == Map) {
-	       frame.setVisible(false);
-	       player1 = username1.getText();
-	       player2 = username2.getText();
-	       newGame();
-	       layoutGUI();
-	       registerListeners();
-	     	} else if(e.getSource() == load) {
-	     	      frame.setVisible(false);
-	     	      player1 = username1.getText();
-	     	      player2 = username2.getText();
-	     		loadData();
-	     		layoutGUI();
-	     		registerListeners();
-	     	}
-	     }
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			// frame.setVisible(false);
+			// player1 = username1.getText();
+			// player2 = username2.getText();
+			// newGame();
+			// layoutGUI();
+			// registerListeners();
+			if (e.getSource() == Map) {
+				frame.setVisible(false);
+				player1 = username1.getText();
+				player2 = username2.getText();
+				newGame();
+				layoutGUI();
+				registerListeners();
+			} else if (e.getSource() == load) {
+					frame.setVisible(false);
+					player1 = username1.getText();
+					player2 = username2.getText();
+					if (new File(saveDir + player1 + "-" + player2 + "-"
+							+ "gameboard.dat").exists()) {
+					loadData();
+					} else {
+						System.out.println("You don't have a save file! Creating new game...");
+						newGame();
+					}
+					layoutGUI();
+					registerListeners();
+			}
+		}
 
-  }
+	}
 
   private class ButtonGroupListener implements ActionListener
   {
