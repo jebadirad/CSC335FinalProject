@@ -227,6 +227,7 @@ public class GUI extends JFrame
     playerContainer.setSize(1280, 300);
 
     usernamestring = new JLabel("Current Player: " + player1);
+    inventorystring = new JLabel(player1 + "'s inventory: " + p1inv.toString());
     frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(1280, 800);
     setResizable(false);
