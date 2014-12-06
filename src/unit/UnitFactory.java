@@ -28,22 +28,28 @@ public class UnitFactory
     if (unitType.equals("CloneTrooper"))
       return new CloneTrooper("CloneTrooper.png", username);
 
+    if (unitType.equals("BattleDroid"))
+      return new BattleDroid("BattleDroid.png", username);
+
     // CODE FOR HEALER UNITS
     // Code to make new Medic.
     if (unitType.equals("Medic"))
       return new Medic("Medic.png", username);
 
-    //CODE FOR JEDI UNITS
+    // CODE FOR JEDI UNITS
     // Code to make new Jedi LukeSkywalker.
     if (unitType.equals("LukeSkywalker"))
       return new LukeSkywalkerJedi("Luke_Skywalker_stance.png", username);
 
-    //CODE FOR TANK UNITS
+    if (unitType.equals("DarthVader"))
+      return new DarthVaderJedi("DarthVader.png", username);
+
+    // CODE FOR TANK UNITS
     // Code to make new SpiderTank.
     if (unitType.equals("SpiderTank"))
       return new SpiderTank("SpiderTank.png", username);
-    
-    //CODE FOR ???? UNITS
+
+    // CODE FOR ???? UNITS
 
     // Return null if unitType does not exist.
     return null;

@@ -35,6 +35,8 @@ public class Imageview extends JPanel
   private static BufferedImage EnemyUnitSelectedImage;
   private static BufferedImage spiderTank;
   private static BufferedImage CurrentUnitSelectedImage;
+  private static BufferedImage battleDroid;
+  private static BufferedImage darthVader;
   private static final int WIDTH = 23;
   private static final int HEIGHT = 64;
 
@@ -94,16 +96,22 @@ public class Imageview extends JPanel
             image = CurrentUnitSelectedImage;
             g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
           }
-          if (theModel[i][j].getUnit() == GUI.gameboard
-                  .getEnemyUnitSelected())
-              {
-                image = EnemyUnitSelectedImage;
-                g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
-              }
+          if (theModel[i][j].getUnit() == GUI.gameboard.getEnemyUnitSelected())
+          {
+            image = EnemyUnitSelectedImage;
+            g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
+          }
           String unitName = theModel[i][j].getUnit().getIconImage();
+
           if (unitName.equals("CloneTrooper.png"))
           {
             image = cloneTrooper;
+            g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
+          }
+
+          if (unitName.equals("BattleDroid.png"))
+          {
+            image = battleDroid;
             g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
           }
 
@@ -116,6 +124,12 @@ public class Imageview extends JPanel
           if (unitName.equals("Luke_Skywalker_stance.png"))
           {
             image = lukeSkyWalkerJedi;
+            g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
+          }
+
+          if (unitName.equals("DarthVader.png"))
+          {
+            image = darthVader;
             g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
           }
 
@@ -154,8 +168,13 @@ public class Imageview extends JPanel
       quicksandSheet = ImageIO.read(new File(imageDir + "sand.png"));
       desertSheet = ImageIO.read(new File(imageDir + "desert.png"));
       grassSheet = ImageIO.read(new File(imageDir + "Grass.png"));
-      CurrentUnitSelectedImage = ImageIO.read(new File(imageDir + "selectSquare.png"));
-      EnemyUnitSelectedImage = ImageIO.read(new File(imageDir + "enemySquare.png"));
+      CurrentUnitSelectedImage = ImageIO.read(new File(imageDir
+          + "selectSquare.png"));
+      EnemyUnitSelectedImage = ImageIO.read(new File(imageDir
+          + "enemySquare.png"));
+      battleDroid = ImageIO.read(new File(imageDir + "BattleDroid.png"));
+      darthVader = ImageIO.read(new File(imageDir + "DarthVader.png"));
+
       if (backGroundString.equals("Grass.png"))
       {
         backgroundSheet = grassSheet;
