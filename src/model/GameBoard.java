@@ -2524,6 +2524,13 @@ public class GameBoard extends JFrame implements Serializable
     }
     return null;
   }
+  public Unit getEnemyUnitSelected(){
+	  if(GUI.EnemyUnitSelected != null){
+		  return GUI.EnemyUnitSelected.getUnit();
+		  
+	  }
+	  return null;
+  }
 
   // Getters/Setters:
 

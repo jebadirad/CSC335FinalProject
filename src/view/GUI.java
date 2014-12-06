@@ -770,6 +770,7 @@ public static String getPlayer2()
           System.out.println(CurrentUnitSelected.getUnit().getUnitStatus());
           targets(CurrentUnitSelected);
           layoutAttackScreen();
+          repaint();
           
         }
       }
@@ -777,6 +778,7 @@ public static String getPlayer2()
     	  if(e.getSource() == targetButtons.get(i)){
     		  EnemyUnitSelected = targets.get(i);
     		  System.out.println(EnemyUnitSelected.getUnit().getUnitStatus());
+    		  repaint();
     	  }
       }
 
