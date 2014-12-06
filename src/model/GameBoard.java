@@ -39,6 +39,7 @@ public class GameBoard extends JFrame implements Serializable {
 	// Player 2 Units:
 	private ArrayList<Cell> player2Units;
 	public static String background;
+	private AI computer;
 
 	/**
 	 * Constructor for the GameBoard object
@@ -48,12 +49,15 @@ public class GameBoard extends JFrame implements Serializable {
 	 */
 	public GameBoard(String mapName) {
 		if (mapName.equals("Map 1"))
-			createMap2();
+			createMap1();
 		else if (mapName.equals("Map 2"))
 			createMap2();
-		else
+		else if (mapName.equals("Random"))
 			createRandomMap();
-
+		else {
+			computer = new AI("Computer 1");
+			createVsComputerMap();
+		}
 	}
 
 	/**
@@ -158,7 +162,7 @@ public class GameBoard extends JFrame implements Serializable {
 				numberOfBoulders++;
 			}
 		}
-		int numberOfLavas = 0;
+//		int numberOfLavas = 0;
 //		while (numberOfLavas < 50) {
 //			int randomX = rand.nextInt(20);
 //			int randomY = rand.nextInt(20);
@@ -167,11 +171,76 @@ public class GameBoard extends JFrame implements Serializable {
 //				numberOfLavas++;
 //			}
 //		}
-		
-
-		
-
+	
 	}
+	
+	public void createVsComputerMap() {
+		background = "Grass.png";
+		// board is 20 by 20 for now:
+		board = new Cell[20][20];
+
+		// initialize all cells to contain no units, and create desert map
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 20; j++) {
+				// need to create the cells before we add them to the board and
+				// try to access them.
+				board[i][j] = new Cell(Terrain.Nothing, i, j);
+				board[i][j].setUnit(null);
+				// Give each cell a location
+				board[i][j].setLocation(new Point(i, j));
+			}
+		}
+		// Call SetBackGround grass for Map1:
+		// Imageview.setBackground("Grass.png");
+
+		// Generate actual terrain:
+		for (int i = 0; i < 20; i++) {
+			// Places lavas in the third row
+			board[i][8].setTerrain(Terrain.Lava);
+			i++;
+		}
+		for (int i = 0; i < 5; i++) {
+			// Places boulders in the
+			board[i][5].setTerrain(Terrain.Boulder);
+		}
+
+		// Creates a QickSand pit, with Ice in the middle
+		board[10][10].setTerrain(Terrain.Ice);
+		board[10][9].setTerrain(Terrain.QuickSand);
+		board[11][9].setTerrain(Terrain.QuickSand);
+		board[9][9].setTerrain(Terrain.QuickSand);
+		board[9][10].setTerrain(Terrain.QuickSand);
+		board[11][10].setTerrain(Terrain.QuickSand);
+		board[11][11].setTerrain(Terrain.QuickSand);
+		board[9][11].setTerrain(Terrain.QuickSand);
+		board[10][11].setTerrain(Terrain.QuickSand);
+
+		board[3][11].setTerrain(Terrain.Boulder);
+		board[5][11].setTerrain(Terrain.Boulder);
+
+		board[6][7].setTerrain(Terrain.Ice);
+		board[5][7].setTerrain(Terrain.Ice);
+		board[4][7].setTerrain(Terrain.Ice);
+		board[3][7].setTerrain(Terrain.Ice);
+		board[2][7].setTerrain(Terrain.Lava);
+		board[1][7].setTerrain(Terrain.Ice);
+		board[0][7].setTerrain(Terrain.QuickSand);
+
+		board[19][7].setTerrain(Terrain.Lava);
+		board[18][7].setTerrain(Terrain.Ice);
+		board[17][7].setTerrain(Terrain.Ice);
+		board[16][7].setTerrain(Terrain.Lava);
+		board[15][7].setTerrain(Terrain.Ice);
+		board[14][7].setTerrain(Terrain.Ice);
+		board[13][7].setTerrain(Terrain.Ice);
+		board[12][7].setTerrain(Terrain.Ice);
+		
+		generatePlayer1Units();
+		generateComputerUnits();
+		
+	}
+	
+	
 
 	/**
 	 * Creates a random map:
@@ -336,7 +405,7 @@ public class GameBoard extends JFrame implements Serializable {
 	 * are Player2's units
 	 */
 	public void generatePlayer2Units() {
-		// Instantiate player1Units:
+		// Instantiate player2Units:
 		player2Units = new ArrayList<Cell>();
 
 		// Creating one single unit for now:
@@ -359,6 +428,36 @@ public class GameBoard extends JFrame implements Serializable {
 		player2Units.add(board[2][12]);
 
 	}
+	
+	public void generateComputerUnits() {
+		// Instantiate AI Units:
+		player2Units = new ArrayList<Cell>();
+
+		// Creating one single unit for now:
+		UnitFactory factory = new UnitFactory();
+		// Last parameter is UserName obtained from the GUI
+		/*
+		 * Unit dUnit = factory.makeUnit("Medic", GUI.getPlayer2());
+		 * board[3][1].setUnit(dUnit); board[3][1].setHasUnit(true);
+		 */
+		Unit eUnit = factory.makeUnit("LukeSkywalker", computer.getName());
+		board[7][10].setUnit(eUnit);
+		board[7][10].setHasUnit(true);
+
+		Unit fUnit = factory.makeUnit("Medic", computer.getName());
+		board[2][12].setUnit(fUnit);
+		board[2][12].setHasUnit(true);
+
+		// Adds this to player2Units list:
+		player2Units.add(board[7][10]);
+		player2Units.add(board[2][12]);
+		
+		// Give this list to the AI:
+		computer.setUnits(player2Units);
+		
+	}
+	
+	
 
 	/**
 	 * Generates two random units for player1, not standing in any type of
