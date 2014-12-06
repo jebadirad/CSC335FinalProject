@@ -13,4 +13,11 @@ public class DarthVaderJedi extends JediUnit
     return "Darth Vader";
   }
 
+@Override
+public String getDescription() {
+	// TODO Auto-generated method stub
+	return "this is the description";
+}
+  
+
 }

@@ -26,5 +26,8 @@ public class CloneTrooper extends RangeUnit
   {
     return "Clone Trooper";
   }
+  public String getDescription(){
+	  return "this is the description";
+  }
 
 }

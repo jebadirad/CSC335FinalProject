@@ -54,6 +54,7 @@ public abstract class Unit implements Serializable
    */
   public abstract void levelUp();
 
+  public abstract String getDescription();
   /**
    * Method to get Unit status.
    * 

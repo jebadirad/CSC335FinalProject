@@ -146,6 +146,7 @@ public void newGame()
     player2units = gameboard.getPlayer2Units();
     CurrentUnitSelected = null;
     EnemyUnitSelected = null;
+    targetButtons = new ArrayList();
 
   }
 
@@ -179,11 +180,14 @@ public void newGame()
 	  
   }
   private void toggleUnitScreen(){
-	  frame.remove(imagePanel);
+	  contentContainer.remove(imagePanel);
+	  imagePanel.removeAll();
 	  imagePanel = new PlayerStatus();
-	  frame.add(imagePanel);
+	  contentContainer.add(imagePanel);
+	  imagePanel.updateUI();
 	  revalidate();
 	  repaint();
+	  
   }
   private void UpdateUnitScreen(){
 	  unitPanel.removeAll();
@@ -376,7 +380,7 @@ public void newGame()
     AttackPanel.add(attackButtonPanel, BorderLayout.NORTH);
     AttackPanel.add(listOfTargets, BorderLayout.CENTER);
     
-    contentContainer.add(tabbedpane, BorderLayout.NORTH);
+    contentContainer.add(imagePanel, BorderLayout.NORTH);
     contentContainer.add(playerContainer, BorderLayout.CENTER);
     
     
@@ -400,8 +404,6 @@ public void newGame()
     playerContainer.add(inventoryPanel);
     playerContainer.add(AttackPanel);
 
-    //tabbedpane.add(textPanel, "Game");
-    tabbedpane.add(imagePanel, "Graphical View");
 
     add(contentContainer);
 

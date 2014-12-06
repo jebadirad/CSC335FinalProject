@@ -6,7 +6,7 @@ package unit;
  * @author Kal
  * 
  */
-public class HealerUnit extends Unit
+public abstract class HealerUnit extends Unit
 {
   /**
    * Calls super for given values passed from subclass.
@@ -31,5 +31,6 @@ public class HealerUnit extends Unit
     // TODO Auto-generated method stub
 
   }
+  public abstract String getDescription();
 
 }

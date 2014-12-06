@@ -1,6 +1,6 @@
 package unit;
 
-public class RangeUnit extends Unit
+public abstract class RangeUnit extends Unit
 {
 
   public RangeUnit(String imagestring, String username)
@@ -20,5 +20,5 @@ public class RangeUnit extends Unit
     // TODO Auto-generated method stub
 
   }
-
+  public abstract String getDescription();
 }

@@ -1,6 +1,6 @@
 package unit;
 
-public class TankUnit extends Unit
+public abstract class TankUnit extends Unit
 {
 
   public TankUnit(String imagestring, String username)
@@ -20,5 +20,6 @@ public class TankUnit extends Unit
     // TODO Auto-generated method stub
 
   }
+  public abstract String getDescription();
 
 }

@@ -13,4 +13,10 @@ public class SpiderTank extends TankUnit
     return "Spider Tank";
   }
 
+@Override
+public String getDescription() {
+	// TODO Auto-generated method stub
+	return "this is the description";
+}
+
 }

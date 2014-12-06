@@ -13,4 +13,10 @@ public class LukeSkywalkerJedi extends JediUnit
     return "L";
   }
 
+@Override
+public String getDescription() {
+	// TODO Auto-generated method stub
+	return "this is the description";
+}
+
 }

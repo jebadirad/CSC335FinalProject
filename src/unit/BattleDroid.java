@@ -27,4 +27,10 @@ public class BattleDroid extends RangeUnit
     return "Battle Droid";
   }
 
+@Override
+public String getDescription() {
+	// TODO Auto-generated method stub
+return "this is the description";
+}
+
 }
