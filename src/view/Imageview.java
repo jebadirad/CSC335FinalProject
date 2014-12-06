@@ -33,6 +33,7 @@ public class Imageview extends JPanel
   private static BufferedImage desertSheet;
   private static BufferedImage lukeSkyWalkerJedi;
   private static BufferedImage spiderTank;
+  private static BufferedImage selectedImage;
   private static final int WIDTH = 23;
   private static final int HEIGHT = 64;
 
@@ -86,6 +87,12 @@ public class Imageview extends JPanel
         }
         if (theModel[i][j].hasUnit())
         {
+          if (theModel[i][j].getUnit() == GUI.gameboard
+              .getCurrentUnitSelected())
+          {
+            image = selectedImage;
+            g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
+          }
           String unitName = theModel[i][j].getUnit().getIconImage();
           if (unitName.equals("CloneTrooper.png"))
           {
@@ -140,7 +147,7 @@ public class Imageview extends JPanel
       quicksandSheet = ImageIO.read(new File(imageDir + "sand.png"));
       desertSheet = ImageIO.read(new File(imageDir + "desert.png"));
       grassSheet = ImageIO.read(new File(imageDir + "Grass.png"));
-
+      selectedImage = ImageIO.read(new File(imageDir + "selectSquare.png"));
       if (backGroundString.equals("Grass.png"))
       {
         backgroundSheet = grassSheet;
