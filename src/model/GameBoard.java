@@ -39,7 +39,6 @@ public class GameBoard extends JFrame implements Serializable {
 	// Player 2 Units:
 	private ArrayList<Cell> player2Units;
 	public static String background;
-	private AI computer;
 
 	/**
 	 * Constructor for the GameBoard object
@@ -54,10 +53,9 @@ public class GameBoard extends JFrame implements Serializable {
 			createMap2();
 		else if (mapName.equals("Random"))
 			createRandomMap();
-		else {
-			computer = new AI("Computer 1");
+		else 
 			createVsComputerMap();
-		}
+		
 	}
 
 	/**
@@ -430,30 +428,7 @@ public class GameBoard extends JFrame implements Serializable {
 	}
 	
 	public void generateComputerUnits() {
-		// Instantiate AI Units:
-		player2Units = new ArrayList<Cell>();
-
-		// Creating one single unit for now:
-		UnitFactory factory = new UnitFactory();
-		// Last parameter is UserName obtained from the GUI
-		/*
-		 * Unit dUnit = factory.makeUnit("Medic", GUI.getPlayer2());
-		 * board[3][1].setUnit(dUnit); board[3][1].setHasUnit(true);
-		 */
-		Unit eUnit = factory.makeUnit("LukeSkywalker", computer.getName());
-		board[7][10].setUnit(eUnit);
-		board[7][10].setHasUnit(true);
-
-		Unit fUnit = factory.makeUnit("Medic", computer.getName());
-		board[2][12].setUnit(fUnit);
-		board[2][12].setHasUnit(true);
-
-		// Adds this to player2Units list:
-		player2Units.add(board[7][10]);
-		player2Units.add(board[2][12]);
 		
-		// Give this list to the AI:
-		computer.setUnits(player2Units);
 		
 	}
 	
