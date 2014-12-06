@@ -24,7 +24,7 @@ public class CloneTrooper extends RangeUnit
    */
   public String toString()
   {
-    return "C";
+    return "Clone Trooper";
   }
 
 }

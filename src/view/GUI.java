@@ -61,6 +61,7 @@ public class GUI extends JFrame
   JPanel imagePanel;
   JPanel contentContainer;
   JPanel playerContainer;
+  JPanel playerInfoContainer;
   JTabbedPane tabbedpane;
 
   JPanel listOfTargets;
@@ -76,6 +77,8 @@ public class GUI extends JFrame
   JButton attack;
   JButton endTurn;
   JButton UseItem;
+  JButton Shop;
+  JButton UnitInfo;
 
   ArrayList<JRadioButton> radiobuttons;
   ArrayList<JRadioButton> targetButtons;
@@ -287,10 +290,12 @@ public void newGame()
     contentContainer.setLayout(new BorderLayout());
 
     playerContainer = new JPanel();
-    playerContainer.setLayout(new GridLayout(1, 4, 0, 0));
+    playerContainer.setLayout(new GridLayout(1,3,0,0));
     playerContainer.setSize(1280, 300);
-
+    playerInfoContainer = new JPanel();
+    playerInfoContainer.setPreferredSize(new Dimension(100,300));
     usernamestring = new JLabel("Current Player: " + player1);
+    playerInfoContainer.add(usernamestring);
     inventorystring = new JLabel(player1 + "'s inventory: " + p1inv.toString());
     frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(1280, 800);
@@ -310,14 +315,15 @@ public void newGame()
     imagePanel.setPreferredSize(new Dimension(1280, 500));
 
     movePanel = new JPanel();
-
+    movePanel.setPreferredSize(new Dimension(450, 150));
     movePanel.setLayout(new BorderLayout());
 
     JPanel DirectionPanel = new JPanel();
-    DirectionPanel.setPreferredSize(new Dimension(250, 75));
+    DirectionPanel.setPreferredSize(new Dimension(250, 150));
     DirectionPanel.setLayout(new GridLayout(2, 3, 0, 0));
     JPanel blankPanel = new JPanel();
     JPanel blankpanel1 = new JPanel();
+    JPanel blankPanel2 = new JPanel();
     DirectionPanel.add(blankPanel);
     DirectionPanel.add(moveUp);
     DirectionPanel.add(blankpanel1);
@@ -326,7 +332,7 @@ public void newGame()
     DirectionPanel.add(moveRight);
 
     unitPanel = new JPanel();
-    unitPanel.setPreferredSize(new Dimension(175, 75));
+    unitPanel.setPreferredSize(new Dimension(200, 150));
     unitgroup = new ButtonGroup();
     radiobuttons = new ArrayList();
     for (int i = 0; i < player1units.size(); i++)
@@ -347,16 +353,22 @@ public void newGame()
 
     AttackPanel = new JPanel();
     AttackPanel.setLayout(new BorderLayout());
+    AttackPanel.setPreferredSize(new Dimension(450,150));
     attackButtonPanel = new JPanel();
-    attackButtonPanel.setLayout(new GridLayout(1, 3, 0, 0));
+    attackButtonPanel.setLayout(new GridLayout(2, 3, 0, 0));
     listOfTargets = new JPanel();
     JPanel blank = new JPanel();
     UseItem = new JButton("Use Item");
     attack = new JButton("Attack");
     endTurn = new JButton("End turn");
+    Shop = new JButton("Shop");
+    UnitInfo = new JButton("Unit Info");
     attackButtonPanel.add(UseItem);
     attackButtonPanel.add(attack);
     attackButtonPanel.add(endTurn);
+    attackButtonPanel.add(Shop);
+    attackButtonPanel.add(UnitInfo);
+    attackButtonPanel.add(blankPanel2);
     AttackPanel.add(attackButtonPanel, BorderLayout.NORTH);
     AttackPanel.add(listOfTargets, BorderLayout.CENTER);
     
@@ -365,6 +377,7 @@ public void newGame()
     
     
     inventoryPanel=new JPanel();
+    inventoryPanel.setPreferredSize(new Dimension(200,150));
     itemBoxes = new ArrayList<JCheckBox>();
     items = new ArrayList<String>();
     Iterator it= p1inv.getInventory().entrySet().iterator();
@@ -379,11 +392,11 @@ public void newGame()
     	
     }
     playerContainer.add(movePanel);
-    playerContainer.add(usernamestring);
+    //playerContainer.add(playerInfoContainer);
     playerContainer.add(inventoryPanel);
     playerContainer.add(AttackPanel);
 
-    tabbedpane.add(textPanel, "Game");
+    //tabbedpane.add(textPanel, "Game");
     tabbedpane.add(imagePanel, "Graphical View");
 
     add(contentContainer);
@@ -781,6 +794,12 @@ public static String getPlayer2()
     		  repaint();
     	  }
       }
+      if(e.getSource() == Shop){
+    	  
+      }
+      if(e.getSource() == UnitInfo){
+    	  
+      }
 
     }
   }
@@ -887,7 +906,7 @@ public static String getPlayer2()
 		try {
 
 			// loads saved data into the gameboard if there is a saved game
-			gameboard = new GameBoard("Map 1");
+			gameboard = new GameBoard("Map 2");
 			if(new File(saveDir + player1 + "-" + player2 + "-" + "gameboard.dat").exists()) {
 				gameboard.loadData(player1, player2);
 			}

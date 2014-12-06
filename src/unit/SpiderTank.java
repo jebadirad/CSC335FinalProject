@@ -10,7 +10,7 @@ public class SpiderTank extends TankUnit
 
   public String toString()
   {
-    return "S";
+    return "Spider Tank";
   }
 
 }
