@@ -1,6 +1,7 @@
 package view;
 
 import item.Inventory;
+import model.AI;
 import item.Item;
 
 import java.awt.BorderLayout;
@@ -50,7 +51,9 @@ public class GUI extends JFrame
   public static String player2;
 
   public ArrayList<Cell> playerunits = new ArrayList<Cell>();
-
+  AI computer = new AI();
+  
+  
   JFrame frame;
 
   JPanel movePanel;
@@ -69,10 +72,10 @@ public class GUI extends JFrame
   ButtonGroup targetGroup;
   JButton moveUp;
   JButton moveDown;
-  JButton moveLeft;
+  public static JButton moveLeft;
   JButton moveRight;
   JButton attack;
-  JButton endTurn;
+  public static JButton endTurn;
   JButton endTurnAI;
   JButton UseItem;
   JButton Shop;
@@ -779,15 +782,20 @@ public static String getPlayer2()
     	  movePanel.repaint();
     	  AttackPanel.repaint();
     	  imagePanel.repaint();
+    	  
       }
       if(e.getSource() == endTurnAI){
     	  System.out.println("end of " + player1 + " turn");
     	  Inventory tempinventory = p1inv;
     	  p1inv = p2inv;
     	  p2inv = tempinventory;
+    	  
     	  gameboard.turnOverComputer(player1units, player2units,player1,player2);
+    	  computer.makeMove();
+    	  endTurn.doClick();
     	  player1units = gameboard.getPlayer1Units();
     	  player2units = gameboard.getPlayer2Units();
+    	  
     	  usernamestring.setText("Current Player: " + player1);
     	  inventorystring.setText(player1 + "'s inventory: " + p1inv.toString());
     	  UpdateUnitScreen();

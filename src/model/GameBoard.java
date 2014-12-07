@@ -176,7 +176,7 @@ public class GameBoard extends JFrame implements Serializable {
 	}
 
 	public void createVsComputerMap() {
-		computer = new AI(GUI.getPlayer2());
+		computer = new AI();
 		background = "Grass.png";
 		// board is 20 by 20 for now:
 		board = new Cell[20][20];
@@ -463,7 +463,6 @@ public class GameBoard extends JFrame implements Serializable {
 		player2Units.add(board[1][17]);
 
 		// Give AI these Units:
-		computer.setUnits(player2Units);
 
 	}
 
@@ -2461,13 +2460,14 @@ public class GameBoard extends JFrame implements Serializable {
 		GUI.player2 = player1username;
 		GUI.CurrentUnitSelected = null;
 		GUI.EnemyUnitSelected = null;
+		
 
 	}
 
 	public void turnOverComputer(ArrayList<Cell> player1units,
 			ArrayList<Cell> player2units, String player1username,
 			String player2username) {
-		for (int i = 0; i < player1units.size(); i++) {
+		/*for (int i = 0; i < player1units.size(); i++) {
 			player1units.get(i).getUnit()
 					.setMovesLeft(player1Units.get(i).getUnit().getMoveRange());
 			player1units.get(i).getUnit().setCanAttack(true);
@@ -2480,7 +2480,8 @@ public class GameBoard extends JFrame implements Serializable {
 		GUI.EnemyUnitSelected = null;
 		
 		//computer.setUnits(player2units);
-		computer.makeMove();
+		computer.makeMove();*/
+		GUI.endTurn.doClick();
 
 		
 	}
