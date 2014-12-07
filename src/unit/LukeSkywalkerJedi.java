@@ -10,13 +10,13 @@ public class LukeSkywalkerJedi extends JediUnit
 
   public String toString()
   {
-    return "L";
+    return "Luke Skywalker";
   }
 
-@Override
-public String getDescription() {
-	// TODO Auto-generated method stub
-	return "this is the description";
-}
+  @Override
+  public String getDescription()
+  {
+    return "Luke Skywalker is a Force-sensitive Human male who helped found the New Republic, as well as the New Jedi Order.";
+  }
 
 }

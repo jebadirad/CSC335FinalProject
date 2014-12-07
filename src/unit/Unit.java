@@ -83,6 +83,11 @@ public abstract class Unit implements Serializable
     return damage;
   }
 
+  public int getCurrentHealth()
+  {
+    return currentHealth;
+  }
+
   public int getHealth()
   {
     return health;
@@ -127,6 +132,11 @@ public abstract class Unit implements Serializable
   public void setHealth(int health)
   {
     this.health = health;
+  }
+
+  public void setCurrentHealth(int currenthealth)
+  {
+    currentHealth = currenthealth;
   }
 
   public void setMoveRange(int moverange)

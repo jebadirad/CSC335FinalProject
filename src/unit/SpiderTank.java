@@ -10,13 +10,13 @@ public class SpiderTank extends TankUnit
 
   public String toString()
   {
-    return "Spider Tank";
+    return "Imperial Spider Droid";
   }
 
-@Override
-public String getDescription() {
-	// TODO Auto-generated method stub
-	return "this is the description";
-}
+  @Override
+  public String getDescription()
+  {
+    return "Imperial Spiders are security droids deployed aboard the Death Star. They are slow but hard to take down.";
+  }
 
 }

@@ -27,7 +27,7 @@ public class CloneTrooper extends RangeUnit
     return "Clone Trooper";
   }
   public String getDescription(){
-	  return "this is the description";
+	  return "Clone Troopers are genetically-modified clones created to serve in the Grand Army of the Republic.";
   }
 
 }

@@ -11,13 +11,13 @@ public class Medic extends HealerUnit
 
   public String toString()
   {
-    return "M";
+    return "Imperial Medic";
   }
 
-@Override
-public String getDescription() {
-	// TODO Auto-generated method stub
-	return "this is the description";
-}
+  @Override
+  public String getDescription()
+  {
+    return "Imperial Medic is a type of officer that has specialized medical training.";
+  }
 
 }

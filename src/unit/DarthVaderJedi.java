@@ -13,11 +13,10 @@ public class DarthVaderJedi extends JediUnit
     return "Darth Vader";
   }
 
-@Override
-public String getDescription() {
-	// TODO Auto-generated method stub
-	return "this is the description";
-}
-  
+  @Override
+  public String getDescription()
+  {
+    return "Darth Vader under the dark side of the Force seeks to crush the fledgling Rebel Alliance.";
+  }
 
 }
