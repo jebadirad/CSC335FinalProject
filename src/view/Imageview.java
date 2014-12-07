@@ -34,7 +34,7 @@ public class Imageview extends JPanel
   private static BufferedImage lukeSkyWalkerJedi;
   private static BufferedImage spiderTank;
   private static final int WIDTH = 23;
-  private static final int HEIGHT = 64;
+  private static final int HEIGHT = 63;
 
   private static final String imageDir = System.getProperty("user.dir")
       + File.separator + "images" + File.separator;
