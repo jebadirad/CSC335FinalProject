@@ -92,6 +92,7 @@ public class GUI extends JFrame
   private ArrayList<Cell> player1units;
   private ArrayList<Cell> player2units;
   private ArrayList<Cell> targets;
+  private boolean unitdisplay = false;
 
   // pregame lobby GUI items
 
@@ -154,7 +155,8 @@ public void newGame()
 	  targets = gameboard.getUnitsInAttackRange(cellWithUnit);
 	  
   }
-  private void loginGUI()
+  @SuppressWarnings("unused")
+private void loginGUI()
   {
     player1 = JOptionPane.showInputDialog("Username");
 
@@ -180,6 +182,16 @@ public void newGame()
 	  
   }
   private void toggleUnitScreen(){
+	  if(unitdisplay){
+		  contentContainer.remove(imagePanel);
+		  imagePanel.removeAll();
+		  imagePanel = new Imageview(GameBoard.background);
+		  contentContainer.add(imagePanel);
+		  imagePanel.updateUI();
+		  revalidate();
+		  repaint();
+	  }
+	  else{
 	  contentContainer.remove(imagePanel);
 	  imagePanel.removeAll();
 	  imagePanel = new PlayerStatus();
@@ -187,6 +199,7 @@ public void newGame()
 	  imagePanel.updateUI();
 	  revalidate();
 	  repaint();
+	  }
 	  
   }
   private void UpdateUnitScreen(){
@@ -721,6 +734,9 @@ public static String getPlayer2()
     	  UpdateItemScreen();
     	  CurrentUnitSelected = null;
     	  EnemyUnitSelected = null;
+    	  unitdisplay = true;
+    	  toggleUnitScreen();
+    	  unitdisplay = false;
     	  revalidate();
     	  movePanel.repaint();
     	  AttackPanel.repaint();
@@ -783,6 +799,7 @@ public static String getPlayer2()
       }
       if(e.getSource() == UnitInfo){
     	  toggleUnitScreen();
+    	  unitdisplay = !unitdisplay;
       }
       if(radiobuttons.isEmpty() || radiobuttons.equals(null)){
     	  
@@ -802,6 +819,9 @@ public static String getPlayer2()
           }
       }
       if(targetButtons.isEmpty() || targetButtons.equals(null)){
+    	 
+      }
+      else{
     	  for(int i =0; i < targetButtons.size(); i ++){
         	  if(e.getSource() == targetButtons.get(i)){
         		  EnemyUnitSelected = targets.get(i);
@@ -811,9 +831,11 @@ public static String getPlayer2()
           }
       }
       
+      revalidate();
+      repaint();
       
-
     }
+    
   }
   private class itemListener implements ItemListener{
 

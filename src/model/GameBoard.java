@@ -433,13 +433,16 @@ public class GameBoard extends JFrame implements Serializable
     board[7][7].setUnit(aUnit);
     board[7][7].setHasUnit(true);
 
-    Unit bUnit = factory.makeUnit("SpiderTank", GUI.getPlayer1());
-    board[7][19].setUnit(bUnit);
+    aUnit = factory.makeUnit("SpiderTank", GUI.getPlayer1());
+    board[7][19].setUnit(aUnit);
     board[7][19].setHasUnit(true);
-
+    aUnit = factory.makeUnit("DarthVader", GUI.getPlayer1());
+    board[4][11].setUnit(aUnit);
+    board[4][11].setHasUnit(true);
     // Adds this to player1Units list:
     player1Units.add(board[7][7]);
     player1Units.add(board[7][19]);
+    player1Units.add(board[4][11]);
 
   }
 
@@ -459,17 +462,20 @@ public class GameBoard extends JFrame implements Serializable
      * Unit dUnit = factory.makeUnit("Medic", GUI.getPlayer2());
      * board[3][1].setUnit(dUnit); board[3][1].setHasUnit(true);
      */
-    Unit eUnit = factory.makeUnit("LukeSkywalker", GUI.getPlayer2());
-    board[7][10].setUnit(eUnit);
+    Unit aUnit = factory.makeUnit("LukeSkywalker", GUI.getPlayer2());
+    board[7][10].setUnit(aUnit);
     board[7][10].setHasUnit(true);
 
-    Unit fUnit = factory.makeUnit("Medic", GUI.getPlayer2());
-    board[2][12].setUnit(fUnit);
+    aUnit = factory.makeUnit("Medic", GUI.getPlayer2());
+    board[2][12].setUnit(aUnit);
     board[2][12].setHasUnit(true);
-
+    aUnit = factory.makeUnit("BattleDroid", GUI.getPlayer2());
+    board[1][17].setUnit(aUnit);
+    board[1][17].setHasUnit(true);
     // Adds this to player2Units list:
     player2Units.add(board[7][10]);
     player2Units.add(board[2][12]);
+    player2Units.add(board[1][17]);
 
   }
 
