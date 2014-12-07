@@ -53,14 +53,13 @@ public class GUI extends JFrame
 
   JFrame frame;
 
-  JPanel textPanel = new GraphicsPanel();
-  JPanel graphicsPanel;
   JPanel movePanel;
   JPanel unitPanel;
   JPanel playerstatus;
   JPanel imagePanel;
   JPanel contentContainer;
   JPanel playerContainer;
+  JPanel playerInfoContainer;
   JTabbedPane tabbedpane;
 
   JPanel listOfTargets;
@@ -76,6 +75,8 @@ public class GUI extends JFrame
   JButton attack;
   JButton endTurn;
   JButton UseItem;
+  JButton Shop;
+  JButton UnitInfo;
 
   ArrayList<JRadioButton> radiobuttons;
   ArrayList<JRadioButton> targetButtons;
@@ -91,6 +92,7 @@ public class GUI extends JFrame
   private ArrayList<Cell> player1units;
   private ArrayList<Cell> player2units;
   private ArrayList<Cell> targets;
+  private boolean unitdisplay = false;
 
   // pregame lobby GUI items
 
@@ -145,6 +147,7 @@ public void newGame()
     player2units = gameboard.getPlayer2Units();
     CurrentUnitSelected = null;
     EnemyUnitSelected = null;
+    targetButtons = new ArrayList();
 
   }
 
@@ -152,7 +155,8 @@ public void newGame()
 	  targets = gameboard.getUnitsInAttackRange(cellWithUnit);
 	  
   }
-  private void loginGUI()
+  @SuppressWarnings("unused")
+private void loginGUI()
   {
     player1 = JOptionPane.showInputDialog("Username");
 
@@ -175,6 +179,27 @@ public void newGame()
 	    
 	    playerContainer.repaint();
 	    revalidate();
+	  
+  }
+  private void toggleUnitScreen(){
+	  if(unitdisplay){
+		  contentContainer.remove(imagePanel);
+		  imagePanel.removeAll();
+		  imagePanel = new Imageview(GameBoard.background);
+		  contentContainer.add(imagePanel);
+		  imagePanel.updateUI();
+		  revalidate();
+		  repaint();
+	  }
+	  else{
+	  contentContainer.remove(imagePanel);
+	  imagePanel.removeAll();
+	  imagePanel = new PlayerStatus();
+	  contentContainer.add(imagePanel);
+	  imagePanel.updateUI();
+	  revalidate();
+	  repaint();
+	  }
 	  
   }
   private void UpdateUnitScreen(){
@@ -287,10 +312,12 @@ public void newGame()
     contentContainer.setLayout(new BorderLayout());
 
     playerContainer = new JPanel();
-    playerContainer.setLayout(new GridLayout(1, 4, 0, 0));
+    playerContainer.setLayout(new GridLayout(1,3,0,0));
     playerContainer.setSize(1280, 300);
-
+    playerInfoContainer = new JPanel();
+    playerInfoContainer.setPreferredSize(new Dimension(100,300));
     usernamestring = new JLabel("Current Player: " + player1);
+    playerInfoContainer.add(usernamestring);
     inventorystring = new JLabel(player1 + "'s inventory: " + p1inv.toString());
     frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(1280, 800);
@@ -305,19 +332,19 @@ public void newGame()
     moveLeft.setPreferredSize(new Dimension(75, 50));
     moveRight.setPreferredSize(new Dimension(75, 50));
 
-    textPanel.setPreferredSize(new Dimension(1280, 500));
     imagePanel = new Imageview(GameBoard.background);
     imagePanel.setPreferredSize(new Dimension(1280, 500));
 
     movePanel = new JPanel();
-
+    movePanel.setPreferredSize(new Dimension(450, 150));
     movePanel.setLayout(new BorderLayout());
 
     JPanel DirectionPanel = new JPanel();
-    DirectionPanel.setPreferredSize(new Dimension(250, 75));
+    DirectionPanel.setPreferredSize(new Dimension(250, 150));
     DirectionPanel.setLayout(new GridLayout(2, 3, 0, 0));
     JPanel blankPanel = new JPanel();
     JPanel blankpanel1 = new JPanel();
+    JPanel blankPanel2 = new JPanel();
     DirectionPanel.add(blankPanel);
     DirectionPanel.add(moveUp);
     DirectionPanel.add(blankpanel1);
@@ -326,7 +353,7 @@ public void newGame()
     DirectionPanel.add(moveRight);
 
     unitPanel = new JPanel();
-    unitPanel.setPreferredSize(new Dimension(175, 75));
+    unitPanel.setPreferredSize(new Dimension(200, 150));
     unitgroup = new ButtonGroup();
     radiobuttons = new ArrayList();
     for (int i = 0; i < player1units.size(); i++)
@@ -347,24 +374,31 @@ public void newGame()
 
     AttackPanel = new JPanel();
     AttackPanel.setLayout(new BorderLayout());
+    AttackPanel.setPreferredSize(new Dimension(450,150));
     attackButtonPanel = new JPanel();
-    attackButtonPanel.setLayout(new GridLayout(1, 3, 0, 0));
+    attackButtonPanel.setLayout(new GridLayout(2, 3, 0, 0));
     listOfTargets = new JPanel();
     JPanel blank = new JPanel();
     UseItem = new JButton("Use Item");
     attack = new JButton("Attack");
     endTurn = new JButton("End turn");
+    Shop = new JButton("Shop");
+    UnitInfo = new JButton("Unit Info");
     attackButtonPanel.add(UseItem);
     attackButtonPanel.add(attack);
     attackButtonPanel.add(endTurn);
+    attackButtonPanel.add(Shop);
+    attackButtonPanel.add(UnitInfo);
+    attackButtonPanel.add(blankPanel2);
     AttackPanel.add(attackButtonPanel, BorderLayout.NORTH);
     AttackPanel.add(listOfTargets, BorderLayout.CENTER);
     
-    contentContainer.add(tabbedpane, BorderLayout.NORTH);
+    contentContainer.add(imagePanel, BorderLayout.NORTH);
     contentContainer.add(playerContainer, BorderLayout.CENTER);
     
     
     inventoryPanel=new JPanel();
+    inventoryPanel.setPreferredSize(new Dimension(200,150));
     itemBoxes = new ArrayList<JCheckBox>();
     items = new ArrayList<String>();
     Iterator it= p1inv.getInventory().entrySet().iterator();
@@ -379,12 +413,10 @@ public void newGame()
     	
     }
     playerContainer.add(movePanel);
-    playerContainer.add(usernamestring);
+    //playerContainer.add(playerInfoContainer);
     playerContainer.add(inventoryPanel);
     playerContainer.add(AttackPanel);
 
-    tabbedpane.add(textPanel, "Game");
-    tabbedpane.add(imagePanel, "Graphical View");
 
     add(contentContainer);
 
@@ -419,6 +451,8 @@ public static String getPlayer2()
     moveDown.addActionListener(new ButtonListener());
     endTurn.addActionListener(new ButtonListener());
     UseItem.addActionListener(new ButtonListener());
+    Shop.addActionListener(new ButtonListener());
+    UnitInfo.addActionListener(new ButtonListener());
 
   }
   private class ButtonListener implements ActionListener
@@ -478,7 +512,6 @@ public static String getPlayer2()
            
             layoutAttackScreen();
             
-            textPanel.repaint();
             imagePanel.repaint();
             if(gameboard.CheckgameOverBooleanVersion(player1units)){
       			 Object[] options = {"New Game", "Quit"};
@@ -537,7 +570,6 @@ public static String getPlayer2()
             }
             
             layoutAttackScreen();            
-            textPanel.repaint();
             imagePanel.repaint();
             if(gameboard.CheckgameOverBooleanVersion(player1units)){
       			 Object[] options = {"New Game", "Quit"};
@@ -597,7 +629,6 @@ public static String getPlayer2()
             }
            
             layoutAttackScreen();
-            textPanel.repaint();
             imagePanel.repaint();
             System.out.println("before check");
             if(gameboard.CheckgameOverBooleanVersion(player1units)){
@@ -660,7 +691,6 @@ public static String getPlayer2()
             }
             
             layoutAttackScreen();
-            textPanel.repaint();
             imagePanel.repaint();
             if(gameboard.CheckgameOverBooleanVersion(player1units)){
    			 Object[] options = {"New Game", "Quit"};
@@ -704,10 +734,12 @@ public static String getPlayer2()
     	  UpdateItemScreen();
     	  CurrentUnitSelected = null;
     	  EnemyUnitSelected = null;
+    	  unitdisplay = true;
+    	  toggleUnitScreen();
+    	  unitdisplay = false;
     	  revalidate();
     	  movePanel.repaint();
     	  AttackPanel.repaint();
-    	  textPanel.repaint();
     	  imagePanel.repaint();
       }
       
@@ -762,25 +794,48 @@ public static String getPlayer2()
     	  }
         // TODO Auto-generated method stub
       }
-      for (int i = 0; i < radiobuttons.size(); i++)
-      {
-        if (e.getSource() == radiobuttons.get(i))
-        {
-          CurrentUnitSelected = player1units.get(i);
-          System.out.println(CurrentUnitSelected.getUnit().getUnitStatus());
-          targets(CurrentUnitSelected);
-          layoutAttackScreen();
-          
-        }
+      if(e.getSource() == Shop){
+    	  
       }
-      for(int i =0; i < targetButtons.size(); i ++){
-    	  if(e.getSource() == targetButtons.get(i)){
-    		  EnemyUnitSelected = targets.get(i);
-    		  System.out.println(EnemyUnitSelected.getUnit().getUnitStatus());
-    	  }
+      if(e.getSource() == UnitInfo){
+    	  toggleUnitScreen();
+    	  unitdisplay = !unitdisplay;
       }
-
+      if(radiobuttons.isEmpty() || radiobuttons.equals(null)){
+    	  
+      }
+      else{
+    	  for (int i = 0; i < radiobuttons.size(); i++)
+          {
+            if (e.getSource() == radiobuttons.get(i))
+            {
+              CurrentUnitSelected = player1units.get(i);
+              System.out.println(CurrentUnitSelected.getUnit().getUnitStatus());
+              targets(CurrentUnitSelected);
+              layoutAttackScreen();
+              repaint();
+              
+            }
+          }
+      }
+      if(targetButtons.isEmpty() || targetButtons.equals(null)){
+    	 
+      }
+      else{
+    	  for(int i =0; i < targetButtons.size(); i ++){
+        	  if(e.getSource() == targetButtons.get(i)){
+        		  EnemyUnitSelected = targets.get(i);
+        		  System.out.println(EnemyUnitSelected.getUnit().getUnitStatus());
+        		  repaint();
+        	  }
+          }
+      }
+      
+      revalidate();
+      repaint();
+      
     }
+    
   }
   private class itemListener implements ItemListener{
 
@@ -885,7 +940,7 @@ public static String getPlayer2()
 		try {
 
 			// loads saved data into the gameboard if there is a saved game
-			gameboard = new GameBoard("Map 1");
+			gameboard = new GameBoard("Map 2");
 			if(new File(saveDir + player1 + "-" + player2 + "-" + "gameboard.dat").exists()) {
 				gameboard.loadData(player1, player2);
 			}

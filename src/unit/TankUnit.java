@@ -1,11 +1,11 @@
 package unit;
 
-public class TankUnit extends Unit
+public abstract class TankUnit extends Unit
 {
 
   public TankUnit(String imagestring, String username)
   {
-    super(2, 10, 20, 3, imagestring, username);
+    super(2, 5, 25, 3, imagestring, username);
   }
 
   public void attack(Unit victim)
@@ -20,5 +20,6 @@ public class TankUnit extends Unit
     // TODO Auto-generated method stub
 
   }
+  public abstract String getDescription();
 
 }

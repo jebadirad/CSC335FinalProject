@@ -1,11 +1,11 @@
 package unit;
 
-public class RangeUnit extends Unit
+public abstract class RangeUnit extends Unit
 {
 
   public RangeUnit(String imagestring, String username)
   {
-    super(3, 5, 10, 10, imagestring, username);
+    super(5, 5, 10, 5, imagestring, username);
   }
 
   public void attack(Unit victim)
@@ -20,5 +20,5 @@ public class RangeUnit extends Unit
     // TODO Auto-generated method stub
 
   }
-
+  public abstract String getDescription();
 }

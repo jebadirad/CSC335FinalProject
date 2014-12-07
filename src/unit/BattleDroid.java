@@ -1,12 +1,12 @@
 package unit;
 
 /**
- * Subclass of RangerUnit. Makes a CloneTrooper unit which has own image.
+ * Subclass of RangerUnit. Makes a BattleDroid unit which has own image.
  * 
  * @author Kal
  * 
  */
-public class CloneTrooper extends RangeUnit
+public class BattleDroid extends RangeUnit
 {
   /**
    * Takes in values from UnitFactory and calls the super Unit class.
@@ -14,7 +14,7 @@ public class CloneTrooper extends RangeUnit
    * @param imagestring
    * @param username
    */
-  public CloneTrooper(String imagestring, String username)
+  public BattleDroid(String imagestring, String username)
   {
     super(imagestring, username);
   }
@@ -24,10 +24,13 @@ public class CloneTrooper extends RangeUnit
    */
   public String toString()
   {
-    return "Clone Trooper";
+    return "Battle Droid";
   }
-  public String getDescription(){
-	  return "this is the description";
-  }
+
+@Override
+public String getDescription() {
+	// TODO Auto-generated method stub
+return "this is the description";
+}
 
 }

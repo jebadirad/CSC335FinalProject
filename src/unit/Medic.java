@@ -14,4 +14,10 @@ public class Medic extends HealerUnit
     return "M";
   }
 
+@Override
+public String getDescription() {
+	// TODO Auto-generated method stub
+	return "this is the description";
+}
+
 }

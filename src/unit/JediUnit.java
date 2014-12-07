@@ -1,6 +1,6 @@
 package unit;
 
-public class JediUnit extends Unit
+public abstract class JediUnit extends Unit
 {
 
   public JediUnit(String imagestring, String username)
@@ -21,5 +21,7 @@ public class JediUnit extends Unit
     // TODO Auto-generated method stub
 
   }
+
+  public abstract String getDescription();
 
 }
