@@ -2,11 +2,12 @@ package model;
 
 import java.util.ArrayList;
 
+import view.GUI;
+
 public class AI {
 	
 	private String name;
 	private ArrayList<Cell> units;
-	
 	
 	public AI(String name) {
 		units = new ArrayList<Cell>();
@@ -30,6 +31,19 @@ public class AI {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public void makeMove() {
+		
+		GUI.gameboard.move(units.get(0), "L");
+		System.out.println("AI got here");
+		
+//		for (int i = 0; i < units.size(); i++) {
+//			GUI.gameboard.move(units.get(i), "L");
+//			
+//		}
+		
+		
 	}
 	
 	
