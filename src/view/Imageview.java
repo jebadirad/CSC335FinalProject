@@ -15,10 +15,11 @@ import javax.swing.JPanel;
 import model.Cell;
 import model.Terrain;
 
-public class Imageview extends JPanel
+public class Imageview extends JPanel implements Runnable
 {
   private BufferedImage image;
   private Cell[][] theModel;
+  private Object direction;
   private static String backGroundString;
   private static BufferedImage itemSheet;
   private static BufferedImage cloneTrooper;
@@ -37,7 +38,7 @@ public class Imageview extends JPanel
   private static BufferedImage CurrentUnitSelectedImage;
   private static BufferedImage battleDroid;
   private static BufferedImage darthVader;
-  private static final int WIDTH = 23;
+  private static final int WIDTH = 24;
   private static final int HEIGHT = 63;
 
   private static final String imageDir = System.getProperty("user.dir")
@@ -189,6 +190,58 @@ public class Imageview extends JPanel
     catch (IOException e)
     {
       System.out.println("Could not find an Image!");
+    }
+
+  }
+
+  public void run()
+  {
+    if (direction.equals("North") || direction.equals("South"))
+    {
+      for (int i = 0; i < HEIGHT; i++)
+      {
+        if (direction.equals("North"))
+        {
+          // g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
+        }
+        if (direction.equals("South"))
+        {
+          // x= j * HEIGHT, i * WIDTH
+        }
+        repaint();
+        try
+        {
+          Thread.sleep(10);
+        }
+        catch (InterruptedException e)
+        {
+          System.out.println("Thread generates an error.");
+        }
+      }
+    }
+
+    if (direction.equals("East") || direction.equals("West"))
+    {
+      for (int i = 0; i < WIDTH; i++)
+      {
+        if (direction.equals("East"))
+        {
+          // x= j * HEIGHT, i * WIDTH
+        }
+        if (direction.equals("West"))
+        {
+          // x= j * HEIGHT, i * WIDTH
+        }
+        repaint();
+        try
+        {
+          Thread.sleep(10);
+        }
+        catch (InterruptedException e)
+        {
+          System.out.println("Thread generates an error.");
+        }
+      }
     }
 
   }
