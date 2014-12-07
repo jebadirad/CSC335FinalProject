@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public abstract class Unit implements Serializable
 {
-  private int attackRange, damage, health, moveRange, movesLeft;
+  private int attackRange, damage, health, moveRange, movesLeft, currentHealth;
   private String iconImage;
   private String username;
   private Boolean canAttack;
@@ -32,6 +32,7 @@ public abstract class Unit implements Serializable
     this.attackRange = attackRange;
     this.damage = damage;
     this.health = health;
+    this.currentHealth = health;
     this.moveRange = moveRange;
     this.movesLeft = this.moveRange;
     this.iconImage = imagestring;
@@ -55,6 +56,7 @@ public abstract class Unit implements Serializable
   public abstract void levelUp();
 
   public abstract String getDescription();
+
   /**
    * Method to get Unit status.
    * 
