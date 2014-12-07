@@ -61,7 +61,6 @@ public class GUI extends JFrame
   JPanel playerContainer;
   JPanel playerInfoContainer;
   JTabbedPane tabbedpane;
-
   JPanel listOfTargets;
   JLabel usernamestring, inventorystring;
   JPanel inventoryPanel;
@@ -74,10 +73,13 @@ public class GUI extends JFrame
   JButton moveRight;
   JButton attack;
   JButton endTurn;
+  JButton endTurnAI;
   JButton UseItem;
   JButton Shop;
   JButton UnitInfo;
-
+  JButton Map2 = new JButton("Map 2");
+  JButton RandomMap = new JButton("Random Map");
+  JButton vsAI = new JButton("vs AI");
   ArrayList<JRadioButton> radiobuttons;
   ArrayList<JRadioButton> targetButtons;
   ArrayList<JCheckBox> itemBoxes;
@@ -93,6 +95,8 @@ public class GUI extends JFrame
   private ArrayList<Cell> player2units;
   private ArrayList<Cell> targets;
   private boolean unitdisplay = false;
+  private boolean shopscreen = false;
+  private boolean AIgame = false;
 
   // pregame lobby GUI items
 
@@ -132,9 +136,9 @@ public static void main(String[] args)
   /**
  * Officially creates a newgame().  
  */
-public void newGame()
+public void newGame( String map)
   {
-    gameboard = new GameBoard("Map 1");
+    gameboard = new GameBoard(map);
     // create inventories for both players
     p1inv = new Inventory(player1);
     p2inv = new Inventory(player2);
@@ -180,6 +184,26 @@ private void loginGUI()
 	    playerContainer.repaint();
 	    revalidate();
 	  
+  }
+  private void toggleShopScreen(){
+	  if(shopscreen){
+		  contentContainer.remove(imagePanel);
+		  imagePanel.removeAll();
+		  imagePanel = new Shop();
+		  contentContainer.add(imagePanel);
+		  imagePanel.updateUI();
+		  revalidate();
+		  repaint();
+	  }
+	  else{
+		  contentContainer.remove(imagePanel);
+		  imagePanel.removeAll();
+		  imagePanel = new Imageview(GameBoard.background);
+		  contentContainer.add(imagePanel);
+		  imagePanel.updateUI();
+		  revalidate();
+		  repaint();
+	  }
   }
   private void toggleUnitScreen(){
 	  if(unitdisplay){
@@ -276,9 +300,15 @@ private void loginGUI()
     teamSelect.add(username1);
     teamSelect.add(usernamelabel2);
     teamSelect.add(username2);
+    vsAI.addActionListener(MapButtonListener);
     Map = new JButton("Map 1");
     Map.addActionListener(MapButtonListener);
+    Map2.addActionListener(MapButtonListener);
+    RandomMap.addActionListener(MapButtonListener);
     teamSelect.add(Map);
+    teamSelect.add(Map2);
+    teamSelect.add(RandomMap);
+    teamSelect.add(vsAI);
     load = new JButton("Load game");
     load.addActionListener(MapButtonListener);
     teamSelect.add(load);
@@ -382,11 +412,18 @@ private void loginGUI()
     UseItem = new JButton("Use Item");
     attack = new JButton("Attack");
     endTurn = new JButton("End turn");
+    endTurnAI = new JButton("End turn");
     Shop = new JButton("Shop");
     UnitInfo = new JButton("Unit Info");
     attackButtonPanel.add(UseItem);
     attackButtonPanel.add(attack);
-    attackButtonPanel.add(endTurn);
+    if(AIgame){
+    	attackButtonPanel.add(endTurnAI);
+    }
+    else{
+    	attackButtonPanel.add(endTurn);
+    }
+    
     attackButtonPanel.add(Shop);
     attackButtonPanel.add(UnitInfo);
     attackButtonPanel.add(blankPanel2);
@@ -451,6 +488,7 @@ public static String getPlayer2()
     moveDown.addActionListener(new ButtonListener());
     endTurn.addActionListener(new ButtonListener());
     UseItem.addActionListener(new ButtonListener());
+    endTurnAI.addActionListener(new ButtonListener());
     Shop.addActionListener(new ButtonListener());
     UnitInfo.addActionListener(new ButtonListener());
 
@@ -742,6 +780,29 @@ public static String getPlayer2()
     	  AttackPanel.repaint();
     	  imagePanel.repaint();
       }
+      if(e.getSource() == endTurnAI){
+    	  System.out.println("end of " + player1 + " turn");
+    	  Inventory tempinventory = p1inv;
+    	  p1inv = p2inv;
+    	  p2inv = tempinventory;
+    	  gameboard.turnOverComputer(player1units, player2units,player1,player2);
+    	  player1units = gameboard.getPlayer1Units();
+    	  player2units = gameboard.getPlayer2Units();
+    	  usernamestring.setText("Current Player: " + player1);
+    	  inventorystring.setText(player1 + "'s inventory: " + p1inv.toString());
+    	  UpdateUnitScreen();
+    	  clearAttackScreen();
+    	  UpdateItemScreen();
+    	  CurrentUnitSelected = null;
+    	  EnemyUnitSelected = null;
+    	  unitdisplay = true;
+    	  toggleUnitScreen();
+    	  unitdisplay = false;
+    	  revalidate();
+    	  movePanel.repaint();
+    	  AttackPanel.repaint();
+    	  imagePanel.repaint();
+      }
       
       
       if (e.getSource() == attack)
@@ -795,6 +856,8 @@ public static String getPlayer2()
         // TODO Auto-generated method stub
       }
       if(e.getSource() == Shop){
+    	  shopscreen = !shopscreen;
+    	  toggleShopScreen();
     	  
       }
       if(e.getSource() == UnitInfo){
@@ -878,12 +941,64 @@ public static String getPlayer2()
 				}
 				else{
 					frame.setVisible(false);
-					newGame();
+					newGame("Map 1");
 					layoutGUI();
 					registerListeners();
 				}
 				
-			} else if (e.getSource() == load) {
+			} else if (e.getSource() == RandomMap){
+				player1 = username1.getText();
+				player2 = username2.getText();
+				if(player1.equals("") || player1.equals(null) || player2.equals("")|| player2.equals(null)){
+					JOptionPane optionPane = new JOptionPane();
+		              optionPane.setMessage("You need to enter valid usernames!");
+		              JDialog dialog = optionPane.createDialog(":~(");
+		              dialog.setAlwaysOnTop(true);
+		              dialog.setVisible(true);
+				}
+				else{
+					frame.setVisible(false);
+					newGame("Random");
+					layoutGUI();
+					registerListeners();
+				}
+			}
+			else if (e.getSource() == Map2){
+				player1 = username1.getText();
+				player2 = username2.getText();
+				if(player1.equals("") || player1.equals(null) || player2.equals("")|| player2.equals(null)){
+					JOptionPane optionPane = new JOptionPane();
+		              optionPane.setMessage("You need to enter valid usernames!");
+		              JDialog dialog = optionPane.createDialog(":~(");
+		              dialog.setAlwaysOnTop(true);
+		              dialog.setVisible(true);
+				}
+				else{
+					frame.setVisible(false);
+					newGame("Map 2");
+					layoutGUI();
+					registerListeners();
+				}
+			}
+			else if (e.getSource() == vsAI){
+				player1 = username1.getText();
+				player2 = username2.getText();
+				if(player1.equals("") || player1.equals(null) || player2.equals("")|| player2.equals(null)){
+					JOptionPane optionPane = new JOptionPane();
+		              optionPane.setMessage("You need to enter valid usernames!");
+		              JDialog dialog = optionPane.createDialog(":~(");
+		              dialog.setAlwaysOnTop(true);
+		              dialog.setVisible(true);
+				}
+				else{
+					AIgame = true;
+					frame.setVisible(false);
+					newGame("vsAi");
+					layoutGUI();
+					registerListeners();
+				}
+			}
+			else if (e.getSource() == load) {
 					
 					player1 = username1.getText();
 					player2 = username2.getText();
@@ -901,7 +1016,7 @@ public static String getPlayer2()
 						loadData();
 						} else {
 							System.out.println("You don't have a save file! Creating new game...");
-							newGame();
+							newGame("Map 1");
 						}
 						layoutGUI();
 						registerListeners();
