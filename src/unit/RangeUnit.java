@@ -5,7 +5,7 @@ public abstract class RangeUnit extends Unit
 
   public RangeUnit(String imagestring, String username)
   {
-    super(5, 5, 10, 5, imagestring, username);
+    super(6, 6, 12, 5, imagestring, username);
   }
 
   public void attack(Unit victim)
@@ -17,8 +17,12 @@ public abstract class RangeUnit extends Unit
 
   public void levelUp()
   {
-    // TODO Auto-generated method stub
-
+    // NEED WORK
+    setAttackRange(getAttackRange() + 1);
+    setDamage(getDamage() + 1);
+    setCurrentHealth(getCurrentHealth() + 4);
+    setMoveRange(getMoveRange() + 2);
   }
+
   public abstract String getDescription();
 }

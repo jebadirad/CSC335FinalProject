@@ -30,10 +30,7 @@ public class BattleDroid extends RangeUnit
   @Override
   public String getDescription()
   {
-    // TODO Auto-generated method stub
-    return "This is a Battle droids used to build armies. They were easier and " +
-    		"cheaper to create than an all organic army. They are quite durable," +
-    		" while others were nothing more than mass produced cannon fodder. ";
+    return "Battle Droids are ranged units that are easier and cheaper to create than an all organic army.";
   }
 
 }
