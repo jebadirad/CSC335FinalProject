@@ -40,7 +40,7 @@ public class GameBoard extends JFrame implements Serializable {
 	private ArrayList<Cell> player1Units;
 	// Player 2 Units:
 	private ArrayList<Cell> player2Units;
-	public Queue<Command> commandqueue = new LinkedList<Command>();
+	public Queue<Command> commandqueue;
 	
 	public static String background;
 	private AI computer;
@@ -52,6 +52,7 @@ public class GameBoard extends JFrame implements Serializable {
 	 *            Name of Map, either "Map 1" or "Map 2"
 	 */
 	public GameBoard(String mapName) {
+		commandqueue = new LinkedList<Command>();
 		if (mapName.equals("Map 1"))
 			createMap1();
 		else if (mapName.equals("Map 2"))
@@ -2585,4 +2586,6 @@ public class GameBoard extends JFrame implements Serializable {
 			System.err.println("Error! Could not save data.");
 		}
 	}
+
+	
 }

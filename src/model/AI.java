@@ -1,8 +1,5 @@
 package model;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import view.GUI;
 
 public class AI {
@@ -13,40 +10,24 @@ public class AI {
 	}
 
 	public void makeMove() {
-
-		int unitsWithMovesLeft = GUI.gameboard.getPlayer1Units().size();
-		for (int i = 0; i < unitsWithMovesLeft; i++) {
-			GUI.CurrentUnitSelected = GUI.gameboard.getPlayer1Units().get(i);
-			System.out.println(GUI.CurrentUnitSelected.getUnit().toString());
-			
-			
-			while (GUI.gameboard.canMove(GUI.CurrentUnitSelected, "L")) {
+		
+				for(int i = 0; i < GUI.gameboard.getPlayer1Units().size(); i++){
+				GUI.CurrentUnitSelected = GUI.gameboard.getPlayer1Units().get(i);	
+				ActionCommand moveleft = new ActionCommand("L", GUI.CurrentUnitSelected);
+				ActionCommand moveright = new ActionCommand("R", GUI.CurrentUnitSelected);
+					if(i < 1){
+						GUI.gameboard.commandqueue.add(moveleft);
+					}
+					else{
+						GUI.gameboard.commandqueue.add(moveright);
+					}
 				
-				System.out.println("Before");
-				GUI.moveLeft.doClick();
-				ActionCommand moveleft = new ActionCommand();
-				GUI.gameboard.commandqueue.add(moveleft);
-				System.out.println("After");
+				}
 				
-			}
-			unitsWithMovesLeft--;
-
-		}
-
-		GUI.CurrentUnitSelected = null;
-
-	}
-
-	public class MoveListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Got here");
-			if (GUI.gameboard.canMove(GUI.CurrentUnitSelected, "L") == true) {
-				GUI.moveLeft.doClick();
-			} else {
-				GUI.moveRight.doClick();
-			}
-		}
+				
+				
+				
+		
 	}
 
 }

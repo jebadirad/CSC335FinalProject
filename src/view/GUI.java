@@ -37,6 +37,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 import model.Cell;
+import model.Command;
 import model.GameBoard;
 
 /**
@@ -69,10 +70,9 @@ public class GUI extends JFrame {
 	JPanel playerInfoContainer;
 	JTabbedPane tabbedpane;
 	JPanel listOfTargets;
-	
-	
+
 	JLabel usernamestring, inventorystring, credits;
-	
+
 	JPanel inventoryPanel;
 	JPanel attackButtonPanel;
 	ButtonGroup unitgroup;
@@ -96,17 +96,17 @@ public class GUI extends JFrame {
 	ArrayList<JRadioButton> targetButtons;
 	ArrayList<JCheckBox> itemBoxes;
 	ArrayList<String> items;
-	Thread test = new Thread();
+	Thread commandthread = new Thread();
+	Thread drawingthread = new Thread();
+	Thread gamethread = new Thread();
 
-	
-	
 	MapButtonListener MapButtonListener = new MapButtonListener();
 
-	 Inventory shopitems = new Inventory("Shop");
-	  ArrayList<JRadioButton> shopbuttons = null;
-	  ButtonGroup shopgroup;
-	  HashMap<String, Item> inv;
-	
+	Inventory shopitems = new Inventory("Shop");
+	ArrayList<JRadioButton> shopbuttons = null;
+	ButtonGroup shopgroup;
+	HashMap<String, Item> inv;
+
 	// things to run the game
 	public static GameBoard gameboard;
 	public static Cell CurrentUnitSelected;
@@ -137,6 +137,7 @@ public class GUI extends JFrame {
 	 */
 	public GUI() {
 		super();
+		
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		layoutPregameGUI();
@@ -159,6 +160,7 @@ public class GUI extends JFrame {
 	 */
 	public void newGame(String map) {
 		gameboard = new GameBoard(map);
+		new Thread(new Runner()).start();
 		// create inventories for both players
 		p1inv = new Inventory(player1);
 		p2inv = new Inventory(player2);
@@ -207,93 +209,89 @@ public class GUI extends JFrame {
 
 	}
 
-	private void toggleShopScreen(){
-	  if(shopscreen){
-		  contentContainer.removeAll();
-		  JPanel shopNavButtons = new JPanel();
-		  JPanel Creditpanel = new JPanel();
-		  credits = new JLabel("Credits: "+ p1inv.getCredits());
-		  shop = new JPanel();
-		  shop.setLayout(new GridLayout(1,2,0,0));
-		  shopNav = new JPanel();
-		  
-		  shopNav.setLayout(new BorderLayout());
-		  
-		  shopNavButtons.setLayout(new GridLayout(2,3,0,0));
-		  
-		  shopNav.add(shopNavButtons, BorderLayout.NORTH);
-		  shopNav.add(Creditpanel,BorderLayout.CENTER);
-		  
-		  closeShop = new JButton("Close Shop");
-		  buyItem = new JButton("Buy");
-		  JPanel blank = new JPanel();
-		  JPanel blank2 = new JPanel();
-		  JPanel blank3 = new JPanel();
-		  shopNavButtons.add(blank);
-		  shopNavButtons.add(buyItem);
-		  shopNavButtons.add(closeShop);
-		  shopNavButtons.add(blank2);
-		  shopNavButtons.add(credits);
-		  shopNavButtons.add(blank3);
-		  listItems = new JPanel();
-		  contentContainer.remove(imagePanel);
-		  contentContainer.remove(playerContainer);
-		  imagePanel.removeAll();
-		  imagePanel = new Shop();
-		  imagePanel.setPreferredSize(new Dimension(1280,500));
-		  shopgroup = new ButtonGroup();
-		  shopitems.addItem("Super Item");
-		  shopitems.addItem("Hyper Potion");
-		  shopitems.addItem("Apollo's Helm");
-		  shopitems.addItem("Speed Enhancer");
-		  
-		  inv = shopitems.getInventory();
-		  listItems.setLayout(new GridLayout(inv.size(), 1,0,0));
-		  shopbuttons = new ArrayList<JRadioButton>();
-		  for(String key:inv.keySet()){
-			  
-				 shopbuttons.add(new JRadioButton(key));
-			  
-			  
-			  
-		  }
-		  for(JRadioButton element: shopbuttons){
-			  shopgroup.add(element);
-			  if(p1inv.hasItem(element.getText())){
-				  listItems.add(new JLabel(element.getText()));
-			  }
-			  else{
-				  listItems.add(element);
-			  }
-			 
-			  element.addActionListener(new ButtonListener());
-			  element.setActionCommand(element.getText());
-		  }
-		  
-		  shop.add(listItems);
-		  shop.add(shopNav);
-		  contentContainer.add(imagePanel, BorderLayout.NORTH);
-		  contentContainer.add(shop, BorderLayout.CENTER);
+	private void toggleShopScreen() {
+		if (shopscreen) {
+			contentContainer.removeAll();
+			JPanel shopNavButtons = new JPanel();
+			JPanel Creditpanel = new JPanel();
+			credits = new JLabel("Credits: " + p1inv.getCredits());
+			shop = new JPanel();
+			shop.setLayout(new GridLayout(1, 2, 0, 0));
+			shopNav = new JPanel();
+
+			shopNav.setLayout(new BorderLayout());
+
+			shopNavButtons.setLayout(new GridLayout(2, 3, 0, 0));
+
+			shopNav.add(shopNavButtons, BorderLayout.NORTH);
+			shopNav.add(Creditpanel, BorderLayout.CENTER);
+
+			closeShop = new JButton("Close Shop");
+			buyItem = new JButton("Buy");
+			JPanel blank = new JPanel();
+			JPanel blank2 = new JPanel();
+			JPanel blank3 = new JPanel();
+			shopNavButtons.add(blank);
+			shopNavButtons.add(buyItem);
+			shopNavButtons.add(closeShop);
+			shopNavButtons.add(blank2);
+			shopNavButtons.add(credits);
+			shopNavButtons.add(blank3);
+			listItems = new JPanel();
+			contentContainer.remove(imagePanel);
+			contentContainer.remove(playerContainer);
+			imagePanel.removeAll();
+			imagePanel = new Shop();
+			imagePanel.setPreferredSize(new Dimension(1280, 500));
+			shopgroup = new ButtonGroup();
+			shopitems.addItem("Super Item");
+			shopitems.addItem("Hyper Potion");
+			shopitems.addItem("Apollo's Helm");
+			shopitems.addItem("Speed Enhancer");
+
+			inv = shopitems.getInventory();
+			listItems.setLayout(new GridLayout(inv.size(), 1, 0, 0));
+			shopbuttons = new ArrayList<JRadioButton>();
+			for (String key : inv.keySet()) {
+
+				shopbuttons.add(new JRadioButton(key));
+
+			}
+			for (JRadioButton element : shopbuttons) {
+				shopgroup.add(element);
+				if (p1inv.hasItem(element.getText())) {
+					listItems.add(new JLabel(element.getText()));
+				} else {
+					listItems.add(element);
+				}
+
+				element.addActionListener(new ButtonListener());
+				element.setActionCommand(element.getText());
+			}
+
+			shop.add(listItems);
+			shop.add(shopNav);
+			contentContainer.add(imagePanel, BorderLayout.NORTH);
+			contentContainer.add(shop, BorderLayout.CENTER);
 			closeShop.addActionListener(new ButtonListener());
 			buyItem.addActionListener(new ButtonListener());
-		  imagePanel.updateUI();
-		  revalidate();
-		  repaint();
-	  }
-	  else{
-		  contentContainer.remove(imagePanel);
-		  contentContainer.remove(shop);
-		  imagePanel.removeAll();
-		  imagePanel = new Imageview(GameBoard.background);
-		  imagePanel.setPreferredSize(new Dimension(1280,500));
-		  contentContainer.add(imagePanel,BorderLayout.NORTH);
-		  contentContainer.add(playerContainer,BorderLayout.CENTER);
-		  imagePanel.updateUI();
-		  playerContainer.updateUI();
-		  revalidate();
-		  repaint();
-	  }
-  }
+			imagePanel.updateUI();
+			revalidate();
+			repaint();
+		} else {
+			contentContainer.remove(imagePanel);
+			contentContainer.remove(shop);
+			imagePanel.removeAll();
+			imagePanel = new Imageview(GameBoard.background);
+			imagePanel.setPreferredSize(new Dimension(1280, 500));
+			contentContainer.add(imagePanel, BorderLayout.NORTH);
+			contentContainer.add(playerContainer, BorderLayout.CENTER);
+			imagePanel.updateUI();
+			playerContainer.updateUI();
+			revalidate();
+			repaint();
+		}
+	}
 
 	private void toggleUnitScreen() {
 		if (unitdisplay) {
@@ -572,10 +570,10 @@ public class GUI extends JFrame {
 		endTurnAI.addActionListener(new ButtonListener());
 		Shop.addActionListener(new ButtonListener());
 		UnitInfo.addActionListener(new ButtonListener());
-	
 
 	}
-	public void move(String direction){
+
+	public void move(String direction, Cell cellwithunit) {
 		if (CurrentUnitSelected == null) {
 			JOptionPane optionPane = new JOptionPane();
 			optionPane.setMessage("Please Select a Unit");
@@ -583,12 +581,13 @@ public class GUI extends JFrame {
 			dialog.setAlwaysOnTop(true);
 			dialog.setVisible(true);
 		} else {
+			CurrentUnitSelected = cellwithunit;
 			if (gameboard.canMove(CurrentUnitSelected, direction)) {
 				int i = player1units.indexOf(CurrentUnitSelected);
 				player1units.remove(i);
 
-				CurrentUnitSelected = gameboard.move(
-						CurrentUnitSelected, direction);
+				CurrentUnitSelected = gameboard.move(CurrentUnitSelected,
+						direction);
 				if (CurrentUnitSelected.hasUnit()) {
 					player1units.add(i, CurrentUnitSelected);
 					targets(CurrentUnitSelected);
@@ -609,8 +608,7 @@ public class GUI extends JFrame {
 									frame,
 									player1
 											+ " HAS WON THE GAME!! Would you like to start a new game?",
-									"VICTORY!!",
-									JOptionPane.YES_NO_OPTION,
+									"VICTORY!!", JOptionPane.YES_NO_OPTION,
 									JOptionPane.QUESTION_MESSAGE, null,
 									options, options[1]);
 					if (n == JOptionPane.YES_OPTION) {
@@ -633,12 +631,35 @@ public class GUI extends JFrame {
 				dialog.setVisible(true);
 			}
 		}
-	}	
+	}
+		private class Runner implements Runnable{
 
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				try{
+					while(true){
+						System.out.println(GUI.gameboard.commandqueue.size());
+						if(GUI.gameboard.commandqueue.size() > 0){
+							Command<GUI> command = GUI.gameboard.commandqueue.poll();
+							System.out.println(""+ GUI.gameboard.getPlayer1Units().get(0).getUnit().getMovesLeft());
+							command.execute(GUI.this);
+							System.out.println("" + GUI.gameboard.getPlayer1Units().get(0).getUnit().getMovesLeft());
+							System.out.println("this should execute");
+						}
+						
+						
+						
+					}
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+		
+		}
+	
 	private class ButtonListener implements ActionListener {
 
-		
-		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
@@ -661,20 +682,20 @@ public class GUI extends JFrame {
 				}
 			}
 			if (e.getSource() == moveUp) {
-				move("N");
+				move("N",CurrentUnitSelected);
 
 			}
 
 			if (e.getSource() == moveLeft) {
-				move("L");
+				move("L",CurrentUnitSelected);
 			}
 
 			if (e.getSource() == moveDown) {
-				move("S");
+				move("S",CurrentUnitSelected);
 			}
 
 			if (e.getSource() == moveRight) {
-				move("R");
+				move("R",CurrentUnitSelected);
 
 			}
 			if (e.getSource() == endTurn) {
@@ -797,38 +818,35 @@ public class GUI extends JFrame {
 				toggleUnitScreen();
 				unitdisplay = !unitdisplay;
 			}
-			if(shopbuttons == null){
-				
-			}
-			else{
-				for(JRadioButton element:shopbuttons){
-					if(e.getSource() == element){
-						
+			if (shopbuttons == null) {
+
+			} else {
+				for (JRadioButton element : shopbuttons) {
+					if (e.getSource() == element) {
+
 					}
 				}
 			}
-			if(e.getSource() == buyItem){
+			if (e.getSource() == buyItem) {
 				String selection = shopgroup.getSelection().getActionCommand();
 				Item item = inv.get(selection);
 				int cost = item.getCost();
-				if(p1inv.getCredits() < cost){
+				if (p1inv.getCredits() < cost) {
 					JOptionPane optionPane = new JOptionPane();
-					optionPane
-							.setMessage("You are too poor to buy this item!");
+					optionPane.setMessage("You are too poor to buy this item!");
 					JDialog dialog = optionPane.createDialog(":~(");
 					dialog.setAlwaysOnTop(true);
 					dialog.setVisible(true);
-				}
-				else{
+				} else {
 					p1inv.setCredits(p1inv.getCredits() - cost);
 					p1inv.addItem(item);
-					credits.setText("Credits: "+ p1inv.getCredits());
+					credits.setText("Credits: " + p1inv.getCredits());
 					UpdateItemScreen();
 					toggleShopScreen();
 					repaint();
 					revalidate();
 				}
-				
+
 			}
 			if (radiobuttons.isEmpty() || radiobuttons.equals(null)) {
 
@@ -1076,4 +1094,6 @@ public class GUI extends JFrame {
 		}
 	}
 
+	
+	
 }

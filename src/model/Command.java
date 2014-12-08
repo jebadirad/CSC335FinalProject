@@ -12,7 +12,7 @@ public abstract class Command<T> implements Serializable {
 
 
 
-	public abstract void execute(T executeOn,String direction);
+	public abstract void execute(T executeOn);
 	
 	
 
