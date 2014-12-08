@@ -1,36 +1,58 @@
 package model;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import java.awt.event.WindowEvent;
+import javax.swing.Timer;
 
-import javax.swing.JOptionPane;
-
-import unit.Unit;
 import view.GUI;
 
 public class AI {
-	
-	
-	public AI() {
-	}
+	public static final int WAIT_TIME = 500;
 
+	public AI() {
+
+	}
 
 	public void makeMove() {
-		GUI.CurrentUnitSelected = GUI.gameboard.getPlayer1Units().get(0);
-		Cell unit = GUI.gameboard.getPlayer1Units().get(0);
-		System.out.println(unit.getUnit().toString());
-		System.out.println("AI got here");
-		GUI.moveLeft.doClick();
-		
-		GUI.CurrentUnitSelected= null; 
-		//GUI.gameboard.move(unit, "L");
-//		for (int i = 0; i < units.size(); i++) {
-//			GUI.gameboard.move(units.get(i), "L");
-//			
-//		}
-		
+
+		int unitsWithMovesLeft = GUI.gameboard.getPlayer1Units().size();
+		for (int i = 0; i < unitsWithMovesLeft; i++) {
+			GUI.CurrentUnitSelected = GUI.gameboard.getPlayer1Units().get(i);
+			System.out.println(GUI.CurrentUnitSelected.getUnit().toString());
+			Timer t = new Timer(WAIT_TIME, new MoveListener());
+
+			while (GUI.CurrentUnitSelected.getUnit().getMovesLeft() > 0) {
+				System.out.println("Before");
+				t.start();
+				System.out.println("After");
+				try {
+					t.wait(200);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+			t.stop();
+			unitsWithMovesLeft--;
+
+		}
+
+		GUI.CurrentUnitSelected = null;
+
 	}
-	
-	
-	
+
+	public class MoveListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			System.out.println("Got here");
+			if (GUI.gameboard.canMove(GUI.CurrentUnitSelected, "L") == false) {
+				GUI.moveLeft.doClick();
+			} else {
+				GUI.moveRight.doClick();
+			}
+		}
+	}
+
 }
