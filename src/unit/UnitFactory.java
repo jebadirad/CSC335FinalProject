@@ -49,7 +49,13 @@ public class UnitFactory
     if (unitType.equals("SpiderTank"))
       return new SpiderTank("SpiderTank.png", username);
 
-    // CODE FOR ???? UNITS
+    // CODE FOR MONSTER UNITS
+    if (unitType.equals("Rancor"))
+      return new Rancor("RancorSprite.png", username);
+    if (unitType.equals("Wampa"))
+      return new Wampa("WampaSprite.png", username);
+
+    // CODE FOR ARTILARY UNITS
 
     // Return null if unitType does not exist.
     return null;

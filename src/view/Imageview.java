@@ -3,13 +3,11 @@ package view;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.Cell;
@@ -21,9 +19,7 @@ public class Imageview extends JPanel implements Runnable
   private Cell[][] theModel;
   private Object direction;
   private static String backGroundString;
-  private static BufferedImage itemSheet;
   private static BufferedImage cloneTrooper;
-  private static BufferedImage jediSheet;
   private static BufferedImage lavaSheet;
   private static BufferedImage boulderSheet;
   private static BufferedImage medicSheet;
@@ -38,6 +34,9 @@ public class Imageview extends JPanel implements Runnable
   private static BufferedImage CurrentUnitSelectedImage;
   private static BufferedImage battleDroid;
   private static BufferedImage darthVader;
+  private static BufferedImage rancor;
+  private static BufferedImage wampa;
+
   private static final int WIDTH = 24;
   private static final int HEIGHT = 63;
 
@@ -139,6 +138,17 @@ public class Imageview extends JPanel implements Runnable
             image = spiderTank;
             g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
           }
+
+          if (unitName.equals("Rancor.png"))
+          {
+            image = rancor;
+            g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
+          }
+          if (unitName.equals("Wampa.png"))
+          {
+            image = wampa;
+            g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
+          }
         }
 
       }
@@ -155,13 +165,10 @@ public class Imageview extends JPanel implements Runnable
   {
     try
     {
-      itemSheet = ImageIO.read(new File(imageDir + "all_items.png"));
       cloneTrooper = ImageIO.read(new File(imageDir + "CloneTrooper.png"));
       lukeSkyWalkerJedi = ImageIO.read(new File(imageDir
           + "Luke_Skywalker_stance.png"));
       spiderTank = ImageIO.read(new File(imageDir + "SpiderTank.png"));
-      itemSheet = ImageIO
-          .read(new File(imageDir + "range-tank-spritesheet.png"));
       medicSheet = ImageIO.read(new File(imageDir + "Medic.png"));
       lavaSheet = ImageIO.read(new File(imageDir + "Lava.png"));
       boulderSheet = ImageIO.read(new File(imageDir + "Boulder.png"));
@@ -175,6 +182,8 @@ public class Imageview extends JPanel implements Runnable
           + "enemySquare.png"));
       battleDroid = ImageIO.read(new File(imageDir + "BattleDroid.png"));
       darthVader = ImageIO.read(new File(imageDir + "DarthVader.png"));
+      rancor = ImageIO.read(new File(imageDir + "Rancor.png"));
+      wampa = ImageIO.read(new File(imageDir + "Wampa.png"));
 
       if (backGroundString.equals("Grass.png"))
       {
