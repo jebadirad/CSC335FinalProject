@@ -12,6 +12,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 import javax.swing.JDialog;
@@ -38,6 +40,8 @@ public class GameBoard extends JFrame implements Serializable {
 	private ArrayList<Cell> player1Units;
 	// Player 2 Units:
 	private ArrayList<Cell> player2Units;
+	public Queue<Command> commandqueue = new LinkedList<Command>();
+	
 	public static String background;
 	private AI computer;
 
@@ -63,6 +67,7 @@ public class GameBoard extends JFrame implements Serializable {
 	 * Creates Map1
 	 */
 	public void createMap1() {
+		
 		background = "Grass.png";
 		// board is 20 by 20 for now:
 		board = new Cell[20][20];

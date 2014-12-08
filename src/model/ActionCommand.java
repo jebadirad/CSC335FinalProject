@@ -1,11 +1,19 @@
 package model;
 
-public class ActionCommand extends Command{
+import view.GUI;
+
+public class ActionCommand extends Command<GUI>{
+
+
+	
+	
+		
+	
 
 	@Override
-	public void execute(Object executeOn) {
+	public void execute(GUI executeOn, String direction) {
 		// TODO Auto-generated method stub
-		
+		executeOn.move(direction);
 	}
 
 }

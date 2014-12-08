@@ -96,6 +96,7 @@ public class GUI extends JFrame {
 	ArrayList<JRadioButton> targetButtons;
 	ArrayList<JCheckBox> itemBoxes;
 	ArrayList<String> items;
+	Thread test = new Thread();
 
 	
 	
@@ -574,9 +575,70 @@ public class GUI extends JFrame {
 	
 
 	}
+	public void move(String direction){
+		if (CurrentUnitSelected == null) {
+			JOptionPane optionPane = new JOptionPane();
+			optionPane.setMessage("Please Select a Unit");
+			JDialog dialog = optionPane.createDialog(":~(");
+			dialog.setAlwaysOnTop(true);
+			dialog.setVisible(true);
+		} else {
+			if (gameboard.canMove(CurrentUnitSelected, direction)) {
+				int i = player1units.indexOf(CurrentUnitSelected);
+				player1units.remove(i);
+
+				CurrentUnitSelected = gameboard.move(
+						CurrentUnitSelected, direction);
+				if (CurrentUnitSelected.hasUnit()) {
+					player1units.add(i, CurrentUnitSelected);
+					targets(CurrentUnitSelected);
+
+				} else {
+					targets.clear();
+					UpdateUnitScreen();
+
+				}
+
+				layoutAttackScreen();
+
+				imagePanel.repaint();
+				if (gameboard.CheckgameOverBooleanVersion(player1units)) {
+					Object[] options = { "New Game", "Quit" };
+					int n = JOptionPane
+							.showOptionDialog(
+									frame,
+									player1
+											+ " HAS WON THE GAME!! Would you like to start a new game?",
+									"VICTORY!!",
+									JOptionPane.YES_NO_OPTION,
+									JOptionPane.QUESTION_MESSAGE, null,
+									options, options[1]);
+					if (n == JOptionPane.YES_OPTION) {
+						System.out.println("new game");
+						dispose();
+						new GUI();
+					} else {
+						if (n == JOptionPane.NO_OPTION) {
+							System.out.println("no option");
+							frame.dispatchEvent(new WindowEvent(frame,
+									WindowEvent.WINDOW_CLOSING));
+						}
+					}
+				}
+			} else {
+				JOptionPane optionPane = new JOptionPane();
+				optionPane.setMessage("Move failed");
+				JDialog dialog = optionPane.createDialog(":~(");
+				dialog.setAlwaysOnTop(true);
+				dialog.setVisible(true);
+			}
+		}
+	}	
 
 	private class ButtonListener implements ActionListener {
 
+		
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
@@ -599,244 +661,20 @@ public class GUI extends JFrame {
 				}
 			}
 			if (e.getSource() == moveUp) {
-				if (CurrentUnitSelected == null) {
-					JOptionPane optionPane = new JOptionPane();
-					optionPane.setMessage("Please Select a Unit");
-					JDialog dialog = optionPane.createDialog(":~(");
-					dialog.setAlwaysOnTop(true);
-					dialog.setVisible(true);
-				} else {
-					if (gameboard.canMove(CurrentUnitSelected, "N")) {
-						int i = player1units.indexOf(CurrentUnitSelected);
-						player1units.remove(i);
-
-						CurrentUnitSelected = gameboard.move(
-								CurrentUnitSelected, "N");
-						if (CurrentUnitSelected.hasUnit()) {
-							player1units.add(i, CurrentUnitSelected);
-							targets(CurrentUnitSelected);
-
-						} else {
-							targets.clear();
-							UpdateUnitScreen();
-
-						}
-
-						layoutAttackScreen();
-
-						imagePanel.repaint();
-						if (gameboard.CheckgameOverBooleanVersion(player1units)) {
-							Object[] options = { "New Game", "Quit" };
-							int n = JOptionPane
-									.showOptionDialog(
-											frame,
-											player1
-													+ " HAS WON THE GAME!! Would you like to start a new game?",
-											"VICTORY!!",
-											JOptionPane.YES_NO_OPTION,
-											JOptionPane.QUESTION_MESSAGE, null,
-											options, options[1]);
-							if (n == JOptionPane.YES_OPTION) {
-								System.out.println("new game");
-								dispose();
-								new GUI();
-							} else {
-								if (n == JOptionPane.NO_OPTION) {
-									System.out.println("no option");
-									frame.dispatchEvent(new WindowEvent(frame,
-											WindowEvent.WINDOW_CLOSING));
-								}
-							}
-						}
-					} else {
-						JOptionPane optionPane = new JOptionPane();
-						optionPane.setMessage("Move failed");
-						JDialog dialog = optionPane.createDialog(":~(");
-						dialog.setAlwaysOnTop(true);
-						dialog.setVisible(true);
-					}
-				}
+				move("N");
 
 			}
 
 			if (e.getSource() == moveLeft) {
-				if (CurrentUnitSelected == null) {
-					JOptionPane optionPane = new JOptionPane();
-					optionPane.setMessage("Please Select a Unit");
-					JDialog dialog = optionPane.createDialog(":~(");
-					dialog.setAlwaysOnTop(true);
-					dialog.setVisible(true);
-				} else {
-					if (gameboard.canMove(CurrentUnitSelected, "L")) {
-						int i = player1units.indexOf(CurrentUnitSelected);
-						player1units.remove(i);
-
-						CurrentUnitSelected = gameboard.move(
-								CurrentUnitSelected, "L");
-						if (CurrentUnitSelected.hasUnit()) {
-							player1units.add(i, CurrentUnitSelected);
-							targets(CurrentUnitSelected);
-
-						} else {
-							targets.clear();
-							UpdateUnitScreen();
-						}
-
-						layoutAttackScreen();
-						imagePanel.repaint();
-						if (gameboard.CheckgameOverBooleanVersion(player1units)) {
-							Object[] options = { "New Game", "Quit" };
-							int n = JOptionPane
-									.showOptionDialog(
-											frame,
-											player1
-													+ " HAS WON THE GAME!! Would you like to start a new game?",
-											"VICTORY!!",
-											JOptionPane.YES_NO_OPTION,
-											JOptionPane.QUESTION_MESSAGE, null,
-											options, options[1]);
-							if (n == JOptionPane.YES_OPTION) {
-								System.out.println("new game");
-								dispose();
-								new GUI();
-							} else {
-								if (n == JOptionPane.NO_OPTION) {
-									System.out.println("no option");
-									frame.dispatchEvent(new WindowEvent(frame,
-											WindowEvent.WINDOW_CLOSING));
-								}
-							}
-						}
-					} else {
-						JOptionPane optionPane = new JOptionPane();
-						optionPane.setMessage("Move failed");
-						JDialog dialog = optionPane.createDialog(":~(");
-						dialog.setAlwaysOnTop(true);
-						dialog.setVisible(true);
-					}
-				}
-
+				move("L");
 			}
 
 			if (e.getSource() == moveDown) {
-				if (CurrentUnitSelected == null) {
-					JOptionPane optionPane = new JOptionPane();
-					optionPane.setMessage("Please Select a Unit");
-					JDialog dialog = optionPane.createDialog(":~(");
-					dialog.setAlwaysOnTop(true);
-					dialog.setVisible(true);
-				} else {
-					if (gameboard.canMove(CurrentUnitSelected, "S")) {
-						int i = player1units.indexOf(CurrentUnitSelected);
-						player1units.remove(i);
-
-						CurrentUnitSelected = gameboard.move(
-								CurrentUnitSelected, "S");
-
-						if (CurrentUnitSelected.hasUnit()) {
-							player1units.add(i, CurrentUnitSelected);
-							targets(CurrentUnitSelected);
-
-						} else {
-							targets.clear();
-							UpdateUnitScreen();
-						}
-
-						layoutAttackScreen();
-						imagePanel.repaint();
-						System.out.println("before check");
-						if (gameboard.CheckgameOverBooleanVersion(player1units)) {
-							Object[] options = { "New Game", "Quit" };
-							System.out.println("after check");
-							int n = JOptionPane
-									.showOptionDialog(
-											frame,
-											player2
-													+ " HAS WON THE GAME!! Would you like to start a new game?",
-											"VICTORY!!",
-											JOptionPane.YES_NO_OPTION,
-											JOptionPane.QUESTION_MESSAGE, null,
-											options, options[1]);
-							if (n == JOptionPane.YES_OPTION) {
-								System.out.println("new game");
-								dispose();
-								new GUI();
-							} else {
-								if (n == JOptionPane.NO_OPTION) {
-									System.out.println("no option");
-									frame.dispatchEvent(new WindowEvent(frame,
-											WindowEvent.WINDOW_CLOSING));
-								}
-							}
-						}
-
-					} else {
-						JOptionPane optionPane = new JOptionPane();
-						optionPane.setMessage("Move failed");
-						JDialog dialog = optionPane.createDialog(":~(");
-						dialog.setAlwaysOnTop(true);
-						dialog.setVisible(true);
-					}
-				}
-
+				move("S");
 			}
 
 			if (e.getSource() == moveRight) {
-				if (CurrentUnitSelected == null) {
-					JOptionPane optionPane = new JOptionPane();
-					optionPane.setMessage("Please Select a Unit");
-					JDialog dialog = optionPane.createDialog(":~(");
-					dialog.setAlwaysOnTop(true);
-					dialog.setVisible(true);
-				} else {
-					if (gameboard.canMove(CurrentUnitSelected, "R")) {
-						int i = player1units.indexOf(CurrentUnitSelected);
-						player1units.remove(i);
-
-						CurrentUnitSelected = gameboard.move(
-								CurrentUnitSelected, "R");
-						if (CurrentUnitSelected.hasUnit()) {
-							player1units.add(i, CurrentUnitSelected);
-							targets(CurrentUnitSelected);
-
-						} else {
-							targets.clear();
-							UpdateUnitScreen();
-						}
-
-						layoutAttackScreen();
-						imagePanel.repaint();
-						if (gameboard.CheckgameOverBooleanVersion(player1units)) {
-							Object[] options = { "New Game", "Quit" };
-							int n = JOptionPane
-									.showOptionDialog(
-											frame,
-											player1
-													+ " HAS WON THE GAME!! Would you like to start a new game?",
-											"VICTORY!!",
-											JOptionPane.YES_NO_OPTION,
-											JOptionPane.QUESTION_MESSAGE, null,
-											options, options[1]);
-							if (n == JOptionPane.YES_OPTION) {
-								System.out.println("new game");
-								dispose();
-								new GUI();
-							} else {
-								if (n == JOptionPane.NO_OPTION) {
-									System.out.println("no option");
-									frame.dispatchEvent(new WindowEvent(frame,
-											WindowEvent.WINDOW_CLOSING));
-								}
-							}
-						}
-					} else {
-						JOptionPane optionPane = new JOptionPane();
-						optionPane.setMessage("Move failed");
-						JDialog dialog = optionPane.createDialog(":~(");
-						dialog.setAlwaysOnTop(true);
-						dialog.setVisible(true);
-					}
-				}
+				move("R");
 
 			}
 			if (e.getSource() == endTurn) {

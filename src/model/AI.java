@@ -24,7 +24,8 @@ public class AI {
 				
 				System.out.println("Before");
 				GUI.moveLeft.doClick();
-				
+				ActionCommand moveleft = new ActionCommand();
+				GUI.gameboard.commandqueue.add(moveleft);
 				System.out.println("After");
 				
 			}
