@@ -34,7 +34,7 @@ public class Inventory implements Serializable {
 	public Inventory(String username) {		// username is now passed as an argument to the constructor
 		items = new HashMap<String, Item>();
 		this.username = username;			// no longer needs to be static
-		credits = 0;
+		credits = 200;
 	}
 
 	/**
