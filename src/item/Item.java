@@ -41,6 +41,9 @@ public enum Item {
 	public String getPath(){
 		return path;
 	}
+	public int getCost(){
+		return cost;
+	}
 
 	/**
 	 * 

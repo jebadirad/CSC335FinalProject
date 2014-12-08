@@ -208,6 +208,7 @@ public class GUI extends JFrame {
 
 	private void toggleShopScreen(){
 	  if(shopscreen){
+		  contentContainer.removeAll();
 		  JPanel shopNavButtons = new JPanel();
 		  JPanel Creditpanel = new JPanel();
 		  credits = new JLabel("Credits: "+ p1inv.getCredits());
@@ -249,13 +250,23 @@ public class GUI extends JFrame {
 		  listItems.setLayout(new GridLayout(inv.size(), 1,0,0));
 		  shopbuttons = new ArrayList<JRadioButton>();
 		  for(String key:inv.keySet()){
-			  shopbuttons.add(new JRadioButton(key));
+			  
+				 shopbuttons.add(new JRadioButton(key));
+			  
+			  
 			  
 		  }
 		  for(JRadioButton element: shopbuttons){
 			  shopgroup.add(element);
-			  listItems.add(element);
+			  if(p1inv.hasItem(element.getText())){
+				  listItems.add(new JLabel(element.getText()));
+			  }
+			  else{
+				  listItems.add(element);
+			  }
+			 
 			  element.addActionListener(new ButtonListener());
+			  element.setActionCommand(element.getText());
 		  }
 		  
 		  shop.add(listItems);
@@ -960,7 +971,26 @@ public class GUI extends JFrame {
 			}
 			if(e.getSource() == buyItem){
 				String selection = shopgroup.getSelection().getActionCommand();
-				System.out.println(selection);
+				Item item = inv.get(selection);
+				int cost = item.getCost();
+				if(p1inv.getCredits() < cost){
+					JOptionPane optionPane = new JOptionPane();
+					optionPane
+							.setMessage("You are too poor to buy this item!");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				}
+				else{
+					p1inv.setCredits(p1inv.getCredits() - cost);
+					p1inv.addItem(item);
+					credits.setText("Credits: "+ p1inv.getCredits());
+					UpdateItemScreen();
+					toggleShopScreen();
+					repaint();
+					revalidate();
+				}
+				
 			}
 			if (radiobuttons.isEmpty() || radiobuttons.equals(null)) {
 
