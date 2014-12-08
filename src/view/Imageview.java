@@ -196,17 +196,16 @@ public class Imageview extends JPanel implements Runnable
 
   public void run()
   {
+    // Direction is never set... As of now.
     if (direction.equals("North") || direction.equals("South"))
     {
       for (int i = 0; i < HEIGHT; i++)
       {
         if (direction.equals("North"))
         {
-          // g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
         }
         if (direction.equals("South"))
         {
-          // x= j * HEIGHT, i * WIDTH
         }
         repaint();
         try
@@ -226,11 +225,9 @@ public class Imageview extends JPanel implements Runnable
       {
         if (direction.equals("East"))
         {
-          // x= j * HEIGHT, i * WIDTH
         }
         if (direction.equals("West"))
         {
-          // x= j * HEIGHT, i * WIDTH
         }
         repaint();
         try
