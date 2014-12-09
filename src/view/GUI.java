@@ -572,7 +572,60 @@ public class GUI extends JFrame {
 		UnitInfo.addActionListener(new ButtonListener());
 
 	}
+	public void attack(Cell cellattack, Cell celldefense){
+		CurrentUnitSelected = cellattack;
+		EnemyUnitSelected = celldefense;
+		if (EnemyUnitSelected == null) {
+			JOptionPane optionPane = new JOptionPane();
+			optionPane.setMessage("Please Select an Enemy Unit");
+			JDialog dialog = optionPane.createDialog(":~(");
+			dialog.setAlwaysOnTop(true);
+			dialog.setVisible(true);
+		} else if (CurrentUnitSelected == null) {
+			JOptionPane optionPane = new JOptionPane();
+			optionPane
+					.setMessage("Please Select a Friendly Unit to attack with");
+			JDialog dialog = optionPane.createDialog(":~(");
+			dialog.setAlwaysOnTop(true);
+			dialog.setVisible(true);
+		} else if (!gameboard.CanAttack(CurrentUnitSelected)) {
+			JOptionPane optionPane = new JOptionPane();
+			optionPane.setMessage("You have attacked already!");
+			JDialog dialog = optionPane.createDialog(":~(");
+			dialog.setAlwaysOnTop(true);
+			dialog.setVisible(true);
+		} else {
+			System.out.println(EnemyUnitSelected.getUnit().getHealth());
+			gameboard.attack(CurrentUnitSelected, EnemyUnitSelected);
+			targets(CurrentUnitSelected);
+			layoutAttackScreen();
+			if (gameboard.CheckgameOverBooleanVersion(player2units)) {
+				Object[] options = { "New Game", "Quit" };
+				int n = JOptionPane
+						.showOptionDialog(
+								frame,
+								player1
+										+ " HAS WON THE GAME!! Would you like to start a new game?",
+								"VICTORY!!", JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null,
+								options, options[1]);
+				if (n == JOptionPane.YES_OPTION) {
+					System.out.println("new game");
+					dispose();
+					new GUI();
+				} else {
+					if (n == JOptionPane.NO_OPTION) {
+						System.out.println("no option");
+						frame.dispatchEvent(new WindowEvent(frame,
+								WindowEvent.WINDOW_CLOSING));
+					}
+				}
+			}
 
+			revalidate();
+			repaint();
+		}
+	}
 	public void move(String direction, Cell cellwithunit) {
 		if (CurrentUnitSelected == null) {
 			JOptionPane optionPane = new JOptionPane();
@@ -754,57 +807,7 @@ public class GUI extends JFrame {
 			}
 
 			if (e.getSource() == attack) {
-				if (EnemyUnitSelected == null) {
-					JOptionPane optionPane = new JOptionPane();
-					optionPane.setMessage("Please Select an Enemy Unit");
-					JDialog dialog = optionPane.createDialog(":~(");
-					dialog.setAlwaysOnTop(true);
-					dialog.setVisible(true);
-				} else if (CurrentUnitSelected == null) {
-					JOptionPane optionPane = new JOptionPane();
-					optionPane
-							.setMessage("Please Select a Friendly Unit to attack with");
-					JDialog dialog = optionPane.createDialog(":~(");
-					dialog.setAlwaysOnTop(true);
-					dialog.setVisible(true);
-				} else if (!gameboard.CanAttack(CurrentUnitSelected)) {
-					JOptionPane optionPane = new JOptionPane();
-					optionPane.setMessage("You have attacked already!");
-					JDialog dialog = optionPane.createDialog(":~(");
-					dialog.setAlwaysOnTop(true);
-					dialog.setVisible(true);
-				} else {
-					System.out.println(EnemyUnitSelected.getUnit().getHealth());
-
-					gameboard.attack(CurrentUnitSelected, EnemyUnitSelected);
-					targets(CurrentUnitSelected);
-					layoutAttackScreen();
-					if (gameboard.CheckgameOverBooleanVersion(player2units)) {
-						Object[] options = { "New Game", "Quit" };
-						int n = JOptionPane
-								.showOptionDialog(
-										frame,
-										player1
-												+ " HAS WON THE GAME!! Would you like to start a new game?",
-										"VICTORY!!", JOptionPane.YES_NO_OPTION,
-										JOptionPane.QUESTION_MESSAGE, null,
-										options, options[1]);
-						if (n == JOptionPane.YES_OPTION) {
-							System.out.println("new game");
-							dispose();
-							new GUI();
-						} else {
-							if (n == JOptionPane.NO_OPTION) {
-								System.out.println("no option");
-								frame.dispatchEvent(new WindowEvent(frame,
-										WindowEvent.WINDOW_CLOSING));
-							}
-						}
-					}
-
-					revalidate();
-					repaint();
-				}
+				attack(CurrentUnitSelected, EnemyUnitSelected);
 				// TODO Auto-generated method stub
 			}
 			if (e.getSource() == Shop || e.getSource() == closeShop) {

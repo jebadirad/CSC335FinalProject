@@ -27,7 +27,6 @@ public class UnitFactory
     // Code to make new CloneTrooper.
     if (unitType.equals("CloneTrooper"))
       return new CloneTrooper("CloneTrooper.png", username);
-
     if (unitType.equals("BattleDroid"))
       return new BattleDroid("BattleDroid.png", username);
 
@@ -40,7 +39,6 @@ public class UnitFactory
     // Code to make new Jedi LukeSkywalker.
     if (unitType.equals("LukeSkywalker"))
       return new LukeSkywalkerJedi("Luke_Skywalker_stance.png", username);
-
     if (unitType.equals("DarthVader"))
       return new DarthVaderJedi("DarthVader.png", username);
 
@@ -51,9 +49,9 @@ public class UnitFactory
 
     // CODE FOR MONSTER UNITS
     if (unitType.equals("Rancor"))
-      return new Rancor("RancorSprite.png", username);
+      return new Rancor("Rancor.png", username);
     if (unitType.equals("Wampa"))
-      return new Wampa("WampaSprite.png", username);
+      return new Wampa("Wampa.png", username);
 
     // CODE FOR ARTILARY UNITS
 
