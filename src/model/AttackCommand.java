@@ -25,4 +25,11 @@ public class AttackCommand extends Command<GUI>{
 		executeOn.attack(this.cellattack, this.celldefense);
 	}
 
+
+	@Override
+	public void setCurrentCell(Cell unit) {
+		// TODO Auto-generated method stub
+		this.cellattack = unit;
+	}
+
 }

@@ -525,7 +525,7 @@ public class GameBoard extends JFrame implements Serializable {
 		UnitFactory factory = new UnitFactory();
 		Random rand = new Random();
 		int numberOfUnits = 0;
-		while (numberOfUnits < 3) {
+		while (numberOfUnits < 2) {
 			int random = rand.nextInt(4);
 			// Creates Clone Trooper at random location
 			if (random == 0) {
@@ -686,15 +686,13 @@ public class GameBoard extends JFrame implements Serializable {
 	public void generateMonster() {
 		player2Units = new ArrayList<Cell>();
 		UnitFactory factory = new UnitFactory();
-		Unit monster = factory.makeUnit("Wampa", GUI.getPlayer2());
+		Unit monster = factory.makeUnit("DarthVader", GUI.getPlayer2());
 		Random rand = new Random();
 		int randomX = rand.nextInt(20);
 		int randomY = rand.nextInt(20);
-		System.out.println("Here");
 		while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
 			randomX = rand.nextInt(20);
 			randomY = rand.nextInt(20);
-			System.out.println("Stuck here");
 		}
 		board[randomX][randomY].setUnit(monster);
 		board[randomX][randomY].setHasUnit(true);

@@ -631,6 +631,7 @@ public class GUI extends JFrame {
 		}
 	}
 	public void move(String direction, Cell cellwithunit) {
+		
 		if (cellwithunit == null) {
 			JOptionPane optionPane = new JOptionPane();
 			optionPane.setMessage("Please Select a Unit");
@@ -638,16 +639,15 @@ public class GUI extends JFrame {
 			dialog.setAlwaysOnTop(true);
 			dialog.setVisible(true);
 		} else {
-			CurrentUnitSelected = cellwithunit;
 			if (gameboard.canMove(cellwithunit, direction)) {
 				int i = player1units.indexOf(cellwithunit);
 				player1units.remove(i);
 
-				cellwithunit = gameboard.move(cellwithunit,
+				CurrentUnitSelected = gameboard.move(cellwithunit,
 						direction);
-				if (cellwithunit.hasUnit()) {
-					player1units.add(i, cellwithunit);
-					targets(cellwithunit);
+				if (CurrentUnitSelected.hasUnit()) {
+					player1units.add(i, CurrentUnitSelected);
+					targets(CurrentUnitSelected);
 
 				} else {
 					targets.clear();
@@ -701,6 +701,8 @@ public class GUI extends JFrame {
 							System.out.println("does it get here?");
 							Command<GUI> command = GUI.gameboard.commandqueue.poll();
 							command.execute(GUI.this);
+							GUI.gameboard.commandqueue.element().setCurrentCell(CurrentUnitSelected);
+							
 							System.out.println("this should execute");
 						}
 					}
