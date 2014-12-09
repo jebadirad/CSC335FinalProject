@@ -54,16 +54,21 @@ public class GameBoard extends JFrame implements Serializable {
 	public GameBoard(String mapName) {
 		commandqueue = new LinkedList<Command>();
 		if (mapName.equals("Map 1"))
-			createMap1();
+			createMonsterMap();
 		else if (mapName.equals("Map 2"))
 			createMap2();
 		else if (mapName.equals("Random"))
 			createRandomMap();
+		else if (mapName.equals("Monster"))
+			createMonsterMap();
 		else
 			createVsComputerMap();
 
 	}
-
+	
+	
+	
+	
 	/**
 	 * Creates Map1
 	 */
@@ -132,6 +137,7 @@ public class GameBoard extends JFrame implements Serializable {
 		// Generate Units:
 		generatePlayer1Units();
 		generatePlayer2Units();
+		
 
 	}
 
@@ -247,6 +253,45 @@ public class GameBoard extends JFrame implements Serializable {
 		generateComputerUnits();
 
 	}
+	
+	public void createMonsterMap() {
+		
+		
+		
+		
+		board = new Cell[20][20];
+		// Desert background
+		background = "desert.png";
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 20; j++) {
+				// need to create the cells before we add them to the board
+				// and
+				// try to access them.
+				board[i][j] = new Cell(Terrain.Nothing, i, j);
+				board[i][j].setUnit(null);
+				// Give each cell a location
+				board[i][j].setLocation(new Point(i, j));
+			}
+		}
+		
+		for (int i = 0; i < 20; i++) {
+			board[4][i].setTerrain(Terrain.Lava);
+			board[9][i].setTerrain(Terrain.Lava);
+			board[15][i].setTerrain(Terrain.Lava);
+
+		}
+		for (int i = 0; i < 20; i++) {
+			board[i][4].setTerrain(Terrain.Lava);
+			board[i][9].setTerrain(Terrain.Lava);
+			board[i][16].setTerrain(Terrain.Lava);
+
+		}
+		
+		generateRandomPlayer1Units();
+		generateMonster();
+		
+	}
+	
 
 	/**
 	 * Creates a random map:
@@ -273,7 +318,7 @@ public class GameBoard extends JFrame implements Serializable {
 			}
 			// Generate 150 random Terrains on the map:
 			int numberOfTerriansOnTheBoard = 0;
-			while (numberOfTerriansOnTheBoard < 200) {
+			while (numberOfTerriansOnTheBoard < 100) {
 				int randomX = rand.nextInt(20);
 				int randomY = rand.nextInt(20);
 				int randomTerrain = rand.nextInt(7);
@@ -316,6 +361,7 @@ public class GameBoard extends JFrame implements Serializable {
 			// Generate Units:
 			generateRandomPlayer1Units();
 			generateRandomPlayer2Units();
+			generateMonster();
 
 		} else {
 			// board is 20 by 20 for now:
@@ -378,6 +424,7 @@ public class GameBoard extends JFrame implements Serializable {
 			// Generate Units:
 			generateRandomPlayer1Units();
 			generateRandomPlayer2Units();
+
 
 		}
 	}
@@ -488,7 +535,7 @@ public class GameBoard extends JFrame implements Serializable {
 			if (random == 0) {
 				int randomX = rand.nextInt(20);
 				int randomY = rand.nextInt(20);
-				while (board[randomX][randomY].getTerrain() != Terrain.Nothing) {
+				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
 					randomX = rand.nextInt(20);
 					randomX = rand.nextInt(20);
 				}
@@ -505,7 +552,7 @@ public class GameBoard extends JFrame implements Serializable {
 			if (random == 1) {
 				int randomX = rand.nextInt(20);
 				int randomY = rand.nextInt(20);
-				while (board[randomX][randomY].getTerrain() != Terrain.Nothing) {
+				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
 					randomX = rand.nextInt(20);
 					randomX = rand.nextInt(20);
 				}
@@ -522,7 +569,7 @@ public class GameBoard extends JFrame implements Serializable {
 			if (random == 2) {
 				int randomX = rand.nextInt(20);
 				int randomY = rand.nextInt(20);
-				while (board[randomX][randomY].getTerrain() != Terrain.Nothing) {
+				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
 					randomX = rand.nextInt(20);
 					randomX = rand.nextInt(20);
 				}
@@ -538,7 +585,7 @@ public class GameBoard extends JFrame implements Serializable {
 			if (random == 3) {
 				int randomX = rand.nextInt(20);
 				int randomY = rand.nextInt(20);
-				while (board[randomX][randomY].getTerrain() != Terrain.Nothing) {
+				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
 					randomX = rand.nextInt(20);
 					randomX = rand.nextInt(20);
 				}
@@ -572,7 +619,7 @@ public class GameBoard extends JFrame implements Serializable {
 			if (random == 0) {
 				int randomX = rand.nextInt(20);
 				int randomY = rand.nextInt(20);
-				while (board[randomX][randomY].getTerrain() != Terrain.Nothing) {
+				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
 					randomX = rand.nextInt(20);
 					randomX = rand.nextInt(20);
 				}
@@ -589,7 +636,7 @@ public class GameBoard extends JFrame implements Serializable {
 			if (random == 1) {
 				int randomX = rand.nextInt(20);
 				int randomY = rand.nextInt(20);
-				while (board[randomX][randomY].getTerrain() != Terrain.Nothing) {
+				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
 					randomX = rand.nextInt(20);
 					randomX = rand.nextInt(20);
 				}
@@ -606,7 +653,7 @@ public class GameBoard extends JFrame implements Serializable {
 			if (random == 2) {
 				int randomX = rand.nextInt(20);
 				int randomY = rand.nextInt(20);
-				while (board[randomX][randomY].getTerrain() != Terrain.Nothing) {
+				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
 					randomX = rand.nextInt(20);
 					randomX = rand.nextInt(20);
 				}
@@ -622,7 +669,7 @@ public class GameBoard extends JFrame implements Serializable {
 			if (random == 3) {
 				int randomX = rand.nextInt(20);
 				int randomY = rand.nextInt(20);
-				while (board[randomX][randomY].getTerrain() != Terrain.Nothing) {
+				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
 					randomX = rand.nextInt(20);
 					randomX = rand.nextInt(20);
 				}
@@ -639,6 +686,24 @@ public class GameBoard extends JFrame implements Serializable {
 		}
 
 	}
+	
+	public void generateMonster() {
+		player2Units = new ArrayList<Cell>();
+		UnitFactory factory = new UnitFactory();
+		Unit monster = factory.makeUnit("DarthVader", GUI.getPlayer2());
+		Random rand = new Random();
+		int randomX = rand.nextInt(4);
+		int randomY = rand.nextInt(20);
+		while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
+			randomX = rand.nextInt(4);
+			randomX = rand.nextInt(20);
+		}
+		board[randomX][randomY].setUnit(monster);
+		board[randomX][randomY].setHasUnit(true);
+		player2Units.add(board[randomX][randomY]);
+
+	}
+	
 
 	/**
 	 * Responsible for returning a text version of the current GameBoard:
@@ -676,6 +741,89 @@ public class GameBoard extends JFrame implements Serializable {
 		}
 		return str;
 	}
+	/**
+	 * Checks to see if the unit in this cell can move or not:
+	 * 
+	 * @param cellWithUnit
+	 *            This is given to me from the GUI contains a unit
+	 * @param direction
+	 *            Direction of Movement desired
+	 * @return true is this unit can move, false if it can't
+	 */
+	public boolean canMoveAIStyle(Cell cellWithUnit, String direction) {
+		boolean result = true;
+		Unit unit = cellWithUnit.getUnit();
+		if (unit.getMovesLeft() <= 0) {
+			return false;
+		} else {
+
+			if (direction.equals("N")) {
+				// Can't move farther north:
+				if (cellWithUnit.getLocation().x == 0) {
+					result = false;
+				}
+				// Trying to move into a Boulder, return false.
+				else if (board[cellWithUnit.getLocation().x - 1][cellWithUnit
+						.getLocation().y].getTerrain() == Terrain.Boulder) {
+					result = false;
+				}
+				// Trying to move into a Unit, return false.
+				else if (board[cellWithUnit.getLocation().x - 1][cellWithUnit
+						.getLocation().y].hasUnit() == true) {
+					result = false;
+				}
+			} else if (direction.equals("S")) {
+				// Can't move farther south:
+				if (cellWithUnit.getLocation().x == 19) {
+					return false;
+				}
+				// Trying to move into a Boulder, return false.
+				else if (board[cellWithUnit.getLocation().x + 1][cellWithUnit
+						.getLocation().y].getTerrain() == Terrain.Boulder) {
+					result = false;
+				}
+				// Trying to move into a Unit, return false.
+				else if (board[cellWithUnit.getLocation().x + 1][cellWithUnit
+						.getLocation().y].hasUnit() == true) {
+					result = false;
+				}
+
+			} else if (direction.equals("L")) {
+				// Can't move farther left:
+				if (cellWithUnit.getLocation().y == 0) {
+					result = false;
+				}
+				// Trying to move into a Boulder, return false.
+				else if (board[cellWithUnit.getLocation().x][cellWithUnit
+						.getLocation().y - 1].getTerrain() == Terrain.Boulder) {
+					result = false;
+				}
+				// Trying to move into a Unit, return false.
+				else if (board[cellWithUnit.getLocation().x][cellWithUnit
+						.getLocation().y - 1].hasUnit() == true) {
+					result = false;
+				}
+
+			} else if (direction.equals("R")) {
+				// Can't move farther right:
+				if (cellWithUnit.getLocation().y == 19) {
+					return false;
+				}
+				// Trying to move into a Boulder, return false.
+				else if (board[cellWithUnit.getLocation().x][cellWithUnit
+						.getLocation().y + 1].getTerrain() == Terrain.Boulder) {
+					result = false;
+				}
+				// Trying to move into a Unit, return false.
+				else if (board[cellWithUnit.getLocation().x][cellWithUnit
+						.getLocation().y + 1].hasUnit() == true) {
+					result = false;
+				}
+			}
+		}
+		return result;
+	}
+
 
 	/**
 	 * Checks to see if the unit in this cell can move or not:

@@ -642,9 +642,7 @@ public class GUI extends JFrame {
 						System.out.println(GUI.gameboard.commandqueue.size());
 						if(GUI.gameboard.commandqueue.size() > 0){
 							Command<GUI> command = GUI.gameboard.commandqueue.poll();
-							System.out.println(""+ GUI.gameboard.getPlayer1Units().get(0).getUnit().getMovesLeft());
 							command.execute(GUI.this);
-							System.out.println("" + GUI.gameboard.getPlayer1Units().get(0).getUnit().getMovesLeft());
 							System.out.println("this should execute");
 						}
 						
