@@ -36,6 +36,7 @@ public class Imageview extends JPanel implements Runnable
   private static BufferedImage darthVader;
   private static BufferedImage rancor;
   private static BufferedImage wampa;
+  private static BufferedImage imperialmedic;
 
   private static final int WIDTH = 24;
   private static final int HEIGHT = 63;
@@ -115,9 +116,9 @@ public class Imageview extends JPanel implements Runnable
             g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
           }
 
-          if (unitName.equals("Medic.png"))
+          if (unitName.equals("ImperialMedic.png"))
           {
-            image = medicSheet;
+            image = imperialmedic;
             g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
           }
 
@@ -169,7 +170,7 @@ public class Imageview extends JPanel implements Runnable
       lukeSkyWalkerJedi = ImageIO.read(new File(imageDir
           + "Luke_Skywalker_stance.png"));
       spiderTank = ImageIO.read(new File(imageDir + "SpiderTank.png"));
-      medicSheet = ImageIO.read(new File(imageDir + "Medic.png"));
+      imperialmedic = ImageIO.read(new File(imageDir + "ImperialMedic.png"));
       lavaSheet = ImageIO.read(new File(imageDir + "Lava.png"));
       boulderSheet = ImageIO.read(new File(imageDir + "Boulder.png"));
       iceSheet = ImageIO.read(new File(imageDir + "Ice.png"));

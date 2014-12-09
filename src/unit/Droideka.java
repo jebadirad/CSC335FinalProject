@@ -16,7 +16,7 @@ public class Droideka extends TankUnit
   @Override
   public String getDescription()
   {
-    return "...";
+    return "Droideka has a resilience to firepower, as well as the fear it instills in even the most powerful Jedi.";
   }
 
 }
