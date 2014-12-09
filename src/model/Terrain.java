@@ -23,13 +23,10 @@ public enum Terrain implements Serializable{
 	private Terrain(int mod){
 		this.modifier = mod;
 	}
-	
-public enum Terrain implements Serializable
-{
-  // Possible terrain types:
-  Boulder, Nothing, QuickSand, Lava, Forest, Desert, Ice, Flag;
 
-	public int getmodifier(){
+	public int getmodifier() {
+		// TODO Auto-generated method stub
 		return modifier;
 	}
+	
 }
