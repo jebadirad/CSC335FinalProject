@@ -740,20 +740,20 @@ public class GUI extends JFrame {
 				}
 			}
 			if (e.getSource() == moveUp) {
-				move("N",CurrentUnitSelected);
+				move("N", CurrentUnitSelected);
 
 			}
 
 			if (e.getSource() == moveLeft) {
-				move("L",CurrentUnitSelected);
+				move("L", CurrentUnitSelected);
 			}
 
 			if (e.getSource() == moveDown) {
-				move("S",CurrentUnitSelected);
+				move("S", CurrentUnitSelected);
 			}
 
 			if (e.getSource() == moveRight) {
-				move("R",CurrentUnitSelected);
+				move("R", CurrentUnitSelected);
 
 			}
 			if (e.getSource() == endTurn) {
@@ -798,6 +798,8 @@ public class GUI extends JFrame {
 					
 					
 				}
+				
+				
 				System.out.println("end of " + player1 + " turn");
 				Inventory tempinventory = p1inv;
 				p1inv = p2inv;

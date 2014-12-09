@@ -61,7 +61,12 @@ public class UnitFactory
       return new Wampa("Wampa.png", username);
 
     // CODE FOR ARTILARY UNITS
-
+    // Code to make new ArtilleryDroid.
+    if (unitType.equals("ArtilleryDroid"))
+      return new ArtilleryDroid("ArtilleryDroid.png", username);
+    // Code to make new Walker.
+    if (unitType.equals("Walker"))
+      return new Walker("Walker.png", username);
     // Return null if unitType does not exist.
     return null;
   }
