@@ -39,6 +39,7 @@ import javax.swing.JTextField;
 import model.Cell;
 import model.Command;
 import model.GameBoard;
+import model.Terrain;
 
 /**
  * Public class that everything that has to do with user action with the game.
@@ -53,6 +54,8 @@ public class GUI extends JFrame {
 
 	public static String player1;
 	public static String player2;
+	public static int player1FlagPoints;
+	public static int player2FlagPoints;
 
 	public ArrayList<Cell> playerunits = new ArrayList<Cell>();
 	AI computer;
@@ -754,6 +757,47 @@ public class GUI extends JFrame {
 
 			}
 			if (e.getSource() == endTurn) {
+				
+				for (int i = 0; i < gameboard.getPlayer1Units().size(); i++) {
+					if (gameboard.getPlayer1Units().get(i).getTerrain()==Terrain.Flag) {
+						player1FlagPoints++;
+						JOptionPane optionPane = new JOptionPane();
+						int timesLeft = 5 - player1FlagPoints;
+						optionPane.setMessage("You have ended you turn on the flag!, do this " + timesLeft + " more times to win the game!");
+						JDialog dialog = optionPane.createDialog(":~)");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+					}
+					
+				}
+				
+				if (player1FlagPoints >= 5) {
+					// tell them they win
+					Object[] options = { "New Game", "Quit" };
+					int n = JOptionPane
+							.showOptionDialog(
+									frame,
+									player1
+											+ " HAS WON THE GAME!! Would you like to start a new game?",
+									"VICTORY!!", JOptionPane.YES_NO_OPTION,
+									JOptionPane.QUESTION_MESSAGE, null,
+									options, options[1]);
+					if (n == JOptionPane.YES_OPTION) {
+						System.out.println("new game");
+						dispose();
+						new GUI();
+						player1FlagPoints = 0;
+						player2FlagPoints = 0;
+					} else {
+						if (n == JOptionPane.NO_OPTION) {
+							System.out.println("no option");
+							frame.dispatchEvent(new WindowEvent(frame,
+									WindowEvent.WINDOW_CLOSING));
+						}
+					}
+					
+					
+				}
 				System.out.println("end of " + player1 + " turn");
 				Inventory tempinventory = p1inv;
 				p1inv = p2inv;
@@ -762,6 +806,9 @@ public class GUI extends JFrame {
 						player2);
 				player1units = gameboard.getPlayer1Units();
 				player2units = gameboard.getPlayer2Units();
+				int tempPoints = player1FlagPoints;
+				player1FlagPoints = player2FlagPoints;
+				player2FlagPoints = tempPoints;
 				usernamestring.setText("Current Player: " + player1);
 				inventorystring.setText(player1 + "'s inventory: "
 						+ p1inv.toString());

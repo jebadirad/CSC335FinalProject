@@ -54,7 +54,7 @@ public class GameBoard extends JFrame implements Serializable {
 	public GameBoard(String mapName) {
 		commandqueue = new LinkedList<Command>();
 		if (mapName.equals("Map 1"))
-			createMonsterMap();
+			createMap1();
 		else if (mapName.equals("Map 2"))
 			createMap2();
 		else if (mapName.equals("Random"))
@@ -65,9 +65,6 @@ public class GameBoard extends JFrame implements Serializable {
 			createVsComputerMap();
 
 	}
-	
-	
-	
 	
 	/**
 	 * Creates Map1
@@ -88,7 +85,8 @@ public class GameBoard extends JFrame implements Serializable {
 				// Give each cell a location
 				board[i][j].setLocation(new Point(i, j));
 			}
-		}
+		}		
+		
 		// Call SetBackGround grass for Map1:
 		// Imageview.setBackground("Grass.png");
 
@@ -133,6 +131,10 @@ public class GameBoard extends JFrame implements Serializable {
 		board[14][7].setTerrain(Terrain.Ice);
 		board[13][7].setTerrain(Terrain.Ice);
 		board[12][7].setTerrain(Terrain.Ice);
+		
+		// place flag:
+		board[8][7].setTerrain(Terrain.Flag);
+		
 
 		// Generate Units:
 		generatePlayer1Units();
@@ -174,16 +176,17 @@ public class GameBoard extends JFrame implements Serializable {
 				numberOfBoulders++;
 			}
 		}
-		// int numberOfLavas = 0;
-		// while (numberOfLavas < 50) {
-		// int randomX = rand.nextInt(20);
-		// int randomY = rand.nextInt(20);
-		// if (board[randomX][randomY].getTerrain() == Terrain.Ice &&
-		// board[randomX][randomY].hasUnit()==false) {
-		// board[randomX][randomY].setTerrain(Terrain.Lava);
-		// numberOfLavas++;
-		// }
-		// }
+		// Create a flag:
+		int numberOfFlags = 0;
+		while (numberOfFlags < 1) {
+			int randomX = rand.nextInt(20);
+			int randomY = rand.nextInt(20);
+			if (board[randomX][randomY].getTerrain() == Terrain.Ice && board[randomX][randomY].hasUnit() == false) {
+				board[randomX][randomY].setTerrain(Terrain.Flag);
+				numberOfFlags++;
+			}
+		}
+		
 
 	}
 
@@ -2578,14 +2581,15 @@ public class GameBoard extends JFrame implements Serializable {
 	 *         false
 	 */
 	public boolean CheckgameOverBooleanVersion(ArrayList<Cell> units) {
-
+		
 		if (units.isEmpty()) {
 			// Player 1 has lost:
 			return true;
-		} else
-			return false;
+		}
+		
+		return false;
 	}
-
+	
 	/**
 	 * When the turn is over, update movesLeft, and setCanAttack, and change
 	 * units out:

@@ -20,7 +20,8 @@ public class Cell implements Serializable{
 	private Unit unit;
 	// A cell has a point/location associated with it
 	private Point location;
-
+	// Counter for flag:
+	private int flagTurns;
 	
 	/**
 	 * Constructor takes the type of terrain desired as a parameter
@@ -105,6 +106,7 @@ public class Cell implements Serializable{
 	public void setLocation(Point location) {
 		this.location = location;
 	}
+
 
 }
 
