@@ -664,7 +664,7 @@ public class GUI extends JFrame {
 					int n = JOptionPane
 							.showOptionDialog(
 									frame,
-									player1
+									player2
 											+ " HAS WON THE GAME!! Would you like to start a new game?",
 									"VICTORY!!", JOptionPane.YES_NO_OPTION,
 									JOptionPane.QUESTION_MESSAGE, null,
