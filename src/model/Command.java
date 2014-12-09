@@ -14,8 +14,10 @@ public abstract class Command<T> implements Serializable {
 
 	public abstract void execute(T executeOn);
 	
-	
-
+	public Cell getCurrentCell(){
+		return null;
+	}
+	public abstract void setCurrentCell(Cell unit);
 	
 	public void undo(T undoOn){
 		
