@@ -38,6 +38,8 @@ public class Imageview extends JPanel implements Runnable
   private static BufferedImage wampa;
   private static BufferedImage imperialmedic;
   private static BufferedImage flag;
+  private static BufferedImage artilleryDroid;
+  private static BufferedImage walker;
 
   private static final int WIDTH = 24;
   private static final int HEIGHT = 63;
@@ -145,7 +147,11 @@ public class Imageview extends JPanel implements Runnable
             image = spiderTank;
             g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
           }
-
+          if (unitName.equals("Walker.png"))
+          {
+            image = walker;
+            g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
+          }
           if (unitName.equals("Rancor.png"))
           {
             image = rancor;
@@ -191,6 +197,9 @@ public class Imageview extends JPanel implements Runnable
       darthVader = ImageIO.read(new File(imageDir + "DarthVader.png"));
       rancor = ImageIO.read(new File(imageDir + "Rancor.png"));
       wampa = ImageIO.read(new File(imageDir + "Wampa.png"));
+      artilleryDroid = ImageIO.read(new File(imageDir + "ArtilleryDroid.png"));
+      walker = ImageIO.read(new File(imageDir + "Walker.png"));
+
       flag = ImageIO.read(new File(imageDir + "Flag.png"));
 
       if (backGroundString.equals("Grass.png"))
