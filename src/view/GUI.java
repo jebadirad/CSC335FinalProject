@@ -55,7 +55,7 @@ public class GUI extends JFrame {
 	public static String player2;
 
 	public ArrayList<Cell> playerunits = new ArrayList<Cell>();
-	AI computer = new AI();
+	AI computer;
 
 	JFrame frame;
 	JPanel shop;
@@ -159,6 +159,9 @@ public class GUI extends JFrame {
 	 * Officially creates a newgame().
 	 */
 	public void newGame(String map) {
+		if(AIgame){
+			AI computer = new AI();
+		}
 		gameboard = new GameBoard(map);
 		new Thread(new Runner()).start();
 		// create inventories for both players
@@ -503,6 +506,7 @@ public class GUI extends JFrame {
 		attackButtonPanel.add(UseItem);
 		attackButtonPanel.add(attack);
 		if (AIgame) {
+			
 			attackButtonPanel.add(endTurnAI);
 		} else {
 			attackButtonPanel.add(endTurn);
@@ -627,7 +631,7 @@ public class GUI extends JFrame {
 		}
 	}
 	public void move(String direction, Cell cellwithunit) {
-		if (CurrentUnitSelected == null) {
+		if (cellwithunit == null) {
 			JOptionPane optionPane = new JOptionPane();
 			optionPane.setMessage("Please Select a Unit");
 			JDialog dialog = optionPane.createDialog(":~(");
@@ -635,15 +639,15 @@ public class GUI extends JFrame {
 			dialog.setVisible(true);
 		} else {
 			CurrentUnitSelected = cellwithunit;
-			if (gameboard.canMove(CurrentUnitSelected, direction)) {
-				int i = player1units.indexOf(CurrentUnitSelected);
+			if (gameboard.canMove(cellwithunit, direction)) {
+				int i = player1units.indexOf(cellwithunit);
 				player1units.remove(i);
 
-				CurrentUnitSelected = gameboard.move(CurrentUnitSelected,
+				cellwithunit = gameboard.move(cellwithunit,
 						direction);
-				if (CurrentUnitSelected.hasUnit()) {
-					player1units.add(i, CurrentUnitSelected);
-					targets(CurrentUnitSelected);
+				if (cellwithunit.hasUnit()) {
+					player1units.add(i, cellwithunit);
+					targets(cellwithunit);
 
 				} else {
 					targets.clear();
@@ -692,15 +696,13 @@ public class GUI extends JFrame {
 				// TODO Auto-generated method stub
 				try{
 					while(true){
-						System.out.println(GUI.gameboard.commandqueue.size());
-						if(GUI.gameboard.commandqueue.size() > 0){
+						
+						if(!GUI.gameboard.commandqueue.isEmpty()){
+							System.out.println("does it get here?");
 							Command<GUI> command = GUI.gameboard.commandqueue.poll();
 							command.execute(GUI.this);
 							System.out.println("this should execute");
 						}
-						
-						
-						
 					}
 				}catch(Exception e){
 					e.printStackTrace();
@@ -777,7 +779,6 @@ public class GUI extends JFrame {
 
 			}
 			if (e.getSource() == endTurnAI) {
-				System.out.println("end of " + player1 + " turn");
 				Inventory tempinventory = p1inv;
 				p1inv = p2inv;
 				p2inv = tempinventory;
@@ -960,6 +961,7 @@ public class GUI extends JFrame {
 					registerListeners();
 				}
 			} else if (e.getSource() == vsAI) {
+				
 				player1 = username1.getText();
 				player2 = username2.getText();
 				if (player1.equals("") || player1.equals(null)
@@ -971,6 +973,7 @@ public class GUI extends JFrame {
 					dialog.setVisible(true);
 				} else {
 					AIgame = true;
+					computer = new AI();
 					frame.setVisible(false);
 					newGame("vsAi");
 					layoutGUI();

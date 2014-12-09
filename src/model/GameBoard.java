@@ -40,7 +40,7 @@ public class GameBoard extends JFrame implements Serializable {
 	private ArrayList<Cell> player1Units;
 	// Player 2 Units:
 	private ArrayList<Cell> player2Units;
-	public Queue<Command> commandqueue;
+	public volatile Queue<Command> commandqueue;
 	
 	public static String background;
 	private AI computer;
