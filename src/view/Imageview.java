@@ -37,6 +37,7 @@ public class Imageview extends JPanel implements Runnable
   private static BufferedImage rancor;
   private static BufferedImage wampa;
   private static BufferedImage imperialmedic;
+  private static BufferedImage flag;
 
   private static final int WIDTH = 24;
   private static final int HEIGHT = 63;
@@ -87,6 +88,11 @@ public class Imageview extends JPanel implements Runnable
         if (theModel[i][j].getTerrain() == Terrain.QuickSand)
         {
           image = quicksandSheet;
+          g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
+        }
+        if (theModel[i][j].getTerrain() == Terrain.Flag)
+        {
+          image = flag;
           g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
         }
         if (theModel[i][j].hasUnit())
@@ -185,6 +191,7 @@ public class Imageview extends JPanel implements Runnable
       darthVader = ImageIO.read(new File(imageDir + "DarthVader.png"));
       rancor = ImageIO.read(new File(imageDir + "Rancor.png"));
       wampa = ImageIO.read(new File(imageDir + "Wampa.png"));
+      flag = ImageIO.read(new File(imageDir + "Flag.png"));
 
       if (backGroundString.equals("Grass.png"))
       {
