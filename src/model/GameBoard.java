@@ -54,7 +54,7 @@ public class GameBoard extends JFrame implements Serializable {
 	public GameBoard(String mapName) {
 		commandqueue = new LinkedList<Command>();
 		if (mapName.equals("Map 1"))
-			createMonsterMap();
+			createMap1();
 		else if (mapName.equals("Map 2"))
 			createMap2();
 		else if (mapName.equals("Random"))
@@ -256,9 +256,6 @@ public class GameBoard extends JFrame implements Serializable {
 	
 	public void createMonsterMap() {
 		
-		
-		
-		
 		board = new Cell[20][20];
 		// Desert background
 		background = "desert.png";
@@ -283,7 +280,7 @@ public class GameBoard extends JFrame implements Serializable {
 		for (int i = 0; i < 20; i++) {
 			board[i][4].setTerrain(Terrain.Lava);
 			board[i][9].setTerrain(Terrain.Lava);
-			board[i][16].setTerrain(Terrain.Lava);
+			board[i][15].setTerrain(Terrain.Lava);
 
 		}
 		
@@ -361,7 +358,6 @@ public class GameBoard extends JFrame implements Serializable {
 			// Generate Units:
 			generateRandomPlayer1Units();
 			generateRandomPlayer2Units();
-			generateMonster();
 
 		} else {
 			// board is 20 by 20 for now:
@@ -476,7 +472,7 @@ public class GameBoard extends JFrame implements Serializable {
 		board[7][10].setUnit(aUnit);
 		board[7][10].setHasUnit(true);
 
-		aUnit = factory.makeUnit("Medic", GUI.getPlayer2());
+		aUnit = factory.makeUnit("ImperialMedic", GUI.getPlayer2());
 		board[2][12].setUnit(aUnit);
 		board[2][12].setHasUnit(true);
 		aUnit = factory.makeUnit("BattleDroid", GUI.getPlayer2());
@@ -504,7 +500,7 @@ public class GameBoard extends JFrame implements Serializable {
 		board[7][10].setUnit(aUnit);
 		board[7][10].setHasUnit(true);
 
-		aUnit = factory.makeUnit("Medic", GUI.getPlayer2());
+		aUnit = factory.makeUnit("ImperialMedic", GUI.getPlayer2());
 		board[2][12].setUnit(aUnit);
 		board[2][12].setHasUnit(true);
 		aUnit = factory.makeUnit("BattleDroid", GUI.getPlayer2());
@@ -529,7 +525,7 @@ public class GameBoard extends JFrame implements Serializable {
 		UnitFactory factory = new UnitFactory();
 		Random rand = new Random();
 		int numberOfUnits = 0;
-		while (numberOfUnits < 2) {
+		while (numberOfUnits < 3) {
 			int random = rand.nextInt(4);
 			// Creates Clone Trooper at random location
 			if (random == 0) {
@@ -575,7 +571,7 @@ public class GameBoard extends JFrame implements Serializable {
 				}
 				// There is no terrain here:
 				// Create a Medic
-				Unit aUnit = factory.makeUnit("Medic", GUI.getPlayer1());
+				Unit aUnit = factory.makeUnit("ImperialMedic", GUI.getPlayer1());
 				board[randomX][randomY].setUnit(aUnit);
 				board[randomX][randomY].setHasUnit(true);
 				// Add to player1Units:
@@ -613,7 +609,7 @@ public class GameBoard extends JFrame implements Serializable {
 		UnitFactory factory = new UnitFactory();
 		Random rand = new Random();
 		int numberOfUnits = 0;
-		while (numberOfUnits < 2) {
+		while (numberOfUnits < 3) {
 			int random = rand.nextInt(4);
 			// Creates Clone Trooper at random location
 			if (random == 0) {
@@ -659,7 +655,7 @@ public class GameBoard extends JFrame implements Serializable {
 				}
 				// There is no terrain here:
 				// Create a Medic
-				Unit aUnit = factory.makeUnit("Medic", GUI.getPlayer1());
+				Unit aUnit = factory.makeUnit("ImperialMedic", GUI.getPlayer1());
 				board[randomX][randomY].setUnit(aUnit);
 				board[randomX][randomY].setHasUnit(true);
 				// Add to player1Units:
@@ -690,13 +686,15 @@ public class GameBoard extends JFrame implements Serializable {
 	public void generateMonster() {
 		player2Units = new ArrayList<Cell>();
 		UnitFactory factory = new UnitFactory();
-		Unit monster = factory.makeUnit("DarthVader", GUI.getPlayer2());
+		Unit monster = factory.makeUnit("Wampa", GUI.getPlayer2());
 		Random rand = new Random();
-		int randomX = rand.nextInt(4);
+		int randomX = rand.nextInt(20);
 		int randomY = rand.nextInt(20);
+		System.out.println("Here");
 		while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
-			randomX = rand.nextInt(4);
 			randomX = rand.nextInt(20);
+			randomY = rand.nextInt(20);
+			System.out.println("Stuck here");
 		}
 		board[randomX][randomY].setUnit(monster);
 		board[randomX][randomY].setHasUnit(true);
@@ -2387,7 +2385,7 @@ public class GameBoard extends JFrame implements Serializable {
 		// }
 
 		// Check for Medic:
-		if (cellWithUnit.getUnit().toString().equals("M")) {
+		if (cellWithUnit.getUnit().toString().equals("ImperialMedic")) {
 			for (int i = startRow; i <= finishRow; i++) {
 				for (int j = startCol; j <= finishCol; j++) {
 					// Have located a unit in the range of the unit given:
@@ -2490,7 +2488,7 @@ public class GameBoard extends JFrame implements Serializable {
 		// Need a total health and current health stat to complete this method!
 
 		// Check for Medic:
-		if (cellWithUnitAtacking.getUnit().toString().equals("M")) {
+		if (cellWithUnitAtacking.getUnit().toString().equals("ImperialMedic")) {
 			cellWithUnitBeingAttacked.getUnit().setHealth(
 					cellWithUnitBeingAttacked.getUnit().getHealth()
 							+ cellWithUnitAtacking.getUnit().getDamage());

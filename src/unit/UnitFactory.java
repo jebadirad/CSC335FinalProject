@@ -34,7 +34,7 @@ public class UnitFactory
     // CODE FOR HEALER UNITS
     // Code to make new Medic.
     if (unitType.equals("ImperialMedic"))
-      return new Medic("ImperialMedic.png", username);
+      return new ImperialMedic("ImperialMedic.png", username);
 
     // CODE FOR JEDI UNITS
     // Code to make new Jedi LukeSkywalker.

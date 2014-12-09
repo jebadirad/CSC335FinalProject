@@ -1,9 +1,9 @@
 package unit;
 
-public class Medic extends HealerUnit
+public class ImperialMedic extends HealerUnit
 {
 
-  public Medic(String imagestring, String username)
+  public ImperialMedic(String imagestring, String username)
   {
     //
     super(imagestring, username);
