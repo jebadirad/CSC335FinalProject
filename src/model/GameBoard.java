@@ -549,7 +549,7 @@ public class GameBoard extends JFrame implements Serializable {
 				numberOfUnits++;
 			}
 			// Creates Jedi at random location
-			if (random == 1) {
+			else if (random == 1) {
 				int randomX = rand.nextInt(20);
 				int randomY = rand.nextInt(20);
 				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
@@ -566,7 +566,7 @@ public class GameBoard extends JFrame implements Serializable {
 				player1Units.add(board[randomX][randomY]);
 				numberOfUnits++;
 			}
-			if (random == 2) {
+			else if (random == 2) {
 				int randomX = rand.nextInt(20);
 				int randomY = rand.nextInt(20);
 				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
@@ -582,7 +582,7 @@ public class GameBoard extends JFrame implements Serializable {
 				player1Units.add(board[randomX][randomY]);
 				numberOfUnits++;
 			}
-			if (random == 3) {
+			else{
 				int randomX = rand.nextInt(20);
 				int randomY = rand.nextInt(20);
 				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
@@ -692,11 +692,11 @@ public class GameBoard extends JFrame implements Serializable {
 		UnitFactory factory = new UnitFactory();
 		Unit monster = factory.makeUnit("DarthVader", GUI.getPlayer2());
 		Random rand = new Random();
-		int randomX = rand.nextInt(4);
+		int randomX = rand.nextInt(20);
 		int randomY = rand.nextInt(20);
 		while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
-			randomX = rand.nextInt(4);
 			randomX = rand.nextInt(20);
+			randomY = rand.nextInt(20);
 		}
 		board[randomX][randomY].setUnit(monster);
 		board[randomX][randomY].setHasUnit(true);
