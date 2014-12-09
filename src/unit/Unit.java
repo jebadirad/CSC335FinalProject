@@ -1,6 +1,7 @@
 package unit;
 
 import java.io.Serializable;
+import sprites.*;
 
 /**
  * This class is the super class for all Unit types. It has attackRange, damage,
@@ -8,7 +9,7 @@ import java.io.Serializable;
  * 
  * @author Kal
  */
-public abstract class Unit implements Serializable
+public abstract class Unit extends SpriteObject implements Serializable
 {
   private int attackRange, damage, health, moveRange, movesLeft, currentHealth;
   private String iconImage;
@@ -29,6 +30,7 @@ public abstract class Unit implements Serializable
   public Unit(int attackRange, int damage, int health, int moveRange,
       String imagestring, String username)
   {
+	  super(new JediSprite(), 1, 1, 100);
     this.attackRange = attackRange;
     this.damage = damage;
     this.health = health;
