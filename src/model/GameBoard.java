@@ -95,12 +95,10 @@ public class GameBoard extends JFrame implements Serializable {
 		// Generate actual terrain:
 		for (int i = 0; i < 20; i++) {
 			// Places lavas in the third row
-			board[i][8].setTerrain(Terrain.Lava);
 			i++;
 		}
 		for (int i = 0; i < 5; i++) {
 			// Places boulders in the
-			board[i][5].setTerrain(Terrain.Boulder);
 		}
 
 		// Creates a QickSand pit, with Ice in the middle
@@ -210,44 +208,14 @@ public class GameBoard extends JFrame implements Serializable {
 		// Generate actual terrain:
 		for (int i = 0; i < 20; i++) {
 			// Places lavas in the third row
-			board[i][8].setTerrain(Terrain.Lava);
 			i++;
 		}
 		for (int i = 0; i < 5; i++) {
 			// Places boulders in the
-			board[i][5].setTerrain(Terrain.Boulder);
 		}
 
 		// Creates a QickSand pit, with Ice in the middle
-		board[10][10].setTerrain(Terrain.Ice);
-		board[10][9].setTerrain(Terrain.QuickSand);
-		board[11][9].setTerrain(Terrain.QuickSand);
-		board[9][9].setTerrain(Terrain.QuickSand);
-		board[9][10].setTerrain(Terrain.QuickSand);
-		board[11][10].setTerrain(Terrain.QuickSand);
-		board[11][11].setTerrain(Terrain.QuickSand);
-		board[9][11].setTerrain(Terrain.QuickSand);
-		board[10][11].setTerrain(Terrain.QuickSand);
-
-		board[3][11].setTerrain(Terrain.Boulder);
-		board[5][11].setTerrain(Terrain.Boulder);
-
-		board[6][7].setTerrain(Terrain.Ice);
-		board[5][7].setTerrain(Terrain.Ice);
-		board[4][7].setTerrain(Terrain.Ice);
-		board[3][7].setTerrain(Terrain.Ice);
-		board[2][7].setTerrain(Terrain.Lava);
-		board[1][7].setTerrain(Terrain.Ice);
-		board[0][7].setTerrain(Terrain.QuickSand);
-
-		board[19][7].setTerrain(Terrain.Lava);
-		board[18][7].setTerrain(Terrain.Ice);
-		board[17][7].setTerrain(Terrain.Ice);
-		board[16][7].setTerrain(Terrain.Lava);
-		board[15][7].setTerrain(Terrain.Ice);
-		board[14][7].setTerrain(Terrain.Ice);
-		board[13][7].setTerrain(Terrain.Ice);
-		board[12][7].setTerrain(Terrain.Ice);
+		
 
 		generatePlayer1Units();
 		generateComputerUnits();

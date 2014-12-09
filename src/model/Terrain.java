@@ -7,12 +7,22 @@ import unit.Unit;
 
 public enum Terrain implements Serializable{
 	// Possible terrain types:
-	Boulder,
-	Nothing,
-	QuickSand,
-	Lava,
-	Forest,
-	Desert,
-	Ice;
+	Boulder(9999),
+	Nothing(0),
+	QuickSand(4),
+	Lava(2),
+	Forest(0),
+	Desert(0),
+	Ice(0);
 	
+	
+	private int modifier;
+	
+	private Terrain(int mod){
+		this.modifier = mod;
+	}
+	
+	public int getmodifier(){
+		return modifier;
+	}
 }

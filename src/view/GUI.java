@@ -137,7 +137,7 @@ public class GUI extends JFrame {
 	 */
 	public GUI() {
 		super();
-		
+
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		layoutPregameGUI();
@@ -159,7 +159,7 @@ public class GUI extends JFrame {
 	 * Officially creates a newgame().
 	 */
 	public void newGame(String map) {
-		if(AIgame){
+		if (AIgame) {
 			AI computer = new AI();
 		}
 		gameboard = new GameBoard(map);
@@ -506,7 +506,7 @@ public class GUI extends JFrame {
 		attackButtonPanel.add(UseItem);
 		attackButtonPanel.add(attack);
 		if (AIgame) {
-			
+
 			attackButtonPanel.add(endTurnAI);
 		} else {
 			attackButtonPanel.add(endTurn);
@@ -576,7 +576,8 @@ public class GUI extends JFrame {
 		UnitInfo.addActionListener(new ButtonListener());
 
 	}
-	public void attack(Cell cellattack, Cell celldefense){
+
+	public void attack(Cell cellattack, Cell celldefense) {
 		CurrentUnitSelected = cellattack;
 		EnemyUnitSelected = celldefense;
 		if (EnemyUnitSelected == null) {
@@ -611,8 +612,8 @@ public class GUI extends JFrame {
 								player1
 										+ " HAS WON THE GAME!! Would you like to start a new game?",
 								"VICTORY!!", JOptionPane.YES_NO_OPTION,
-								JOptionPane.QUESTION_MESSAGE, null,
-								options, options[1]);
+								JOptionPane.QUESTION_MESSAGE, null, options,
+								options[1]);
 				if (n == JOptionPane.YES_OPTION) {
 					System.out.println("new game");
 					dispose();
@@ -630,8 +631,9 @@ public class GUI extends JFrame {
 			repaint();
 		}
 	}
+
 	public void move(String direction, Cell cellwithunit) {
-		
+
 		if (cellwithunit == null) {
 			JOptionPane optionPane = new JOptionPane();
 			optionPane.setMessage("Please Select a Unit");
@@ -643,8 +645,7 @@ public class GUI extends JFrame {
 				int i = player1units.indexOf(cellwithunit);
 				player1units.remove(i);
 
-				CurrentUnitSelected = gameboard.move(cellwithunit,
-						direction);
+				CurrentUnitSelected = gameboard.move(cellwithunit, direction);
 				if (CurrentUnitSelected.hasUnit()) {
 					player1units.add(i, CurrentUnitSelected);
 					targets(CurrentUnitSelected);
@@ -689,30 +690,38 @@ public class GUI extends JFrame {
 			}
 		}
 	}
-		private class Runner implements Runnable{
 
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				try{
-					while(true){
-						
-						if(!GUI.gameboard.commandqueue.isEmpty()){
-							System.out.println("does it get here?");
-							Command<GUI> command = GUI.gameboard.commandqueue.poll();
-							command.execute(GUI.this);
-							GUI.gameboard.commandqueue.element().setCurrentCell(CurrentUnitSelected);
-							
-							System.out.println("this should execute");
+	public void changeUnit(Cell cellwithunit) {
+		CurrentUnitSelected = cellwithunit;
+	}
+
+	private class Runner implements Runnable {
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			try {
+				while (true) {
+
+					if (!GUI.gameboard.commandqueue.isEmpty()) {
+						System.out.println("does it get here?");
+
+						Command<GUI> command = GUI.gameboard.commandqueue.poll();
+						command.execute(GUI.this);
+						if (!GUI.gameboard.commandqueue.isEmpty()) {
+							GUI.gameboard.commandqueue.element()
+									.setCurrentCell(CurrentUnitSelected);
 						}
+						System.out.println("this should execute");
 					}
-				}catch(Exception e){
-					e.printStackTrace();
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		
 		}
-	
+
+	}
+
 	private class ButtonListener implements ActionListener {
 
 		@Override
@@ -737,23 +746,25 @@ public class GUI extends JFrame {
 				}
 			}
 			if (e.getSource() == moveUp) {
-				move("N",CurrentUnitSelected);
+				move("N", CurrentUnitSelected);
 
 			}
 
 			if (e.getSource() == moveLeft) {
-				move("L",CurrentUnitSelected);
+				move("L", CurrentUnitSelected);
 			}
 
 			if (e.getSource() == moveDown) {
-				move("S",CurrentUnitSelected);
+				move("S", CurrentUnitSelected);
 			}
 
 			if (e.getSource() == moveRight) {
-				move("R",CurrentUnitSelected);
+				move("R", CurrentUnitSelected);
 
 			}
 			if (e.getSource() == endTurn) {
+				
+				
 				System.out.println("end of " + player1 + " turn");
 				Inventory tempinventory = p1inv;
 				p1inv = p2inv;
@@ -963,7 +974,7 @@ public class GUI extends JFrame {
 					registerListeners();
 				}
 			} else if (e.getSource() == vsAI) {
-				
+
 				player1 = username1.getText();
 				player2 = username2.getText();
 				if (player1.equals("") || player1.equals(null)
@@ -1100,6 +1111,4 @@ public class GUI extends JFrame {
 		}
 	}
 
-	
-	
 }
