@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 
 import unit.Unit;
+
 // This enum contains the types of terrain that will be in a cell object:
 
 public enum Terrain implements Serializable{
@@ -13,7 +14,8 @@ public enum Terrain implements Serializable{
 	Lava(2),
 	Forest(0),
 	Desert(0),
-	Ice(0);
+	Ice(0),
+	Flag(0);
 	
 	
 	private int modifier;
@@ -22,6 +24,11 @@ public enum Terrain implements Serializable{
 		this.modifier = mod;
 	}
 	
+public enum Terrain implements Serializable
+{
+  // Possible terrain types:
+  Boulder, Nothing, QuickSand, Lava, Forest, Desert, Ice, Flag;
+
 	public int getmodifier(){
 		return modifier;
 	}

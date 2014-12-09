@@ -54,7 +54,7 @@ public class GameBoard extends JFrame implements Serializable {
 	public GameBoard(String mapName) {
 		commandqueue = new LinkedList<Command>();
 		if (mapName.equals("Map 1"))
-			createMap1();
+			createMonsterMap();
 		else if (mapName.equals("Map 2"))
 			createMap2();
 		else if (mapName.equals("Random"))
@@ -253,6 +253,9 @@ public class GameBoard extends JFrame implements Serializable {
 		}
 		
 		generateRandomPlayer1Units();
+		System.out.println("Made it");
+		player2Units = new ArrayList<Cell>();
+		System.out.println("here");
 		generateMonster();
 		
 	}
@@ -283,7 +286,7 @@ public class GameBoard extends JFrame implements Serializable {
 			}
 			// Generate 150 random Terrains on the map:
 			int numberOfTerriansOnTheBoard = 0;
-			while (numberOfTerriansOnTheBoard < 100) {
+			while (numberOfTerriansOnTheBoard < 394) {
 				int randomX = rand.nextInt(20);
 				int randomY = rand.nextInt(20);
 				int randomTerrain = rand.nextInt(7);
@@ -345,7 +348,7 @@ public class GameBoard extends JFrame implements Serializable {
 			}
 			// Generate 150 random Terrains on the map:
 			int numberOfTerriansOnTheBoard = 0;
-			while (numberOfTerriansOnTheBoard < 150) {
+			while (numberOfTerriansOnTheBoard < 394) {
 				int randomX = rand.nextInt(20);
 				int randomY = rand.nextInt(20);
 				int randomTerrain = rand.nextInt(7);
@@ -493,7 +496,7 @@ public class GameBoard extends JFrame implements Serializable {
 		UnitFactory factory = new UnitFactory();
 		Random rand = new Random();
 		int numberOfUnits = 0;
-		while (numberOfUnits < 2) {
+		while (numberOfUnits < 3) {
 			int random = rand.nextInt(4);
 			// Creates Clone Trooper at random location
 			if (random == 0) {
@@ -501,7 +504,7 @@ public class GameBoard extends JFrame implements Serializable {
 				int randomY = rand.nextInt(20);
 				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
 					randomX = rand.nextInt(20);
-					randomX = rand.nextInt(20);
+					randomY = rand.nextInt(20);
 				}
 				// There is no terrain here:
 				// Create a Clone Trooper
@@ -518,7 +521,7 @@ public class GameBoard extends JFrame implements Serializable {
 				int randomY = rand.nextInt(20);
 				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
 					randomX = rand.nextInt(20);
-					randomX = rand.nextInt(20);
+					randomY = rand.nextInt(20);
 				}
 				// There is no terrain here:
 				// Create a Clone Trooper
@@ -535,7 +538,7 @@ public class GameBoard extends JFrame implements Serializable {
 				int randomY = rand.nextInt(20);
 				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
 					randomX = rand.nextInt(20);
-					randomX = rand.nextInt(20);
+					randomY = rand.nextInt(20);
 				}
 				// There is no terrain here:
 				// Create a Medic
@@ -551,7 +554,7 @@ public class GameBoard extends JFrame implements Serializable {
 				int randomY = rand.nextInt(20);
 				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
 					randomX = rand.nextInt(20);
-					randomX = rand.nextInt(20);
+					randomY = rand.nextInt(20);
 				}
 				// There is no terrain here:
 				// Create a Spider Tank
@@ -585,7 +588,7 @@ public class GameBoard extends JFrame implements Serializable {
 				int randomY = rand.nextInt(20);
 				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
 					randomX = rand.nextInt(20);
-					randomX = rand.nextInt(20);
+					randomY = rand.nextInt(20);
 				}
 				// There is no terrain here:
 				// Create a Clone Trooper
@@ -602,7 +605,7 @@ public class GameBoard extends JFrame implements Serializable {
 				int randomY = rand.nextInt(20);
 				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
 					randomX = rand.nextInt(20);
-					randomX = rand.nextInt(20);
+					randomY = rand.nextInt(20);
 				}
 				// There is no terrain here:
 				// Create a Clone Trooper
@@ -619,7 +622,7 @@ public class GameBoard extends JFrame implements Serializable {
 				int randomY = rand.nextInt(20);
 				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
 					randomX = rand.nextInt(20);
-					randomX = rand.nextInt(20);
+					randomY = rand.nextInt(20);
 				}
 				// There is no terrain here:
 				// Create a Medic
@@ -635,7 +638,7 @@ public class GameBoard extends JFrame implements Serializable {
 				int randomY = rand.nextInt(20);
 				while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
 					randomX = rand.nextInt(20);
-					randomX = rand.nextInt(20);
+					randomY = rand.nextInt(20);
 				}
 				// There is no terrain here:
 				// Create a Spider Tank
@@ -654,7 +657,7 @@ public class GameBoard extends JFrame implements Serializable {
 	public void generateMonster() {
 		player2Units = new ArrayList<Cell>();
 		UnitFactory factory = new UnitFactory();
-		Unit monster = factory.makeUnit("DarthVader", GUI.getPlayer2());
+		Unit monster = factory.makeUnit("Wampa", GUI.getPlayer2());
 		Random rand = new Random();
 		int randomX = rand.nextInt(20);
 		int randomY = rand.nextInt(20);
@@ -2351,7 +2354,7 @@ public class GameBoard extends JFrame implements Serializable {
 		// }
 
 		// Check for Medic:
-		if (cellWithUnit.getUnit().toString().equals("ImperialMedic")) {
+		if (cellWithUnit.getUnit().toString().equals("Imperial Medic")) {
 			for (int i = startRow; i <= finishRow; i++) {
 				for (int j = startCol; j <= finishCol; j++) {
 					// Have located a unit in the range of the unit given:
@@ -2454,7 +2457,7 @@ public class GameBoard extends JFrame implements Serializable {
 		// Need a total health and current health stat to complete this method!
 
 		// Check for Medic:
-		if (cellWithUnitAtacking.getUnit().toString().equals("ImperialMedic")) {
+		if (cellWithUnitAtacking.getUnit().toString().equals("Imperial Medic")) {
 			cellWithUnitBeingAttacked.getUnit().setHealth(
 					cellWithUnitBeingAttacked.getUnit().getHealth()
 							+ cellWithUnitAtacking.getUnit().getDamage());
