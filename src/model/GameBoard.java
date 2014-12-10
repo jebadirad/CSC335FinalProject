@@ -2597,41 +2597,50 @@ public class GameBoard extends JFrame implements Serializable {
 	 *         the unit in it
 	 */
 	public Cell attack(Cell cellWithUnitAtacking, Cell cellWithUnitBeingAttacked) {
-		// Need a total health and current health stat to complete this method!
 
 		// Check for Medic:
 		if (cellWithUnitAtacking.getUnit().toString().equals("Imperial Medic")) {
+			
+			// Check for if Medic tries to heal a fully healed unit:
+			if (cellWithUnitBeingAttacked.getUnit().getHealth()==cellWithUnitBeingAttacked.getUnit().getCurrentHealth()) {
+				JOptionPane optionPane = new JOptionPane();
+				optionPane.setMessage(cellWithUnitBeingAttacked.getUnit().toString() + " has full health already!");
+				JDialog dialog = optionPane.createDialog(":)");
+				dialog.setAlwaysOnTop(true);
+				dialog.setVisible(true);
+				return cellWithUnitBeingAttacked;
+			}
 			
 			cellWithUnitBeingAttacked.getUnit().setHealth(
 					cellWithUnitBeingAttacked.getUnit().getHealth()
 							+ cellWithUnitAtacking.getUnit().getDamage());
 			// Gave too much health:
-//			if (cellWithUnitBeingAttacked.getUnit().getHealth() > cellWithUnitBeingAttacked.getUnit().getOverallHealth()) {
-//				cellWithUnitBeingAttacked.getUnit().setHealth(cellWithUnitBeingAttacked.getUnit().getOverallHealth());
-//
-//				JOptionPane optionPane = new JOptionPane();
-//				optionPane.setMessage("Your Medic Fully Healed "
-//						+ cellWithUnitBeingAttacked.getUnit().toString());
-//				JDialog dialog = optionPane.createDialog(":)");
-//				dialog.setAlwaysOnTop(true);
-//				dialog.setVisible(true);
-//				cellWithUnitAtacking.getUnit().setMovesLeft(0);
-//				cellWithUnitAtacking.getUnit().setCanAttack(false);
-//				return cellWithUnitBeingAttacked;
-//			}
-			//else {
+			if (cellWithUnitBeingAttacked.getUnit().getHealth() > cellWithUnitBeingAttacked.getUnit().getCurrentHealth()) {
+				cellWithUnitBeingAttacked.getUnit().setHealth(cellWithUnitBeingAttacked.getUnit().getCurrentHealth());
+
+				JOptionPane optionPane = new JOptionPane();
+				optionPane.setMessage("Your Medic Fully Healed "
+						+ cellWithUnitBeingAttacked.getUnit().toString());
+				JDialog dialog = optionPane.createDialog(":)");
+				dialog.setAlwaysOnTop(true);
+				dialog.setVisible(true);
+				cellWithUnitAtacking.getUnit().setMovesLeft(0);
+				cellWithUnitAtacking.getUnit().setCanAttack(false);
+				return cellWithUnitBeingAttacked;
+			}
+			else {
 				cellWithUnitAtacking.getUnit().setMovesLeft(0);
 				cellWithUnitAtacking.getUnit().setCanAttack(false);
 				JOptionPane optionPane = new JOptionPane();
 				optionPane.setMessage("Your Medic Healed "
 						+ cellWithUnitBeingAttacked.getUnit().toString() + " By "
-						+ cellWithUnitBeingAttacked.getUnit().getDamage()
+						+ cellWithUnitAtacking.getUnit().getDamage()
 						+ " Health!");
 				JDialog dialog = optionPane.createDialog(":)");
 				dialog.setAlwaysOnTop(true);
 				dialog.setVisible(true);
 				return cellWithUnitBeingAttacked;
-			//}
+			}
 			
 		}
 
