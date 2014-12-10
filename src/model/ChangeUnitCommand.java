@@ -7,6 +7,7 @@ public class ChangeUnitCommand extends Command<GUI> {
 	public ChangeUnitCommand(Cell unit){
 		this.cellwithunit = unit;
 	}
+	
 	@Override
 	public void execute(GUI executeOn) {
 		// TODO Auto-generated method stub

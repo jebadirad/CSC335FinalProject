@@ -194,9 +194,9 @@ public class GUI extends JFrame
     AudioPlayer.player.start(as);
 
 
-    AudioStream as = null;
-    String fileName = clipsDir + "StarWars.mp3";
-    InputStream in = null;
+    //AudioStream as = null;
+    //String fileName = clipsDir + "StarWars.mp3";
+    //InputStream in = null;
 
     try
     {
@@ -815,7 +815,9 @@ public class GUI extends JFrame
       repaint();
     }
   }
-
+public void changeUnit(Cell cellwithunit){
+	CurrentUnitSelected = cellwithunit;
+}
   public void move(String direction, Cell cellwithunit)
   {
 
