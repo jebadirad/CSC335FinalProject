@@ -193,6 +193,30 @@ public class GUI extends JFrame
 
     AudioPlayer.player.start(as);
 
+
+    AudioStream as = null;
+    String fileName = clipsDir + "StarWars.mp3";
+    InputStream in = null;
+
+    try
+    {
+      in = new FileInputStream(fileName);
+    }
+    catch (FileNotFoundException e)
+    {
+      System.out.println("Media file not present in C drive.");
+    }
+
+    try
+    {
+      as = new AudioStream(in);
+    }
+    catch (IOException e)
+    {
+    }
+
+    //AudioPlayer.player.start(as);
+
     layoutTitleGUI();
   }
 
@@ -881,6 +905,13 @@ public class GUI extends JFrame
             command.execute(GUI.this);
             GUI.gameboard.commandqueue.element().setCurrentCell(
                 CurrentUnitSelected);
+            if(GUI.gameboard.commandqueue.isEmpty()){
+            	
+            }
+            else{
+            	 GUI.gameboard.commandqueue.element().setCurrentCell(
+                         CurrentUnitSelected);
+            }
 
             System.out.println("this should execute");
           }

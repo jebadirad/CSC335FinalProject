@@ -1,6 +1,10 @@
 package model;
 
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import view.GUI;
 
@@ -90,8 +94,8 @@ public class AI {
 		}
 		System.out.println("");
 		leeboard[startx][starty].setmarked();
-		leeboard[startx][starty].setvalue(9);
-		nearestunithelper(startx, starty, x, y);
+		distance(startx, starty,x,y);
+
 		for (int i = 0; i < leeboard.length; i++) {
 			for (int j = 0; j < leeboard.length; j++) {
 
@@ -103,70 +107,47 @@ public class AI {
 		return null;
 	}
 
-	public void nearestunithelper(int startx, int starty, int x, int y) {
-		NearestUnit(p + 1, startx, starty, x, y);
+	public void distance(int x, int y, int enemyx, int enemyy) {
+		Queue<Point> q = new LinkedList<Point>();
+		Point p = new Point();
+		p.x = x;
+		p.y = y;
+		if (q.isEmpty()) {
+			q.add(p);
+		}
+		while (!q.isEmpty()) {
+			Point a = q.poll();
+			for (int i = -1; i < 2; i++) {
+				for (int j = -1; j < 2; j++) {
+					if (a.x + i < 0 || a.x + i > 19 || a.y + j < 0
+							|| a.y + j > 19) {
 
-	}
+					} else if (i == -1 && j == -1 || i == 1 && j == 1
+							|| i == -1 && j == 1 || i == 1 && j == -1) {
 
-	public void NearestUnit(int p, int startx, int starty, int x, int y) {
-		/*
-		 * for (int a = -1; a < 2; a++) { for (int b = -1; b < 2; b++) { if
-		 * (startx == x && starty == y) { return; } else if (startx + a < 0 ) {
-		 * return;
-		 * 
-		 * } else if (startx + a > 19) { return; } else if (starty + b < 0) {
-		 * return; } else if (starty + b < 19) { return; }
-		 * 
-		 * else if (a == -1 && b == -1) { } else if (a == -1 && b == 1) { } else
-		 * if (a == 1 && b == -1) { } else if (a == 1 && b == 1) { }
-		 * 
-		 * else { if (leeboard[startx + a][starty + b].getmarked() == true) { if
-		 * (leeboard[startx + a][starty + b].getValue() < p) { leeboard[startx +
-		 * a][starty + b].setvalue(p); } return; } else { leeboard[startx +
-		 * a][starty + b].setvalue(p); leeboard[startx + a][starty +
-		 * b].setmarked(); NearestUnit(p + 1, startx + a, starty + b, x, y); } }
-		 * } }
-		 * 
-		 * return;
-		 */
-		p = 0;
-		leeboard[startx][starty].setvalue(0);
-		for (int i = 0; i < 19; i++) {
-			for (int j = 0; j < 19; j++) {
-				if (startx + i < 0 || startx + i > 19) {
+					} else if (i == 0 && j == 0) {
 
-				} else if (starty + j < 0 || starty + j > 19) {
-
-				} else if (startx - i < 0 || startx - i > 19) {
-
-				} else if (starty - j < 0 || starty - j > 19) {
-
-				} else {
-					/*
-					 * for(int a = -1; a < 2 ; a++){ for(int b = -1; b < 2;
-					 * b++){ if(startx +a < 0 || startx + a > 19 || starty + b <
-					 * 0 || starty + b >19){
-					 * 
-					 * } else if(a == -1 && b == -1){ leeboard[startx +
-					 * a][starty + b].setvalue(p+1); } else if (a == -1 && b ==
-					 * 1){ leeboard[startx + a][starty + b].setvalue(p+1); }
-					 * else if (a == 1 && b == 1){ leeboard[startx + a][starty +
-					 * b].setvalue(p+1); } else if (a == 1 && b == -1){
-					 * leeboard[startx + a][starty + b].setvalue(p+1); } else{
-					 * 
-					 * } } }
-					 */
-					
+					} else if (leeboard[a.x+i][a.y+j].getmarked()) {
+					} else {
+						leeboard[a.x + i][a.y + j].setvalue(leeboard[a.x][a.y]
+								.getValue() + 1);
+						leeboard[a.x + i][a.y + j].setmarked();
+						q.add(new Point(a.x + i, a.y + j));
+					}
 					
 				}
-
 			}
-			p++;
+
 		}
-		leeboard[startx][starty].setvalue(0);
 
+		
+		System.out.println(leeboard[x][y].getValue());
+		
+		return;
 	}
-
+	
+	
+	
 	private class leealgorithm {
 		int value;
 		boolean marked;
