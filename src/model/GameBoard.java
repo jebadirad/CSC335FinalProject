@@ -1,6 +1,5 @@
 package model;
 
-import item.Inventory;
 import item.Item;
 
 import java.awt.Point;
@@ -11,7 +10,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
@@ -41,7 +39,6 @@ public class GameBoard extends JFrame implements Serializable {
 	// Player 2 Units:
 	private ArrayList<Cell> player2Units;
 	public volatile Queue<Command> commandqueue;
-	
 	public static String background;
 	private AI computer;
 
@@ -86,21 +83,7 @@ public class GameBoard extends JFrame implements Serializable {
 				board[i][j].setLocation(new Point(i, j));
 			}
 		}		
-		
-		// Call SetBackGround grass for Map1:
-		// Imageview.setBackground("Grass.png");
-
-		// Generate actual terrain:
-		for (int i = 0; i < 20; i++) {
-			// Places lavas in the third row
-			i++;
-		}
-		for (int i = 0; i < 5; i++) {
-			// Places boulders in the
-		}
-
-		// Creates a QickSand pit, with Ice in the middle
-		board[10][10].setTerrain(Terrain.Ice);
+		// Quicksand pit:
 		board[10][9].setTerrain(Terrain.QuickSand);
 		board[11][9].setTerrain(Terrain.QuickSand);
 		board[9][9].setTerrain(Terrain.QuickSand);
@@ -109,35 +92,62 @@ public class GameBoard extends JFrame implements Serializable {
 		board[11][11].setTerrain(Terrain.QuickSand);
 		board[9][11].setTerrain(Terrain.QuickSand);
 		board[10][11].setTerrain(Terrain.QuickSand);
-
-		board[3][11].setTerrain(Terrain.Boulder);
-		board[5][11].setTerrain(Terrain.Boulder);
-
-		board[6][7].setTerrain(Terrain.Ice);
-		board[5][7].setTerrain(Terrain.Ice);
-		board[4][7].setTerrain(Terrain.Ice);
-		board[3][7].setTerrain(Terrain.Ice);
-		board[2][7].setTerrain(Terrain.Lava);
-		board[1][7].setTerrain(Terrain.Ice);
-		board[0][7].setTerrain(Terrain.QuickSand);
-
-		board[19][7].setTerrain(Terrain.Lava);
-		board[18][7].setTerrain(Terrain.Ice);
-		board[17][7].setTerrain(Terrain.Ice);
-		board[16][7].setTerrain(Terrain.Lava);
-		board[15][7].setTerrain(Terrain.Ice);
-		board[14][7].setTerrain(Terrain.Ice);
-		board[13][7].setTerrain(Terrain.Ice);
-		board[12][7].setTerrain(Terrain.Ice);
 		
 		// place flag:
-		board[8][7].setTerrain(Terrain.Flag);
+		board[10][10].setTerrain(Terrain.Flag);
 		
+		// Boulders and Lavas:
+		board[8][8].setTerrain(Terrain.Boulder);
+		board[8][12].setTerrain(Terrain.Boulder);
+		board[12][8].setTerrain(Terrain.Boulder);
+		board[12][12].setTerrain(Terrain.Boulder);
+		board[9][8].setTerrain(Terrain.Lava);
+		board[11][8].setTerrain(Terrain.Lava);
+		board[9][12].setTerrain(Terrain.Lava);
+		board[11][12].setTerrain(Terrain.Lava);
+		board[10][12].setTerrain(Terrain.Boulder);
+		board[10][8].setTerrain(Terrain.Boulder);
+		board[8][9].setTerrain(Terrain.Lava);
+		board[8][10].setTerrain(Terrain.Boulder);
+		board[8][11].setTerrain(Terrain.Lava);
+		board[12][9].setTerrain(Terrain.Lava);
+		board[12][10].setTerrain(Terrain.Boulder);
+		board[12][11].setTerrain(Terrain.Lava);
+		
+		// Ice
+		for (int i = 3; i < 17; i++) 
+			board[3][i].setTerrain(Terrain.Ice);
+		for (int i = 3; i < 17; i++) 
+			board[17][i].setTerrain(Terrain.Ice);
+		for (int i = 3; i < 17; i++)
+			board[7][i].setTerrain(Terrain.Ice);
+		for (int i = 3; i < 17; i++)
+			board[13][i].setTerrain(Terrain.Ice);
+		
+		board[17][17].setTerrain(Terrain.Lava);
+		board[3][2].setTerrain(Terrain.Lava);
+		board[7][17].setTerrain(Terrain.QuickSand);		
+		board[13][2].setTerrain(Terrain.QuickSand);
 
+		for (int i = 0; i < 20; i++) { 
+			board[i][5].setTerrain(Terrain.Boulder);
+			i++;
+		}
+		for (int i = 0; i < 20; i++) { 
+			board[i][15].setTerrain(Terrain.Boulder);
+			i++;
+		}
+		for (int i = 3; i < 17; i++)
+			board[7][i].setTerrain(Terrain.Ice);
+		
 		// Generate Units:
 		generatePlayer1Units();
 		generatePlayer2Units();
 		
+	
+		////////////////
+		// Do this instead, give it ArrayList<Units>
+		//tempGenerateMap1Units();
 
 	}
 
@@ -162,10 +172,14 @@ public class GameBoard extends JFrame implements Serializable {
 		// Generate Units:
 		generatePlayer1Units();
 		generatePlayer2Units();
+		
+		////////////////
+	    // Do this instead, give it ArrayList<Units>
+     	//tempGenerateMap1Units();
 
 		Random rand = new Random();
 		int numberOfBoulders = 0;
-		while (numberOfBoulders < 50) {
+		while (numberOfBoulders < 75) {
 			int randomX = rand.nextInt(20);
 			int randomY = rand.nextInt(20);
 			if (board[randomX][randomY].getTerrain() == Terrain.Ice
@@ -219,7 +233,6 @@ public class GameBoard extends JFrame implements Serializable {
 
 		// Creates a QickSand pit, with Ice in the middle
 		
-
 		generatePlayer1Units();
 		generateComputerUnits();
 
@@ -254,11 +267,15 @@ public class GameBoard extends JFrame implements Serializable {
 			board[i][15].setTerrain(Terrain.Lava);
 
 		}
+		board[10][8].setTerrain(Terrain.Flag);
 		
+		// comment out this line
 		generateRandomPlayer1Units();
-		System.out.println("Made it");
-		player2Units = new ArrayList<Cell>();
-		System.out.println("here");
+		
+		// Call this instead!:
+		//tempGenerateMonsterPlayer1Units(ArrayList<Unit>)
+		
+		// Still call generateMonster
 		generateMonster();
 		
 	}
@@ -289,7 +306,7 @@ public class GameBoard extends JFrame implements Serializable {
 			}
 			// Generate 150 random Terrains on the map:
 			int numberOfTerriansOnTheBoard = 0;
-			while (numberOfTerriansOnTheBoard < 394) {
+			while (numberOfTerriansOnTheBoard < 200) {
 				int randomX = rand.nextInt(20);
 				int randomY = rand.nextInt(20);
 				int randomTerrain = rand.nextInt(7);
@@ -328,10 +345,24 @@ public class GameBoard extends JFrame implements Serializable {
 
 				}
 			}
+			// Create a flag:
+			int numberOfFlags = 0;
+			while (numberOfFlags < 1) {
+				int randomX = rand.nextInt(20);
+				int randomY = rand.nextInt(20);
+				if (board[randomX][randomY].getTerrain() == Terrain.Nothing && board[randomX][randomY].hasUnit() == false) {
+					board[randomX][randomY].setTerrain(Terrain.Flag);
+					numberOfFlags++;
+				}
+			}
 
 			// Generate Units:
 			generateRandomPlayer1Units();
 			generateRandomPlayer2Units();
+			
+			// Do this instead!
+			//tempGenerateRandomMapUnits(ArrayList<Unit>)
+			
 
 		} else {
 			// board is 20 by 20 for now:
@@ -351,7 +382,7 @@ public class GameBoard extends JFrame implements Serializable {
 			}
 			// Generate 150 random Terrains on the map:
 			int numberOfTerriansOnTheBoard = 0;
-			while (numberOfTerriansOnTheBoard < 394) {
+			while (numberOfTerriansOnTheBoard < 200) {
 				int randomX = rand.nextInt(20);
 				int randomY = rand.nextInt(20);
 				int randomTerrain = rand.nextInt(7);
@@ -391,14 +422,133 @@ public class GameBoard extends JFrame implements Serializable {
 				}
 			}
 
+			// Create a flag:
+			int numberOfFlags = 0;
+			while (numberOfFlags < 1) {
+				int randomX = rand.nextInt(20);
+				int randomY = rand.nextInt(20);
+				if (board[randomX][randomY].getTerrain() == Terrain.Nothing && board[randomX][randomY].hasUnit() == false) {
+					board[randomX][randomY].setTerrain(Terrain.Flag);
+					numberOfFlags++;
+				}
+			}
+			
 			// Generate Units:
 			generateRandomPlayer1Units();
 			generateRandomPlayer2Units();
+			
+			// Do this instead!
+			//tempGenerateRandomMapUnits(ArrayList<Unit>)
 
 
 		}
 	}
 
+	public void tempGenerateMap1Or2Units(ArrayList<Unit> units) {
+		
+		// Player 1 has first five units in this list
+		board[3][0].setUnit(units.get(0));
+		board[3][0].setHasUnit(true);
+		player1Units.add(board[3][0]);
+		
+		board[7][0].setUnit(units.get(1));
+		board[7][0].setHasUnit(true);
+		player1Units.add(board[7][0]);
+		
+		board[11][0].setUnit(units.get(2));
+		board[11][0].setHasUnit(true);
+		player1Units.add(board[11][0]);
+		
+		board[15][0].setUnit(units.get(3));
+		board[15][0].setHasUnit(true);
+		player1Units.add(board[15][0]);
+		
+		board[19][0].setUnit(units.get(4));
+		board[19][0].setHasUnit(true);
+		player1Units.add(board[19][0]);
+		
+		// Player 2 has last five units in this list
+		board[3][19].setUnit(units.get(5));
+		board[3][19].setHasUnit(true);
+		player2Units.add(board[3][19]);
+		
+		board[7][19].setUnit(units.get(6));
+		board[7][19].setHasUnit(true);
+		player2Units.add(board[7][19]);
+		
+		board[11][19].setUnit(units.get(7));
+		board[11][19].setHasUnit(true);
+		player2Units.add(board[11][19]);
+		
+		board[15][19].setUnit(units.get(8));
+		board[15][19].setHasUnit(true);
+		player2Units.add(board[15][19]);
+		
+		board[19][19].setUnit(units.get(9));
+		board[19][19].setHasUnit(true);
+		player2Units.add(board[19][19]);
+		
+		
+	}
+	
+	public void tempGenerateMonsterPlayer1Units(ArrayList<Unit> units) {
+		Random rand = new Random();
+		
+		int numberOfUnitsPlaced = 0;
+		while (numberOfUnitsPlaced < 5) {
+			int randomX = rand.nextInt(20);
+			int randomY = rand.nextInt(20);
+			while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
+				randomX = rand.nextInt(20);
+				randomY = rand.nextInt(20);
+			}
+			board[randomX][randomY].setUnit(units.get(numberOfUnitsPlaced));
+			board[randomX][randomY].setHasUnit(true);
+			// Add to player1Units:
+			player1Units.add(board[randomX][randomY]);
+			numberOfUnitsPlaced++;
+		}
+	}
+	
+	
+	
+	
+	public void tempGenerateRandomMapUnits(ArrayList<Unit> units) {
+		Random rand = new Random();
+		
+		int numberOfUnitsPlaced = 0;
+		while (numberOfUnitsPlaced < 5) {
+			int randomX = rand.nextInt(20);
+			int randomY = rand.nextInt(20);
+			while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
+				randomX = rand.nextInt(20);
+				randomY = rand.nextInt(20);
+			}
+			board[randomX][randomY].setUnit(units.get(numberOfUnitsPlaced));
+			board[randomX][randomY].setHasUnit(true);
+			// Add to player1Units:
+			player1Units.add(board[randomX][randomY]);
+			numberOfUnitsPlaced++;
+		}
+		
+		while (numberOfUnitsPlaced < 10) {
+			int randomX = rand.nextInt(20);
+			int randomY = rand.nextInt(20);
+			while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
+				randomX = rand.nextInt(20);
+				randomY = rand.nextInt(20);
+			}
+			board[randomX][randomY].setUnit(units.get(numberOfUnitsPlaced));
+			board[randomX][randomY].setHasUnit(true);
+			// Add to player1Units:
+			player2Units.add(board[randomX][randomY]);
+			numberOfUnitsPlaced++;
+		}
+		
+	}
+	
+	
+	
 	/**
 	 * Responsible for adding Units to Cells who we desire to have a unit, these
 	 * are Player1's units
@@ -411,19 +561,19 @@ public class GameBoard extends JFrame implements Serializable {
 		UnitFactory factory = new UnitFactory();
 		// Last parameter is UserName obtained from the GUI
 		Unit aUnit = factory.makeUnit("CloneTrooper", GUI.getPlayer1());
-		board[7][7].setUnit(aUnit);
-		board[7][7].setHasUnit(true);
+		board[5][0].setUnit(aUnit);
+		board[5][0].setHasUnit(true);
 
 		aUnit = factory.makeUnit("SpiderTank", GUI.getPlayer1());
-		board[7][19].setUnit(aUnit);
-		board[7][19].setHasUnit(true);
+		board[10][0].setUnit(aUnit);
+		board[10][0].setHasUnit(true);
 		aUnit = factory.makeUnit("DarthVader", GUI.getPlayer1());
-		board[4][11].setUnit(aUnit);
-		board[4][11].setHasUnit(true);
+		board[15][0].setUnit(aUnit);
+		board[15][0].setHasUnit(true);
 		// Adds this to player1Units list:
-		player1Units.add(board[7][7]);
-		player1Units.add(board[7][19]);
-		player1Units.add(board[4][11]);
+		player1Units.add(board[5][0]);
+		player1Units.add(board[10][0]);
+		player1Units.add(board[15][0]);
 
 	}
 
@@ -443,19 +593,19 @@ public class GameBoard extends JFrame implements Serializable {
 		 * board[3][1].setUnit(dUnit); board[3][1].setHasUnit(true);
 		 */
 		Unit aUnit = factory.makeUnit("LukeSkywalker", GUI.getPlayer2());
-		board[7][10].setUnit(aUnit);
-		board[7][10].setHasUnit(true);
+		board[5][19].setUnit(aUnit);
+		board[5][19].setHasUnit(true);
 
 		aUnit = factory.makeUnit("ImperialMedic", GUI.getPlayer2());
-		board[2][12].setUnit(aUnit);
-		board[2][12].setHasUnit(true);
+		board[10][19].setUnit(aUnit);
+		board[10][19].setHasUnit(true);
 		aUnit = factory.makeUnit("BattleDroid", GUI.getPlayer2());
-		board[1][17].setUnit(aUnit);
-		board[1][17].setHasUnit(true);
+		board[15][19].setUnit(aUnit);
+		board[15][19].setHasUnit(true);
 		// Adds this to player2Units list:
-		player2Units.add(board[7][10]);
-		player2Units.add(board[2][12]);
-		player2Units.add(board[1][17]);
+		player2Units.add(board[5][19]);
+		player2Units.add(board[10][19]);
+		player2Units.add(board[15][19]);
 
 	}
 
@@ -660,8 +810,13 @@ public class GameBoard extends JFrame implements Serializable {
 	public void generateMonster() {
 		player2Units = new ArrayList<Cell>();
 		UnitFactory factory = new UnitFactory();
-		Unit monster = factory.makeUnit("Wampa", GUI.getPlayer2());
 		Random rand = new Random();
+		int number = rand.nextInt(2);
+		Unit monster = factory.makeUnit("Wampa", GUI.getPlayer2());
+		if (number == 1) {
+			monster = factory.makeUnit("Rancor", GUI.getPlayer2());
+		}
+		
 		int randomX = rand.nextInt(20);
 		int randomY = rand.nextInt(20);
 		while (board[randomX][randomY].getTerrain() != Terrain.Nothing || board[randomX][randomY].hasUnit()) {
@@ -2340,21 +2495,6 @@ public class GameBoard extends JFrame implements Serializable {
 			finishRow = 19;
 		if (finishCol > 19)
 			finishCol = 19;
-		// If we want to only be able to attack in the same row:
-
-		// for (int i = startCol; i <= finishCol; i++) {
-		// if (board[cellWithUnit.getLocation().x][i].hasUnit()) {
-		// if (i==cellWithUnit.getLocation().y) {
-		// // Do Nothing!
-		// }
-		// // See if this unit is an enemy:
-		// else if
-		// (board[cellWithUnit.getLocation().x][i].getUnit().getUsername() !=
-		// cellWithUnit.getUnit().getUsername())
-		// unitsInRange.add(board[cellWithUnit.getLocation().x][i]);
-		//
-		// }
-		// }
 
 		// Check for Medic:
 		if (cellWithUnit.getUnit().toString().equals("Imperial Medic")) {
@@ -2461,21 +2601,38 @@ public class GameBoard extends JFrame implements Serializable {
 
 		// Check for Medic:
 		if (cellWithUnitAtacking.getUnit().toString().equals("Imperial Medic")) {
+			
 			cellWithUnitBeingAttacked.getUnit().setHealth(
 					cellWithUnitBeingAttacked.getUnit().getHealth()
 							+ cellWithUnitAtacking.getUnit().getDamage());
-
-			cellWithUnitAtacking.getUnit().setMovesLeft(0);
-			cellWithUnitAtacking.getUnit().setCanAttack(false);
-			JOptionPane optionPane = new JOptionPane();
-			optionPane.setMessage("Your Medic Healed "
-					+ cellWithUnitBeingAttacked.getUnit().toString() + " By "
-					+ cellWithUnitBeingAttacked.getUnit().getDamage()
-					+ " Health!");
-			JDialog dialog = optionPane.createDialog(":)");
-			dialog.setAlwaysOnTop(true);
-			dialog.setVisible(true);
-			return cellWithUnitBeingAttacked;
+			// Gave too much health:
+//			if (cellWithUnitBeingAttacked.getUnit().getHealth() > cellWithUnitBeingAttacked.getUnit().getOverallHealth()) {
+//				cellWithUnitBeingAttacked.getUnit().setHealth(cellWithUnitBeingAttacked.getUnit().getOverallHealth());
+//
+//				JOptionPane optionPane = new JOptionPane();
+//				optionPane.setMessage("Your Medic Fully Healed "
+//						+ cellWithUnitBeingAttacked.getUnit().toString());
+//				JDialog dialog = optionPane.createDialog(":)");
+//				dialog.setAlwaysOnTop(true);
+//				dialog.setVisible(true);
+//				cellWithUnitAtacking.getUnit().setMovesLeft(0);
+//				cellWithUnitAtacking.getUnit().setCanAttack(false);
+//				return cellWithUnitBeingAttacked;
+//			}
+			//else {
+				cellWithUnitAtacking.getUnit().setMovesLeft(0);
+				cellWithUnitAtacking.getUnit().setCanAttack(false);
+				JOptionPane optionPane = new JOptionPane();
+				optionPane.setMessage("Your Medic Healed "
+						+ cellWithUnitBeingAttacked.getUnit().toString() + " By "
+						+ cellWithUnitBeingAttacked.getUnit().getDamage()
+						+ " Health!");
+				JDialog dialog = optionPane.createDialog(":)");
+				dialog.setAlwaysOnTop(true);
+				dialog.setVisible(true);
+				return cellWithUnitBeingAttacked;
+			//}
+			
 		}
 
 		// Any other Unit:
@@ -2500,6 +2657,7 @@ public class GameBoard extends JFrame implements Serializable {
 					dialog.setAlwaysOnTop(true);
 					dialog.setVisible(true);
 					player1Units.remove(cellWithUnitBeingAttacked);
+					
 
 				}
 				if (cellWithUnitBeingAttacked.getUnit().getUsername()
@@ -2509,12 +2667,24 @@ public class GameBoard extends JFrame implements Serializable {
 					JOptionPane optionPane = new JOptionPane();
 					optionPane.setMessage("Enemy Unit "
 							+ cellWithUnitBeingAttacked.getUnit().toString()
-							+ "Has Died!");
+							+ " Has Died!");
 					JDialog dialog = optionPane.createDialog(":~D");
 					dialog.setAlwaysOnTop(true);
 					dialog.setVisible(true);
 					player2Units.remove(cellWithUnitBeingAttacked);
-
+					
+					// Deal with leveling up:
+					// If you got a kill, your unit levels up for now
+					cellWithUnitAtacking.getUnit().levelUp();
+					// Tell the user (player1) about it:	
+					optionPane = new JOptionPane();
+					optionPane.setMessage("Your Unit "
+							+ cellWithUnitAtacking.getUnit().toString()
+							+ " Has Leveled up! Check unit info to see your improved stats!");
+					dialog = optionPane.createDialog(":~D");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+					
 				}
 				// Remove the unit from the Cell
 				cellWithUnitBeingAttacked.removeUnit();
