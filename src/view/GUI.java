@@ -633,6 +633,12 @@ public class GUI extends JFrame {
 			repaint();
 		}
 	}
+	
+	public void changeUnit(Cell cellwithunit) {
+		// TODO Auto-generated method stub
+		CurrentUnitSelected = cellwithunit;
+	}
+
 	public void move(String direction, Cell cellwithunit) {
 		
 		if (cellwithunit == null) {
@@ -704,7 +710,10 @@ public class GUI extends JFrame {
 							System.out.println("does it get here?");
 							Command<GUI> command = GUI.gameboard.commandqueue.poll();
 							command.execute(GUI.this);
-							GUI.gameboard.commandqueue.element().setCurrentCell(CurrentUnitSelected);
+							if(!GUI.gameboard.commandqueue.isEmpty()){
+								GUI.gameboard.commandqueue.element().setCurrentCell(CurrentUnitSelected);
+							}
+							
 							
 							System.out.println("this should execute");
 						}
@@ -1149,6 +1158,7 @@ public class GUI extends JFrame {
 		}
 	}
 
+	
 	
 	
 }

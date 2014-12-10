@@ -4,11 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import model.Cell;
 import model.Terrain;
@@ -46,6 +49,7 @@ public class Imageview extends JPanel implements Runnable
 
   private static final String imageDir = System.getProperty("user.dir")
       + File.separator + "images" + File.separator;
+  private Lava l;
 
   public Imageview(String background)
   {
@@ -86,6 +90,21 @@ public class Imageview extends JPanel implements Runnable
         {
           image = lavaSheet;
           g2.drawImage(image, j * HEIGHT, i * WIDTH, HEIGHT, WIDTH, null);
+/*          
+          l = new Lava(j*HEIGHT+HEIGHT/2, i*WIDTH+WIDTH/2);
+          l.start();
+          l.draw(g2);
+          new Timer(250, new ActionListener(){ 
+        	  @Override
+        	  public void actionPerformed(ActionEvent arg0){
+        		  l.start();
+        		  if(l.isFinished())
+        			  l.reset();
+        		  repaint();
+        	  }
+          }
+        ).start();
+*/          
         }
         if (theModel[i][j].getTerrain() == Terrain.QuickSand)
         {
