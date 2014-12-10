@@ -191,6 +191,30 @@ public class GUI extends JFrame
     {
     }
 
+    AudioPlayer.player.start(as);
+
+
+    AudioStream as = null;
+    String fileName = clipsDir + "StarWars.mp3";
+    InputStream in = null;
+
+    try
+    {
+      in = new FileInputStream(fileName);
+    }
+    catch (FileNotFoundException e)
+    {
+      System.out.println("Media file not present in C drive.");
+    }
+
+    try
+    {
+      as = new AudioStream(in);
+    }
+    catch (IOException e)
+    {
+    }
+
     //AudioPlayer.player.start(as);
 
     layoutTitleGUI();
@@ -459,7 +483,7 @@ public class GUI extends JFrame
     this.setSize(1280, 800);
     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     titleScreen = new TitleScreen();
-  
+    this.setVisible(true);
     titleScreen.setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
 
@@ -487,7 +511,6 @@ public class GUI extends JFrame
     titleScreen.add(vsHuman, c);
 
     this.add(titleScreen);
-    this.setVisible(true);
 
   }
 
@@ -792,9 +815,7 @@ public class GUI extends JFrame
       repaint();
     }
   }
-  public void changeUnit(Cell cellwithunit){
-	  CurrentUnitSelected = cellwithunit;
-  }
+
   public void move(String direction, Cell cellwithunit)
   {
 
@@ -881,8 +902,9 @@ public class GUI extends JFrame
           {
             System.out.println("does it get here?");
             Command<GUI> command = GUI.gameboard.commandqueue.poll();
-            
             command.execute(GUI.this);
+            GUI.gameboard.commandqueue.element().setCurrentCell(
+                CurrentUnitSelected);
             if(GUI.gameboard.commandqueue.isEmpty()){
             	
             }
@@ -890,8 +912,6 @@ public class GUI extends JFrame
             	 GUI.gameboard.commandqueue.element().setCurrentCell(
                          CurrentUnitSelected);
             }
-           
-            
 
             
             System.out.println("this should execute");
@@ -904,7 +924,6 @@ public class GUI extends JFrame
         e.printStackTrace();
       }
     }
-		
 
   }
 
@@ -1274,6 +1293,7 @@ public class GUI extends JFrame
         {
           AIgame = true;
           computer = new AI();
+          frame.setVisible(false);
           newGame("vsAi");
           layoutGUI();
           registerListeners();
