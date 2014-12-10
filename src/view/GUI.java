@@ -169,6 +169,30 @@ public class GUI extends JFrame
   {
     super();
     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+    AudioStream as = null;
+    String fileName = clipsDir + "StarWars.mp3";
+    InputStream in = null;
+
+    try
+    {
+      in = new FileInputStream(fileName);
+    }
+    catch (FileNotFoundException e)
+    {
+      System.out.println("Media file not present in C drive.");
+    }
+
+    try
+    {
+      as = new AudioStream(in);
+    }
+    catch (IOException e)
+    {
+    }
+
+    AudioPlayer.player.start(as);
+
     layoutTitleGUI();
   }
 
@@ -855,11 +879,8 @@ public class GUI extends JFrame
             System.out.println("does it get here?");
             Command<GUI> command = GUI.gameboard.commandqueue.poll();
             command.execute(GUI.this);
-            if (!GUI.gameboard.commandqueue.isEmpty())
-            {
-              GUI.gameboard.commandqueue.element().setCurrentCell(
-                  CurrentUnitSelected);
-            }
+            GUI.gameboard.commandqueue.element().setCurrentCell(
+                CurrentUnitSelected);
 
             System.out.println("this should execute");
           }
