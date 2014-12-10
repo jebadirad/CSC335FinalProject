@@ -63,6 +63,52 @@ public class GameBoard extends JFrame implements Serializable {
 
 	}
 	
+	public ArrayList<Unit> createUnitSelection() {
+		ArrayList<Unit> units = new ArrayList<Unit>();
+		UnitFactory factory = new UnitFactory();
+		Unit unit = factory.makeUnit("CloneTrooper", GUI.getPlayer1());
+		units.add(0, unit);
+		unit = factory.makeUnit("DarthVader", GUI.getPlayer1());
+		units.add(1,unit);
+		unit = factory.makeUnit("LukeSkywalker", GUI.getPlayer1());
+		units.add(2,unit);
+		unit = factory.makeUnit("SpiderTank", GUI.getPlayer1());
+		units.add(3,unit);
+		unit = factory.makeUnit("Walker", GUI.getPlayer1());
+		units.add(4,unit);
+		unit = factory.makeUnit("BattleDroid", GUI.getPlayer2());
+		units.add(5, unit);
+		unit = factory.makeUnit("ImperialMedic", GUI.getPlayer2());
+		units.add(6,unit);
+		unit = factory.makeUnit("DarthVader", GUI.getPlayer2());
+		units.add(7,unit);
+		unit = factory.makeUnit("Walker", GUI.getPlayer2());
+		units.add(8,unit);
+		unit = factory.makeUnit("SpiderTank", GUI.getPlayer2());
+		units.add(9,unit);
+		return units;
+	}
+	
+	public ArrayList<Unit> createUnitSelectionMonster() {
+		ArrayList<Unit> units = new ArrayList<Unit>();
+		UnitFactory factory = new UnitFactory();
+		Unit unit = factory.makeUnit("CloneTrooper", GUI.getPlayer1());
+		units.add(0, unit);
+		unit = factory.makeUnit("DarthVader", GUI.getPlayer1());
+		units.add(1,unit);
+		unit = factory.makeUnit("LukeSkywalker", GUI.getPlayer1());
+		units.add(2,unit);
+		unit = factory.makeUnit("SpiderTank", GUI.getPlayer1());
+		units.add(3,unit);
+		unit = factory.makeUnit("Walker", GUI.getPlayer1());
+		units.add(4,unit);
+	
+		return units;
+	}
+
+	
+	
+	
 	/**
 	 * Creates Map1
 	 */
@@ -140,15 +186,10 @@ public class GameBoard extends JFrame implements Serializable {
 		for (int i = 3; i < 17; i++)
 			board[7][i].setTerrain(Terrain.Ice);
 		
-		// Generate Units:
-		generatePlayer1Units();
-		generatePlayer2Units();
-		
+		ArrayList<Unit> unitsToAdd = new ArrayList<Unit>();
+		unitsToAdd = createUnitSelection();
 	
-		////////////////
-		// Do this instead, give it ArrayList<Units>
-		//tempGenerateMap1Units();
-
+		tempGenerateMap1Or2Units(unitsToAdd);
 	}
 
 	/**
@@ -169,13 +210,10 @@ public class GameBoard extends JFrame implements Serializable {
 				board[i][j].setLocation(new Point(i, j));
 			}
 		}
-		// Generate Units:
-		generatePlayer1Units();
-		generatePlayer2Units();
-		
-		////////////////
-	    // Do this instead, give it ArrayList<Units>
-     	//tempGenerateMap1Units();
+		ArrayList<Unit> unitsToAdd = new ArrayList<Unit>();
+		unitsToAdd = createUnitSelection();
+	
+		tempGenerateMap1Or2Units(unitsToAdd);
 
 		Random rand = new Random();
 		int numberOfBoulders = 0;
@@ -269,12 +307,10 @@ public class GameBoard extends JFrame implements Serializable {
 		}
 		board[10][8].setTerrain(Terrain.Flag);
 		
-		// comment out this line
-		generateRandomPlayer1Units();
+		ArrayList<Unit> unitsToAdd = new ArrayList<Unit>();
+		unitsToAdd = createUnitSelectionMonster();
 		
-		// Call this instead!:
-		//tempGenerateMonsterPlayer1Units(ArrayList<Unit>)
-		
+		tempGenerateMonsterPlayer1Units(unitsToAdd);
 		// Still call generateMonster
 		generateMonster();
 		
@@ -355,13 +391,11 @@ public class GameBoard extends JFrame implements Serializable {
 					numberOfFlags++;
 				}
 			}
-
-			// Generate Units:
-			generateRandomPlayer1Units();
-			generateRandomPlayer2Units();
 			
-			// Do this instead!
-			//tempGenerateRandomMapUnits(ArrayList<Unit>)
+			ArrayList<Unit> unitsToAdd = new ArrayList<Unit>();
+			unitsToAdd = createUnitSelection();
+		
+			tempGenerateRandomMapUnits(unitsToAdd);
 			
 
 		} else {
@@ -433,19 +467,19 @@ public class GameBoard extends JFrame implements Serializable {
 				}
 			}
 			
-			// Generate Units:
-			generateRandomPlayer1Units();
-			generateRandomPlayer2Units();
-			
-			// Do this instead!
-			//tempGenerateRandomMapUnits(ArrayList<Unit>)
+			ArrayList<Unit> unitsToAdd = new ArrayList<Unit>();
+			unitsToAdd = createUnitSelection();
+		
+			tempGenerateRandomMapUnits(unitsToAdd);
 
 
 		}
 	}
 
 	public void tempGenerateMap1Or2Units(ArrayList<Unit> units) {
-		
+		player1Units = new ArrayList<Cell>();
+		player2Units = new ArrayList<Cell>();
+
 		// Player 1 has first five units in this list
 		board[3][0].setUnit(units.get(0));
 		board[3][0].setHasUnit(true);
@@ -493,7 +527,9 @@ public class GameBoard extends JFrame implements Serializable {
 	
 	public void tempGenerateMonsterPlayer1Units(ArrayList<Unit> units) {
 		Random rand = new Random();
-		
+		player1Units = new ArrayList<Cell>();
+		player2Units = new ArrayList<Cell>();
+
 		int numberOfUnitsPlaced = 0;
 		while (numberOfUnitsPlaced < 5) {
 			int randomX = rand.nextInt(20);
@@ -508,6 +544,7 @@ public class GameBoard extends JFrame implements Serializable {
 			player1Units.add(board[randomX][randomY]);
 			numberOfUnitsPlaced++;
 		}
+		
 	}
 	
 	
@@ -515,7 +552,9 @@ public class GameBoard extends JFrame implements Serializable {
 	
 	public void tempGenerateRandomMapUnits(ArrayList<Unit> units) {
 		Random rand = new Random();
-		
+		player1Units = new ArrayList<Cell>();
+		player2Units = new ArrayList<Cell>();
+
 		int numberOfUnitsPlaced = 0;
 		while (numberOfUnitsPlaced < 5) {
 			int randomX = rand.nextInt(20);
@@ -524,9 +563,11 @@ public class GameBoard extends JFrame implements Serializable {
 				randomX = rand.nextInt(20);
 				randomY = rand.nextInt(20);
 			}
+
 			board[randomX][randomY].setUnit(units.get(numberOfUnitsPlaced));
 			board[randomX][randomY].setHasUnit(true);
 			// Add to player1Units:
+			System.out.println(numberOfUnitsPlaced);
 			player1Units.add(board[randomX][randomY]);
 			numberOfUnitsPlaced++;
 		}
