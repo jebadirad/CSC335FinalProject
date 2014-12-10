@@ -191,7 +191,7 @@ public class GUI extends JFrame
     {
     }
 
-    AudioPlayer.player.start(as);
+    //AudioPlayer.player.start(as);
 
     layoutTitleGUI();
   }
@@ -459,7 +459,7 @@ public class GUI extends JFrame
     this.setSize(1280, 800);
     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     titleScreen = new TitleScreen();
-    this.setVisible(true);
+  
     titleScreen.setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
 
@@ -487,6 +487,7 @@ public class GUI extends JFrame
     titleScreen.add(vsHuman, c);
 
     this.add(titleScreen);
+    this.setVisible(true);
 
   }
 
@@ -791,7 +792,9 @@ public class GUI extends JFrame
       repaint();
     }
   }
-
+  public void changeUnit(Cell cellwithunit){
+	  CurrentUnitSelected = cellwithunit;
+  }
   public void move(String direction, Cell cellwithunit)
   {
 
@@ -878,9 +881,16 @@ public class GUI extends JFrame
           {
             System.out.println("does it get here?");
             Command<GUI> command = GUI.gameboard.commandqueue.poll();
+            
             command.execute(GUI.this);
-            GUI.gameboard.commandqueue.element().setCurrentCell(
-                CurrentUnitSelected);
+            if(GUI.gameboard.commandqueue.isEmpty()){
+            	
+            }
+            else{
+            	 GUI.gameboard.commandqueue.element().setCurrentCell(
+                         CurrentUnitSelected);
+            }
+           
 
             System.out.println("this should execute");
           }
@@ -891,29 +901,7 @@ public class GUI extends JFrame
         e.printStackTrace();
       }
     }
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				try{
-					while(true){
-						
-						if(!GUI.gameboard.commandqueue.isEmpty()){
-							System.out.println("does it get here?");
-							Command<GUI> command = GUI.gameboard.commandqueue.poll();
-							command.execute(GUI.this);
-							if(!GUI.gameboard.commandqueue.isEmpty()){
-								GUI.gameboard.commandqueue.element().setCurrentCell(CurrentUnitSelected);
-							}
-							
-							
-							System.out.println("this should execute");
-						}
-					}
-				}catch(Exception e){
-					e.printStackTrace();
-				}
-			}
-
+		
   }
 
   private class ButtonListener implements ActionListener
@@ -1282,7 +1270,6 @@ public class GUI extends JFrame
         {
           AIgame = true;
           computer = new AI();
-          frame.setVisible(false);
           newGame("vsAi");
           layoutGUI();
           registerListeners();
