@@ -6,6 +6,8 @@ import view.GUI;
 
 public class AI {
 	public static final int WAIT_TIME = 500;
+	leealgorithm[][] leeboard;
+	int p = 0;
 
 	public AI() {
 		new Thread(new Runner()).start();
@@ -37,7 +39,7 @@ public class AI {
 
 	}
 
-	private Cell findNearestUnit(Cell cell, ArrayList<Cell> playerunits) {
+	public Cell findNearestUnit(Cell cell, ArrayList<Cell> playerunits) {
 		// duplicate gameboard -
 		// set int array -
 		// create recursive method
@@ -56,25 +58,44 @@ public class AI {
 				dupeboard[i][j] = GUI.gameboard.getCell(i, j);
 			}
 		}
-		int[][] intboard = new int[20][20];
+		leeboard = new leealgorithm[20][20];
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
+				leeboard[i][j] = new leealgorithm();
 				if (GUI.gameboard.getCell(i, j).getTerrain() == Terrain.Lava) {
-					intboard[i][j] = Terrain.Lava.getmodifier();
+					leeboard[i][j].setvalue(Terrain.Lava.getmodifier());
 				} else if (GUI.gameboard.getCell(i, j).getTerrain() == Terrain.Boulder) {
-					intboard[i][j] = Terrain.Boulder.getmodifier();
+					leeboard[i][j].setvalue(Terrain.Boulder.getmodifier());
 				} else if (GUI.gameboard.getCell(i, j).getTerrain() == Terrain.QuickSand) {
-					intboard[i][j] = Terrain.QuickSand.getmodifier();
+					leeboard[i][j].setvalue(Terrain.QuickSand.getmodifier());
 				} else {
-					intboard[i][j] = 0;
+					leeboard[i][j].setvalue(0);
 				}
 			}
 		}
-		intboard = NearestUnit(0, startx, starty, x, y, intboard);
-		for (int i = 0; i < intboard.length; i++) {
-			for (int j = 0; j < intboard.length; j++) {
+		for (int i = 0; i < leeboard.length; i++) {
+			for (int j = 0; j < leeboard.length; j++) {
 
-				System.out.print(" " + intboard[i][j] + " ");
+				System.out.print(" " + leeboard[i][j].getValue() + " ");
+			}
+			System.out.print("\n");
+		}
+		System.out.println("");
+		for (int i = 0; i < leeboard.length; i++) {
+			for (int j = 0; j < leeboard.length; j++) {
+
+				System.out.print(" " + leeboard[i][j].getmarked() + " ");
+			}
+			System.out.print("\n");
+		}
+		System.out.println("");
+		leeboard[startx][starty].setmarked();
+		leeboard[startx][starty].setvalue(9);
+		nearestunithelper(startx, starty, x, y);
+		for (int i = 0; i < leeboard.length; i++) {
+			for (int j = 0; j < leeboard.length; j++) {
+
+				System.out.print(leeboard[i][j].getValue() + "   ");
 			}
 			System.out.print("\n");
 		}
@@ -82,47 +103,95 @@ public class AI {
 		return null;
 	}
 
-	private int[][] NearestUnit(int p, int startx, int starty, int x, int y,
-			int[][] intboard) {
-		p++;
-		for (int a = -1; a < 2; a++) {
-			for (int b = -1; b < 2; b++) {
+	public void nearestunithelper(int startx, int starty, int x, int y) {
+		NearestUnit(p + 1, startx, starty, x, y);
 
-				if (startx + a < 0) {
-					
-				}
-				else if (startx + a > 19) {
-					
-				}
-				else if (starty + b < 0) {
-					
-				}
-				else if (starty + b > 19) {
-					
-				}
-				else if (a == 0 && b == 0) {
-					// do nothing
+	}
+
+	public void NearestUnit(int p, int startx, int starty, int x, int y) {
+		/*
+		 * for (int a = -1; a < 2; a++) { for (int b = -1; b < 2; b++) { if
+		 * (startx == x && starty == y) { return; } else if (startx + a < 0 ) {
+		 * return;
+		 * 
+		 * } else if (startx + a > 19) { return; } else if (starty + b < 0) {
+		 * return; } else if (starty + b < 19) { return; }
+		 * 
+		 * else if (a == -1 && b == -1) { } else if (a == -1 && b == 1) { } else
+		 * if (a == 1 && b == -1) { } else if (a == 1 && b == 1) { }
+		 * 
+		 * else { if (leeboard[startx + a][starty + b].getmarked() == true) { if
+		 * (leeboard[startx + a][starty + b].getValue() < p) { leeboard[startx +
+		 * a][starty + b].setvalue(p); } return; } else { leeboard[startx +
+		 * a][starty + b].setvalue(p); leeboard[startx + a][starty +
+		 * b].setmarked(); NearestUnit(p + 1, startx + a, starty + b, x, y); } }
+		 * } }
+		 * 
+		 * return;
+		 */
+		p = 0;
+		leeboard[startx][starty].setvalue(0);
+		for (int i = 0; i < 19; i++) {
+			for (int j = 0; j < 19; j++) {
+				if (startx + i < 0 || startx + i > 19) {
+
+				} else if (starty + j < 0 || starty + j > 19) {
+
+				} else if (startx - i < 0 || startx - i > 19) {
+
+				} else if (starty - j < 0 || starty - j > 19) {
+
 				} else {
-					if (startx == x && starty == y) {
-
-					} else {
-
-						int i = startx + a;
-						int j = starty + b;
-						if (intboard[startx][starty] == 0 || intboard[startx][starty] == 2 || intboard[startx][starty] == 4) {
-							intboard[startx][starty] = intboard[startx][starty] + p;
-						} else {
-							
-						}
-
-						NearestUnit(p, startx + a, starty + b, x, y, intboard);
-					}
+					/*
+					 * for(int a = -1; a < 2 ; a++){ for(int b = -1; b < 2;
+					 * b++){ if(startx +a < 0 || startx + a > 19 || starty + b <
+					 * 0 || starty + b >19){
+					 * 
+					 * } else if(a == -1 && b == -1){ leeboard[startx +
+					 * a][starty + b].setvalue(p+1); } else if (a == -1 && b ==
+					 * 1){ leeboard[startx + a][starty + b].setvalue(p+1); }
+					 * else if (a == 1 && b == 1){ leeboard[startx + a][starty +
+					 * b].setvalue(p+1); } else if (a == 1 && b == -1){
+					 * leeboard[startx + a][starty + b].setvalue(p+1); } else{
+					 * 
+					 * } } }
+					 */
+					
+					
 				}
 
 			}
+			p++;
+		}
+		leeboard[startx][starty].setvalue(0);
+
+	}
+
+	private class leealgorithm {
+		int value;
+		boolean marked;
+
+		public leealgorithm() {
+			value = 0;
+			marked = false;
 		}
 
-		return intboard;
+		public void setvalue(int value) {
+			this.value = value;
+		}
+
+		public void setmarked() {
+			this.marked = true;
+		}
+
+		public int getValue() {
+			return value;
+		}
+
+		public boolean getmarked() {
+			return marked;
+		}
+
 	}
 
 	private class Runner implements Runnable {
