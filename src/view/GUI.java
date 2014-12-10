@@ -891,6 +891,7 @@ public class GUI extends JFrame
                          CurrentUnitSelected);
             }
            
+            
 
             System.out.println("this should execute");
           }
@@ -902,6 +903,7 @@ public class GUI extends JFrame
       }
     }
 		
+
   }
 
   private class ButtonListener implements ActionListener
