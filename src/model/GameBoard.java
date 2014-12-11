@@ -2891,7 +2891,7 @@ public class GameBoard extends JFrame implements Serializable {
 		} catch (Exception e) {
 			System.err.println("Unable to load data!");
 		}
-		return new GameBoard("Map 1");
+		return new GameBoard("Map 1",units);
 	}
 
 	/**

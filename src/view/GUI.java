@@ -1495,21 +1495,30 @@ public void changeUnit(Cell cellwithunit){
     			 
     	     }
     		 else {
-    			 selectNumberOfCloneTrooper.setText("0");
-    			 selectNumberOfBattleDroid.setText("0");
-    			 selectNumberOfImperialMedic.setText("0");
-    			 selectNumberOfLukeSkywalker.setText("0");
-    			 selectNumberOfDarthVader.setText("0");
-    			 selectNumberOfSpiderTank.setText("0");
-    			 selectNumberOfDroideka.setText("0");
-    			 selectNumberOfArtilleryDroid.setText("0");
-    			 selectNumberOfWalker.setText("0");
+    			 
+    			 
+    				 selectNumberOfCloneTrooper.setText("0");
+        			 selectNumberOfBattleDroid.setText("0");
+        			 selectNumberOfImperialMedic.setText("0");
+        			 selectNumberOfLukeSkywalker.setText("0");
+        			 selectNumberOfDarthVader.setText("0");
+        			 selectNumberOfSpiderTank.setText("0");
+        			 selectNumberOfDroideka.setText("0");
+        			 selectNumberOfArtilleryDroid.setText("0");
+        			 selectNumberOfWalker.setText("0");
 
-    			 JOptionPane optionPane = new JOptionPane();
-    	          optionPane.setMessage("Player 2 make your unit selections, then click the map desired ");
-    	          JDialog dialog = optionPane.createDialog(":~)");
-    	          dialog.setAlwaysOnTop(true);
-    	          dialog.setVisible(true);
+        			 JOptionPane optionPane = new JOptionPane();
+        	          optionPane.setMessage("Player 2 make your unit selections, then click the map desired ");
+        	          JDialog dialog = optionPane.createDialog(":~)");
+        	          dialog.setAlwaysOnTop(true);
+        	          dialog.setVisible(true);
+        	          teamSelect.remove(next);
+        	          
+        	          
+        	          
+        	       
+    			 
+    			 
     		 }
     		
   
