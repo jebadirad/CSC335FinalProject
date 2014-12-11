@@ -419,7 +419,8 @@ public class GameBoard extends JFrame implements Serializable {
 					}
 				}
 				// Create Ice
-				else if (randomTerrain == 2) {
+				else if (randomTerrain == 2 || randomTerrain == 3
+						|| randomTerrain == 4) {
 					if (board[randomX][randomY].getTerrain() == Terrain.Nothing) {
 						board[randomX][randomY].setTerrain(Terrain.Ice);
 						numberOfTerriansOnTheBoard++;
@@ -433,8 +434,7 @@ public class GameBoard extends JFrame implements Serializable {
 					}
 				}
 				// Does nothing, no new Terrain assigned:
-				else if (randomTerrain == 4 || randomTerrain == 5
-						|| randomTerrain == 6) {
+				else if (randomTerrain == 6) {
 
 				}
 			}
