@@ -181,7 +181,7 @@ private JTextField selectNumberOfSpiderTank;
 private JTextField selectNumberOfDroideka;
 private JTextField selectNumberOfArtilleryDroid;
 private JTextField selectNumberOfWalker;
-private ArrayList<Unit> units;
+private ArrayList<Unit> units = new ArrayList<Unit>();
 
   private static final String clipsDir = System.getProperty("user.dir")
       + File.separator + "clips" + File.separator;
@@ -1495,8 +1495,7 @@ public void changeUnit(Cell cellwithunit){
     			 
     	     }
     		 else {
-    			 
-    			 
+    			
     				 selectNumberOfCloneTrooper.setText("0");
         			 selectNumberOfBattleDroid.setText("0");
         			 selectNumberOfImperialMedic.setText("0");
@@ -1513,11 +1512,7 @@ public void changeUnit(Cell cellwithunit){
         	          dialog.setAlwaysOnTop(true);
         	          dialog.setVisible(true);
         	          teamSelect.remove(next);
-        	          
-        	          
-        	          
-        	       
-    			 
+   
     			 
     		 }
     		
@@ -1529,70 +1524,107 @@ public void changeUnit(Cell cellwithunit){
    
       if (e.getSource() == Map)
       {
-
-        player1 = username1.getText();
-        player2 = username2.getText();
-        if (player1.equals("") || player1.equals(null) || player2.equals("")
-            || player2.equals(null))
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("You need to enter valid usernames!");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        
-        else if (checkPlayer2UnitSelecions()==false) {
-        	
-        }
-        
-        else
-        {
-          newGame("Map 1", units);
-          layoutGUI();
-          registerListeners();
-        }
+    	if (units.isEmpty()) {
+    		 JOptionPane optionPane = new JOptionPane();
+             optionPane.setMessage("Pick your units first, fool! ");
+             JDialog dialog = optionPane.createDialog(":~(");
+             dialog.setAlwaysOnTop(true);
+             dialog.setVisible(true);
+    	}
+    	else {
+    		 player1 = username1.getText();
+    	        player2 = username2.getText();
+    	        if (player1.equals("") || player1.equals(null) || player2.equals("")
+    	            || player2.equals(null))
+    	        {
+    	          JOptionPane optionPane = new JOptionPane();
+    	          optionPane.setMessage("You need to enter valid usernames!");
+    	          JDialog dialog = optionPane.createDialog(":~(");
+    	          dialog.setAlwaysOnTop(true);
+    	          dialog.setVisible(true);
+    	        }
+    	        
+    	        else if (checkPlayer2UnitSelecions()==false) {
+    	        	
+    	        }
+    	        
+    	        else
+    	        {
+    	          newGame("Map 1", units);
+    	          layoutGUI();
+    	          registerListeners();
+    	        }
+    	}
+       
 
       }
       else if (e.getSource() == RandomMap)
       {
-        player1 = username1.getText();
-        player2 = username2.getText();
-        if (player1.equals("") || player1.equals(null) || player2.equals("")
-            || player2.equals(null))
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("You need to enter valid usernames!");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        else
-        {
-          newGame("Random", units);
-          layoutGUI();
-          registerListeners();
-        }
+    	  if (units.isEmpty()) {
+     		 JOptionPane optionPane = new JOptionPane();
+              optionPane.setMessage("Pick your units first, fool! ");
+              JDialog dialog = optionPane.createDialog(":~(");
+              dialog.setAlwaysOnTop(true);
+              dialog.setVisible(true);
+     	}
+     	else {
+     		 player1 = username1.getText();
+     	        player2 = username2.getText();
+     	        if (player1.equals("") || player1.equals(null) || player2.equals("")
+     	            || player2.equals(null))
+     	        {
+     	          JOptionPane optionPane = new JOptionPane();
+     	          optionPane.setMessage("You need to enter valid usernames!");
+     	          JDialog dialog = optionPane.createDialog(":~(");
+     	          dialog.setAlwaysOnTop(true);
+     	          dialog.setVisible(true);
+     	        }
+     	        
+     	        else if (checkPlayer2UnitSelecions()==false) {
+     	        	
+     	        }
+     	        
+     	        else
+     	        {
+     	          newGame("Random", units);
+     	          layoutGUI();
+     	          registerListeners();
+     	        }
+     	}
       }
       else if (e.getSource() == Map2)
       {
-        player1 = username1.getText();
-        player2 = username2.getText();
-        if (player1.equals("") || player1.equals(null) || player2.equals("")
-            || player2.equals(null))
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("You need to enter valid usernames!");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        else
-        {
-          newGame("Map 2", units);
-          layoutGUI();
-          registerListeners();
-        }
+    	  if (units.isEmpty()) {
+     		 JOptionPane optionPane = new JOptionPane();
+              optionPane.setMessage("Pick your units first, fool! ");
+              JDialog dialog = optionPane.createDialog(":~(");
+              dialog.setAlwaysOnTop(true);
+              dialog.setVisible(true);
+     	}
+     	else {
+     		 player1 = username1.getText();
+     	        player2 = username2.getText();
+     	        if (player1.equals("") || player1.equals(null) || player2.equals("")
+     	            || player2.equals(null))
+     	        {
+     	          JOptionPane optionPane = new JOptionPane();
+     	          optionPane.setMessage("You need to enter valid usernames!");
+     	          JDialog dialog = optionPane.createDialog(":~(");
+     	          dialog.setAlwaysOnTop(true);
+     	          dialog.setVisible(true);
+     	        }
+     	        
+     	        else if (checkPlayer2UnitSelecions()==false) {
+     	        	
+     	        }
+     	        
+     	        else
+     	        {
+     	          newGame("Map 2", units);
+     	          layoutGUI();
+     	          registerListeners();
+     	        }
+     	}
       }
       else if (e.getSource() == vsAI)
       {

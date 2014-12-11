@@ -53,9 +53,9 @@ public class GameBoard extends JFrame implements Serializable {
 		if (mapName.equals("Map 1"))
 			createMap1(units);
 		else if (mapName.equals("Map 2"))
-			createMap2();
+			createMap2(units);
 		else if (mapName.equals("Random"))
-			createRandomMap();
+			createRandomMap(units);
 		else if (mapName.equals("Monster"))
 			createMonsterMap();
 		else
@@ -195,7 +195,7 @@ public class GameBoard extends JFrame implements Serializable {
 	/**
 	 * Creates Map 2, ice madness map
 	 */
-	public void createMap2() {
+	public void createMap2(ArrayList<Unit> units) {
 		background = "desert.png";
 		// board is 20 by 20 for now:
 		board = new Cell[20][20];
@@ -210,10 +210,8 @@ public class GameBoard extends JFrame implements Serializable {
 				board[i][j].setLocation(new Point(i, j));
 			}
 		}
-		ArrayList<Unit> unitsToAdd = new ArrayList<Unit>();
-		unitsToAdd = createUnitSelection();
 	
-		tempGenerateMap1Or2Units(unitsToAdd);
+		tempGenerateMap1Or2Units(units);
 
 		Random rand = new Random();
 		int numberOfBoulders = 0;
@@ -308,7 +306,7 @@ public class GameBoard extends JFrame implements Serializable {
 	/**
 	 * Creates a random map:
 	 */
-	public void createRandomMap() {
+	public void createRandomMap(ArrayList<Unit> units) {
 		Random rand = new Random();
 		int random = rand.nextInt(2);
 
@@ -379,11 +377,8 @@ public class GameBoard extends JFrame implements Serializable {
 					numberOfFlags++;
 				}
 			}
-			
-			ArrayList<Unit> unitsToAdd = new ArrayList<Unit>();
-			unitsToAdd = createUnitSelection();
 		
-			tempGenerateRandomMapUnits(unitsToAdd);
+			tempGenerateRandomMapUnits(units);
 			
 
 		} else {
@@ -455,10 +450,8 @@ public class GameBoard extends JFrame implements Serializable {
 				}
 			}
 			
-			ArrayList<Unit> unitsToAdd = new ArrayList<Unit>();
-			unitsToAdd = createUnitSelection();
-		
-			tempGenerateRandomMapUnits(unitsToAdd);
+			
+			tempGenerateRandomMapUnits(units);
 
 
 		}
