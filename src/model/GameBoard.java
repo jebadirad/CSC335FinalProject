@@ -48,10 +48,10 @@ public class GameBoard extends JFrame implements Serializable {
 	 * @param mapName
 	 *            Name of Map, either "Map 1" or "Map 2"
 	 */
-	public GameBoard(String mapName) {
+	public GameBoard(String mapName, ArrayList<Unit> units) {
 		commandqueue = new LinkedList<Command>();
 		if (mapName.equals("Map 1"))
-			createMap1();
+			createMap1(units);
 		else if (mapName.equals("Map 2"))
 			createMap2();
 		else if (mapName.equals("Random"))
@@ -112,7 +112,7 @@ public class GameBoard extends JFrame implements Serializable {
 	/**
 	 * Creates Map1
 	 */
-	public void createMap1() {
+	public void createMap1(ArrayList<Unit> units) {
 		
 		background = "Grass.png";
 		// board is 20 by 20 for now:
@@ -186,10 +186,10 @@ public class GameBoard extends JFrame implements Serializable {
 		for (int i = 3; i < 17; i++)
 			board[7][i].setTerrain(Terrain.Ice);
 		
-		ArrayList<Unit> unitsToAdd = new ArrayList<Unit>();
-		unitsToAdd = createUnitSelection();
-	
-		tempGenerateMap1Or2Units(unitsToAdd);
+//		ArrayList<Unit> unitsToAdd = new ArrayList<Unit>();
+//		unitsToAdd = createUnitSelection();
+//	
+		tempGenerateMap1Or2Units(units);
 	}
 
 	/**
@@ -257,19 +257,7 @@ public class GameBoard extends JFrame implements Serializable {
 				board[i][j].setLocation(new Point(i, j));
 			}
 		}
-		// Call SetBackGround grass for Map1:
-		// Imageview.setBackground("Grass.png");
-
-		// Generate actual terrain:
-		for (int i = 0; i < 20; i++) {
-			// Places lavas in the third row
-			i++;
-		}
-		for (int i = 0; i < 5; i++) {
-			// Places boulders in the
-		}
-
-		// Creates a QickSand pit, with Ice in the middle
+		
 		
 		generatePlayer1Units();
 		generateComputerUnits();
@@ -567,7 +555,6 @@ public class GameBoard extends JFrame implements Serializable {
 			board[randomX][randomY].setUnit(units.get(numberOfUnitsPlaced));
 			board[randomX][randomY].setHasUnit(true);
 			// Add to player1Units:
-			System.out.println(numberOfUnitsPlaced);
 			player1Units.add(board[randomX][randomY]);
 			numberOfUnitsPlaced++;
 		}

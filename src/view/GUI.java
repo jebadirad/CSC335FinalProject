@@ -55,7 +55,8 @@ import javax.swing.JTextField;
 
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
-
+import unit.Unit;
+import unit.UnitFactory;
 import model.Cell;
 import model.Command;
 import model.GameBoard;
@@ -159,6 +160,29 @@ public class GUI extends JFrame
   private JButton vsAITitle;
   private JButton vsHuman;
   private Component jlabel;
+  private JButton next;
+private JLabel selectUnitsLabel;
+private JLabel selectCloneTrooperLabel;
+private JLabel selectBattleDroidLabel;
+private JLabel selectImperialMedicLabel;
+private JLabel selectLukeSkywalkerLabel;
+private JLabel selectDarthVaderLabel;
+private JLabel selectSpderTankLabel;
+private JLabel selectDroidekaLabel;
+private JLabel selectArtilleryDroidLabel;
+private JLabel selectWalkerLabel;
+private JTextField selectNumberOfCloneTrooper;
+private JLabel tellEmHowManyLabel;
+private JTextField selectNumberOfBattleDroid;
+private JTextField selectNumberOfImperialMedic;
+private JTextField selectNumberOfLukeSkywalker;
+private JTextField selectNumberOfDarthVader;
+private JTextField selectNumberOfSpiderTank;
+private JTextField selectNumberOfDroideka;
+private JTextField selectNumberOfArtilleryDroid;
+private JTextField selectNumberOfWalker;
+private ArrayList<Unit> units;
+
   private static final String clipsDir = System.getProperty("user.dir")
       + File.separator + "clips" + File.separator;
 
@@ -236,13 +260,13 @@ public class GUI extends JFrame
   /**
    * Officially creates a newgame().
    */
-  public void newGame(String map)
+  public void newGame(String map, ArrayList<Unit> units)
   {
     if (AIgame)
     {
       AI computer = new AI();
     }
-    gameboard = new GameBoard(map);
+    gameboard = new GameBoard(map, units);
     new Thread(new Runner()).start();
     // create inventories for both players
     p1inv = new Inventory(player1);
@@ -520,7 +544,6 @@ public class GUI extends JFrame
     @Override
     public void actionPerformed(ActionEvent e)
     {
-      // TODO Auto-generated method stub
       if (e.getSource() == vsAITitle)
       {
         layoutPregameGUI();
@@ -552,8 +575,42 @@ public class GUI extends JFrame
     teamSelect.add(username1);
     teamSelect.add(usernamelabel2);
     teamSelect.add(username2);
+    
+    selectUnitsLabel = new JLabel("Select your units: ");
+    tellEmHowManyLabel = new JLabel("You must select five untis! ");
+    selectCloneTrooperLabel = new JLabel("Clone Trooper: ");
+    selectBattleDroidLabel = new JLabel("Battle Droid: ");
+    selectImperialMedicLabel = new JLabel("Imperial Medic: ");
+    selectLukeSkywalkerLabel = new JLabel("Luke Skywalker: ");
+    selectDarthVaderLabel = new JLabel("Darth Vader: ");
+    selectSpderTankLabel = new JLabel("Spider Tank: ");
+    selectDroidekaLabel = new JLabel("Droideka: ");
+    selectArtilleryDroidLabel = new JLabel("Artillery Droid: ");
+    selectWalkerLabel = new JLabel("Walker: ");
+    
+    selectNumberOfCloneTrooper = new JTextField(15);
+    selectNumberOfCloneTrooper.setText("0");
+    selectNumberOfBattleDroid = new JTextField(15);
+    selectNumberOfBattleDroid.setText("0");
+    selectNumberOfImperialMedic = new JTextField(15);
+    selectNumberOfImperialMedic.setText("0");
+    selectNumberOfLukeSkywalker = new JTextField(15);
+    selectNumberOfLukeSkywalker.setText("0");
+    selectNumberOfDarthVader = new JTextField(15);
+    selectNumberOfDarthVader.setText("0");
+    selectNumberOfSpiderTank = new JTextField(15);
+    selectNumberOfSpiderTank.setText("0");
+    selectNumberOfDroideka = new JTextField(15);
+    selectNumberOfDroideka.setText("0");
+    selectNumberOfArtilleryDroid = new JTextField(15);
+    selectNumberOfArtilleryDroid.setText("0");
+    selectNumberOfWalker = new JTextField(15);
+    selectNumberOfWalker.setText("0");
+    
     vsAI.addActionListener(MapButtonListener);
     Map = new JButton("Map 1");
+    next = new JButton("Next");
+    next.addActionListener(MapButtonListener);
     Map.addActionListener(MapButtonListener);
     Map2.addActionListener(MapButtonListener);
     RandomMap.addActionListener(MapButtonListener);
@@ -564,6 +621,39 @@ public class GUI extends JFrame
     load = new JButton("Load game");
     load.addActionListener(MapButtonListener);
     teamSelect.add(load);
+    
+    teamSelect.add(selectUnitsLabel);
+    teamSelect.add(tellEmHowManyLabel);
+    
+    teamSelect.add(selectCloneTrooperLabel);
+    teamSelect.add(selectNumberOfCloneTrooper);
+    
+    teamSelect.add(selectBattleDroidLabel);
+    teamSelect.add(selectNumberOfBattleDroid);
+    
+    teamSelect.add(selectImperialMedicLabel);
+    teamSelect.add(selectNumberOfImperialMedic);
+
+    teamSelect.add(selectLukeSkywalkerLabel);
+    teamSelect.add(selectNumberOfLukeSkywalker);
+
+    teamSelect.add(selectDarthVaderLabel);
+    teamSelect.add(selectNumberOfDarthVader);
+
+    teamSelect.add(selectSpderTankLabel);
+    teamSelect.add(selectNumberOfSpiderTank);
+
+    teamSelect.add(selectDroidekaLabel);
+    teamSelect.add(selectNumberOfDroideka);
+
+    teamSelect.add(selectArtilleryDroidLabel);
+    teamSelect.add(selectNumberOfArtilleryDroid);
+
+    teamSelect.add(selectWalkerLabel);
+    teamSelect.add(selectNumberOfWalker);
+
+    teamSelect.add(next);
+    
     // begin persistence code
     // if(new File(saveDir + player1 + "-" + player2 + "-" +
     // "gameboard.dat").exists()) {
@@ -584,6 +674,194 @@ public class GUI extends JFrame
     this.validate();
 
   }
+  public boolean checkPlayer2UnitSelecions() {
+	    
+	  int numberOfCloneTrooper = 0;
+	  int numberOfBattleDroid = 0;
+	  int numberOfImperialMedic = 0;
+	  int numberOfLukeSkywalker = 0;
+	  int numberOfDarthVader = 0;
+	  int numberOfSpiderTank = 0;
+	  int numberOfDroideka = 0;
+	  int numberOfArtilleryDroid = 0;
+	  int numberOfWalker = 0;
+	  
+	  
+	  int total = 0;
+	  while (total != 5) {
+		  try {
+			  numberOfCloneTrooper = Integer.parseInt(selectNumberOfCloneTrooper.getText());
+			  numberOfBattleDroid = Integer.parseInt(selectNumberOfBattleDroid.getText());
+			  numberOfImperialMedic = Integer.parseInt(selectNumberOfImperialMedic.getText());
+			  numberOfLukeSkywalker = Integer.parseInt(selectNumberOfLukeSkywalker.getText());
+			  numberOfDarthVader = Integer.parseInt(selectNumberOfDarthVader.getText());
+			  numberOfSpiderTank = Integer.parseInt(selectNumberOfSpiderTank.getText());
+			  numberOfDroideka = Integer.parseInt(selectNumberOfDroideka.getText());
+			  numberOfArtilleryDroid = Integer.parseInt(selectNumberOfArtilleryDroid.getText());
+			  numberOfWalker = Integer.parseInt(selectNumberOfWalker.getText());
+		  }
+		  catch (Exception e) {
+			  JOptionPane optionPane = new JOptionPane();
+		      optionPane.setMessage("Please make better units selections... ");
+		      JDialog dialog = optionPane.createDialog(":~(");
+		      dialog.setAlwaysOnTop(true);
+		      dialog.setVisible(true);
+		      
+		  }
+		  
+		  total = numberOfCloneTrooper + numberOfBattleDroid + numberOfImperialMedic + numberOfLukeSkywalker + 
+				  numberOfDarthVader + numberOfSpiderTank + numberOfDroideka + numberOfArtilleryDroid + numberOfWalker;
+		  if (total != 5) {
+			  JOptionPane optionPane = new JOptionPane();
+		      optionPane.setMessage("You must select five units, fool");
+		      JDialog dialog = optionPane.createDialog(":~(");
+		      dialog.setAlwaysOnTop(true);
+		      dialog.setVisible(true);
+			  total = 0;
+		      return false;
+		  }
+	  }
+	  // Add these five to the units list:
+	  UnitFactory factory = new UnitFactory();
+	  int spotInUnitsList = 5;
+	  for (int i = 0; i < numberOfCloneTrooper; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("CloneTrooper", player2));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 0; i < numberOfBattleDroid; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("BattleDroid", player2));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 0; i < numberOfImperialMedic; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("ImperialMedic", player2));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 0; i < numberOfLukeSkywalker; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("LukeSkywalker", player2));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 0; i < numberOfDarthVader; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("DarthVader", player2));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 0; i < numberOfSpiderTank; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("SpiderTank", player2));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 0; i < numberOfDroideka; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("Droideka", player2));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 0; i < numberOfArtilleryDroid; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("ArtilleryDroid", player2));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 0; i < numberOfWalker; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("Walker", player2));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 5; i < units.size(); i++) {
+		  System.out.println(units.get(i).toString());
+	  }
+	  
+	  return true;
+  }
+  
+  public boolean checkUserSelections() {
+	    
+	  int numberOfCloneTrooper = 0;
+	  int numberOfBattleDroid = 0;
+	  int numberOfImperialMedic = 0;
+	  int numberOfLukeSkywalker = 0;
+	  int numberOfDarthVader = 0;
+	  int numberOfSpiderTank = 0;
+	  int numberOfDroideka = 0;
+	  int numberOfArtilleryDroid = 0;
+	  int numberOfWalker = 0;
+	  
+	  
+	  int total = 0;
+	  while (total != 5) {
+		  try {
+			  numberOfCloneTrooper = Integer.parseInt(selectNumberOfCloneTrooper.getText());
+			  numberOfBattleDroid = Integer.parseInt(selectNumberOfBattleDroid.getText());
+			  numberOfImperialMedic = Integer.parseInt(selectNumberOfImperialMedic.getText());
+			  numberOfLukeSkywalker = Integer.parseInt(selectNumberOfLukeSkywalker.getText());
+			  numberOfDarthVader = Integer.parseInt(selectNumberOfDarthVader.getText());
+			  numberOfSpiderTank = Integer.parseInt(selectNumberOfSpiderTank.getText());
+			  numberOfDroideka = Integer.parseInt(selectNumberOfDroideka.getText());
+			  numberOfArtilleryDroid = Integer.parseInt(selectNumberOfArtilleryDroid.getText());
+			  numberOfWalker = Integer.parseInt(selectNumberOfWalker.getText());
+		  }
+		  catch (Exception e) {
+			  JOptionPane optionPane = new JOptionPane();
+		      optionPane.setMessage("Please make better units selections... ");
+		      JDialog dialog = optionPane.createDialog(":~(");
+		      dialog.setAlwaysOnTop(true);
+		      dialog.setVisible(true);
+		      
+		  }
+		  
+		  total = numberOfCloneTrooper + numberOfBattleDroid + numberOfImperialMedic + numberOfLukeSkywalker + 
+				  numberOfDarthVader + numberOfSpiderTank + numberOfDroideka + numberOfArtilleryDroid + numberOfWalker;
+		  if (total != 5) {
+			  JOptionPane optionPane = new JOptionPane();
+		      optionPane.setMessage("You must select five units, fool");
+		      JDialog dialog = optionPane.createDialog(":~(");
+		      dialog.setAlwaysOnTop(true);
+		      dialog.setVisible(true);
+			  total = 0;
+		      return false;
+		  }
+	  }
+	  // Add these five to the units list:
+	  units = new ArrayList<Unit>();
+	  UnitFactory factory = new UnitFactory();
+	  int spotInUnitsList = 0;
+	  for (int i = 0; i < numberOfCloneTrooper; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("CloneTrooper", player1));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 0; i < numberOfBattleDroid; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("BattleDroid", player1));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 0; i < numberOfImperialMedic; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("ImperialMedic", player1));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 0; i < numberOfLukeSkywalker; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("LukeSkywalker", player1));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 0; i < numberOfDarthVader; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("DarthVader", player1));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 0; i < numberOfSpiderTank; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("SpiderTank", player1));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 0; i < numberOfDroideka; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("Droideka", player1));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 0; i < numberOfArtilleryDroid; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("ArtilleryDroid", player1));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 0; i < numberOfWalker; i++) {
+		  units.add(spotInUnitsList, factory.makeUnit("Walker", player1));
+		  spotInUnitsList++;
+	  }
+	  for (int i = 0; i < units.size(); i++) {
+		  System.out.println(units.get(i).toString());
+	  }
+	  
+	  
+	  return true;
+  }
+  
 
   private void layoutGUI()
   {
@@ -894,7 +1172,6 @@ public void changeUnit(Cell cellwithunit){
     @Override
     public void run()
     {
-      // TODO Auto-generated method stub
       try
       {
         while (true)
@@ -935,7 +1212,6 @@ public void changeUnit(Cell cellwithunit){
     @Override
     public void actionPerformed(ActionEvent e)
     {
-      // TODO Auto-generated method stub
       if (e.getSource() == UseItem)
       {
         if (CurrentUnitSelected == null)
@@ -1086,7 +1362,6 @@ public void changeUnit(Cell cellwithunit){
       if (e.getSource() == attack)
       {
         attack(CurrentUnitSelected, EnemyUnitSelected);
-        // TODO Auto-generated method stub
       }
       if (e.getSource() == Shop || e.getSource() == closeShop)
       {
@@ -1187,7 +1462,6 @@ public void changeUnit(Cell cellwithunit){
     @Override
     public void itemStateChanged(ItemEvent e)
     {
-      // TODO Auto-generated method stub
       for (int i = 0; i < itemBoxes.size(); i++)
       {
         if (e.getSource() == itemBoxes.get(i))
@@ -1214,7 +1488,36 @@ public void changeUnit(Cell cellwithunit){
     @Override
     public void actionPerformed(ActionEvent e)
     {
-      // TODO Auto-generated method stub
+      
+    	if (e.getSource() == next) {
+    		
+    		 if (checkUserSelections()==false){
+    			 
+    	     }
+    		 else {
+    			 selectNumberOfCloneTrooper.setText("0");
+    			 selectNumberOfBattleDroid.setText("0");
+    			 selectNumberOfImperialMedic.setText("0");
+    			 selectNumberOfLukeSkywalker.setText("0");
+    			 selectNumberOfDarthVader.setText("0");
+    			 selectNumberOfSpiderTank.setText("0");
+    			 selectNumberOfDroideka.setText("0");
+    			 selectNumberOfArtilleryDroid.setText("0");
+    			 selectNumberOfWalker.setText("0");
+
+    			 JOptionPane optionPane = new JOptionPane();
+    	          optionPane.setMessage("Player 2 make your unit selections, then click the map desired ");
+    	          JDialog dialog = optionPane.createDialog(":~)");
+    	          dialog.setAlwaysOnTop(true);
+    	          dialog.setVisible(true);
+    		 }
+    		
+  
+    		
+    	}
+    	
+    	
+   
       if (e.getSource() == Map)
       {
 
@@ -1229,9 +1532,14 @@ public void changeUnit(Cell cellwithunit){
           dialog.setAlwaysOnTop(true);
           dialog.setVisible(true);
         }
+        
+        else if (checkPlayer2UnitSelecions()==false) {
+        	
+        }
+        
         else
         {
-          newGame("Map 1");
+          newGame("Map 1", units);
           layoutGUI();
           registerListeners();
         }
@@ -1252,7 +1560,7 @@ public void changeUnit(Cell cellwithunit){
         }
         else
         {
-          newGame("Random");
+          newGame("Random", units);
           layoutGUI();
           registerListeners();
         }
@@ -1272,7 +1580,7 @@ public void changeUnit(Cell cellwithunit){
         }
         else
         {
-          newGame("Map 2");
+          newGame("Map 2", units);
           layoutGUI();
           registerListeners();
         }
@@ -1296,7 +1604,7 @@ public void changeUnit(Cell cellwithunit){
           AIgame = true;
           computer = new AI();
           frame.setVisible(false);
-          newGame("vsAi");
+          newGame("vsAi", units);
           layoutGUI();
           registerListeners();
         }
@@ -1327,7 +1635,7 @@ public void changeUnit(Cell cellwithunit){
           {
             System.out
                 .println("You don't have a save file! Creating new game...");
-            newGame("Map 1");
+            newGame("Map 1", units);
           }
           layoutGUI();
           registerListeners();
@@ -1388,7 +1696,7 @@ public void changeUnit(Cell cellwithunit){
     {
 
       // loads saved data into the gameboard if there is a saved game
-      gameboard = new GameBoard("Map 2");
+      gameboard = new GameBoard("Map 2", units);
       if (new File(saveDir + player1 + "-" + player2 + "-" + "gameboard.dat")
           .exists())
       {
