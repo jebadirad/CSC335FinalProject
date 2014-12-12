@@ -1076,8 +1076,8 @@ public class GUI extends JFrame {
 				int i = player1units.indexOf(cellwithunit);
 				player1units.remove(i);
                 Thread animation = new Thread(new Animate(cellwithunit, direction));
-//                animation.start();
-//                animation.run();
+                animation.start();
+                animation.run();
 
 				CurrentUnitSelected = gameboard.move(cellwithunit, direction);
 				if (CurrentUnitSelected.hasUnit()) {
@@ -1401,31 +1401,48 @@ public class GUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 
 			if (e.getSource() == next) {
-
-				if (checkUserSelections() == false) {
-
-				} else {
-
-					selectNumberOfCloneTrooper.setText("0");
-					selectNumberOfBattleDroid.setText("0");
-					selectNumberOfImperialMedic.setText("0");
-					selectNumberOfLukeSkywalker.setText("0");
-					selectNumberOfDarthVader.setText("0");
-					selectNumberOfSpiderTank.setText("0");
-					selectNumberOfDroideka.setText("0");
-					selectNumberOfArtilleryDroid.setText("0");
-					selectNumberOfWalker.setText("0");
-
+				
+				player1 = username1.getText();
+				player2 = username2.getText();
+				if (player1.equals("") || player1.equals(null)
+						|| player2.equals("") || player2.equals(null)) {
 					JOptionPane optionPane = new JOptionPane();
 					optionPane
-							.setMessage("Player 2 make your unit selections, then click the map desired ");
-					JDialog dialog = optionPane.createDialog(":~)");
+							.setMessage("You need to enter valid usernames!");
+					JDialog dialog = optionPane.createDialog(":~(");
 					dialog.setAlwaysOnTop(true);
 					dialog.setVisible(true);
-					teamSelect.remove(next);
+				}
+				else {
+
+					
+					if (checkUserSelections() == false) {
+
+					} else {
+
+						selectNumberOfCloneTrooper.setText("0");
+						selectNumberOfBattleDroid.setText("0");
+						selectNumberOfImperialMedic.setText("0");
+						selectNumberOfLukeSkywalker.setText("0");
+						selectNumberOfDarthVader.setText("0");
+						selectNumberOfSpiderTank.setText("0");
+						selectNumberOfDroideka.setText("0");
+						selectNumberOfArtilleryDroid.setText("0");
+						selectNumberOfWalker.setText("0");
+
+						JOptionPane optionPane = new JOptionPane();
+						optionPane
+								.setMessage("Player 2 make your unit selections, then click the map desired ");
+						JDialog dialog = optionPane.createDialog(":~)");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+						teamSelect.remove(next);
+
+					}
 
 				}
-
+				
+				
 			}
 
 			if (e.getSource() == Map) {

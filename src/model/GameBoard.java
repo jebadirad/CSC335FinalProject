@@ -427,7 +427,7 @@ public class GameBoard extends JFrame implements Serializable {
 					}
 				}
 				// Create Lava
-				else if (randomTerrain == 3) {
+				else if (randomTerrain == 5) {
 					if (board[randomX][randomY].getTerrain() == Terrain.Nothing) {
 						board[randomX][randomY].setTerrain(Terrain.Lava);
 						numberOfTerriansOnTheBoard++;
