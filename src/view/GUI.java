@@ -1072,8 +1072,8 @@ public class GUI extends JFrame {
 				int i = player1units.indexOf(cellwithunit);
 				player1units.remove(i);
                 Thread animation = new Thread(new Animate(cellwithunit, direction));
-                animation.start();
-                animation.run();
+                //animation.start();
+                //animation.run();
 
 				CurrentUnitSelected = gameboard.move(cellwithunit, direction);
 				if (CurrentUnitSelected.hasUnit()) {
@@ -1420,6 +1420,14 @@ public class GUI extends JFrame {
 					dialog.setAlwaysOnTop(true);
 					dialog.setVisible(true);
 				}
+				else if (player1.equals(player2) || player2.equals(player1)) {
+					JOptionPane optionPane = new JOptionPane();
+					optionPane
+							.setMessage("User names must be unique!");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				}
 				else {
 
 					
@@ -1444,7 +1452,9 @@ public class GUI extends JFrame {
 						dialog.setAlwaysOnTop(true);
 						dialog.setVisible(true);
 						teamSelect.remove(next);
-
+						username1.setEditable(false);
+						username2.setEditable(false);
+						
 					}
 
 				}
@@ -1467,6 +1477,14 @@ public class GUI extends JFrame {
 						JOptionPane optionPane = new JOptionPane();
 						optionPane
 								.setMessage("You need to enter valid usernames!");
+						JDialog dialog = optionPane.createDialog(":~(");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+					}
+					else if (player1.equals(player2) || player2.equals(player1)) {
+						JOptionPane optionPane = new JOptionPane();
+						optionPane
+								.setMessage("User names must be unique!");
 						JDialog dialog = optionPane.createDialog(":~(");
 						dialog.setAlwaysOnTop(true);
 						dialog.setVisible(true);
@@ -1502,6 +1520,14 @@ public class GUI extends JFrame {
 						dialog.setAlwaysOnTop(true);
 						dialog.setVisible(true);
 					}
+					else if (player1.equals(player2) || player2.equals(player1)) {
+						JOptionPane optionPane = new JOptionPane();
+						optionPane
+								.setMessage("User names must be unique!");
+						JDialog dialog = optionPane.createDialog(":~(");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+					}
 
 					else if (checkPlayer2UnitSelecions() == false) {
 
@@ -1532,6 +1558,14 @@ public class GUI extends JFrame {
 						dialog.setAlwaysOnTop(true);
 						dialog.setVisible(true);
 					}
+					else if (player1.equals(player2) || player2.equals(player1)) {
+						JOptionPane optionPane = new JOptionPane();
+						optionPane
+								.setMessage("User names must be unique!");
+						JDialog dialog = optionPane.createDialog(":~(");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+					}
 
 					else if (checkPlayer2UnitSelecions() == false) {
 
@@ -1554,7 +1588,16 @@ public class GUI extends JFrame {
 					JDialog dialog = optionPane.createDialog(":~(");
 					dialog.setAlwaysOnTop(true);
 					dialog.setVisible(true);
-				} else {
+				} 
+				else if (player1.equals(player2) || player2.equals(player1)) {
+					JOptionPane optionPane = new JOptionPane();
+					optionPane
+							.setMessage("User names must be unique!");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				}
+				else {
 					AIgame = true;
 					computer = new AI();
 					frame.setVisible(false);
@@ -1573,7 +1616,16 @@ public class GUI extends JFrame {
 					JDialog dialog = optionPane.createDialog(":~(");
 					dialog.setAlwaysOnTop(true);
 					dialog.setVisible(true);
-				} else {
+				} 
+				else if (player1.equals(player2) || player2.equals(player1)) {
+					JOptionPane optionPane = new JOptionPane();
+					optionPane
+							.setMessage("User names must be unique!");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				}
+				else {
 					frame.setVisible(false);
 					if (new File(saveDir + player1 + "-" + player2 + "-"
 							+ "gameboard.dat").exists()) {
