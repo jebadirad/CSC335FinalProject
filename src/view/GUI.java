@@ -116,7 +116,7 @@ public class GUI extends JFrame {
 	JButton buyItem;
 	JButton Shop;
 	JButton UnitInfo;
-	JButton Map2 = new JButton("Map 2");
+	JButton Map2 = new JButton("Ice Madness Map");
 	JButton RandomMap = new JButton("Random Map");
 	JButton vsAI = new JButton("vs AI");
 	ArrayList<JRadioButton> radiobuttons;
@@ -562,8 +562,8 @@ public class GUI extends JFrame {
 		selectNumberOfWalker.setText("0");
 
 		vsAI.addActionListener(MapButtonListener);
-		Map = new JButton("Map 1");
-		next = new JButton("Next");
+		Map = new JButton("Standard Map");
+		next = new JButton("Continue to player 2 unit selection");
 		next.addActionListener(MapButtonListener);
 		Map.addActionListener(MapButtonListener);
 		Map2.addActionListener(MapButtonListener);
@@ -730,9 +730,7 @@ public class GUI extends JFrame {
 			units.add(spotInUnitsList, factory.makeUnit("Walker", player2));
 			spotInUnitsList++;
 		}
-		for (int i = 5; i < units.size(); i++) {
-			System.out.println(units.get(i).toString());
-		}
+		
 
 		return true;
 	}
@@ -839,9 +837,7 @@ public class GUI extends JFrame {
 			units.add(spotInUnitsList, factory.makeUnit("Walker", player1));
 			spotInUnitsList++;
 		}
-		for (int i = 0; i < units.size(); i++) {
-			System.out.println(units.get(i).toString());
-		}
+		
 
 		return true;
 	}
@@ -1321,24 +1317,35 @@ public class GUI extends JFrame {
 				}
 			}
 			if (e.getSource() == buyItem) {
-				String selection = shopgroup.getSelection().getActionCommand();
-				Item item = inv.get(selection);
-				int cost = item.getCost();
-				if (p1inv.getCredits() < cost) {
+				if (shopgroup.getSelection()==null) {
 					JOptionPane optionPane = new JOptionPane();
-					optionPane.setMessage("You are too poor to buy this item!");
+					optionPane.setMessage("Please select an item first!");
 					JDialog dialog = optionPane.createDialog(":~(");
 					dialog.setAlwaysOnTop(true);
 					dialog.setVisible(true);
-				} else {
-					p1inv.setCredits(p1inv.getCredits() - cost);
-					p1inv.addItem(item);
-					credits.setText("Credits: " + p1inv.getCredits());
-					UpdateItemScreen();
-					toggleShopScreen();
-					repaint();
-					revalidate();
 				}
+				else {
+					String selection = shopgroup.getSelection().getActionCommand();
+					Item item = inv.get(selection);
+					int cost = item.getCost();
+					if (p1inv.getCredits() < cost) {
+						JOptionPane optionPane = new JOptionPane();
+						optionPane.setMessage("You are too poor to buy this item!");
+						JDialog dialog = optionPane.createDialog(":~(");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+					} else {
+						p1inv.setCredits(p1inv.getCredits() - cost);
+						p1inv.addItem(item);
+						credits.setText("Credits: " + p1inv.getCredits());
+						UpdateItemScreen();
+						toggleShopScreen();
+						repaint();
+						revalidate();
+					}
+				}
+				
+				
 
 			}
 			if (radiobuttons.isEmpty() || radiobuttons.equals(null)) {
