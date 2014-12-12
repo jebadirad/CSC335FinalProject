@@ -14,6 +14,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -1074,7 +1075,9 @@ public class GUI extends JFrame {
 			if (gameboard.canMove(cellwithunit, direction)) {
 				int i = player1units.indexOf(cellwithunit);
 				player1units.remove(i);
-//                new Thread(new Animate(cellwithunit, direction)).start();
+                Thread animation = new Thread(new Animate(cellwithunit, direction));
+//                animation.start();
+//                animation.run();
 
 				CurrentUnitSelected = gameboard.move(cellwithunit, direction);
 				if (CurrentUnitSelected.hasUnit()) {
@@ -1669,30 +1672,35 @@ public class GUI extends JFrame {
 			System.out.println("hello it is i, running");
 			if (cell != null)
 				System.out.println(cell.getUnit());
-			ArrayList<Image> b = Imageview.getSheets();
-			System.out.println(b.toString());
-			for (Image image : b) {
+			Image image = Imageview.getSheet("lukeSkywalker");
+			System.out.println(image.toString());
+//			for (Image image : b) {
 				// if(cell.getUnit().equals(image)){}
 				Image scaledImg = image
 						.getScaledInstance(24, 63, Image.SCALE_DEFAULT);
 				int initX = cell.getLocation().x;
+				int x = cell.getLocation().x;
 				int initY = cell.getLocation().y;
+				int y = cell.getLocation().y;
 				int endX = initX + 24;
 				int endY = initY + 63;
 				if (d == "N") {
 					while (initY < endY) {
-						System.out.println("hello it is i, DRAWING" + "");
+						System.out.println("hello it is i, DRAWING" + "lukeSkywalker");
 						initY = initY + 9;
 						cell.getLocation().translate(0, 9);
-						GUI.this.getGraphics().drawImage(scaledImg, initX, initY,
+						imagePanel.getGraphics().drawImage(scaledImg, initX, initY,
 								null);
+						imagePanel.repaint();
+						repaint();
+						this.cell.setLocation(new Point(x, y+1));
 						// set the cell to the next one up
 					}
 				} else
 					return; // TODO get rid of this else and add conditionals
 							// for S, L, & R.
 				// update where the image is drawn
-			}
+//			}
 		}
 	}
 }
