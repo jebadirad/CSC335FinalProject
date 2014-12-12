@@ -3,11 +3,14 @@ package view;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -21,6 +24,8 @@ public class Imageview extends JPanel implements Runnable
   private BufferedImage image;
   private Cell[][] theModel;
   private Object direction;
+  private static boolean isLoaded;
+  private static List<Image> sheetList;  
   private static String backGroundString;
   private static BufferedImage cloneTrooper;
   private static BufferedImage lavaSheet;
@@ -55,6 +60,8 @@ public class Imageview extends JPanel implements Runnable
   {
     // Loads all the images into BufferedImaged with selected BackGround.
     setBackground(background);
+    isLoaded = false;
+    sheetList = null;
     loadImages();
     this.setVisible(true);
     repaint();
@@ -218,7 +225,6 @@ public class Imageview extends JPanel implements Runnable
       wampa = ImageIO.read(new File(imageDir + "Wampa.png"));
       artilleryDroid = ImageIO.read(new File(imageDir + "ArtilleryDroid.png"));
       walker = ImageIO.read(new File(imageDir + "Walker.png"));
-
       flag = ImageIO.read(new File(imageDir + "Flag.png"));
 
       if (backGroundString.equals("Grass.png"))
@@ -234,9 +240,10 @@ public class Imageview extends JPanel implements Runnable
     }
     catch (IOException e)
     {
+      isLoaded = false;
       System.out.println("Could not find an Image!");
     }
-
+    isLoaded = true;
   }
 
   public void run()
@@ -286,6 +293,62 @@ public class Imageview extends JPanel implements Runnable
       }
     }
 
+  }
+
+  public static ArrayList<Image> getSheets() {
+	  if(!isLoaded) {
+		  System.err.println("run Imageview.loadImages first");
+		  return null;
+	  }
+	  else {
+		  sheetList = new ArrayList<Image>();
+		  sheetList.add(cloneTrooper);
+		  sheetList.add(medicSheet);
+		  sheetList.add(lukeSkyWalkerJedi);
+		  sheetList.add(spiderTank);
+		  sheetList.add(battleDroid);
+		  sheetList.add(darthVader);
+		  sheetList.add(rancor);
+		  sheetList.add(wampa);
+		  sheetList.add(imperialmedic);
+		  sheetList.add(artilleryDroid);
+		  sheetList.add(walker);
+		  return (ArrayList<Image>)sheetList;
+	  }
+  }
+
+  public static Image getSheet(String s) {
+	  Image img = null;
+	  if(!isLoaded) {
+		  System.err.println("run Imageview.loadImages first");
+		  return null;
+	  }
+	  else if(s.equals("cloneTrooper"))
+		  img = cloneTrooper;
+	  else if(s.equals("medic"))
+		  img = medicSheet;
+	  else if(s.equals("lukeSkywalker"))
+		  img = lukeSkyWalkerJedi;
+	  else if(s.equals("tank"))
+		  img = spiderTank;
+	  else if(s.equals("battleDroid"))
+		  img = battleDroid;
+	  else if(s.equals("vader"))
+		  img = darthVader;
+	  else if(s.equals("rancor"))
+		  img = rancor;
+	  else if(s.equals("wampa"))
+		  img = wampa;
+	  else if(s.equals("imperialmedic"))
+		  img = imperialmedic;
+	  else if(s.equals("artilleryDroid"))
+		  img = artilleryDroid;
+	  else if(s.equals("walker"))
+		  img = walker;
+	  else
+		  System.out.println("Check the argument: Imageview@getSheet():img");
+
+	  return img;
   }
 
 }
