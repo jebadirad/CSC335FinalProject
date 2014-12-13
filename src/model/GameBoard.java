@@ -2988,16 +2988,13 @@ public class GameBoard extends JFrame implements Serializable {
 		} catch (Exception e) {
 			System.err.println("Unable to load data!");
 		}
-<<<<<<< HEAD
 		ArrayList<Unit> units = new ArrayList<Unit>();
 		for (int i = 0; i < player1Units.size(); i++) 
 			units.add(i, player1Units.get(i).getUnit());
 		for (int i = 0; i < player2Units.size(); i++) 
 			units.add(i, player2Units.get(i).getUnit());
-		return new GameBoard("Load", units);
-=======
+		
 		return new GameBoard("Map 1",new ArrayList<Unit>());
->>>>>>> refs/remotes/origin/master
 	}
 
 	/**
