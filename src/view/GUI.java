@@ -503,28 +503,6 @@ public class GUI extends JFrame
     AttackPanel.remove(listOfTargets);
     listOfTargets = new JPanel();
     targetGroup = new ButtonGroup();
-	/**
-	 * Officially creates a newgame().
-	 */
-	public void newGame(String map, ArrayList<Unit> units) {
-		if (AIgame) {
-			AI computer = new AI();
-		}
-		gameboard = new GameBoard(map, units);
-		new Thread(new Runner()).start();
-		// create inventories for both players
-		p1inv = new Inventory(player1);
-		p2inv = new Inventory(player2);
-		// both players start with a super item. WOW. how generous of us.
-		p1inv.addItem(Item.hyperpotion);
-		System.out.println(player1 + "'s inventory: " + p1inv.toString());
-		p2inv.addItem(Item.superitem);
-		System.out.println(player2 + "'s inventory: " + p2inv.toString());
-		player1units = gameboard.getPlayer1Units();
-		player2units = gameboard.getPlayer2Units();
-		CurrentUnitSelected = null;
-		EnemyUnitSelected = null;
-		targetButtons = new ArrayList();
 
     AttackPanel.add(listOfTargets, BorderLayout.CENTER);
     listOfTargets.setVisible(true);
@@ -1314,55 +1292,6 @@ public class GUI extends JFrame
           UpdateUnitScreen();
 
         }
-	public void attack(Cell cellattack, Cell celldefense) {
-		CurrentUnitSelected = cellattack;
-		EnemyUnitSelected = celldefense;
-		if (EnemyUnitSelected == null) {
-			JOptionPane optionPane = new JOptionPane();
-			optionPane.setMessage("Please Select an Enemy Unit");
-			JDialog dialog = optionPane.createDialog(":~(");
-			dialog.setAlwaysOnTop(true);
-			dialog.setVisible(true);
-		} else if (CurrentUnitSelected == null) {
-			JOptionPane optionPane = new JOptionPane();
-			optionPane
-					.setMessage("Please Select a Friendly Unit to attack with");
-			JDialog dialog = optionPane.createDialog(":~(");
-			dialog.setAlwaysOnTop(true);
-			dialog.setVisible(true);
-		} else if (!gameboard.CanAttack(CurrentUnitSelected)) {
-			JOptionPane optionPane = new JOptionPane();
-			optionPane.setMessage("You have attacked already!");
-			JDialog dialog = optionPane.createDialog(":~(");
-			dialog.setAlwaysOnTop(true);
-			dialog.setVisible(true);
-		} else {
-			//System.out.println(EnemyUnitSelected.getUnit().getHealth());
-			gameboard.attack(CurrentUnitSelected, EnemyUnitSelected);
-			targets(CurrentUnitSelected);
-			layoutAttackScreen();
-			if (gameboard.CheckgameOverBooleanVersion(player2units)) {
-				Object[] options = { "New Game", "Quit" };
-				int n = JOptionPane
-						.showOptionDialog(
-								frame,
-								player1
-										+ " HAS WON THE GAME!! Would you like to start a new game?",
-								"VICTORY!!", JOptionPane.YES_NO_OPTION,
-								JOptionPane.QUESTION_MESSAGE, null, options,
-								options[1]);
-				if (n == JOptionPane.YES_OPTION) {
-					System.out.println("new game");
-					dispose();
-					new GUI();
-				} else {
-					if (n == JOptionPane.NO_OPTION) {
-						System.out.println("no option");
-						System.exit(0);
-						
-					}
-				}
-			}
 
         layoutAttackScreen();
 
@@ -1422,10 +1351,6 @@ public class GUI extends JFrame
                 CurrentUnitSelected);
             if (GUI.gameboard.commandqueue.isEmpty())
             {
-//				CurrentUnitSelected = gameboard.move(cellwithunit, direction);
-				if (CurrentUnitSelected.hasUnit()) {
-					player1units.add(i, CurrentUnitSelected);
-					targets(CurrentUnitSelected);
 
             }
             else
@@ -1446,38 +1371,6 @@ public class GUI extends JFrame
     }
 
   }
-				imagePanel.repaint();
-				if (gameboard.CheckgameOverBooleanVersion(player1units)) {
-					Object[] options = { "New Game", "Quit" };
-					int n = JOptionPane
-							.showOptionDialog(
-									frame,
-									player1
-											+ " HAS WON THE GAME!! Would you like to start a new game?",
-									"VICTORY!!", JOptionPane.YES_NO_OPTION,
-									JOptionPane.QUESTION_MESSAGE, null,
-									options, options[1]);
-					if (n == JOptionPane.YES_OPTION) {
-						System.out.println("new game");
-						dispose();
-						new GUI();
-					} else {
-						if (n == JOptionPane.NO_OPTION) {
-							System.out.println("no option");
-							System.exit(0);
-							
-						}
-					}
-				}
-			} else {
-				JOptionPane optionPane = new JOptionPane();
-				optionPane.setMessage("Move failed");
-				JDialog dialog = optionPane.createDialog(":~(");
-				dialog.setAlwaysOnTop(true);
-				dialog.setVisible(true);
-			}
-		}
-	}
 
   private class ButtonListener implements ActionListener
   {
@@ -1517,15 +1410,6 @@ public class GUI extends JFrame
       {
         move("L", CurrentUnitSelected);
       }
-					if (!GUI.gameboard.commandqueue.isEmpty()) {
-						System.out.println("does it get here?");
-						Command<GUI> command = GUI.gameboard.commandqueue
-								.poll();
-						command.execute(GUI.this);
-						if(!GUI.gameboard.commandqueue.isEmpty()){
-						GUI.gameboard.commandqueue.element().setCurrentCell(
-								CurrentUnitSelected);
-						}
 
       if (e.getSource() == moveDown)
       {
@@ -1556,33 +1440,6 @@ public class GUI extends JFrame
           }
 
         }
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == UseItem) {
-				if (CurrentUnitSelected == null) {
-					JOptionPane optionPane = new JOptionPane();
-					optionPane.setMessage("Please Select a Unit");
-					JDialog dialog = optionPane.createDialog(":~(");
-					dialog.setAlwaysOnTop(true);
-					dialog.setVisible(true);
-				} else {
-					for (int i = 0; i < itemBoxes.size(); i++) {
-						if(itemBoxes.get(i).isSelected()){
-							Item item = p1inv.getItem(itemBoxes.get(i).getText());
-							CurrentUnitSelected = gameboard.useItem(item,
-									CurrentUnitSelected);
-							p1inv.removeItem(item);
-						}
-						
-						
-						
-					}
-					UpdateItemScreen();
-					items.clear();
-				}
-			}
-			if (e.getSource() == moveUp) {
-				move("N", CurrentUnitSelected);
 
         if (player1FlagPoints >= 5)
         {
@@ -1685,31 +1542,6 @@ public class GUI extends JFrame
       }
       if (shopbuttons == null)
       {
-				if (player1FlagPoints >= 5) {
-					// tell them they win
-					Object[] options = { "New Game", "Quit" };
-					int n = JOptionPane
-							.showOptionDialog(
-									frame,
-									player1
-											+ " HAS WON THE GAME!! Would you like to start a new game?",
-									"VICTORY!!", JOptionPane.YES_NO_OPTION,
-									JOptionPane.QUESTION_MESSAGE, null,
-									options, options[1]);
-					if (n == JOptionPane.YES_OPTION) {
-						System.out.println("new game");
-						dispose();
-						new GUI();
-						player1FlagPoints = 0;
-						player2FlagPoints = 0;
-					} else {
-						if (n == JOptionPane.NO_OPTION) {
-							System.out.println("no option");
-							//GUI.this.dispatchEvent(new WindowEvent(frame,
-								//	WindowEvent.WINDOW_CLOSING));
-							System.exit(0);
-						}
-					}
 
       }
       else
@@ -2314,43 +2146,4 @@ public class GUI extends JFrame
       // }
     }
   }
-		@Override
-		public void run() {
-			System.out.println("hello it is i, running");
-			if (cell != null)
-				System.out.println(cell.getUnit());
-			Image image = Imageview.getSheet("lukeSkywalker");
-			System.out.println(image.toString());
-//			for (Image image : b) {
-				// if(cell.getUnit().equals(image)){}
-				Image scaledImg = image
-						.getScaledInstance(24, 63, Image.SCALE_DEFAULT);
-				int initX = cell.getLocation().x;
-				int initY = cell.getLocation().y;
-				int endX = initX + 24;
-				int endY = initY + 63;
-				if (d == "N") {
-					do{
-						System.out.println("hello it is i, DRAWING" + " lukeSkywalker");
-						initY = initY - 9;
-//						cell.getLocation().translate(0, 1);
-						imagePanel.getGraphics().drawImage(scaledImg, initX, initY,
-								null);
-						imagePanel.repaint();
-						imagePanel.revalidate();
-						repaint();
-						revalidate();
-						// set the cell to the next one up
-					} while(initY > endY);
-					System.out.println(cell.hasUnit());
-					CurrentUnitSelected = 
-							gameboard.move(cell, d);
-					return;
-				} else
-					return; // TODO get rid of this else and add conditionals
-							// for S, L, & R.
-				// update where the image is drawn
-//			}
-		}
-	}
 }
