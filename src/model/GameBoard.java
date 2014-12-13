@@ -252,7 +252,6 @@ public class GameBoard extends JFrame implements Serializable {
 		// board is 20 by 20 for now:
 		board = new Cell[20][20];
 
-		// initialize all cells to contain no units, and create desert map
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
 				// need to create the cells before we add them to the board and
@@ -268,7 +267,7 @@ public class GameBoard extends JFrame implements Serializable {
 		// place flag:
 		board[10][10].setTerrain(Terrain.Flag);
 		
-		// Boulders and Lavas:
+		// Boulders:
 		
 		// Ice
 		
@@ -276,6 +275,27 @@ public class GameBoard extends JFrame implements Serializable {
 //		unitsToAdd = createUnitSelection();
 //	
 		generateComputerUnits(units);
+		// Boulders:
+		board[8][8].setTerrain(Terrain.Boulder);
+		board[8][12].setTerrain(Terrain.Boulder);
+		board[12][8].setTerrain(Terrain.Boulder);
+		board[12][12].setTerrain(Terrain.Boulder);
+		board[10][12].setTerrain(Terrain.Boulder);
+		board[10][8].setTerrain(Terrain.Boulder);
+		board[8][10].setTerrain(Terrain.Boulder);
+		board[12][10].setTerrain(Terrain.Boulder);
+
+		addPlayerUnitsAndGenerateComputerUnits(units);
+		board[8][8].setTerrain(Terrain.Boulder);
+		board[8][12].setTerrain(Terrain.Boulder);
+		board[12][8].setTerrain(Terrain.Boulder);
+		board[12][12].setTerrain(Terrain.Boulder);
+		board[10][12].setTerrain(Terrain.Boulder);
+		board[10][8].setTerrain(Terrain.Boulder);
+		board[8][10].setTerrain(Terrain.Boulder);
+		board[12][10].setTerrain(Terrain.Boulder);
+
+		addPlayerUnitsAndGenerateComputerUnits(units);
 
 	}
 	/**
