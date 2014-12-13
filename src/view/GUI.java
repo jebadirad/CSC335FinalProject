@@ -1072,8 +1072,8 @@ public class GUI extends JFrame {
 				int i = player1units.indexOf(cellwithunit);
 				player1units.remove(i);
                 Thread animation = new Thread(new Animate(cellwithunit, direction));
-                animation.start();
-                animation.run();
+                //animation.start();
+                //animation.run();
 
 				CurrentUnitSelected = gameboard.move(cellwithunit, direction);
 				if (CurrentUnitSelected.hasUnit()) {
