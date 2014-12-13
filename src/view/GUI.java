@@ -1665,7 +1665,29 @@ public class GUI extends JFrame {
     {
       if (e.getSource() == toMap)
       {
-        layoutMapScreen();
+    	  player1 = username1.getText();
+          player2 = username2.getText();
+          if (player1.equals("") || player1.equals(null) || player2.equals("")
+              || player2.equals(null))
+          {
+            JOptionPane optionPane = new JOptionPane();
+            optionPane.setMessage("You need to enter valid usernames!");
+            JDialog dialog = optionPane.createDialog(":~(");
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(true);
+          }
+          else if (player1.equals(player2) || player2.equals(player1))
+          {
+            JOptionPane optionPane = new JOptionPane();
+            optionPane.setMessage("User names must be unique!");
+            JDialog dialog = optionPane.createDialog(":~(");
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(true);
+          }
+          
+          else {
+        	  layoutMapScreen();
+          }
       }
       if (e.getSource() == startAI)
       {
