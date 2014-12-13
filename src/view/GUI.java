@@ -1047,6 +1047,7 @@ public class GUI extends JFrame {
 						System.out.println("no option");
 						frame.dispatchEvent(new WindowEvent(frame,
 								WindowEvent.WINDOW_CLOSING));
+						System.exit(0);
 					}
 				}
 			}
@@ -1073,8 +1074,8 @@ public class GUI extends JFrame {
 				int i = player1units.indexOf(cellwithunit);
 				player1units.remove(i);
                 Thread animation = new Thread(new Animate(cellwithunit, direction));
-                //animation.start();
-                //animation.run();
+                animation.start();
+                animation.run();
 
 //				CurrentUnitSelected = gameboard.move(cellwithunit, direction);
 				if (CurrentUnitSelected.hasUnit()) {
@@ -1766,7 +1767,7 @@ public class GUI extends JFrame {
 				int endX = initX + 24;
 				int endY = initY + 63;
 				if (d == "N") {
-					while (initY > endY) {
+					do{
 						System.out.println("hello it is i, DRAWING" + " lukeSkywalker");
 						initY = initY - 9;
 //						cell.getLocation().translate(0, 1);
@@ -1774,12 +1775,13 @@ public class GUI extends JFrame {
 								null);
 						imagePanel.repaint();
 						imagePanel.revalidate();
-						revalidate();
 						repaint();
+						revalidate();
 						// set the cell to the next one up
-					}
+					} while(initY > endY);
 					System.out.println(cell.hasUnit());
-					CurrentUnitSelected = gameboard.move(cell, d);
+					CurrentUnitSelected = 
+							gameboard.move(cell, d);
 					return;
 				} else
 					return; // TODO get rid of this else and add conditionals
