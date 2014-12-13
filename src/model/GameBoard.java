@@ -45,8 +45,8 @@ public class GameBoard extends JFrame implements Serializable {
 	/**
 	 * Constructor for the GameBoard object
 	 * 
-	 * @param mapName
-	 *            Name of Map, either "Map 1" or "Map 2"
+	 * @param mapName, ArrayList<Unit>, units selected by the user in GUI
+	 *            Name of Map, either "Map 1", "Map 2", "Random", or "Monster"
 	 */
 	public GameBoard(String mapName, ArrayList<Unit> units) {
 		commandqueue = new LinkedList<Command>();
@@ -62,7 +62,10 @@ public class GameBoard extends JFrame implements Serializable {
 			createVsComputerMap();
 
 	}
-	
+	/**
+	 * Used to create units, has become obsolete
+	 * @return ArrayList<Unit>, the units that will be added to the board
+	 */
 	public ArrayList<Unit> createUnitSelection() {
 		ArrayList<Unit> units = new ArrayList<Unit>();
 		UnitFactory factory = new UnitFactory();
@@ -88,7 +91,10 @@ public class GameBoard extends JFrame implements Serializable {
 		units.add(9,unit);
 		return units;
 	}
-	
+	/**
+	 * used to create units for the monster game, not sure if still needed
+	 * @return the untis to be added to the board
+	 */
 	public ArrayList<Unit> createUnitSelectionMonster() {
 		ArrayList<Unit> units = new ArrayList<Unit>();
 		UnitFactory factory = new UnitFactory();
@@ -105,9 +111,6 @@ public class GameBoard extends JFrame implements Serializable {
 	
 		return units;
 	}
-
-	
-	
 	
 	/**
 	 * Creates Map1
@@ -237,7 +240,9 @@ public class GameBoard extends JFrame implements Serializable {
 		
 
 	}
-
+	/**
+	 * Creates a game against the computer, needs to be fixed
+	 */
 	public void createVsComputerMap() {
 		computer = new AI();
 		background = "Grass.png";
@@ -261,7 +266,9 @@ public class GameBoard extends JFrame implements Serializable {
 		generateComputerUnits();
 
 	}
-	
+	/**
+	 * Creates the game against the computer controlled monster, also needs to be fixed
+	 */
 	public void createMonsterMap() {
 		
 		board = new Cell[20][20];
@@ -427,7 +434,7 @@ public class GameBoard extends JFrame implements Serializable {
 					}
 				}
 				// Create Lava
-				else if (randomTerrain == 3) {
+				else if (randomTerrain == 5) {
 					if (board[randomX][randomY].getTerrain() == Terrain.Nothing) {
 						board[randomX][randomY].setTerrain(Terrain.Lava);
 						numberOfTerriansOnTheBoard++;
@@ -456,7 +463,11 @@ public class GameBoard extends JFrame implements Serializable {
 
 		}
 	}
-
+	/**
+	 * Generates maps 1 and 2's units, given the units the selected in the GUI, replaces
+	 * the older methods
+	 * @param units the units to be added to the board
+	 */
 	public void tempGenerateMap1Or2Units(ArrayList<Unit> units) {
 		player1Units = new ArrayList<Cell>();
 		player2Units = new ArrayList<Cell>();
@@ -505,7 +516,10 @@ public class GameBoard extends JFrame implements Serializable {
 		
 		
 	}
-	
+	/**
+	 * adds monster game player 1 units to the board, not sure how this is going to work yet
+	 * @param units
+	 */
 	public void tempGenerateMonsterPlayer1Units(ArrayList<Unit> units) {
 		Random rand = new Random();
 		player1Units = new ArrayList<Cell>();
@@ -530,7 +544,10 @@ public class GameBoard extends JFrame implements Serializable {
 	
 	
 	
-	
+	/**
+	 * Adds the units selected in GUI from both players to the random map game type
+	 * @param units, the units to be added to the board, selected from GUI
+	 */
 	public void tempGenerateRandomMapUnits(ArrayList<Unit> units) {
 		Random rand = new Random();
 		player1Units = new ArrayList<Cell>();
@@ -629,7 +646,9 @@ public class GameBoard extends JFrame implements Serializable {
 		player2Units.add(board[15][19]);
 
 	}
-
+	/**
+	 * Adds computer units to the board, needs fixing
+	 */
 	public void generateComputerUnits() {
 		// Instantiate player2Units:
 		player2Units = new ArrayList<Cell>();
@@ -827,7 +846,9 @@ public class GameBoard extends JFrame implements Serializable {
 		}
 
 	}
-	
+	/**
+	 * Not sure how to do this yet, but adds a monster to the board
+	 */
 	public void generateMonster() {
 		player2Units = new ArrayList<Cell>();
 		UnitFactory factory = new UnitFactory();
@@ -2884,7 +2905,7 @@ public class GameBoard extends JFrame implements Serializable {
 		} catch (Exception e) {
 			System.err.println("Unable to load data!");
 		}
-		return new GameBoard("Map 1",units);
+		return new GameBoard("Map 1",new ArrayList<Unit>());
 	}
 
 	/**

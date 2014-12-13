@@ -116,7 +116,7 @@ public class GUI extends JFrame {
 	JButton buyItem;
 	JButton Shop;
 	JButton UnitInfo;
-	JButton Map2 = new JButton("Map 2");
+	JButton Map2 = new JButton("Ice Madness Map");
 	JButton RandomMap = new JButton("Random Map");
 	JButton vsAI = new JButton("vs AI");
 	ArrayList<JRadioButton> radiobuttons;
@@ -562,8 +562,8 @@ public class GUI extends JFrame {
 		selectNumberOfWalker.setText("0");
 
 		vsAI.addActionListener(MapButtonListener);
-		Map = new JButton("Map 1");
-		next = new JButton("Next");
+		Map = new JButton("Standard Map");
+		next = new JButton("Continue to player 2 unit selection");
 		next.addActionListener(MapButtonListener);
 		Map.addActionListener(MapButtonListener);
 		Map2.addActionListener(MapButtonListener);
@@ -730,9 +730,7 @@ public class GUI extends JFrame {
 			units.add(spotInUnitsList, factory.makeUnit("Walker", player2));
 			spotInUnitsList++;
 		}
-		for (int i = 5; i < units.size(); i++) {
-			System.out.println(units.get(i).toString());
-		}
+		
 
 		return true;
 	}
@@ -839,9 +837,7 @@ public class GUI extends JFrame {
 			units.add(spotInUnitsList, factory.makeUnit("Walker", player1));
 			spotInUnitsList++;
 		}
-		for (int i = 0; i < units.size(); i++) {
-			System.out.println(units.get(i).toString());
-		}
+		
 
 		return true;
 	}
@@ -1078,6 +1074,8 @@ public class GUI extends JFrame {
                 Thread animation = new Thread(new Animate(cellwithunit, direction));
                 animation.start();
 //                animation.run();
+                //animation.start();
+                //animation.run();
 
 				CurrentUnitSelected = gameboard.move(cellwithunit, direction);
 				if (CurrentUnitSelected.hasUnit()) {
@@ -1321,24 +1319,35 @@ public class GUI extends JFrame {
 				}
 			}
 			if (e.getSource() == buyItem) {
-				String selection = shopgroup.getSelection().getActionCommand();
-				Item item = inv.get(selection);
-				int cost = item.getCost();
-				if (p1inv.getCredits() < cost) {
+				if (shopgroup.getSelection()==null) {
 					JOptionPane optionPane = new JOptionPane();
-					optionPane.setMessage("You are too poor to buy this item!");
+					optionPane.setMessage("Please select an item first!");
 					JDialog dialog = optionPane.createDialog(":~(");
 					dialog.setAlwaysOnTop(true);
 					dialog.setVisible(true);
-				} else {
-					p1inv.setCredits(p1inv.getCredits() - cost);
-					p1inv.addItem(item);
-					credits.setText("Credits: " + p1inv.getCredits());
-					UpdateItemScreen();
-					toggleShopScreen();
-					repaint();
-					revalidate();
 				}
+				else {
+					String selection = shopgroup.getSelection().getActionCommand();
+					Item item = inv.get(selection);
+					int cost = item.getCost();
+					if (p1inv.getCredits() < cost) {
+						JOptionPane optionPane = new JOptionPane();
+						optionPane.setMessage("You are too poor to buy this item!");
+						JDialog dialog = optionPane.createDialog(":~(");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+					} else {
+						p1inv.setCredits(p1inv.getCredits() - cost);
+						p1inv.addItem(item);
+						credits.setText("Credits: " + p1inv.getCredits());
+						UpdateItemScreen();
+						toggleShopScreen();
+						repaint();
+						revalidate();
+					}
+				}
+				
+				
 
 			}
 			if (radiobuttons.isEmpty() || radiobuttons.equals(null)) {
@@ -1401,31 +1410,58 @@ public class GUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 
 			if (e.getSource() == next) {
-
-				if (checkUserSelections() == false) {
-
-				} else {
-
-					selectNumberOfCloneTrooper.setText("0");
-					selectNumberOfBattleDroid.setText("0");
-					selectNumberOfImperialMedic.setText("0");
-					selectNumberOfLukeSkywalker.setText("0");
-					selectNumberOfDarthVader.setText("0");
-					selectNumberOfSpiderTank.setText("0");
-					selectNumberOfDroideka.setText("0");
-					selectNumberOfArtilleryDroid.setText("0");
-					selectNumberOfWalker.setText("0");
-
+				
+				player1 = username1.getText();
+				player2 = username2.getText();
+				if (player1.equals("") || player1.equals(null)
+						|| player2.equals("") || player2.equals(null)) {
 					JOptionPane optionPane = new JOptionPane();
 					optionPane
-							.setMessage("Player 2 make your unit selections, then click the map desired ");
-					JDialog dialog = optionPane.createDialog(":~)");
+							.setMessage("You need to enter valid usernames!");
+					JDialog dialog = optionPane.createDialog(":~(");
 					dialog.setAlwaysOnTop(true);
 					dialog.setVisible(true);
-					teamSelect.remove(next);
+				}
+				else if (player1.equals(player2) || player2.equals(player1)) {
+					JOptionPane optionPane = new JOptionPane();
+					optionPane
+							.setMessage("User names must be unique!");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				}
+				else {
+
+					
+					if (checkUserSelections() == false) {
+
+					} else {
+
+						selectNumberOfCloneTrooper.setText("0");
+						selectNumberOfBattleDroid.setText("0");
+						selectNumberOfImperialMedic.setText("0");
+						selectNumberOfLukeSkywalker.setText("0");
+						selectNumberOfDarthVader.setText("0");
+						selectNumberOfSpiderTank.setText("0");
+						selectNumberOfDroideka.setText("0");
+						selectNumberOfArtilleryDroid.setText("0");
+						selectNumberOfWalker.setText("0");
+
+						JOptionPane optionPane = new JOptionPane();
+						optionPane
+								.setMessage("Player 2 make your unit selections, then click the map desired ");
+						JDialog dialog = optionPane.createDialog(":~)");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+						teamSelect.remove(next);
+						username1.setEditable(false);
+						username2.setEditable(false);
+						
+					}
 
 				}
-
+				
+				
 			}
 
 			if (e.getSource() == Map) {
@@ -1443,6 +1479,14 @@ public class GUI extends JFrame {
 						JOptionPane optionPane = new JOptionPane();
 						optionPane
 								.setMessage("You need to enter valid usernames!");
+						JDialog dialog = optionPane.createDialog(":~(");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+					}
+					else if (player1.equals(player2) || player2.equals(player1)) {
+						JOptionPane optionPane = new JOptionPane();
+						optionPane
+								.setMessage("User names must be unique!");
 						JDialog dialog = optionPane.createDialog(":~(");
 						dialog.setAlwaysOnTop(true);
 						dialog.setVisible(true);
@@ -1478,6 +1522,14 @@ public class GUI extends JFrame {
 						dialog.setAlwaysOnTop(true);
 						dialog.setVisible(true);
 					}
+					else if (player1.equals(player2) || player2.equals(player1)) {
+						JOptionPane optionPane = new JOptionPane();
+						optionPane
+								.setMessage("User names must be unique!");
+						JDialog dialog = optionPane.createDialog(":~(");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+					}
 
 					else if (checkPlayer2UnitSelecions() == false) {
 
@@ -1508,6 +1560,14 @@ public class GUI extends JFrame {
 						dialog.setAlwaysOnTop(true);
 						dialog.setVisible(true);
 					}
+					else if (player1.equals(player2) || player2.equals(player1)) {
+						JOptionPane optionPane = new JOptionPane();
+						optionPane
+								.setMessage("User names must be unique!");
+						JDialog dialog = optionPane.createDialog(":~(");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+					}
 
 					else if (checkPlayer2UnitSelecions() == false) {
 
@@ -1530,7 +1590,16 @@ public class GUI extends JFrame {
 					JDialog dialog = optionPane.createDialog(":~(");
 					dialog.setAlwaysOnTop(true);
 					dialog.setVisible(true);
-				} else {
+				} 
+				else if (player1.equals(player2) || player2.equals(player1)) {
+					JOptionPane optionPane = new JOptionPane();
+					optionPane
+							.setMessage("User names must be unique!");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				}
+				else {
 					AIgame = true;
 					computer = new AI();
 					frame.setVisible(false);
@@ -1549,7 +1618,16 @@ public class GUI extends JFrame {
 					JDialog dialog = optionPane.createDialog(":~(");
 					dialog.setAlwaysOnTop(true);
 					dialog.setVisible(true);
-				} else {
+				} 
+				else if (player1.equals(player2) || player2.equals(player1)) {
+					JOptionPane optionPane = new JOptionPane();
+					optionPane
+							.setMessage("User names must be unique!");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				}
+				else {
 					frame.setVisible(false);
 					if (new File(saveDir + player1 + "-" + player2 + "-"
 							+ "gameboard.dat").exists()) {
