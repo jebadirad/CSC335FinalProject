@@ -8,14 +8,4 @@ public class Explosion extends SpriteObject{
 	public Explosion(int x, int y){
 		super(e, x, y, 50);
 	}
-
-	public void reset() {
-		e.reset();
-	}
-
-	public boolean isFinished() {
-		if(e.isFinished())
-		return true;
-		return false;
-	}
 }

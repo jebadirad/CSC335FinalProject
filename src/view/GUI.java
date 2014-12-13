@@ -1335,7 +1335,7 @@ public class GUI extends JFrame
 
             LinkedList<SpriteObject> dead = new LinkedList<SpriteObject>();
             for (SpriteObject s : splosions)
-              if (((Explosion) s).isFinished())
+              if (s.isFinished())
                 dead.add(s);
             for (SpriteObject s : dead)
               splosions.remove(s);
