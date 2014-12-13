@@ -262,20 +262,11 @@ public class GameBoard extends JFrame implements Serializable {
 				board[i][j].setLocation(new Point(i, j));
 			}
 		}		
-		// Quicksand pit:
 		
 		// place flag:
 		board[10][10].setTerrain(Terrain.Flag);
 		
 		// Boulders:
-		
-		// Ice
-		
-//		ArrayList<Unit> unitsToAdd = new ArrayList<Unit>();
-//		unitsToAdd = createUnitSelection();
-//	
-		generateComputerUnits(units);
-		// Boulders:
 		board[8][8].setTerrain(Terrain.Boulder);
 		board[8][12].setTerrain(Terrain.Boulder);
 		board[12][8].setTerrain(Terrain.Boulder);
@@ -285,15 +276,7 @@ public class GameBoard extends JFrame implements Serializable {
 		board[8][10].setTerrain(Terrain.Boulder);
 		board[12][10].setTerrain(Terrain.Boulder);
 
-		board[8][8].setTerrain(Terrain.Boulder);
-		board[8][12].setTerrain(Terrain.Boulder);
-		board[12][8].setTerrain(Terrain.Boulder);
-		board[12][12].setTerrain(Terrain.Boulder);
-		board[10][12].setTerrain(Terrain.Boulder);
-		board[10][8].setTerrain(Terrain.Boulder);
-		board[8][10].setTerrain(Terrain.Boulder);
-		board[12][10].setTerrain(Terrain.Boulder);
-
+		addPlayerUnitsAndGenerateComputerUnits(units);
 
 	}
 	/**
@@ -639,39 +622,89 @@ public class GameBoard extends JFrame implements Serializable {
 	 * are Player2's units
 	 */
 	public void generatePlayer2Units() {
+		Random rand = new Random();
 		// Instantiate player2Units:
 		player2Units = new ArrayList<Cell>();
-
-		// Creating one single unit for now:
+		ArrayList<Unit> units = new ArrayList<Unit>();
 		UnitFactory factory = new UnitFactory();
-		// Last parameter is UserName obtained from the GUI
-		/*
-		 * Unit dUnit = factory.makeUnit("Medic", GUI.getPlayer2());
-		 * board[3][1].setUnit(dUnit); board[3][1].setHasUnit(true);
-		 */
-		Unit aUnit = factory.makeUnit("LukeSkywalker", GUI.getPlayer2());
-		board[5][19].setUnit(aUnit);
-		board[5][19].setHasUnit(true);
-
-		aUnit = factory.makeUnit("ImperialMedic", GUI.getPlayer2());
-		board[10][19].setUnit(aUnit);
-		board[10][19].setHasUnit(true);
-		aUnit = factory.makeUnit("BattleDroid", GUI.getPlayer2());
-		board[15][19].setUnit(aUnit);
-		board[15][19].setHasUnit(true);
-		// Adds this to player2Units list:
-		player2Units.add(board[5][19]);
-		player2Units.add(board[10][19]);
-		player2Units.add(board[15][19]);
+		Unit unit = factory.makeUnit("CloneTrooper", GUI.getPlayer2());
+		int random = rand.nextInt(8);
+		int numberOfUnits = 0;
+		while (numberOfUnits < 5) {
+			random = rand.nextInt(8);
+			if (random == 0) {
+				units.add(numberOfUnits, unit);
+				numberOfUnits++;
+			}
+			else if (random ==1) {
+				unit = factory.makeUnit("BattleDroid", GUI.getPlayer2());
+				units.add(numberOfUnits, unit);
+				numberOfUnits++;
+			}
+			else if (random ==2) {
+				unit = factory.makeUnit("DarthVader", GUI.getPlayer2());
+				units.add(numberOfUnits, unit);
+				numberOfUnits++;
+			}
+			else if (random ==3) {
+				unit = factory.makeUnit("LukeSkywalker", GUI.getPlayer2());
+				units.add(numberOfUnits, unit);
+				numberOfUnits++;
+			}
+			else if (random ==4) {
+				unit = factory.makeUnit("Walker", GUI.getPlayer2());
+				units.add(numberOfUnits, unit);
+				numberOfUnits++;
+			}
+			else if (random ==5) {
+				unit = factory.makeUnit("Droideka", GUI.getPlayer2());
+				units.add(numberOfUnits, unit);
+				numberOfUnits++;
+			}
+			else if (random ==6) {
+				unit = factory.makeUnit("ImperialMedic", GUI.getPlayer2());
+				units.add(numberOfUnits, unit);
+				numberOfUnits++;
+			}
+			else if (random ==7) {
+				unit = factory.makeUnit("ArtilleryDroid", GUI.getPlayer2());
+				units.add(numberOfUnits, unit);
+				numberOfUnits++;
+			}
+			else if (random ==8) {
+				unit = factory.makeUnit("SpiderTank", GUI.getPlayer2());
+				units.add(numberOfUnits, unit);
+				numberOfUnits++;
+			}
+		}
+				board[3][19].setUnit(units.get(0));
+				board[3][19].setHasUnit(true);
+				player2Units.add(board[3][19]);
+				
+				board[7][19].setUnit(units.get(1));
+				board[7][19].setHasUnit(true);
+				player2Units.add(board[7][19]);
+				
+				board[11][19].setUnit(units.get(2));
+				board[11][19].setHasUnit(true);
+				player2Units.add(board[11][19]);
+				
+				board[15][19].setUnit(units.get(3));
+				board[15][19].setHasUnit(true);
+				player2Units.add(board[15][19]);
+				
+				board[19][19].setUnit(units.get(4));
+				board[19][19].setHasUnit(true);
+				player2Units.add(board[19][19]);
+		
+		
 
 	}
 	/**
 	 * Adds computer units to the board, needs fixing
 	 */
-	public void generateComputerUnits(ArrayList<Unit> units) {
-		// Instantiate player2Units:
+	public void addPlayerUnitsAndGenerateComputerUnits(ArrayList<Unit> units) {
 		player1Units = new ArrayList<Cell>();
-		player2Units = new ArrayList<Cell>();
 		// Player 1 has first five units in this list
 		board[3][0].setUnit(units.get(0));
 		board[3][0].setHasUnit(true);
@@ -693,54 +726,8 @@ public class GameBoard extends JFrame implements Serializable {
 		board[19][0].setHasUnit(true);
 		player1Units.add(board[19][0]);
 		
-		// Player 2 has last five units in this list
-		UnitFactory factory = new UnitFactory();
-		// Last parameter is UserName obtained from the GUI
-		/*
-		 * Unit dUnit = factory.makeUnit("Medic", GUI.getPlayer2());
-		 * board[3][1].setUnit(dUnit); board[3][1].setHasUnit(true);
-		 */
-		Unit aUnit = factory.makeUnit("LukeSkywalker", GUI.getPlayer2());
-		board[7][10].setUnit(aUnit);
-		board[7][10].setHasUnit(true);
+		generatePlayer2Units();
 
-		//aUnit = factory.makeUnit("ImperialMedic", GUI.getPlayer2());
-		//board[2][12].setUnit(aUnit);
-		//board[2][12].setHasUnit(true);
-		//aUnit = factory.makeUnit("BattleDroid", GUI.getPlayer2());
-		//board[1][17].setUnit(aUnit);
-		//board[1][17].setHasUnit(true);
-		// Adds this to player2Units list:
-		player2Units.add(board[7][10]);
-		//player2Units.add(board[2][12]);
-		//player2Units.add(board[1][17]);
-
-		// Give AI these Units:
-		Unit unit = factory.makeUnit("DarthVader", GUI.getPlayer2());
-		for (int i = 5; i < 10; i++) {
-			units.add(i,unit);
-		}
-		
-		board[3][19].setUnit(units.get(5));
-		board[3][19].setHasUnit(true);
-		player2Units.add(board[3][19]);
-		
-		board[7][19].setUnit(units.get(6));
-		board[7][19].setHasUnit(true);
-		player2Units.add(board[7][19]);
-		
-		board[11][19].setUnit(units.get(7));
-		board[11][19].setHasUnit(true);
-		player2Units.add(board[11][19]);
-		
-		board[15][19].setUnit(units.get(8));
-		board[15][19].setHasUnit(true);
-		player2Units.add(board[15][19]);
-		
-		board[19][19].setUnit(units.get(9));
-		board[19][19].setHasUnit(true);
-		player2Units.add(board[19][19]);
-		
 		
 
 	}
@@ -839,7 +826,7 @@ public class GameBoard extends JFrame implements Serializable {
 		UnitFactory factory = new UnitFactory();
 		Random rand = new Random();
 		int numberOfUnits = 0;
-		while (numberOfUnits < 3) {
+		while (numberOfUnits < 5) {
 			int random = rand.nextInt(4);
 			// Creates Clone Trooper at random location
 			if (random == 0) {
