@@ -77,35 +77,36 @@ import model.Terrain;
  * @author JonDavid Ebadirad
  * 
  */
-public class GUI extends JFrame {
-	private static final long serialVersionUID = -2853985771911325020L;
-	private static final String saveDir = System.getProperty("user.dir")
-			+ File.separator + "gamesaves" + File.separator;
+public class GUI extends JFrame
+{
+  private static final long serialVersionUID = -2853985771911325020L;
+  private static final String saveDir = System.getProperty("user.dir")
+      + File.separator + "gamesaves" + File.separator;
 
-	public static String player1 = "1";
-	public static String player2 = "2";
-	public static int player1FlagPoints;
-	public static int player2FlagPoints;
-	JPanel panel;
+  public static String player1 = "1";
+  public static String player2 = "2";
+  public static int player1FlagPoints;
+  public static int player2FlagPoints;
+  JPanel panel;
 
-	public ArrayList<Cell> playerunits = new ArrayList<Cell>();
-	AI computer;
+  public ArrayList<Cell> playerunits = new ArrayList<Cell>();
+  AI computer;
 
-	JFrame frame;
-	JPanel shop;
-	JPanel movePanel;
-	JPanel listItems;
-	JPanel shopNav;
-	JPanel unitPanel;
-	JPanel playerstatus;
-	JPanel imagePanel;
-	JPanel contentContainer;
-	JPanel playerContainer;
-	JPanel playerInfoContainer;
-	JTabbedPane tabbedpane;
-	JPanel listOfTargets;
+  JFrame frame;
+  JPanel shop;
+  JPanel movePanel;
+  JPanel listItems;
+  JPanel shopNav;
+  JPanel unitPanel;
+  JPanel playerstatus;
+  JPanel imagePanel;
+  JPanel contentContainer;
+  JPanel playerContainer;
+  JPanel playerInfoContainer;
+  JTabbedPane tabbedpane;
+  JPanel listOfTargets;
 
-	JLabel usernamestring, inventorystring, credits;
+  JLabel usernamestring, inventorystring, credits;
 
   JPanel inventoryPanel;
   JPanel attackButtonPanel;
@@ -718,7 +719,6 @@ public class GUI extends JFrame {
 
     next = new JButton("Continue to player 2 unit selection");
     next.addActionListener(MapButtonListener);
-    toMap.addActionListener(MapButtonListener);
 
     teamSelect.add(selectCloneTrooperLabel);
     teamSelect.add(selectNumberOfCloneTrooper);
@@ -748,7 +748,6 @@ public class GUI extends JFrame {
     teamSelect.add(selectNumberOfWalker);
 
     teamSelect.add(next);
-    teamSelect.add(toMap);
 
     // begin persistence code
     // if(new File(saveDir + player1 + "-" + player2 + "-" +
@@ -1231,47 +1230,58 @@ public class GUI extends JFrame {
       System.out.println(EnemyUnitSelected.getUnit().getHealth());
       gameboard.attack(CurrentUnitSelected, EnemyUnitSelected);
 
-		splosions = new LinkedList<SpriteObject>();
-		panel = new JPanel(){
-			public void paintComponent(Graphics g){
-				super.paintComponent(g);
-				for (SpriteObject explosion : splosions)
-					explosion.draw(g);
-			}
-		};
-		panel.setLocation(0,0);
-		panel.setPreferredSize(new Dimension(63, 24));
+      splosions = new LinkedList<SpriteObject>();
+      panel = new JPanel()
+      {
+        public void paintComponent(Graphics g)
+        {
+          super.paintComponent(g);
+          for (SpriteObject explosion : splosions)
+            explosion.draw(g);
+        }
+      };
+      panel.setLocation(0, 0);
+      panel.setPreferredSize(new Dimension(63, 24));
 
-		Timer animTimer = new Timer(15, new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				try{
-					//splosions.stream().filter(s -> s.isFinished()).forEach(d -> splosions.remove(d));
+      Timer animTimer = new Timer(15, new ActionListener()
+      {
+        @Override
+        public void actionPerformed(ActionEvent arg0)
+        {
+          try
+          {
+            // splosions.stream().filter(s -> s.isFinished()).forEach(d ->
+            // splosions.remove(d));
 
-				  LinkedList<SpriteObject> dead = new LinkedList<SpriteObject>();
-					for (SpriteObject s : splosions)
-						if (((Explosion) s).isFinished())
-							dead.add(s);
-					for (SpriteObject s: dead)
-						splosions.remove(s);
-					panel.getGraphics().drawImage(Imageview.getBackgroundSheet(), panel.getX(), panel.getY(), 63, 24, null);
-					
-				} catch(Exception e){}
-				panel.repaint();
-			}
-			
-		});
+            LinkedList<SpriteObject> dead = new LinkedList<SpriteObject>();
+            for (SpriteObject s : splosions)
+              if (((Explosion) s).isFinished())
+                dead.add(s);
+            for (SpriteObject s : dead)
+              splosions.remove(s);
+            panel.getGraphics().drawImage(Imageview.getBackgroundSheet(),
+                panel.getX(), panel.getY(), 63, 24, null);
 
-		imagePanel.add(panel);
-		imagePanel.repaint();
-		imagePanel.revalidate();
-		animTimer.start();
-		repaint();
+          }
+          catch (Exception e)
+          {
+          }
+          panel.repaint();
+        }
 
-		Explosion explosion = new Explosion(EnemyUnitSelected.getLocation().x, EnemyUnitSelected.getLocation().y);
-		
-		splosions.add(explosion);
-		explosion.start();
+      });
+
+      imagePanel.add(panel);
+      imagePanel.repaint();
+      imagePanel.revalidate();
+      animTimer.start();
+      repaint();
+
+      Explosion explosion = new Explosion(EnemyUnitSelected.getLocation().x,
+          EnemyUnitSelected.getLocation().y);
+
+      splosions.add(explosion);
+      explosion.start();
 
       targets(CurrentUnitSelected);
       layoutAttackScreen();
@@ -1324,9 +1334,9 @@ public class GUI extends JFrame {
     {
       if (gameboard.canMove(cellwithunit, direction))
       {
-//    	  Thread animation = new Thread(new Animate(cellwithunit, direction));
-//    	  animation.start();
-//    	  animation.run();
+        // Thread animation = new Thread(new Animate(cellwithunit, direction));
+        // animation.start();
+        // animation.run();
         int i = player1units.indexOf(cellwithunit);
         player1units.remove(i);
 
@@ -1718,29 +1728,30 @@ public class GUI extends JFrame {
     {
       if (e.getSource() == toMap)
       {
-    	  player1 = username1.getText();
-          player2 = username2.getText();
-          if (player1.equals("") || player1.equals(null) || player2.equals("")
-              || player2.equals(null))
-          {
-            JOptionPane optionPane = new JOptionPane();
-            optionPane.setMessage("You need to enter valid usernames!");
-            JDialog dialog = optionPane.createDialog(":~(");
-            dialog.setAlwaysOnTop(true);
-            dialog.setVisible(true);
-          }
-          else if (player1.equals(player2) || player2.equals(player1))
-          {
-            JOptionPane optionPane = new JOptionPane();
-            optionPane.setMessage("User names must be unique!");
-            JDialog dialog = optionPane.createDialog(":~(");
-            dialog.setAlwaysOnTop(true);
-            dialog.setVisible(true);
-          }
-          
-          else {
-        	  layoutMapScreen();
-          }
+        player1 = username1.getText();
+        player2 = username2.getText();
+        if (player1.equals("") || player1.equals(null) || player2.equals("")
+            || player2.equals(null))
+        {
+          JOptionPane optionPane = new JOptionPane();
+          optionPane.setMessage("You need to enter valid usernames!");
+          JDialog dialog = optionPane.createDialog(":~(");
+          dialog.setAlwaysOnTop(true);
+          dialog.setVisible(true);
+        }
+        else if (player1.equals(player2) || player2.equals(player1))
+        {
+          JOptionPane optionPane = new JOptionPane();
+          optionPane.setMessage("User names must be unique!");
+          JDialog dialog = optionPane.createDialog(":~(");
+          dialog.setAlwaysOnTop(true);
+          dialog.setVisible(true);
+        }
+
+        else
+        {
+          layoutMapScreen();
+        }
       }
       if (e.getSource() == startAI)
       {
@@ -1788,7 +1799,6 @@ public class GUI extends JFrame {
       }
       if (e.getSource() == next)
       {
-
         player1 = username1.getText();
         player2 = username2.getText();
         if (player1.equals("") || player1.equals(null) || player2.equals("")
@@ -1817,6 +1827,8 @@ public class GUI extends JFrame {
           }
           else
           {
+            toMap.addActionListener(MapButtonListener);
+            teamSelect.add(toMap);
 
             selectNumberOfCloneTrooper.setText("0");
             selectNumberOfBattleDroid.setText("0");
@@ -1835,9 +1847,12 @@ public class GUI extends JFrame {
             dialog.setAlwaysOnTop(true);
             dialog.setVisible(true);
             teamSelect.remove(next);
+
             username1.setEditable(false);
             username2.setEditable(false);
+
             repaint();
+            revalidate();
           }
 
         }
@@ -2185,8 +2200,9 @@ public class GUI extends JFrame {
     public void run()
     {
       System.out.println("hello it is i, running");
-      if (cell.getUnit() != null){
-    	  System.out.println("The unit we're looking for: ");
+      if (cell.getUnit() != null)
+      {
+        System.out.println("The unit we're looking for: ");
         System.out.println(cell.getUnit());
       }
       Image image = Imageview.getSheet("lukeSkywalker");
@@ -2202,24 +2218,24 @@ public class GUI extends JFrame {
       int endY = initY + 63;
       if (d == "N")
       {
-    	  while (initY > endY) {
-    		  System.out.println("hello it is i, DRAWING" + " lukeSkywalker");
-    		  initY = initY - 1;
-    		  // cell.getLocation().translate(0, 1);
-    		  imagePanel.getGraphics().drawImage(scaledImg, initX, initY,
-    		  null);
-    		  imagePanel.repaint();
-    		  imagePanel.revalidate();
-    		  revalidate();
-    		  repaint();
-    		  // set the cell to the next one up
-    		  }
-    	  System.out.println(cell.hasUnit());
-    	  System.out.println("moving unit...");
-    	  CurrentUnitSelected = gameboard.move(cell, d);
-    	  this.cell = CurrentUnitSelected;
-    		  System.out.println(CurrentUnitSelected.hasUnit());
-    		  return;
+        while (initY > endY)
+        {
+          System.out.println("hello it is i, DRAWING" + " lukeSkywalker");
+          initY = initY - 1;
+          // cell.getLocation().translate(0, 1);
+          imagePanel.getGraphics().drawImage(scaledImg, initX, initY, null);
+          imagePanel.repaint();
+          imagePanel.revalidate();
+          revalidate();
+          repaint();
+          // set the cell to the next one up
+        }
+        System.out.println(cell.hasUnit());
+        System.out.println("moving unit...");
+        CurrentUnitSelected = gameboard.move(cell, d);
+        this.cell = CurrentUnitSelected;
+        System.out.println(CurrentUnitSelected.hasUnit());
+        return;
       }
       else
         return; // TODO get rid of this else and add conditionals
