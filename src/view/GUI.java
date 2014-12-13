@@ -131,6 +131,8 @@ public class GUI extends JFrame
   JButton vsAI = new JButton("vs AI");
   JButton toMap = new JButton("Choose Map");
   JButton startAI = new JButton("Start AI Game");
+  JButton instructionButton = new JButton("Okay");
+
   private List<SpriteObject> splosions;
 
   ArrayList<JRadioButton> radiobuttons;
@@ -199,6 +201,7 @@ public class GUI extends JFrame
   private JTextField selectNumberOfWalker;
   private ArrayList<Unit> units = new ArrayList<Unit>();
   private MapSelectionScreen mapSelect;
+  private InstructionsScreen InstructionPane;
 
   private static final String clipsDir = System.getProperty("user.dir")
       + File.separator + "clips" + File.separator;
@@ -564,7 +567,7 @@ public class GUI extends JFrame
     this.setSize(1280, 800);
     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     titleScreen = new TitleScreen();
-    
+
     titleScreen.setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
 
@@ -1062,7 +1065,7 @@ public class GUI extends JFrame
     return true;
   }
 
-  private void layoutGUI()
+  private void layoutInstructionsGUI()
   {
     if (mapSelect != null)
     {
@@ -1075,6 +1078,37 @@ public class GUI extends JFrame
 
     }
 
+    InstructionPane = new InstructionsScreen();
+    InstructionPane.setLayout(new FlowLayout());
+
+    instructionButton.addActionListener(MapButtonListener);
+    instructionButton.setPreferredSize(new Dimension(200, 100));
+
+    InstructionPane.add(instructionButton);
+    this.add(InstructionPane);
+
+    this.setVisible(true);
+    this.repaint();
+
+  }
+
+  private void layoutGUI()
+  {
+    if (mapSelect != null)
+    {
+      this.remove(mapSelect);
+
+    }
+    if (teamSelect != null)
+    {
+      this.remove(teamSelect);
+
+    }
+    if (InstructionPane != null)
+    {
+      this.remove(InstructionPane);
+
+    }
     tabbedpane = new JTabbedPane();
     tabbedpane.setPreferredSize(new Dimension(1280, 500));
 
@@ -1385,7 +1419,7 @@ public class GUI extends JFrame
         // animation.run();
         int i = player1units.indexOf(cellwithunit);
         player1units.remove(i);
-        
+
         CurrentUnitSelected = gameboard.move(cellwithunit, direction);
         if (CurrentUnitSelected.hasUnit())
         {
@@ -1454,7 +1488,7 @@ public class GUI extends JFrame
             System.out.println("does it get here?");
             Command<GUI> command = GUI.gameboard.commandqueue.poll();
             command.execute(GUI.this);
-           
+
             if (GUI.gameboard.commandqueue.isEmpty())
             {
 
@@ -1768,6 +1802,8 @@ public class GUI extends JFrame
   private class MapButtonListener implements ActionListener
   {
 
+    private String mapType;
+
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -1797,6 +1833,38 @@ public class GUI extends JFrame
         {
           layoutMapScreen();
         }
+      }
+      if (e.getSource() == instructionButton)
+      {
+        if (mapType.equals("AIMap"))
+        {
+          AIgame = true;
+          computer = new AI();
+          setVisible(false);
+          newGame("vsAi", units);
+          layoutGUI();
+          registerListeners();
+        }
+        if (mapType.equals("Map1"))
+        {
+          newGame("Map 1", units);
+          layoutGUI();
+          registerListeners();
+        }
+        if (mapType.equals("Map2"))
+        {
+          newGame("Map 2", units);
+          layoutGUI();
+          registerListeners();
+        }
+        if (mapType.equals("Random"))
+        {
+          newGame("Random", units);
+          layoutGUI();
+          registerListeners();
+        }
+        repaint();
+
       }
       if (e.getSource() == startAI)
       {
@@ -1828,15 +1896,8 @@ public class GUI extends JFrame
           }
           else
           {
-
-            AIgame = true;
-            computer = new AI();
-            setVisible(false);
-            newGame("vsAi", units);
-            layoutGUI();
-            registerListeners();
-
-            repaint();
+            mapType = "AIMap";
+            layoutInstructionsGUI();
           }
 
         }
@@ -1943,9 +2004,8 @@ public class GUI extends JFrame
 
           else
           {
-            newGame("Map 1", units);
-            layoutGUI();
-            registerListeners();
+            mapType = "Map1";
+            layoutInstructionsGUI();
           }
         }
 
@@ -1989,9 +2049,8 @@ public class GUI extends JFrame
 
           else
           {
-            newGame("Random", units);
-            layoutGUI();
-            registerListeners();
+            mapType = "Random";
+            layoutInstructionsGUI();
           }
         }
       }
@@ -2034,42 +2093,9 @@ public class GUI extends JFrame
 
           else
           {
-            newGame("Map 2", units);
-            layoutGUI();
-            registerListeners();
+            mapType = "Map2";
+            layoutInstructionsGUI();
           }
-        }
-      }
-      else if (e.getSource() == vsAI)
-      {
-
-        player1 = username1.getText();
-        player2 = username2.getText();
-        if (player1.equals("") || player1.equals(null) || player2.equals("")
-            || player2.equals(null))
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("You need to enter valid usernames!");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        else if (player1.equals(player2) || player2.equals(player1))
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("User names must be unique!");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        else
-        {
-          AIgame = true;
-          computer = new AI();
-          setVisible(false);
-          newGame("vsAi", units);
-          layoutGUI();
-          registerListeners();
         }
       }
       else if (e.getSource() == load)
