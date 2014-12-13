@@ -57,9 +57,12 @@ public class GameBoard extends JFrame implements Serializable {
 		else if (mapName.equals("Random"))
 			createRandomMap(units);
 		else if (mapName.equals("Monster"))
-			createMonsterMap();
+			createMonsterMap(units);
+		else if (mapName.equals("Load")) {
+			
+		}
 		else
-			createVsComputerMap();
+			createVsComputerMap(units);
 
 	}
 	/**
@@ -243,7 +246,7 @@ public class GameBoard extends JFrame implements Serializable {
 	/**
 	 * Creates a game against the computer, needs to be fixed
 	 */
-	public void createVsComputerMap() {
+	public void createVsComputerMap(ArrayList<Unit> units) {
 		computer = new AI();
 		background = "Grass.png";
 		// board is 20 by 20 for now:
@@ -259,17 +262,74 @@ public class GameBoard extends JFrame implements Serializable {
 				// Give each cell a location
 				board[i][j].setLocation(new Point(i, j));
 			}
+		}		
+		// Quicksand pit:
+		board[10][9].setTerrain(Terrain.QuickSand);
+		board[11][9].setTerrain(Terrain.QuickSand);
+		board[9][9].setTerrain(Terrain.QuickSand);
+		board[9][10].setTerrain(Terrain.QuickSand);
+		board[11][10].setTerrain(Terrain.QuickSand);
+		board[11][11].setTerrain(Terrain.QuickSand);
+		board[9][11].setTerrain(Terrain.QuickSand);
+		board[10][11].setTerrain(Terrain.QuickSand);
+		
+		// place flag:
+		board[10][10].setTerrain(Terrain.Flag);
+		
+		// Boulders and Lavas:
+		board[8][8].setTerrain(Terrain.Boulder);
+		board[8][12].setTerrain(Terrain.Boulder);
+		board[12][8].setTerrain(Terrain.Boulder);
+		board[12][12].setTerrain(Terrain.Boulder);
+		board[9][8].setTerrain(Terrain.Lava);
+		board[11][8].setTerrain(Terrain.Lava);
+		board[9][12].setTerrain(Terrain.Lava);
+		board[11][12].setTerrain(Terrain.Lava);
+		board[10][12].setTerrain(Terrain.Boulder);
+		board[10][8].setTerrain(Terrain.Boulder);
+		board[8][9].setTerrain(Terrain.Lava);
+		board[8][10].setTerrain(Terrain.Boulder);
+		board[8][11].setTerrain(Terrain.Lava);
+		board[12][9].setTerrain(Terrain.Lava);
+		board[12][10].setTerrain(Terrain.Boulder);
+		board[12][11].setTerrain(Terrain.Lava);
+		
+		// Ice
+		for (int i = 3; i < 17; i++) 
+			board[3][i].setTerrain(Terrain.Ice);
+		for (int i = 3; i < 17; i++) 
+			board[17][i].setTerrain(Terrain.Ice);
+		for (int i = 3; i < 17; i++)
+			board[7][i].setTerrain(Terrain.Ice);
+		for (int i = 3; i < 17; i++)
+			board[13][i].setTerrain(Terrain.Ice);
+		
+		board[17][17].setTerrain(Terrain.Lava);
+		board[3][2].setTerrain(Terrain.Lava);
+		board[7][17].setTerrain(Terrain.QuickSand);		
+		board[13][2].setTerrain(Terrain.QuickSand);
+
+		for (int i = 0; i < 20; i++) { 
+			board[i][5].setTerrain(Terrain.Boulder);
+			i++;
 		}
+		for (int i = 0; i < 20; i++) { 
+			board[i][15].setTerrain(Terrain.Boulder);
+			i++;
+		}
+		for (int i = 3; i < 17; i++)
+			board[7][i].setTerrain(Terrain.Ice);
 		
-		
-		generatePlayer1Units();
-		generateComputerUnits();
+//		ArrayList<Unit> unitsToAdd = new ArrayList<Unit>();
+//		unitsToAdd = createUnitSelection();
+//	
+		generateComputerUnits(units);
 
 	}
 	/**
 	 * Creates the game against the computer controlled monster, also needs to be fixed
 	 */
-	public void createMonsterMap() {
+	public void createMonsterMap(ArrayList<Unit> units) {
 		
 		board = new Cell[20][20];
 		// Desert background
@@ -299,11 +359,8 @@ public class GameBoard extends JFrame implements Serializable {
 
 		}
 		board[10][8].setTerrain(Terrain.Flag);
-		
-		ArrayList<Unit> unitsToAdd = new ArrayList<Unit>();
-		unitsToAdd = createUnitSelectionMonster();
-		
-		tempGenerateMonsterPlayer1Units(unitsToAdd);
+	
+		tempGenerateMonsterPlayer1Units(units);
 		// Still call generateMonster
 		generateMonster();
 		
@@ -649,33 +706,59 @@ public class GameBoard extends JFrame implements Serializable {
 	/**
 	 * Adds computer units to the board, needs fixing
 	 */
-	public void generateComputerUnits() {
+	public void generateComputerUnits(ArrayList<Unit> units) {
 		// Instantiate player2Units:
+		player1Units = new ArrayList<Cell>();
 		player2Units = new ArrayList<Cell>();
-
-		// Creating one single unit for now:
+		// Player 1 has first five units in this list
+		board[3][0].setUnit(units.get(0));
+		board[3][0].setHasUnit(true);
+		player1Units.add(board[3][0]);
+		
+		board[7][0].setUnit(units.get(1));
+		board[7][0].setHasUnit(true);
+		player1Units.add(board[7][0]);
+		
+		board[11][0].setUnit(units.get(2));
+		board[11][0].setHasUnit(true);
+		player1Units.add(board[11][0]);
+		
+		board[15][0].setUnit(units.get(3));
+		board[15][0].setHasUnit(true);
+		player1Units.add(board[15][0]);
+		
+		board[19][0].setUnit(units.get(4));
+		board[19][0].setHasUnit(true);
+		player1Units.add(board[19][0]);
+		
+		// Player 2 has last five units in this list
 		UnitFactory factory = new UnitFactory();
-		// Last parameter is UserName obtained from the GUI
-		/*
-		 * Unit dUnit = factory.makeUnit("Medic", GUI.getPlayer2());
-		 * board[3][1].setUnit(dUnit); board[3][1].setHasUnit(true);
-		 */
-		Unit aUnit = factory.makeUnit("LukeSkywalker", GUI.getPlayer2());
-		board[7][10].setUnit(aUnit);
-		board[7][10].setHasUnit(true);
-
-		aUnit = factory.makeUnit("ImperialMedic", GUI.getPlayer2());
-		board[2][12].setUnit(aUnit);
-		board[2][12].setHasUnit(true);
-		aUnit = factory.makeUnit("BattleDroid", GUI.getPlayer2());
-		board[1][17].setUnit(aUnit);
-		board[1][17].setHasUnit(true);
-		// Adds this to player2Units list:
-		player2Units.add(board[7][10]);
-		player2Units.add(board[2][12]);
-		player2Units.add(board[1][17]);
-
-		// Give AI these Units:
+		Unit unit = factory.makeUnit("DarthVader", GUI.getPlayer2());
+		for (int i = 5; i < 10; i++) {
+			units.add(i,unit);
+		}
+		
+		board[3][19].setUnit(units.get(5));
+		board[3][19].setHasUnit(true);
+		player2Units.add(board[3][19]);
+		
+		board[7][19].setUnit(units.get(6));
+		board[7][19].setHasUnit(true);
+		player2Units.add(board[7][19]);
+		
+		board[11][19].setUnit(units.get(7));
+		board[11][19].setHasUnit(true);
+		player2Units.add(board[11][19]);
+		
+		board[15][19].setUnit(units.get(8));
+		board[15][19].setHasUnit(true);
+		player2Units.add(board[15][19]);
+		
+		board[19][19].setUnit(units.get(9));
+		board[19][19].setHasUnit(true);
+		player2Units.add(board[19][19]);
+		
+		
 
 	}
 
@@ -2905,7 +2988,12 @@ public class GameBoard extends JFrame implements Serializable {
 		} catch (Exception e) {
 			System.err.println("Unable to load data!");
 		}
-		return new GameBoard("Map 1",units);
+		ArrayList<Unit> units = new ArrayList<Unit>();
+		for (int i = 0; i < player1Units.size(); i++) 
+			units.add(i, player1Units.get(i).getUnit());
+		for (int i = 0; i < player2Units.size(); i++) 
+			units.add(i, player2Units.get(i).getUnit());
+		return new GameBoard("Load", units);
 	}
 
 	/**
