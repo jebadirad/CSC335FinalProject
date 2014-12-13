@@ -285,7 +285,6 @@ public class GameBoard extends JFrame implements Serializable {
 		board[8][10].setTerrain(Terrain.Boulder);
 		board[12][10].setTerrain(Terrain.Boulder);
 
-		addPlayerUnitsAndGenerateComputerUnits(units);
 		board[8][8].setTerrain(Terrain.Boulder);
 		board[8][12].setTerrain(Terrain.Boulder);
 		board[12][8].setTerrain(Terrain.Boulder);
@@ -295,7 +294,6 @@ public class GameBoard extends JFrame implements Serializable {
 		board[8][10].setTerrain(Terrain.Boulder);
 		board[12][10].setTerrain(Terrain.Boulder);
 
-		addPlayerUnitsAndGenerateComputerUnits(units);
 
 	}
 	/**
