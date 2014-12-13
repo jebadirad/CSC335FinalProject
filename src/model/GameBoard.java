@@ -602,16 +602,8 @@ public class GameBoard extends JFrame implements Serializable {
 		board[5][0].setUnit(aUnit);
 		board[5][0].setHasUnit(true);
 
-		aUnit = factory.makeUnit("SpiderTank", GUI.getPlayer1());
-		board[10][0].setUnit(aUnit);
-		board[10][0].setHasUnit(true);
-		aUnit = factory.makeUnit("DarthVader", GUI.getPlayer1());
-		board[15][0].setUnit(aUnit);
-		board[15][0].setHasUnit(true);
 		// Adds this to player1Units list:
 		player1Units.add(board[5][0]);
-		player1Units.add(board[10][0]);
-		player1Units.add(board[15][0]);
 
 	}
 
@@ -664,16 +656,16 @@ public class GameBoard extends JFrame implements Serializable {
 		board[7][10].setUnit(aUnit);
 		board[7][10].setHasUnit(true);
 
-		aUnit = factory.makeUnit("ImperialMedic", GUI.getPlayer2());
-		board[2][12].setUnit(aUnit);
-		board[2][12].setHasUnit(true);
-		aUnit = factory.makeUnit("BattleDroid", GUI.getPlayer2());
-		board[1][17].setUnit(aUnit);
-		board[1][17].setHasUnit(true);
+		//aUnit = factory.makeUnit("ImperialMedic", GUI.getPlayer2());
+		//board[2][12].setUnit(aUnit);
+		//board[2][12].setHasUnit(true);
+		//aUnit = factory.makeUnit("BattleDroid", GUI.getPlayer2());
+		//board[1][17].setUnit(aUnit);
+		//board[1][17].setHasUnit(true);
 		// Adds this to player2Units list:
 		player2Units.add(board[7][10]);
-		player2Units.add(board[2][12]);
-		player2Units.add(board[1][17]);
+		//player2Units.add(board[2][12]);
+		//player2Units.add(board[1][17]);
 
 		// Give AI these Units:
 
@@ -2610,18 +2602,18 @@ public class GameBoard extends JFrame implements Serializable {
 	 * @return Returns the new cell with the updated unit information
 	 */
 	public Cell useItem(Item item, Cell cell) {
-		if (item == Item.superitem) {
+		
 			cell.getUnit().setAttackRange(
-					cell.getUnit().getAttackRange() + item.getModifiers()[0]);
+					cell.getUnit().getAttackRange() + item.getModifiers()[2]);
 			cell.getUnit().setDamage(
 					cell.getUnit().getDamage() + item.getModifiers()[1]);
 			cell.getUnit().setHealth(
-					cell.getUnit().getHealth() + item.getModifiers()[2]);
+					cell.getUnit().getHealth() + item.getModifiers()[0]);
 			cell.getUnit().setMoveRange(
 					cell.getUnit().getMoveRange() + item.getModifiers()[3]);
 			cell.getUnit().setMovesLeft(
 					cell.getUnit().getMovesLeft() + item.getModifiers()[3]);
-		}
+		
 
 		return cell;
 	}

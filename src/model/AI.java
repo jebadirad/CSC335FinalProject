@@ -30,23 +30,53 @@ public class AI {
 		System.out.println("change unit command");
 		Stack<Point> path = findNearestUnit(cell, playerunits);
 		int amountofmoves = cell.getUnit().getMoveRange();
-		for (int i = 0; i < path.size(); i++) {
+		int attackrange = cell.getUnit().getAttackRange();
+		for (int i = 0; i < path.size() || i < amountofmoves; i++) {
 			if (!path.isEmpty()) {
 				Point p = path.pop();
-				Point cellpoint = cell.getLocation();
+				Point prev = p;
+				Point cellpoint;
+				if(!path.isEmpty() && i != 0){
+					cellpoint = path.peek();
+				}
+				else{
+					cellpoint = cell.getLocation();
+				}
+				System.out.println("this is the point i am going to go next" + p);
+				System.out.println("This is the next point" + cellpoint);
 				int x = p.x;
+				
 				int y = p.y;
 				int cellx = cell.getLocation().x;
 				int celly = cell.getLocation().y;
 				if (x == cellx && y == celly) {
-
-				} else {
-					System.out.println(p);
-					String direction = findDirection(cellpoint, p);
-					ActionCommand move = new ActionCommand(direction, cell);
-					//GUI.gameboard.commandqueue.add(move);
+				} 
+				else if (path.size() == attackrange){
+					Point attackpoint = null;
+					while(!path.isEmpty()){
+						attackpoint = path.pop();
+					}
+					
+					Cell attackcell = GUI.gameboard.getCell(prev.y, prev.x);
+					Cell defensecell = GUI.gameboard.getCell(attackpoint.x,  attackpoint.y);
+					AttackCommand attack = new AttackCommand(attackcell, defensecell);
+					System.out.println(attackpoint+ "attackpoint");
+					System.out.println("x" + prev.x + "y"+ prev.y);
+					System.out.println("x" + attackpoint.y + "y" + attackpoint.y);
+					System.out.println(attackcell.getLocation() + " attack cell" + attackcell.getUnit().getCanAttack());
+					System.out.println(defensecell.getLocation() + "defense cell");
+					GUI.gameboard.commandqueue.add(attack);
+					break;
 				}
-				System.out.println(p);
+				else {
+					System.out.println(p);
+					String direction = findDirection(p, cellpoint);
+					System.out.println(direction);
+					ActionCommand move = new ActionCommand(direction, cell);
+					GUI.gameboard.commandqueue.add(move);
+				}
+				prev = p;
+				
 			}
 
 		}
@@ -61,14 +91,14 @@ public class AI {
 		int endy = end.y;
 
 		if (startx < endx) {
-			return "R";
+			return "S";
 		} else if (startx > endx ) {
-			return "L";
-		} else if (starty < endy) {
 			return "N";
+		} else if (starty < endy) {
+			return "R";
 		} else {
 
-			return "S";
+			return "L";
 		}
 	}
 
@@ -110,8 +140,6 @@ public class AI {
 			}
 
 			leeboard[startx][starty].setmarked();
-			x = 0;
-			y = 0;
 			Stack<Point> temp = distance(startx, starty, x, y);
 			distances.add(temp);
 		}
@@ -167,7 +195,7 @@ public class AI {
 		min.y = enemyy;
 		stack.add(min);
 		int count = leeboard[enemyx][enemyy].getValue();
-		while (count > 0) {
+		while (count > 1) {
 			Point next = stack.lastElement();
 			for (int i = -1; i < 2; i++) {
 				for (int j = -1; j < 2; j++) {
@@ -195,6 +223,10 @@ public class AI {
 				}
 			}
 
+		}
+		for(int i = 0; i < stack.size(); i ++){
+			System.out.println("------------");
+			System.out.println(stack.get(i));
 		}
 
 		return stack;
