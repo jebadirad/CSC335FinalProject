@@ -44,7 +44,6 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -72,437 +71,179 @@ import model.Terrain;
  * @author JonDavid Ebadirad
  * 
  */
-public class GUI extends JFrame
-{
-  private static final long serialVersionUID = -2853985771911325020L;
-  private static final String saveDir = System.getProperty("user.dir")
-      + File.separator + "gamesaves" + File.separator;
+public class GUI extends JFrame {
+	private static final long serialVersionUID = -2853985771911325020L;
+	private static final String saveDir = System.getProperty("user.dir")
+			+ File.separator + "gamesaves" + File.separator;
 
-  public static String player1;
-  public static String player2;
-  public static int player1FlagPoints;
-  public static int player2FlagPoints;
+	public static String player1;
+	public static String player2;
+	public static int player1FlagPoints;
+	public static int player2FlagPoints;
 
-  public ArrayList<Cell> playerunits = new ArrayList<Cell>();
-  AI computer;
+	public ArrayList<Cell> playerunits = new ArrayList<Cell>();
+	AI computer;
 
-  JFrame frame;
-  JPanel shop;
-  JPanel movePanel;
-  JPanel listItems;
-  JPanel shopNav;
-  JPanel unitPanel;
-  JPanel playerstatus;
-  JPanel imagePanel;
-  JPanel contentContainer;
-  JPanel playerContainer;
-  JPanel playerInfoContainer;
-  JTabbedPane tabbedpane;
-  JPanel listOfTargets;
+	JFrame frame;
+	JPanel shop;
+	JPanel movePanel;
+	JPanel listItems;
+	JPanel shopNav;
+	JPanel unitPanel;
+	JPanel playerstatus;
+	JPanel imagePanel;
+	JPanel contentContainer;
+	JPanel playerContainer;
+	JPanel playerInfoContainer;
+	JTabbedPane tabbedpane;
+	JPanel listOfTargets;
 
-  JLabel usernamestring, inventorystring, credits;
+	JLabel usernamestring, inventorystring, credits;
 
-  JPanel inventoryPanel;
-  JPanel attackButtonPanel;
-  ButtonGroup unitgroup;
-  ButtonGroup targetGroup;
-  public static JButton moveUp;
-  public static JButton moveDown;
-  public static JButton moveLeft;
-  public static JButton moveRight;
-  public static JButton attack;
-  public static JButton endTurn;
-  public static JButton endTurnAI;
-  JButton UseItem;
-  JButton closeShop;
-  JButton buyItem;
-  JButton Shop;
-  JButton UnitInfo;
-  JButton Map2 = new JButton("Ice Madness Map");
-  JButton RandomMap = new JButton("Random Map");
-  JButton vsAI = new JButton("vs AI");
-  JButton toMap = new JButton("Choose Map");
-  JButton startAI = new JButton("Start AI Game");
+	JPanel inventoryPanel;
+	JPanel attackButtonPanel;
+	ButtonGroup unitgroup;
+	ButtonGroup targetGroup;
+	public static JButton moveUp;
+	public static JButton moveDown;
+	public static JButton moveLeft;
+	public static JButton moveRight;
+	public static JButton attack;
+	public static JButton endTurn;
+	public static JButton endTurnAI;
+	JButton UseItem;
+	JButton closeShop;
+	JButton buyItem;
+	JButton Shop;
+	JButton UnitInfo;
+	JButton Map2 = new JButton("Ice Madness Map");
+	JButton RandomMap = new JButton("Random Map");
+	JButton vsAI = new JButton("vs AI");
+	ArrayList<JRadioButton> radiobuttons;
+	ArrayList<JRadioButton> targetButtons;
+	ArrayList<JCheckBox> itemBoxes;
+	ArrayList<String> items;
+	Thread commandthread = new Thread();
+	Thread drawingthread = new Thread();
+	Thread gamethread = new Thread();
 
-  ArrayList<JRadioButton> radiobuttons;
-  ArrayList<JRadioButton> targetButtons;
-  ArrayList<JCheckBox> itemBoxes;
-  ArrayList<String> items;
-  Thread commandthread = new Thread();
-  Thread drawingthread = new Thread();
-  Thread gamethread = new Thread();
+	MapButtonListener MapButtonListener = new MapButtonListener();
 
-  MapButtonListener MapButtonListener = new MapButtonListener();
+	Inventory shopitems = new Inventory("Shop");
+	ArrayList<JRadioButton> shopbuttons = null;
+	ButtonGroup shopgroup;
+	HashMap<String, Item> inv;
 
-  Inventory shopitems = new Inventory("Shop");
-  ArrayList<JRadioButton> shopbuttons = null;
-  ButtonGroup shopgroup;
-  HashMap<String, Item> inv;
+	// things to run the game
+	public static GameBoard gameboard;
+	public static Cell CurrentUnitSelected;
+	public static Cell EnemyUnitSelected;
+	private ArrayList<Cell> player1units;
+	private ArrayList<Cell> player2units;
+	private ArrayList<Cell> targets;
+	private boolean unitdisplay = false;
+	private boolean shopscreen = false;
+	private boolean AIgame = false;
 
-  // things to run the game
-  public static GameBoard gameboard;
-  public static Cell CurrentUnitSelected;
-  public static Cell EnemyUnitSelected;
-  private ArrayList<Cell> player1units;
-  private ArrayList<Cell> player2units;
-  private ArrayList<Cell> targets;
-  private boolean unitdisplay = false;
-  private boolean shopscreen = false;
-  private boolean AIgame = false;
+	// pregame lobby GUI items
 
-  // pregame lobby GUI items
+	JPanel teamSelect;
+	JButton Map;
+	JLabel usernamelabel1;
+	JLabel usernamelabel2;
+	JTextField username1;
+	JTextField username2;
 
-  JPanel teamSelect;
-  JButton Map;
-  JLabel usernamelabel1;
-  JLabel usernamelabel2;
-  JTextField username1;
-  JTextField username2;
+	private JPanel AttackPanel;
+	private Inventory p1inv, p2inv;
+	public boolean loadGame;
+	private JButton load;
+	private TitleScreen titleScreen;
+	private JButton vsAITitle;
+	private JButton vsHuman;
+	private Component jlabel;
+	private JButton next;
+	private JLabel selectUnitsLabel;
+	private JLabel selectCloneTrooperLabel;
+	private JLabel selectBattleDroidLabel;
+	private JLabel selectImperialMedicLabel;
+	private JLabel selectLukeSkywalkerLabel;
+	private JLabel selectDarthVaderLabel;
+	private JLabel selectSpderTankLabel;
+	private JLabel selectDroidekaLabel;
+	private JLabel selectArtilleryDroidLabel;
+	private JLabel selectWalkerLabel;
+	private JTextField selectNumberOfCloneTrooper;
+	private JLabel tellEmHowManyLabel;
+	private JTextField selectNumberOfBattleDroid;
+	private JTextField selectNumberOfImperialMedic;
+	private JTextField selectNumberOfLukeSkywalker;
+	private JTextField selectNumberOfDarthVader;
+	private JTextField selectNumberOfSpiderTank;
+	private JTextField selectNumberOfDroideka;
+	private JTextField selectNumberOfArtilleryDroid;
+	private JTextField selectNumberOfWalker;
+	private ArrayList<Unit> units = new ArrayList<Unit>();
 
-  private JPanel AttackPanel;
-  private Inventory p1inv, p2inv;
-  public boolean loadGame;
-  private JButton load;
-  private TitleScreen titleScreen;
-  private JButton vsAITitle;
-  private JButton vsHuman;
-  private Component jlabel;
-  private JButton next;
-  private JLabel selectUnitsLabel;
-  private JLabel selectCloneTrooperLabel;
-  private JLabel selectBattleDroidLabel;
-  private JLabel selectImperialMedicLabel;
-  private JLabel selectLukeSkywalkerLabel;
-  private JLabel selectDarthVaderLabel;
-  private JLabel selectSpderTankLabel;
-  private JLabel selectDroidekaLabel;
-  private JLabel selectArtilleryDroidLabel;
-  private JLabel selectWalkerLabel;
-  private JTextField selectNumberOfCloneTrooper;
-  private JLabel tellEmHowManyLabel;
-  private JTextField selectNumberOfBattleDroid;
-  private JTextField selectNumberOfImperialMedic;
-  private JTextField selectNumberOfLukeSkywalker;
-  private JTextField selectNumberOfDarthVader;
-  private JTextField selectNumberOfSpiderTank;
-  private JTextField selectNumberOfDroideka;
-  private JTextField selectNumberOfArtilleryDroid;
-  private JTextField selectNumberOfWalker;
-  private ArrayList<Unit> units = new ArrayList<Unit>();
-  private MapSelectionScreen mapSelect;
+	private static final String clipsDir = System.getProperty("user.dir")
+			+ File.separator + "clips" + File.separator;
 
-  private static final String clipsDir = System.getProperty("user.dir")
-      + File.separator + "clips" + File.separator;
+	/**
+	 * Simple Constructor
+	 */
+	public GUI() {
+		super();
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-  /**
-   * Simple Constructor
-   */
-  public GUI()
-  {
-    super();
-    this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		AudioStream as = null;
+		String fileName = clipsDir + "StarWars.mp3";
+		InputStream in = null;
 
-    AudioStream as = null;
-    String fileName = clipsDir + "StarWars.mp3";
-    InputStream in = null;
+		try {
+			in = new FileInputStream(fileName);
+		} catch (FileNotFoundException e) {
+			System.out.println("Media file not present in C drive.");
+		}
 
-    try
-    {
-      in = new FileInputStream(fileName);
-    }
-    catch (FileNotFoundException e)
-    {
-      System.out.println("Media file not present in C drive.");
-    }
+		try {
+			as = new AudioStream(in);
+		} catch (IOException e) {
+		}
 
-    try
-    {
-      as = new AudioStream(in);
-    }
-    catch (IOException e)
-    {
-    }
+		AudioPlayer.player.start(as);
 
-    AudioPlayer.player.start(as);
+		// AudioStream as = null;
+		// String fileName = clipsDir + "StarWars.mp3";
+		// InputStream in = null;
 
-    // AudioStream as = null;
-    // String fileName = clipsDir + "StarWars.mp3";
-    // InputStream in = null;
+		try {
+			in = new FileInputStream(fileName);
+		} catch (FileNotFoundException e) {
+			System.out.println("Media file not present in C drive.");
+		}
 
-    try
-    {
-      in = new FileInputStream(fileName);
-    }
-    catch (FileNotFoundException e)
-    {
-      System.out.println("Media file not present in C drive.");
-    }
+		try {
+			as = new AudioStream(in);
+		} catch (IOException e) {
+		}
 
-    try
-    {
-      as = new AudioStream(in);
-    }
-    catch (IOException e)
-    {
-    }
+		// AudioPlayer.player.start(as);
 
-    // AudioPlayer.player.start(as);
+		layoutTitleGUI();
+	}
 
-    layoutTitleGUI();
-  }
+	/**
+	 * Main method that runs the whole program.
+	 * 
+	 * @param args
+	 *            does nothing in this case.
+	 */
+	public static void main(String[] args) {
 
-  /**
-   * Main method that runs the whole program.
-   * 
-   * @param args
-   *          does nothing in this case.
-   */
-  public static void main(String[] args)
-  {
+		new GUI().setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-    new GUI().setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
 
-  }
-
-  /**
-   * Officially creates a newgame().
-   */
-  public void newGame(String map, ArrayList<Unit> units)
-  {
-    if (AIgame)
-    {
-      AI computer = new AI();
-    }
-    gameboard = new GameBoard(map, units);
-    new Thread(new Runner()).start();
-    // create inventories for both players
-    p1inv = new Inventory(player1);
-    p2inv = new Inventory(player2);
-    // both players start with a super item. WOW. how generous of us.
-    p1inv.addItem(Item.superitem);
-    System.out.println(player1 + "'s inventory: " + p1inv.toString());
-    p2inv.addItem(Item.superitem);
-    System.out.println(player2 + "'s inventory: " + p2inv.toString());
-    player1units = gameboard.getPlayer1Units();
-    player2units = gameboard.getPlayer2Units();
-    CurrentUnitSelected = null;
-    EnemyUnitSelected = null;
-    targetButtons = new ArrayList();
-
-  }
-
-  private void targets(Cell cellWithUnit)
-  {
-    targets = gameboard.getUnitsInAttackRange(cellWithUnit);
-
-  }
-
-  @SuppressWarnings("unused")
-  private void loginGUI()
-  {
-    player1 = JOptionPane.showInputDialog("Username");
-
-  }
-
-  private void UpdateItemScreen()
-  {
-    inventoryPanel.removeAll();
-    itemBoxes = new ArrayList<JCheckBox>();
-    items = new ArrayList<String>();
-    Iterator it = p1inv.getInventory().entrySet().iterator();
-    while (it.hasNext())
-    {
-      Map.Entry pairs = (Map.Entry) it.next();
-      itemBoxes.add(new JCheckBox(pairs.getKey().toString()));
-    }
-
-    for (int i = 0; i < itemBoxes.size(); i++)
-    {
-      itemBoxes.get(i).addItemListener(new itemListener());
-      inventoryPanel.add(itemBoxes.get(i));
-
-    }
-
-    playerContainer.repaint();
-    revalidate();
-
-  }
-
-  private void toggleShopScreen()
-  {
-    if (shopscreen)
-    {
-      contentContainer.removeAll();
-      JPanel shopNavButtons = new JPanel();
-      JPanel Creditpanel = new JPanel();
-      credits = new JLabel("Credits: " + p1inv.getCredits());
-      shop = new JPanel();
-      shop.setLayout(new GridLayout(1, 2, 0, 0));
-      shopNav = new JPanel();
-
-      shopNav.setLayout(new BorderLayout());
-
-      shopNavButtons.setLayout(new GridLayout(2, 3, 0, 0));
-
-      shopNav.add(shopNavButtons, BorderLayout.NORTH);
-      shopNav.add(Creditpanel, BorderLayout.CENTER);
-
-      closeShop = new JButton("Close Shop");
-      buyItem = new JButton("Buy");
-      JPanel blank = new JPanel();
-      JPanel blank2 = new JPanel();
-      JPanel blank3 = new JPanel();
-      shopNavButtons.add(blank);
-      shopNavButtons.add(buyItem);
-      shopNavButtons.add(closeShop);
-      shopNavButtons.add(blank2);
-      shopNavButtons.add(credits);
-      shopNavButtons.add(blank3);
-      listItems = new JPanel();
-      contentContainer.remove(imagePanel);
-      contentContainer.remove(playerContainer);
-      imagePanel.removeAll();
-      imagePanel = new Shop();
-      imagePanel.setPreferredSize(new Dimension(1280, 500));
-      shopgroup = new ButtonGroup();
-      shopitems.addItem("Super Item");
-      shopitems.addItem("Hyper Potion");
-      shopitems.addItem("Apollo's Helm");
-      shopitems.addItem("Speed Enhancer");
-
-      inv = shopitems.getInventory();
-      listItems.setLayout(new GridLayout(inv.size(), 1, 0, 0));
-      shopbuttons = new ArrayList<JRadioButton>();
-      for (String key : inv.keySet())
-      {
-
-        shopbuttons.add(new JRadioButton(key));
-
-      }
-      for (JRadioButton element : shopbuttons)
-      {
-        shopgroup.add(element);
-        if (p1inv.hasItem(element.getText()))
-        {
-          listItems.add(new JLabel(element.getText()));
-        }
-        else
-        {
-          listItems.add(element);
-        }
-
-        element.addActionListener(new ButtonListener());
-        element.setActionCommand(element.getText());
-      }
-
-      shop.add(listItems);
-      shop.add(shopNav);
-      contentContainer.add(imagePanel, BorderLayout.NORTH);
-      contentContainer.add(shop, BorderLayout.CENTER);
-      closeShop.addActionListener(new ButtonListener());
-      buyItem.addActionListener(new ButtonListener());
-      imagePanel.updateUI();
-      revalidate();
-      repaint();
-    }
-    else
-    {
-      contentContainer.remove(imagePanel);
-      contentContainer.remove(shop);
-      imagePanel.removeAll();
-      imagePanel = new Imageview(GameBoard.background);
-      imagePanel.setPreferredSize(new Dimension(1280, 500));
-      contentContainer.add(imagePanel, BorderLayout.NORTH);
-      contentContainer.add(playerContainer, BorderLayout.CENTER);
-      imagePanel.updateUI();
-      playerContainer.updateUI();
-      revalidate();
-      repaint();
-    }
-  }
-
-  private void toggleUnitScreen()
-  {
-    if (unitdisplay)
-    {
-      contentContainer.remove(imagePanel);
-      imagePanel.removeAll();
-      imagePanel = new Imageview(GameBoard.background);
-      contentContainer.add(imagePanel);
-      imagePanel.updateUI();
-      revalidate();
-      repaint();
-    }
-    else
-    {
-      contentContainer.remove(imagePanel);
-      imagePanel.removeAll();
-      imagePanel = new PlayerStatus();
-      contentContainer.add(imagePanel);
-      imagePanel.updateUI();
-      revalidate();
-      repaint();
-    }
-
-  }
-
-  private void UpdateUnitScreen()
-  {
-    unitPanel.removeAll();
-    unitgroup = new ButtonGroup();
-    radiobuttons = new ArrayList<JRadioButton>();
-    for (int i = 0; i < player1units.size(); i++)
-    {
-
-      radiobuttons.add(new JRadioButton(player1units.get(i).getUnit()
-          .toString()));
-
-    }
-    for (int i = 0; i < radiobuttons.size(); i++)
-    {
-      unitgroup.add(radiobuttons.get(i));
-      unitPanel.add(radiobuttons.get(i));
-      radiobuttons.get(i).addActionListener(new ButtonListener());
-    }
-    movePanel.add(unitPanel, BorderLayout.CENTER);
-    revalidate();
-    movePanel.repaint();
-  }
-
-  private void layoutAttackScreen()
-  {
-    if (targets.size() <= 0)
-    {
-      EnemyUnitSelected = null;
-    }
-
-    targetButtons = new ArrayList();
-    AttackPanel.remove(listOfTargets);
-    listOfTargets = new JPanel();
-    targetGroup = new ButtonGroup();
-    for (int i = 0; i < targets.size(); i++)
-    {
-      int number = i + 1;
-      targetButtons.add(new JRadioButton(targets.get(i).getUnit().toString()));
-    }
-    for (int i = 0; i < targetButtons.size(); i++)
-    {
-      targetGroup.add(targetButtons.get(i));
-      listOfTargets.add(targetButtons.get(i));
-      targetButtons.get(i).addActionListener(new ButtonListener());
-    }
-
-    AttackPanel.add(listOfTargets, BorderLayout.CENTER);
-    listOfTargets.setVisible(true);
-    revalidate();
-  }
-
-  private void clearAttackScreen()
-  {
-    targetButtons = new ArrayList();
-    AttackPanel.remove(listOfTargets);
-    listOfTargets = new JPanel();
-    targetGroup = new ButtonGroup();
 	/**
 	 * Officially creates a newgame().
 	 */
@@ -526,794 +267,740 @@ public class GUI extends JFrame
 		EnemyUnitSelected = null;
 		targetButtons = new ArrayList();
 
-    AttackPanel.add(listOfTargets, BorderLayout.CENTER);
-    listOfTargets.setVisible(true);
-    revalidate();
-  }
-
-  private void layoutTitleGUI()
-  {
-    this.setSize(1280, 800);
-    this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-    titleScreen = new TitleScreen();
-    this.setVisible(true);
-    titleScreen.setLayout(new GridBagLayout());
-    GridBagConstraints c = new GridBagConstraints();
-
-    vsAITitle = new JButton("Play VS. AI");
-    vsHuman = new JButton("Play VS. Human");
-
-    SelectionButtonListener SelectionButtonListener = new SelectionButtonListener();
-    vsAITitle.addActionListener(SelectionButtonListener);
-    vsHuman.addActionListener(SelectionButtonListener);
-
-    c.fill = GridBagConstraints.HORIZONTAL;
-    c.ipady = 30; // make this component tall
-    c.weightx = 0.0;
-    c.gridwidth = 3;
-    c.gridx = 0;
-    c.gridy = 1;
-    titleScreen.add(vsAITitle, c);
-
-    c.fill = GridBagConstraints.HORIZONTAL;
-    c.ipady = 30; // make this component tall
-    c.weightx = 0.0;
-    c.gridwidth = 3;
-    c.gridx = 0;
-    c.gridy = 2;
-    titleScreen.add(vsHuman, c);
-
-    this.add(titleScreen);
-
-  }
-
-  private class SelectionButtonListener implements ActionListener
-  {
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-      if (e.getSource() == vsAITitle)
-      {
-        layoutPregameAIGUI();
-
-      }
-
-      if (e.getSource() == vsHuman)
-      {
-        layoutPregameGUI();
-      }
-    }
-
-  }
-
-  private void layoutPregameAIGUI()
-  {
-    // For Player Vs. AI
-    this.remove(titleScreen);
-    teamSelect = new CharacterSelectionScreen();
-
-    teamSelect.setLayout(new FlowLayout());
-
-    usernamelabel1 = new JLabel("Team 1 username: ");
-    username1 = new JTextField(15);
-    usernamelabel2 = new JLabel("Team 2 username: ");
-    username2 = new JTextField(15);
-
-    teamSelect.add(usernamelabel1);
-    teamSelect.add(username1);
-    teamSelect.add(usernamelabel2);
-    teamSelect.add(username2);
-
-    selectCloneTrooperLabel = new JLabel("Clone Trooper: ");
-    selectBattleDroidLabel = new JLabel("Battle Droid: ");
-    selectImperialMedicLabel = new JLabel("Imperial Medic: ");
-    selectLukeSkywalkerLabel = new JLabel("Luke Skywalker: ");
-    selectDarthVaderLabel = new JLabel("Darth Vader: ");
-    selectSpderTankLabel = new JLabel("Spider Tank: ");
-    selectDroidekaLabel = new JLabel("Droideka: ");
-    selectArtilleryDroidLabel = new JLabel("Artillery Droid: ");
-    selectWalkerLabel = new JLabel("Walker: ");
-
-    selectNumberOfCloneTrooper = new JTextField(10);
-    selectNumberOfCloneTrooper.setText("0");
-    selectNumberOfBattleDroid = new JTextField(10);
-    selectNumberOfBattleDroid.setText("0");
-    selectNumberOfImperialMedic = new JTextField(10);
-    selectNumberOfImperialMedic.setText("0");
-    selectNumberOfLukeSkywalker = new JTextField(10);
-    selectNumberOfLukeSkywalker.setText("0");
-    selectNumberOfDarthVader = new JTextField(10);
-    selectNumberOfDarthVader.setText("0");
-    selectNumberOfSpiderTank = new JTextField(10);
-    selectNumberOfSpiderTank.setText("0");
-    selectNumberOfDroideka = new JTextField(10);
-    selectNumberOfDroideka.setText("0");
-    selectNumberOfArtilleryDroid = new JTextField(10);
-    selectNumberOfArtilleryDroid.setText("0");
-    selectNumberOfWalker = new JTextField(10);
-    selectNumberOfWalker.setText("0");
-
-    startAI.addActionListener(MapButtonListener);
-
-    teamSelect.add(selectCloneTrooperLabel);
-    teamSelect.add(selectNumberOfCloneTrooper);
-
-    teamSelect.add(selectBattleDroidLabel);
-    teamSelect.add(selectNumberOfBattleDroid);
-
-    teamSelect.add(selectImperialMedicLabel);
-    teamSelect.add(selectNumberOfImperialMedic);
-
-    teamSelect.add(selectLukeSkywalkerLabel);
-    teamSelect.add(selectNumberOfLukeSkywalker);
-
-    teamSelect.add(selectDarthVaderLabel);
-    teamSelect.add(selectNumberOfDarthVader);
-
-    teamSelect.add(selectSpderTankLabel);
-    teamSelect.add(selectNumberOfSpiderTank);
-
-    teamSelect.add(selectDroidekaLabel);
-    teamSelect.add(selectNumberOfDroideka);
-
-    teamSelect.add(selectArtilleryDroidLabel);
-    teamSelect.add(selectNumberOfArtilleryDroid);
-
-    teamSelect.add(selectWalkerLabel);
-    teamSelect.add(selectNumberOfWalker);
-
-    teamSelect.add(startAI);
-
-    // begin persistence code
-    // if(new File(saveDir + player1 + "-" + player2 + "-" +
-    // "gameboard.dat").exists()) {
-    // JPanel loadSave = new JPanel();
-    // JCheckBox chkLoad = new JCheckBox("Load saved game?");
-    // chkLoad.addItemListener(new ItemListener() {
-    // public void itemStateChanged(ItemEvent e) {
-    // loadGame = e.getStateChange() == 1 ? true : false;
-    // }
-    // });
-    // loadSave.add(chkLoad).setVisible(true);
-    // teamSelect.add(loadSave);
-    // }
-    // end persistence code
-    this.add(teamSelect);
-    this.setVisible(true);
-    this.repaint();
-  }
-
-  private void layoutPregameGUI()
-  {
-    // For Player Vs. Player
-    this.remove(titleScreen);
-    teamSelect = new CharacterSelectionScreen();
-
-    teamSelect.setLayout(new FlowLayout());
-
-    usernamelabel1 = new JLabel("Team 1 username: ");
-    username1 = new JTextField(15);
-    usernamelabel2 = new JLabel("Team 2 username: ");
-    username2 = new JTextField(15);
-
-    teamSelect.add(usernamelabel1);
-    teamSelect.add(username1);
-    teamSelect.add(usernamelabel2);
-    teamSelect.add(username2);
-
-    selectCloneTrooperLabel = new JLabel("Clone Trooper: ");
-    selectBattleDroidLabel = new JLabel("Battle Droid: ");
-    selectImperialMedicLabel = new JLabel("Imperial Medic: ");
-    selectLukeSkywalkerLabel = new JLabel("Luke Skywalker: ");
-    selectDarthVaderLabel = new JLabel("Darth Vader: ");
-    selectSpderTankLabel = new JLabel("Spider Tank: ");
-    selectDroidekaLabel = new JLabel("Droideka: ");
-    selectArtilleryDroidLabel = new JLabel("Artillery Droid: ");
-    selectWalkerLabel = new JLabel("Walker: ");
-
-    selectNumberOfCloneTrooper = new JTextField(10);
-    selectNumberOfCloneTrooper.setText("0");
-    selectNumberOfBattleDroid = new JTextField(10);
-    selectNumberOfBattleDroid.setText("0");
-    selectNumberOfImperialMedic = new JTextField(10);
-    selectNumberOfImperialMedic.setText("0");
-    selectNumberOfLukeSkywalker = new JTextField(10);
-    selectNumberOfLukeSkywalker.setText("0");
-    selectNumberOfDarthVader = new JTextField(10);
-    selectNumberOfDarthVader.setText("0");
-    selectNumberOfSpiderTank = new JTextField(10);
-    selectNumberOfSpiderTank.setText("0");
-    selectNumberOfDroideka = new JTextField(10);
-    selectNumberOfDroideka.setText("0");
-    selectNumberOfArtilleryDroid = new JTextField(10);
-    selectNumberOfArtilleryDroid.setText("0");
-    selectNumberOfWalker = new JTextField(10);
-    selectNumberOfWalker.setText("0");
-
-    next = new JButton("Continue to player 2 unit selection");
-    next.addActionListener(MapButtonListener);
-    toMap.addActionListener(MapButtonListener);
-
-    teamSelect.add(selectCloneTrooperLabel);
-    teamSelect.add(selectNumberOfCloneTrooper);
-
-    teamSelect.add(selectBattleDroidLabel);
-    teamSelect.add(selectNumberOfBattleDroid);
-
-    teamSelect.add(selectImperialMedicLabel);
-    teamSelect.add(selectNumberOfImperialMedic);
-
-    teamSelect.add(selectLukeSkywalkerLabel);
-    teamSelect.add(selectNumberOfLukeSkywalker);
-
-    teamSelect.add(selectDarthVaderLabel);
-    teamSelect.add(selectNumberOfDarthVader);
-
-    teamSelect.add(selectSpderTankLabel);
-    teamSelect.add(selectNumberOfSpiderTank);
-
-    teamSelect.add(selectDroidekaLabel);
-    teamSelect.add(selectNumberOfDroideka);
-
-    teamSelect.add(selectArtilleryDroidLabel);
-    teamSelect.add(selectNumberOfArtilleryDroid);
-
-    teamSelect.add(selectWalkerLabel);
-    teamSelect.add(selectNumberOfWalker);
-
-    teamSelect.add(next);
-    teamSelect.add(toMap);
-
-    // begin persistence code
-    // if(new File(saveDir + player1 + "-" + player2 + "-" +
-    // "gameboard.dat").exists()) {
-    // JPanel loadSave = new JPanel();
-    // JCheckBox chkLoad = new JCheckBox("Load saved game?");
-    // chkLoad.addItemListener(new ItemListener() {
-    // public void itemStateChanged(ItemEvent e) {
-    // loadGame = e.getStateChange() == 1 ? true : false;
-    // }
-    // });
-    // loadSave.add(chkLoad).setVisible(true);
-    // teamSelect.add(loadSave);
-    // }
-    // end persistence code
-    this.add(teamSelect);
-    this.setVisible(true);
-    this.repaint();
-  }
-
-  private void layoutMapScreen()
-  {
-
-    this.remove(teamSelect);
-    mapSelect = new MapSelectionScreen();
-
-    mapSelect.setLayout(new FlowLayout());
-
-    Map = new JButton("Standard Map");
-    next = new JButton("Continue to player 2 unit selection");
-    next.addActionListener(MapButtonListener);
-    Map.addActionListener(MapButtonListener);
-    Map2.addActionListener(MapButtonListener);
-    RandomMap.addActionListener(MapButtonListener);
-    mapSelect.add(Map);
-    mapSelect.add(Map2);
-    mapSelect.add(RandomMap);
-    load = new JButton("Load game");
-    load.addActionListener(MapButtonListener);
-    mapSelect.add(load);
-
-    this.add(mapSelect);
-    this.setVisible(true);
-    this.repaint();
-  }
-
-  public boolean checkPlayer2UnitSelecions()
-  {
-
-    int numberOfCloneTrooper = 0;
-    int numberOfBattleDroid = 0;
-    int numberOfImperialMedic = 0;
-    int numberOfLukeSkywalker = 0;
-    int numberOfDarthVader = 0;
-    int numberOfSpiderTank = 0;
-    int numberOfDroideka = 0;
-    int numberOfArtilleryDroid = 0;
-    int numberOfWalker = 0;
-
-    int total = 0;
-    while (total != 5)
-    {
-      try
-      {
-        numberOfCloneTrooper = Integer.parseInt(selectNumberOfCloneTrooper
-            .getText());
-        numberOfBattleDroid = Integer.parseInt(selectNumberOfBattleDroid
-            .getText());
-        numberOfImperialMedic = Integer.parseInt(selectNumberOfImperialMedic
-            .getText());
-        numberOfLukeSkywalker = Integer.parseInt(selectNumberOfLukeSkywalker
-            .getText());
-        numberOfDarthVader = Integer.parseInt(selectNumberOfDarthVader
-            .getText());
-        numberOfSpiderTank = Integer.parseInt(selectNumberOfSpiderTank
-            .getText());
-        numberOfDroideka = Integer.parseInt(selectNumberOfDroideka.getText());
-        numberOfArtilleryDroid = Integer.parseInt(selectNumberOfArtilleryDroid
-            .getText());
-        numberOfWalker = Integer.parseInt(selectNumberOfWalker.getText());
-      }
-      catch (Exception e)
-      {
-        JOptionPane optionPane = new JOptionPane();
-        optionPane.setMessage("Please make better units selections... ");
-        JDialog dialog = optionPane.createDialog(":~(");
-        dialog.setAlwaysOnTop(true);
-        dialog.setVisible(true);
-
-      }
-
-      total = numberOfCloneTrooper + numberOfBattleDroid
-          + numberOfImperialMedic + numberOfLukeSkywalker + numberOfDarthVader
-          + numberOfSpiderTank + numberOfDroideka + numberOfArtilleryDroid
-          + numberOfWalker;
-      if (total != 5)
-      {
-        JOptionPane optionPane = new JOptionPane();
-        optionPane.setMessage("You must select five units, fool");
-        JDialog dialog = optionPane.createDialog(":~(");
-        dialog.setAlwaysOnTop(true);
-        dialog.setVisible(true);
-        total = 0;
-        return false;
-      }
-    }
-    // Add these five to the units list:
-    UnitFactory factory = new UnitFactory();
-    int spotInUnitsList = 5;
-    for (int i = 0; i < numberOfCloneTrooper; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("CloneTrooper", player2));
-      spotInUnitsList++;
-    }
-    for (int i = 0; i < numberOfBattleDroid; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("BattleDroid", player2));
-      spotInUnitsList++;
-    }
-    for (int i = 0; i < numberOfImperialMedic; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("ImperialMedic", player2));
-      spotInUnitsList++;
-    }
-    for (int i = 0; i < numberOfLukeSkywalker; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("LukeSkywalker", player2));
-      spotInUnitsList++;
-    }
-    for (int i = 0; i < numberOfDarthVader; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("DarthVader", player2));
-      spotInUnitsList++;
-    }
-    for (int i = 0; i < numberOfSpiderTank; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("SpiderTank", player2));
-      spotInUnitsList++;
-    }
-    for (int i = 0; i < numberOfDroideka; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("Droideka", player2));
-      spotInUnitsList++;
-    }
-    for (int i = 0; i < numberOfArtilleryDroid; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("ArtilleryDroid", player2));
-      spotInUnitsList++;
-    }
-    for (int i = 0; i < numberOfWalker; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("Walker", player2));
-      spotInUnitsList++;
-    }
-
-    return true;
-  }
-
-  public boolean checkUserSelections()
-  {
-
-    int numberOfCloneTrooper = 0;
-    int numberOfBattleDroid = 0;
-    int numberOfImperialMedic = 0;
-    int numberOfLukeSkywalker = 0;
-    int numberOfDarthVader = 0;
-    int numberOfSpiderTank = 0;
-    int numberOfDroideka = 0;
-    int numberOfArtilleryDroid = 0;
-    int numberOfWalker = 0;
-
-    int total = 0;
-    while (total != 5)
-    {
-      try
-      {
-        numberOfCloneTrooper = Integer.parseInt(selectNumberOfCloneTrooper
-            .getText());
-        numberOfBattleDroid = Integer.parseInt(selectNumberOfBattleDroid
-            .getText());
-        numberOfImperialMedic = Integer.parseInt(selectNumberOfImperialMedic
-            .getText());
-        numberOfLukeSkywalker = Integer.parseInt(selectNumberOfLukeSkywalker
-            .getText());
-        numberOfDarthVader = Integer.parseInt(selectNumberOfDarthVader
-            .getText());
-        numberOfSpiderTank = Integer.parseInt(selectNumberOfSpiderTank
-            .getText());
-        numberOfDroideka = Integer.parseInt(selectNumberOfDroideka.getText());
-        numberOfArtilleryDroid = Integer.parseInt(selectNumberOfArtilleryDroid
-            .getText());
-        numberOfWalker = Integer.parseInt(selectNumberOfWalker.getText());
-      }
-      catch (Exception e)
-      {
-        JOptionPane optionPane = new JOptionPane();
-        optionPane.setMessage("Please make better units selections... ");
-        JDialog dialog = optionPane.createDialog(":~(");
-        dialog.setAlwaysOnTop(true);
-        dialog.setVisible(true);
-
-      }
-
-      total = numberOfCloneTrooper + numberOfBattleDroid
-          + numberOfImperialMedic + numberOfLukeSkywalker + numberOfDarthVader
-          + numberOfSpiderTank + numberOfDroideka + numberOfArtilleryDroid
-          + numberOfWalker;
-      if (total != 5)
-      {
-        JOptionPane optionPane = new JOptionPane();
-        optionPane.setMessage("You must select five units, fool");
-        JDialog dialog = optionPane.createDialog(":~(");
-        dialog.setAlwaysOnTop(true);
-        dialog.setVisible(true);
-        total = 0;
-        return false;
-      }
-    }
-    // Add these five to the units list:
-    units = new ArrayList<Unit>();
-    UnitFactory factory = new UnitFactory();
-    int spotInUnitsList = 0;
-    for (int i = 0; i < numberOfCloneTrooper; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("CloneTrooper", player1));
-      spotInUnitsList++;
-    }
-    for (int i = 0; i < numberOfBattleDroid; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("BattleDroid", player1));
-      spotInUnitsList++;
-    }
-    for (int i = 0; i < numberOfImperialMedic; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("ImperialMedic", player1));
-      spotInUnitsList++;
-    }
-    for (int i = 0; i < numberOfLukeSkywalker; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("LukeSkywalker", player1));
-      spotInUnitsList++;
-    }
-    for (int i = 0; i < numberOfDarthVader; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("DarthVader", player1));
-      spotInUnitsList++;
-    }
-    for (int i = 0; i < numberOfSpiderTank; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("SpiderTank", player1));
-      spotInUnitsList++;
-    }
-    for (int i = 0; i < numberOfDroideka; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("Droideka", player1));
-      spotInUnitsList++;
-    }
-    for (int i = 0; i < numberOfArtilleryDroid; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("ArtilleryDroid", player1));
-      spotInUnitsList++;
-    }
-    for (int i = 0; i < numberOfWalker; i++)
-    {
-      units.add(spotInUnitsList, factory.makeUnit("Walker", player1));
-      spotInUnitsList++;
-    }
-
-    return true;
-  }
-
-  private void layoutGUI()
-  {
-    if (mapSelect != null)
-    {
-      this.remove(mapSelect);
-
-    }
-    if (teamSelect != null)
-    {
-      this.remove(teamSelect);
-
-    }
-
-    tabbedpane = new JTabbedPane();
-    tabbedpane.setPreferredSize(new Dimension(1280, 500));
-
-    contentContainer = new JPanel();
-    contentContainer.setPreferredSize(new Dimension(1280, 500));
-    contentContainer.setLayout(new BorderLayout());
-
-    playerContainer = new JPanel();
-    playerContainer.setLayout(new GridLayout(1, 3, 0, 0));
-    playerContainer.setSize(1280, 300);
-    playerInfoContainer = new JPanel();
-    playerInfoContainer.setPreferredSize(new Dimension(100, 300));
-    usernamestring = new JLabel("Current Player: " + player1);
-    playerInfoContainer.add(usernamestring);
-    inventorystring = new JLabel(player1 + "'s inventory: " + p1inv.toString());
-    this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-    setSize(1280, 800);
-    setResizable(false);
-    setLayout(new BorderLayout());
-    moveUp = new JButton("up");
-    moveDown = new JButton("down");
-    moveLeft = new JButton("left");
-    moveRight = new JButton("right");
-    moveUp.setPreferredSize(new Dimension(50, 100));
-    moveDown.setPreferredSize(new Dimension(50, 50));
-    moveLeft.setPreferredSize(new Dimension(75, 50));
-    moveRight.setPreferredSize(new Dimension(75, 50));
-
-    imagePanel = new Imageview(GameBoard.background);
-    imagePanel.setPreferredSize(new Dimension(1280, 500));
-
-    movePanel = new JPanel();
-    movePanel.setPreferredSize(new Dimension(450, 150));
-    movePanel.setLayout(new BorderLayout());
-
-    JPanel DirectionPanel = new JPanel();
-    DirectionPanel.setPreferredSize(new Dimension(250, 150));
-    DirectionPanel.setLayout(new GridLayout(2, 3, 0, 0));
-    JPanel blankPanel = new JPanel();
-    JPanel blankpanel1 = new JPanel();
-    JPanel blankPanel2 = new JPanel();
-    DirectionPanel.add(blankPanel);
-    DirectionPanel.add(moveUp);
-    DirectionPanel.add(blankpanel1);
-    DirectionPanel.add(moveLeft);
-    DirectionPanel.add(moveDown);
-    DirectionPanel.add(moveRight);
-
-    unitPanel = new JPanel();
-    unitPanel.setPreferredSize(new Dimension(200, 150));
-    unitgroup = new ButtonGroup();
-    radiobuttons = new ArrayList();
-    for (int i = 0; i < player1units.size(); i++)
-    {
-
-      radiobuttons.add(new JRadioButton(player1units.get(i).getUnit()
-          .toString()));
-
-    }
-    for (int i = 0; i < radiobuttons.size(); i++)
-    {
-      unitgroup.add(radiobuttons.get(i));
-      unitPanel.add(radiobuttons.get(i));
-      radiobuttons.get(i).addActionListener(new ButtonListener());
-    }
-
-    movePanel.add(DirectionPanel, BorderLayout.WEST);
-    movePanel.add(unitPanel, BorderLayout.CENTER);
-
-    AttackPanel = new JPanel();
-    AttackPanel.setLayout(new BorderLayout());
-    AttackPanel.setPreferredSize(new Dimension(450, 150));
-    attackButtonPanel = new JPanel();
-    attackButtonPanel.setLayout(new GridLayout(2, 3, 0, 0));
-    listOfTargets = new JPanel();
-    JPanel blank = new JPanel();
-    UseItem = new JButton("Use Item");
-    attack = new JButton("Attack");
-    endTurn = new JButton("End turn");
-    endTurnAI = new JButton("End turn");
-    Shop = new JButton("Shop");
-    UnitInfo = new JButton("Unit Info");
-    attackButtonPanel.add(UseItem);
-    attackButtonPanel.add(attack);
-    if (AIgame)
-    {
-
-      attackButtonPanel.add(endTurnAI);
-    }
-    else
-    {
-      attackButtonPanel.add(endTurn);
-    }
-
-    attackButtonPanel.add(Shop);
-    attackButtonPanel.add(UnitInfo);
-    attackButtonPanel.add(blankPanel2);
-    AttackPanel.add(attackButtonPanel, BorderLayout.NORTH);
-    AttackPanel.add(listOfTargets, BorderLayout.CENTER);
-
-    contentContainer.add(imagePanel, BorderLayout.NORTH);
-    contentContainer.add(playerContainer, BorderLayout.CENTER);
-
-    inventoryPanel = new JPanel();
-    inventoryPanel.setPreferredSize(new Dimension(200, 150));
-    itemBoxes = new ArrayList<JCheckBox>();
-    items = new ArrayList<String>();
-    Iterator it = p1inv.getInventory().entrySet().iterator();
-    while (it.hasNext())
-    {
-      Map.Entry pairs = (Map.Entry) it.next();
-      itemBoxes.add(new JCheckBox(pairs.getKey().toString()));
-    }
-
-    for (int i = 0; i < itemBoxes.size(); i++)
-    {
-      itemBoxes.get(i).addItemListener(new itemListener());
-      inventoryPanel.add(itemBoxes.get(i));
-
-    }
-    playerContainer.add(movePanel);
-    // playerContainer.add(playerInfoContainer);
-    playerContainer.add(inventoryPanel);
-    playerContainer.add(AttackPanel);
-
-    add(contentContainer);
-
-    setVisible(true);
-    setDefaultCloseOperation(EXIT_ON_CLOSE);
-    revalidate();
-    repaint();
-  }
-
-  /**
-   * @return the username of the player that is set from the pregame lobby.
-   */
-  public static String getPlayer1()
-  {
-    return player1;
-  }
-
-  /**
-   * @return the username of the player that is set from the pregame lobby.
-   */
-  public static String getPlayer2()
-  {
-    return player2;
-  }
-
-  private void registerListeners()
-  {
-    this.addWindowListener(new SaveDataListener());
-    attack.addActionListener(new ButtonListener());
-    moveUp.addActionListener(new ButtonListener());
-    moveLeft.addActionListener(new ButtonListener());
-    moveRight.addActionListener(new ButtonListener());
-    moveDown.addActionListener(new ButtonListener());
-    endTurn.addActionListener(new ButtonListener());
-    UseItem.addActionListener(new ButtonListener());
-    endTurnAI.addActionListener(new ButtonListener());
-    Shop.addActionListener(new ButtonListener());
-    UnitInfo.addActionListener(new ButtonListener());
-
-  }
-
-  public void attack(Cell cellattack, Cell celldefense)
-  {
-    CurrentUnitSelected = cellattack;
-    EnemyUnitSelected = celldefense;
-    if (EnemyUnitSelected == null)
-    {
-      JOptionPane optionPane = new JOptionPane();
-      optionPane.setMessage("Please Select an Enemy Unit");
-      JDialog dialog = optionPane.createDialog(":~(");
-      dialog.setAlwaysOnTop(true);
-      dialog.setVisible(true);
-    }
-    else if (CurrentUnitSelected == null)
-    {
-      JOptionPane optionPane = new JOptionPane();
-      optionPane.setMessage("Please Select a Friendly Unit to attack with");
-      JDialog dialog = optionPane.createDialog(":~(");
-      dialog.setAlwaysOnTop(true);
-      dialog.setVisible(true);
-    }
-    else if (!gameboard.CanAttack(CurrentUnitSelected))
-    {
-      JOptionPane optionPane = new JOptionPane();
-      optionPane.setMessage("You have attacked already!");
-      JDialog dialog = optionPane.createDialog(":~(");
-      dialog.setAlwaysOnTop(true);
-      dialog.setVisible(true);
-    }
-    else
-    {
-      System.out.println(EnemyUnitSelected.getUnit().getHealth());
-      gameboard.attack(CurrentUnitSelected, EnemyUnitSelected);
-      targets(CurrentUnitSelected);
-      layoutAttackScreen();
-      if (gameboard.CheckgameOverBooleanVersion(player2units))
-      {
-        Object[] options = {"New Game", "Quit"};
-        int n = JOptionPane.showOptionDialog(frame, player1
-            + " HAS WON THE GAME!! Would you like to start a new game?",
-            "VICTORY!!", JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
-        if (n == JOptionPane.YES_OPTION)
-        {
-          System.out.println("new game");
-          dispose();
-          new GUI();
-        }
-        else
-        {
-          if (n == JOptionPane.NO_OPTION)
-          {
-            System.out.println("no option");
-            frame.dispatchEvent(new WindowEvent(frame,
-                WindowEvent.WINDOW_CLOSING));
-          }
-        }
-      }
-
-      revalidate();
-      repaint();
-    }
-  }
-
-  public void changeUnit(Cell cellwithunit)
-  {
-    CurrentUnitSelected = cellwithunit;
-  }
-
-  public void move(String direction, Cell cellwithunit)
-  {
-
-    if (cellwithunit == null)
-    {
-      JOptionPane optionPane = new JOptionPane();
-      optionPane.setMessage("Please Select a Unit");
-      JDialog dialog = optionPane.createDialog(":~(");
-      dialog.setAlwaysOnTop(true);
-      dialog.setVisible(true);
-    }
-    else
-    {
-      if (gameboard.canMove(cellwithunit, direction))
-      {
-        int i = player1units.indexOf(cellwithunit);
-        player1units.remove(i);
-        Thread animation = new Thread(new Animate(cellwithunit, direction));
-        animation.start();
-        animation.run();
-
-        CurrentUnitSelected = gameboard.move(cellwithunit, direction);
-        if (CurrentUnitSelected.hasUnit())
-        {
-          player1units.add(i, CurrentUnitSelected);
-          targets(CurrentUnitSelected);
-
-        }
-        else
-        {
-          targets.clear();
-          UpdateUnitScreen();
-
-        }
+	}
+
+	private void targets(Cell cellWithUnit) {
+		targets = gameboard.getUnitsInAttackRange(cellWithUnit);
+
+	}
+
+	@SuppressWarnings("unused")
+	private void loginGUI() {
+		player1 = JOptionPane.showInputDialog("Username");
+
+	}
+
+	private void UpdateItemScreen() {
+		inventoryPanel.removeAll();
+		itemBoxes = new ArrayList<JCheckBox>();
+		items = new ArrayList<String>();
+		Iterator it = p1inv.getInventory().entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pairs = (Map.Entry) it.next();
+			itemBoxes.add(new JCheckBox(pairs.getKey().toString()));
+		}
+
+		for (int i = 0; i < itemBoxes.size(); i++) {
+			itemBoxes.get(i).addItemListener(new itemListener());
+			inventoryPanel.add(itemBoxes.get(i));
+
+		}
+
+		playerContainer.repaint();
+		revalidate();
+
+	}
+
+	private void toggleShopScreen() {
+		if (shopscreen) {
+			contentContainer.removeAll();
+			JPanel shopNavButtons = new JPanel();
+			JPanel Creditpanel = new JPanel();
+			credits = new JLabel("Credits: " + p1inv.getCredits());
+			shop = new JPanel();
+			shop.setLayout(new GridLayout(1, 2, 0, 0));
+			shopNav = new JPanel();
+
+			shopNav.setLayout(new BorderLayout());
+
+			shopNavButtons.setLayout(new GridLayout(2, 3, 0, 0));
+
+			shopNav.add(shopNavButtons, BorderLayout.NORTH);
+			shopNav.add(Creditpanel, BorderLayout.CENTER);
+
+			closeShop = new JButton("Close Shop");
+			buyItem = new JButton("Buy");
+			JPanel blank = new JPanel();
+			JPanel blank2 = new JPanel();
+			JPanel blank3 = new JPanel();
+			shopNavButtons.add(blank);
+			shopNavButtons.add(buyItem);
+			shopNavButtons.add(closeShop);
+			shopNavButtons.add(blank2);
+			shopNavButtons.add(credits);
+			shopNavButtons.add(blank3);
+			listItems = new JPanel();
+			contentContainer.remove(imagePanel);
+			contentContainer.remove(playerContainer);
+			imagePanel.removeAll();
+			imagePanel = new Shop();
+			imagePanel.setPreferredSize(new Dimension(1280, 500));
+			shopgroup = new ButtonGroup();
+			shopitems.addItem("Super Item");
+			shopitems.addItem("Hyper Potion");
+			shopitems.addItem("Apollo's Helm");
+			shopitems.addItem("Speed Enhancer");
+
+			inv = shopitems.getInventory();
+			listItems.setLayout(new GridLayout(inv.size(), 1, 0, 0));
+			shopbuttons = new ArrayList<JRadioButton>();
+			for (String key : inv.keySet()) {
+
+				shopbuttons.add(new JRadioButton(key));
+
+			}
+			for (JRadioButton element : shopbuttons) {
+				shopgroup.add(element);
+				if (p1inv.hasItem(element.getText())) {
+					listItems.add(new JLabel(element.getText()));
+				} else {
+					listItems.add(element);
+				}
+
+				element.addActionListener(new ButtonListener());
+				element.setActionCommand(element.getText());
+			}
+
+			shop.add(listItems);
+			shop.add(shopNav);
+			contentContainer.add(imagePanel, BorderLayout.NORTH);
+			contentContainer.add(shop, BorderLayout.CENTER);
+			closeShop.addActionListener(new ButtonListener());
+			buyItem.addActionListener(new ButtonListener());
+			imagePanel.updateUI();
+			revalidate();
+			repaint();
+		} else {
+			contentContainer.remove(imagePanel);
+			contentContainer.remove(shop);
+			imagePanel.removeAll();
+			imagePanel = new Imageview(GameBoard.background);
+			imagePanel.setPreferredSize(new Dimension(1280, 500));
+			contentContainer.add(imagePanel, BorderLayout.NORTH);
+			contentContainer.add(playerContainer, BorderLayout.CENTER);
+			imagePanel.updateUI();
+			playerContainer.updateUI();
+			revalidate();
+			repaint();
+		}
+	}
+
+	private void toggleUnitScreen() {
+		if (unitdisplay) {
+			contentContainer.remove(imagePanel);
+			imagePanel.removeAll();
+			imagePanel = new Imageview(GameBoard.background);
+			contentContainer.add(imagePanel);
+			imagePanel.updateUI();
+			revalidate();
+			repaint();
+		} else {
+			contentContainer.remove(imagePanel);
+			imagePanel.removeAll();
+			imagePanel = new PlayerStatus();
+			contentContainer.add(imagePanel);
+			imagePanel.updateUI();
+			revalidate();
+			repaint();
+		}
+
+	}
+
+	private void UpdateUnitScreen() {
+		unitPanel.removeAll();
+		unitgroup = new ButtonGroup();
+		radiobuttons = new ArrayList<JRadioButton>();
+		for (int i = 0; i < player1units.size(); i++) {
+
+			radiobuttons.add(new JRadioButton(player1units.get(i).getUnit()
+					.toString()));
+
+		}
+		for (int i = 0; i < radiobuttons.size(); i++) {
+			unitgroup.add(radiobuttons.get(i));
+			unitPanel.add(radiobuttons.get(i));
+			radiobuttons.get(i).addActionListener(new ButtonListener());
+		}
+		movePanel.add(unitPanel, BorderLayout.CENTER);
+		revalidate();
+		movePanel.repaint();
+	}
+
+	private void layoutAttackScreen() {
+		if (targets.size() <= 0) {
+			EnemyUnitSelected = null;
+		}
+
+		targetButtons = new ArrayList();
+		AttackPanel.remove(listOfTargets);
+		listOfTargets = new JPanel();
+		targetGroup = new ButtonGroup();
+		for (int i = 0; i < targets.size(); i++) {
+			int number = i + 1;
+			targetButtons.add(new JRadioButton(targets.get(i).getUnit()
+					.toString()));
+		}
+		for (int i = 0; i < targetButtons.size(); i++) {
+			targetGroup.add(targetButtons.get(i));
+			listOfTargets.add(targetButtons.get(i));
+			targetButtons.get(i).addActionListener(new ButtonListener());
+		}
+
+		AttackPanel.add(listOfTargets, BorderLayout.CENTER);
+		listOfTargets.setVisible(true);
+		revalidate();
+	}
+
+	private void clearAttackScreen() {
+		targetButtons = new ArrayList();
+		AttackPanel.remove(listOfTargets);
+		listOfTargets = new JPanel();
+		targetGroup = new ButtonGroup();
+
+		AttackPanel.add(listOfTargets, BorderLayout.CENTER);
+		listOfTargets.setVisible(true);
+		revalidate();
+	}
+
+	private void layoutTitleGUI() {
+		this.setSize(1280, 800);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		titleScreen = new TitleScreen();
+		
+		titleScreen.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+
+		vsAITitle = new JButton("Play VS. AI");
+		vsHuman = new JButton("Play VS. Human");
+
+		SelectionButtonListener SelectionButtonListener = new SelectionButtonListener();
+		vsAITitle.addActionListener(SelectionButtonListener);
+		vsHuman.addActionListener(SelectionButtonListener);
+
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.ipady = 30; // make this component tall
+		c.weightx = 0.0;
+		c.gridwidth = 3;
+		c.gridx = 0;
+		c.gridy = 1;
+		titleScreen.add(vsAITitle, c);
+
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.ipady = 30; // make this component tall
+		c.weightx = 0.0;
+		c.gridwidth = 3;
+		c.gridx = 0;
+		c.gridy = 2;
+		titleScreen.add(vsHuman, c);
+
+		this.add(titleScreen);
+		this.setVisible(true);
+
+	}
+
+	private class SelectionButtonListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == vsAITitle) {
+				layoutPregameGUI();
+			}
+
+			if (e.getSource() == vsHuman) {
+				layoutPregameGUI();
+
+			}
+		}
+
+	}
+
+	private void layoutPregameGUI() {
+		this.remove(titleScreen);
+
+		teamSelect = new JPanel();
+		teamSelect.setLayout(new FlowLayout());
+		usernamelabel1 = new JLabel("Team 1 username: ");
+
+		username1 = new JTextField(15);
+		usernamelabel2 = new JLabel("Team 2 username: ");
+
+		username2 = new JTextField(15);
+
+		teamSelect.add(usernamelabel1);
+		teamSelect.add(username1);
+		teamSelect.add(usernamelabel2);
+		teamSelect.add(username2);
+
+		selectUnitsLabel = new JLabel("Select your units: ");
+		tellEmHowManyLabel = new JLabel("You must select five untis! ");
+		selectCloneTrooperLabel = new JLabel("Clone Trooper: ");
+		selectBattleDroidLabel = new JLabel("Battle Droid: ");
+		selectImperialMedicLabel = new JLabel("Imperial Medic: ");
+		selectLukeSkywalkerLabel = new JLabel("Luke Skywalker: ");
+		selectDarthVaderLabel = new JLabel("Darth Vader: ");
+		selectSpderTankLabel = new JLabel("Spider Tank: ");
+		selectDroidekaLabel = new JLabel("Droideka: ");
+		selectArtilleryDroidLabel = new JLabel("Artillery Droid: ");
+		selectWalkerLabel = new JLabel("Walker: ");
+
+		selectNumberOfCloneTrooper = new JTextField(15);
+		selectNumberOfCloneTrooper.setText("0");
+		selectNumberOfBattleDroid = new JTextField(15);
+		selectNumberOfBattleDroid.setText("0");
+		selectNumberOfImperialMedic = new JTextField(15);
+		selectNumberOfImperialMedic.setText("0");
+		selectNumberOfLukeSkywalker = new JTextField(15);
+		selectNumberOfLukeSkywalker.setText("0");
+		selectNumberOfDarthVader = new JTextField(15);
+		selectNumberOfDarthVader.setText("0");
+		selectNumberOfSpiderTank = new JTextField(15);
+		selectNumberOfSpiderTank.setText("0");
+		selectNumberOfDroideka = new JTextField(15);
+		selectNumberOfDroideka.setText("0");
+		selectNumberOfArtilleryDroid = new JTextField(15);
+		selectNumberOfArtilleryDroid.setText("0");
+		selectNumberOfWalker = new JTextField(15);
+		selectNumberOfWalker.setText("0");
+
+		vsAI.addActionListener(MapButtonListener);
+		Map = new JButton("Standard Map");
+		next = new JButton("Continue to player 2 unit selection");
+		next.addActionListener(MapButtonListener);
+		Map.addActionListener(MapButtonListener);
+		Map2.addActionListener(MapButtonListener);
+		RandomMap.addActionListener(MapButtonListener);
+		teamSelect.add(Map);
+		teamSelect.add(Map2);
+		teamSelect.add(RandomMap);
+		teamSelect.add(vsAI);
+		load = new JButton("Load game");
+		load.addActionListener(MapButtonListener);
+		teamSelect.add(load);
+
+		teamSelect.add(selectUnitsLabel);
+		teamSelect.add(tellEmHowManyLabel);
+
+		teamSelect.add(selectCloneTrooperLabel);
+		teamSelect.add(selectNumberOfCloneTrooper);
+
+		teamSelect.add(selectBattleDroidLabel);
+		teamSelect.add(selectNumberOfBattleDroid);
+
+		teamSelect.add(selectImperialMedicLabel);
+		teamSelect.add(selectNumberOfImperialMedic);
+
+		teamSelect.add(selectLukeSkywalkerLabel);
+		teamSelect.add(selectNumberOfLukeSkywalker);
+
+		teamSelect.add(selectDarthVaderLabel);
+		teamSelect.add(selectNumberOfDarthVader);
+
+		teamSelect.add(selectSpderTankLabel);
+		teamSelect.add(selectNumberOfSpiderTank);
+
+		teamSelect.add(selectDroidekaLabel);
+		teamSelect.add(selectNumberOfDroideka);
+
+		teamSelect.add(selectArtilleryDroidLabel);
+		teamSelect.add(selectNumberOfArtilleryDroid);
+
+		teamSelect.add(selectWalkerLabel);
+		teamSelect.add(selectNumberOfWalker);
+
+		teamSelect.add(next);
+
+		// begin persistence code
+		// if(new File(saveDir + player1 + "-" + player2 + "-" +
+		// "gameboard.dat").exists()) {
+		// JPanel loadSave = new JPanel();
+		// JCheckBox chkLoad = new JCheckBox("Load saved game?");
+		// chkLoad.addItemListener(new ItemListener() {
+		// public void itemStateChanged(ItemEvent e) {
+		// loadGame = e.getStateChange() == 1 ? true : false;
+		// }
+		// });
+		// loadSave.add(chkLoad).setVisible(true);
+		// teamSelect.add(loadSave);
+		// }
+		// end persistence code
+		this.add(teamSelect);
+		this.setBackground(Color.WHITE);
+		this.setVisible(true);
+		this.validate();
+
+	}
+
+	public boolean checkPlayer2UnitSelecions() {
+
+		int numberOfCloneTrooper = 0;
+		int numberOfBattleDroid = 0;
+		int numberOfImperialMedic = 0;
+		int numberOfLukeSkywalker = 0;
+		int numberOfDarthVader = 0;
+		int numberOfSpiderTank = 0;
+		int numberOfDroideka = 0;
+		int numberOfArtilleryDroid = 0;
+		int numberOfWalker = 0;
+
+		int total = 0;
+		while (total != 5) {
+			try {
+				numberOfCloneTrooper = Integer
+						.parseInt(selectNumberOfCloneTrooper.getText());
+				numberOfBattleDroid = Integer
+						.parseInt(selectNumberOfBattleDroid.getText());
+				numberOfImperialMedic = Integer
+						.parseInt(selectNumberOfImperialMedic.getText());
+				numberOfLukeSkywalker = Integer
+						.parseInt(selectNumberOfLukeSkywalker.getText());
+				numberOfDarthVader = Integer.parseInt(selectNumberOfDarthVader
+						.getText());
+				numberOfSpiderTank = Integer.parseInt(selectNumberOfSpiderTank
+						.getText());
+				numberOfDroideka = Integer.parseInt(selectNumberOfDroideka
+						.getText());
+				numberOfArtilleryDroid = Integer
+						.parseInt(selectNumberOfArtilleryDroid.getText());
+				numberOfWalker = Integer.parseInt(selectNumberOfWalker
+						.getText());
+			} catch (Exception e) {
+				JOptionPane optionPane = new JOptionPane();
+				optionPane
+						.setMessage("Please make better units selections... ");
+				JDialog dialog = optionPane.createDialog(":~(");
+				dialog.setAlwaysOnTop(true);
+				dialog.setVisible(true);
+
+			}
+
+			total = numberOfCloneTrooper + numberOfBattleDroid
+					+ numberOfImperialMedic + numberOfLukeSkywalker
+					+ numberOfDarthVader + numberOfSpiderTank
+					+ numberOfDroideka + numberOfArtilleryDroid
+					+ numberOfWalker;
+			if (total != 5) {
+				JOptionPane optionPane = new JOptionPane();
+				optionPane.setMessage("You must select five units, fool");
+				JDialog dialog = optionPane.createDialog(":~(");
+				dialog.setAlwaysOnTop(true);
+				dialog.setVisible(true);
+				total = 0;
+				return false;
+			}
+		}
+		// Add these five to the units list:
+		UnitFactory factory = new UnitFactory();
+		int spotInUnitsList = 5;
+		for (int i = 0; i < numberOfCloneTrooper; i++) {
+			units.add(spotInUnitsList,
+					factory.makeUnit("CloneTrooper", player2));
+			spotInUnitsList++;
+		}
+		for (int i = 0; i < numberOfBattleDroid; i++) {
+			units.add(spotInUnitsList, factory.makeUnit("BattleDroid", player2));
+			spotInUnitsList++;
+		}
+		for (int i = 0; i < numberOfImperialMedic; i++) {
+			units.add(spotInUnitsList,
+					factory.makeUnit("ImperialMedic", player2));
+			spotInUnitsList++;
+		}
+		for (int i = 0; i < numberOfLukeSkywalker; i++) {
+			units.add(spotInUnitsList,
+					factory.makeUnit("LukeSkywalker", player2));
+			spotInUnitsList++;
+		}
+		for (int i = 0; i < numberOfDarthVader; i++) {
+			units.add(spotInUnitsList, factory.makeUnit("DarthVader", player2));
+			spotInUnitsList++;
+		}
+		for (int i = 0; i < numberOfSpiderTank; i++) {
+			units.add(spotInUnitsList, factory.makeUnit("SpiderTank", player2));
+			spotInUnitsList++;
+		}
+		for (int i = 0; i < numberOfDroideka; i++) {
+			units.add(spotInUnitsList, factory.makeUnit("Droideka", player2));
+			spotInUnitsList++;
+		}
+		for (int i = 0; i < numberOfArtilleryDroid; i++) {
+			units.add(spotInUnitsList,
+					factory.makeUnit("ArtilleryDroid", player2));
+			spotInUnitsList++;
+		}
+		for (int i = 0; i < numberOfWalker; i++) {
+			units.add(spotInUnitsList, factory.makeUnit("Walker", player2));
+			spotInUnitsList++;
+		}
+		
+
+		return true;
+	}
+
+	public boolean checkUserSelections() {
+
+		int numberOfCloneTrooper = 0;
+		int numberOfBattleDroid = 0;
+		int numberOfImperialMedic = 0;
+		int numberOfLukeSkywalker = 0;
+		int numberOfDarthVader = 0;
+		int numberOfSpiderTank = 0;
+		int numberOfDroideka = 0;
+		int numberOfArtilleryDroid = 0;
+		int numberOfWalker = 0;
+
+		int total = 0;
+		while (total != 5) {
+			try {
+				numberOfCloneTrooper = Integer
+						.parseInt(selectNumberOfCloneTrooper.getText());
+				numberOfBattleDroid = Integer
+						.parseInt(selectNumberOfBattleDroid.getText());
+				numberOfImperialMedic = Integer
+						.parseInt(selectNumberOfImperialMedic.getText());
+				numberOfLukeSkywalker = Integer
+						.parseInt(selectNumberOfLukeSkywalker.getText());
+				numberOfDarthVader = Integer.parseInt(selectNumberOfDarthVader
+						.getText());
+				numberOfSpiderTank = Integer.parseInt(selectNumberOfSpiderTank
+						.getText());
+				numberOfDroideka = Integer.parseInt(selectNumberOfDroideka
+						.getText());
+				numberOfArtilleryDroid = Integer
+						.parseInt(selectNumberOfArtilleryDroid.getText());
+				numberOfWalker = Integer.parseInt(selectNumberOfWalker
+						.getText());
+			} catch (Exception e) {
+				JOptionPane optionPane = new JOptionPane();
+				optionPane
+						.setMessage("Please make better units selections... ");
+				JDialog dialog = optionPane.createDialog(":~(");
+				dialog.setAlwaysOnTop(true);
+				dialog.setVisible(true);
+
+			}
+
+			total = numberOfCloneTrooper + numberOfBattleDroid
+					+ numberOfImperialMedic + numberOfLukeSkywalker
+					+ numberOfDarthVader + numberOfSpiderTank
+					+ numberOfDroideka + numberOfArtilleryDroid
+					+ numberOfWalker;
+			if (total != 5) {
+				JOptionPane optionPane = new JOptionPane();
+				optionPane.setMessage("You must select five units, fool");
+				JDialog dialog = optionPane.createDialog(":~(");
+				dialog.setAlwaysOnTop(true);
+				dialog.setVisible(true);
+				total = 0;
+				return false;
+			}
+		}
+		// Add these five to the units list:
+		units = new ArrayList<Unit>();
+		UnitFactory factory = new UnitFactory();
+		int spotInUnitsList = 0;
+		for (int i = 0; i < numberOfCloneTrooper; i++) {
+			units.add(spotInUnitsList,
+					factory.makeUnit("CloneTrooper", player1));
+			spotInUnitsList++;
+		}
+		for (int i = 0; i < numberOfBattleDroid; i++) {
+			units.add(spotInUnitsList, factory.makeUnit("BattleDroid", player1));
+			spotInUnitsList++;
+		}
+		for (int i = 0; i < numberOfImperialMedic; i++) {
+			units.add(spotInUnitsList,
+					factory.makeUnit("ImperialMedic", player1));
+			spotInUnitsList++;
+		}
+		for (int i = 0; i < numberOfLukeSkywalker; i++) {
+			units.add(spotInUnitsList,
+					factory.makeUnit("LukeSkywalker", player1));
+			spotInUnitsList++;
+		}
+		for (int i = 0; i < numberOfDarthVader; i++) {
+			units.add(spotInUnitsList, factory.makeUnit("DarthVader", player1));
+			spotInUnitsList++;
+		}
+		for (int i = 0; i < numberOfSpiderTank; i++) {
+			units.add(spotInUnitsList, factory.makeUnit("SpiderTank", player1));
+			spotInUnitsList++;
+		}
+		for (int i = 0; i < numberOfDroideka; i++) {
+			units.add(spotInUnitsList, factory.makeUnit("Droideka", player1));
+			spotInUnitsList++;
+		}
+		for (int i = 0; i < numberOfArtilleryDroid; i++) {
+			units.add(spotInUnitsList,
+					factory.makeUnit("ArtilleryDroid", player1));
+			spotInUnitsList++;
+		}
+		for (int i = 0; i < numberOfWalker; i++) {
+			units.add(spotInUnitsList, factory.makeUnit("Walker", player1));
+			spotInUnitsList++;
+		}
+		
+
+		return true;
+	}
+
+	private void layoutGUI() {
+		this.remove(teamSelect);
+		tabbedpane = new JTabbedPane();
+		tabbedpane.setPreferredSize(new Dimension(1280, 500));
+
+		contentContainer = new JPanel();
+		contentContainer.setPreferredSize(new Dimension(1280, 500));
+		contentContainer.setLayout(new BorderLayout());
+
+		playerContainer = new JPanel();
+		playerContainer.setLayout(new GridLayout(1, 3, 0, 0));
+		playerContainer.setSize(1280, 300);
+		playerInfoContainer = new JPanel();
+		playerInfoContainer.setPreferredSize(new Dimension(100, 300));
+		usernamestring = new JLabel("Current Player: " + player1);
+		playerInfoContainer.add(usernamestring);
+		inventorystring = new JLabel(player1 + "'s inventory: "
+				+ p1inv.toString());
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setSize(1280, 800);
+		setResizable(false);
+		setLayout(new BorderLayout());
+		moveUp = new JButton("up");
+		moveDown = new JButton("down");
+		moveLeft = new JButton("left");
+		moveRight = new JButton("right");
+		moveUp.setPreferredSize(new Dimension(50, 100));
+		moveDown.setPreferredSize(new Dimension(50, 50));
+		moveLeft.setPreferredSize(new Dimension(75, 50));
+		moveRight.setPreferredSize(new Dimension(75, 50));
+
+		imagePanel = new Imageview(GameBoard.background);
+		imagePanel.setPreferredSize(new Dimension(1280, 500));
+
+		movePanel = new JPanel();
+		movePanel.setPreferredSize(new Dimension(450, 150));
+		movePanel.setLayout(new BorderLayout());
+
+		JPanel DirectionPanel = new JPanel();
+		DirectionPanel.setPreferredSize(new Dimension(250, 150));
+		DirectionPanel.setLayout(new GridLayout(2, 3, 0, 0));
+		JPanel blankPanel = new JPanel();
+		JPanel blankpanel1 = new JPanel();
+		JPanel blankPanel2 = new JPanel();
+		DirectionPanel.add(blankPanel);
+		DirectionPanel.add(moveUp);
+		DirectionPanel.add(blankpanel1);
+		DirectionPanel.add(moveLeft);
+		DirectionPanel.add(moveDown);
+		DirectionPanel.add(moveRight);
+
+		unitPanel = new JPanel();
+		unitPanel.setPreferredSize(new Dimension(200, 150));
+		unitgroup = new ButtonGroup();
+		radiobuttons = new ArrayList();
+		for (int i = 0; i < player1units.size(); i++) {
+
+			radiobuttons.add(new JRadioButton(player1units.get(i).getUnit()
+					.toString()));
+
+		}
+		for (int i = 0; i < radiobuttons.size(); i++) {
+			unitgroup.add(radiobuttons.get(i));
+			unitPanel.add(radiobuttons.get(i));
+			radiobuttons.get(i).addActionListener(new ButtonListener());
+		}
+
+		movePanel.add(DirectionPanel, BorderLayout.WEST);
+		movePanel.add(unitPanel, BorderLayout.CENTER);
+
+		AttackPanel = new JPanel();
+		AttackPanel.setLayout(new BorderLayout());
+		AttackPanel.setPreferredSize(new Dimension(450, 150));
+		attackButtonPanel = new JPanel();
+		attackButtonPanel.setLayout(new GridLayout(2, 3, 0, 0));
+		listOfTargets = new JPanel();
+		JPanel blank = new JPanel();
+		UseItem = new JButton("Use Item");
+		attack = new JButton("Attack");
+		endTurn = new JButton("End turn");
+		endTurnAI = new JButton("End turn");
+		Shop = new JButton("Shop");
+		UnitInfo = new JButton("Unit Info");
+		attackButtonPanel.add(UseItem);
+		attackButtonPanel.add(attack);
+		if (AIgame) {
+
+			attackButtonPanel.add(endTurnAI);
+		} else {
+			attackButtonPanel.add(endTurn);
+		}
+
+		attackButtonPanel.add(Shop);
+		attackButtonPanel.add(UnitInfo);
+		attackButtonPanel.add(blankPanel2);
+		AttackPanel.add(attackButtonPanel, BorderLayout.NORTH);
+		AttackPanel.add(listOfTargets, BorderLayout.CENTER);
+
+		contentContainer.add(imagePanel, BorderLayout.NORTH);
+		contentContainer.add(playerContainer, BorderLayout.CENTER);
+
+		inventoryPanel = new JPanel();
+		inventoryPanel.setPreferredSize(new Dimension(200, 150));
+		itemBoxes = new ArrayList<JCheckBox>();
+		items = new ArrayList<String>();
+		Iterator it = p1inv.getInventory().entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pairs = (Map.Entry) it.next();
+			itemBoxes.add(new JCheckBox(pairs.getKey().toString()));
+		}
+
+		for (int i = 0; i < itemBoxes.size(); i++) {
+			itemBoxes.get(i).addItemListener(new itemListener());
+			inventoryPanel.add(itemBoxes.get(i));
+
+		}
+		playerContainer.add(movePanel);
+		// playerContainer.add(playerInfoContainer);
+		playerContainer.add(inventoryPanel);
+		playerContainer.add(AttackPanel);
+
+		add(contentContainer);
+
+		setVisible(true);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		revalidate();
+		repaint();
+	}
+
+	/**
+	 * @return the username of the player that is set from the pregame lobby.
+	 */
+	public static String getPlayer1() {
+		return player1;
+	}
+
+	/**
+	 * @return the username of the player that is set from the pregame lobby.
+	 */
+	public static String getPlayer2() {
+		return player2;
+	}
+
+	private void registerListeners() {
+		this.addWindowListener(new SaveDataListener());
+		attack.addActionListener(new ButtonListener());
+		moveUp.addActionListener(new ButtonListener());
+		moveLeft.addActionListener(new ButtonListener());
+		moveRight.addActionListener(new ButtonListener());
+		moveDown.addActionListener(new ButtonListener());
+		endTurn.addActionListener(new ButtonListener());
+		UseItem.addActionListener(new ButtonListener());
+		endTurnAI.addActionListener(new ButtonListener());
+		Shop.addActionListener(new ButtonListener());
+		UnitInfo.addActionListener(new ButtonListener());
+
+	}
+
 	public void attack(Cell cellattack, Cell celldefense) {
 		CurrentUnitSelected = cellattack;
 		EnemyUnitSelected = celldefense;
@@ -1364,88 +1051,44 @@ public class GUI extends JFrame
 				}
 			}
 
-        layoutAttackScreen();
+			revalidate();
+			repaint();
+		}
+	}
 
-        imagePanel.repaint();
-        if (gameboard.CheckgameOverBooleanVersion(player1units))
-        {
-          Object[] options = {"New Game", "Quit"};
-          int n = JOptionPane.showOptionDialog(frame, player1
-              + " HAS WON THE GAME!! Would you like to start a new game?",
-              "VICTORY!!", JOptionPane.YES_NO_OPTION,
-              JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
-          if (n == JOptionPane.YES_OPTION)
-          {
-            System.out.println("new game");
-            dispose();
-            new GUI();
-          }
-          else
-          {
-            if (n == JOptionPane.NO_OPTION)
-            {
-              System.out.println("no option");
-              frame.dispatchEvent(new WindowEvent(frame,
-                  WindowEvent.WINDOW_CLOSING));
-            }
-          }
-        }
-      }
-      else
-      {
-        JOptionPane optionPane = new JOptionPane();
-        optionPane.setMessage("Move failed");
-        JDialog dialog = optionPane.createDialog(":~(");
-        dialog.setAlwaysOnTop(true);
-        dialog.setVisible(true);
-      }
-    }
-  }
+	public void changeUnit(Cell cellwithunit) {
+		CurrentUnitSelected = cellwithunit;
+	}
 
-  private class Runner implements Runnable
-  {
+	public void move(String direction, Cell cellwithunit) {
 
-    @Override
-    public void run()
-    {
-      try
-      {
-        while (true)
-        {
+		if (cellwithunit == null) {
+			JOptionPane optionPane = new JOptionPane();
+			optionPane.setMessage("Please Select a Unit");
+			JDialog dialog = optionPane.createDialog(":~(");
+			dialog.setAlwaysOnTop(true);
+			dialog.setVisible(true);
+		} else {
+			if (gameboard.canMove(cellwithunit, direction)) {
+				int i = player1units.indexOf(cellwithunit);
+				player1units.remove(i);
+                Thread animation = new Thread(new Animate(cellwithunit, direction));
+                animation.start();
+                animation.run();
 
-          if (!GUI.gameboard.commandqueue.isEmpty())
-          {
-            System.out.println("does it get here?");
-            Command<GUI> command = GUI.gameboard.commandqueue.poll();
-            command.execute(GUI.this);
-            GUI.gameboard.commandqueue.element().setCurrentCell(
-                CurrentUnitSelected);
-            if (GUI.gameboard.commandqueue.isEmpty())
-            {
 //				CurrentUnitSelected = gameboard.move(cellwithunit, direction);
 				if (CurrentUnitSelected.hasUnit()) {
 					player1units.add(i, CurrentUnitSelected);
 					targets(CurrentUnitSelected);
 
-            }
-            else
-            {
-              GUI.gameboard.commandqueue.element().setCurrentCell(
-                  CurrentUnitSelected);
-            }
+				} else {
+					targets.clear();
+					UpdateUnitScreen();
 
-            System.out.println("this should execute");
+				}
 
-          }
-        }
-      }
-      catch (Exception e)
-      {
-        e.printStackTrace();
-      }
-    }
+				layoutAttackScreen();
 
-  }
 				imagePanel.repaint();
 				if (gameboard.CheckgameOverBooleanVersion(player1units)) {
 					Object[] options = { "New Game", "Quit" };
@@ -1479,44 +1122,13 @@ public class GUI extends JFrame
 		}
 	}
 
-  private class ButtonListener implements ActionListener
-  {
+	private class Runner implements Runnable {
 
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-      if (e.getSource() == UseItem)
-      {
-        if (CurrentUnitSelected == null)
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("Please Select a Unit");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        else
-        {
-          for (int i = 0; i < items.size(); i++)
-          {
-            Item item = p1inv.getItem(items.get(i));
-            CurrentUnitSelected = gameboard.useItem(item, CurrentUnitSelected);
-            p1inv.removeItem(item);
-            UpdateItemScreen();
-          }
-          items.clear();
-        }
-      }
-      if (e.getSource() == moveUp)
-      {
-        move("N", CurrentUnitSelected);
+		@Override
+		public void run() {
+			try {
+				while (true) {
 
-      }
-
-      if (e.getSource() == moveLeft)
-      {
-        move("L", CurrentUnitSelected);
-      }
 					if (!GUI.gameboard.commandqueue.isEmpty()) {
 						System.out.println("does it get here?");
 						Command<GUI> command = GUI.gameboard.commandqueue
@@ -1527,35 +1139,19 @@ public class GUI extends JFrame
 								CurrentUnitSelected);
 						}
 
-      if (e.getSource() == moveDown)
-      {
-        move("S", CurrentUnitSelected);
-      }
+						System.out.println("this should execute");
 
-      if (e.getSource() == moveRight)
-      {
-        move("R", CurrentUnitSelected);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
-      }
-      if (e.getSource() == endTurn)
-      {
+	}
 
-        for (int i = 0; i < gameboard.getPlayer1Units().size(); i++)
-        {
-          if (gameboard.getPlayer1Units().get(i).getTerrain() == Terrain.Flag)
-          {
-            player1FlagPoints++;
-            JOptionPane optionPane = new JOptionPane();
-            int timesLeft = 5 - player1FlagPoints;
-            optionPane
-                .setMessage("You have ended you turn on the flag!, do this "
-                    + timesLeft + " more times to win the game!");
-            JDialog dialog = optionPane.createDialog(":~)");
-            dialog.setAlwaysOnTop(true);
-            dialog.setVisible(true);
-          }
+	private class ButtonListener implements ActionListener {
 
-        }
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == UseItem) {
@@ -1584,107 +1180,38 @@ public class GUI extends JFrame
 			if (e.getSource() == moveUp) {
 				move("N", CurrentUnitSelected);
 
-        if (player1FlagPoints >= 5)
-        {
-          // tell them they win
-          Object[] options = {"New Game", "Quit"};
-          int n = JOptionPane.showOptionDialog(frame, player1
-              + " HAS WON THE GAME!! Would you like to start a new game?",
-              "VICTORY!!", JOptionPane.YES_NO_OPTION,
-              JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
-          if (n == JOptionPane.YES_OPTION)
-          {
-            System.out.println("new game");
-            dispose();
-            new GUI();
-            player1FlagPoints = 0;
-            player2FlagPoints = 0;
-          }
-          else
-          {
-            if (n == JOptionPane.NO_OPTION)
-            {
-              System.out.println("no option");
-              frame.dispatchEvent(new WindowEvent(frame,
-                  WindowEvent.WINDOW_CLOSING));
-            }
-          }
+			}
 
-        }
+			if (e.getSource() == moveLeft) {
+				move("L", CurrentUnitSelected);
+			}
 
-        System.out.println("end of " + player1 + " turn");
-        Inventory tempinventory = p1inv;
-        p1inv = p2inv;
-        p2inv = tempinventory;
-        gameboard.turnOver2(player1units, player2units, player1, player2);
-        player1units = gameboard.getPlayer1Units();
-        player2units = gameboard.getPlayer2Units();
-        int tempPoints = player1FlagPoints;
-        player1FlagPoints = player2FlagPoints;
-        player2FlagPoints = tempPoints;
-        usernamestring.setText("Current Player: " + player1);
-        inventorystring.setText(player1 + "'s inventory: " + p1inv.toString());
-        p2inv.setCredits(p2inv.getCredits() + 5);
-        UpdateUnitScreen();
-        clearAttackScreen();
-        UpdateItemScreen();
-        CurrentUnitSelected = null;
-        EnemyUnitSelected = null;
-        unitdisplay = true;
-        toggleUnitScreen();
-        unitdisplay = false;
-        revalidate();
-        movePanel.repaint();
-        AttackPanel.repaint();
-        imagePanel.repaint();
+			if (e.getSource() == moveDown) {
+				move("S", CurrentUnitSelected);
+			}
 
-      }
-      if (e.getSource() == endTurnAI)
-      {
-        Inventory tempinventory = p1inv;
-        p1inv = p2inv;
-        p2inv = tempinventory;
+			if (e.getSource() == moveRight) {
+				move("R", CurrentUnitSelected);
 
-        gameboard
-            .turnOverComputer(player1units, player2units, player1, player2);
-        computer.makeMove();
-        endTurn.doClick();
-        player1units = gameboard.getPlayer1Units();
-        player2units = gameboard.getPlayer2Units();
+			}
+			if (e.getSource() == endTurn) {
 
-        usernamestring.setText("Current Player: " + player1);
-        inventorystring.setText(player1 + "'s inventory: " + p1inv.toString());
-        UpdateUnitScreen();
-        clearAttackScreen();
-        UpdateItemScreen();
-        CurrentUnitSelected = null;
-        EnemyUnitSelected = null;
-        unitdisplay = true;
-        toggleUnitScreen();
-        unitdisplay = false;
-        revalidate();
-        movePanel.repaint();
-        AttackPanel.repaint();
-        imagePanel.repaint();
-      }
+				for (int i = 0; i < gameboard.getPlayer1Units().size(); i++) {
+					if (gameboard.getPlayer1Units().get(i).getTerrain() == Terrain.Flag) {
+						player1FlagPoints++;
+						JOptionPane optionPane = new JOptionPane();
+						int timesLeft = 5 - player1FlagPoints;
+						optionPane
+								.setMessage("You have ended you turn on the flag!, do this "
+										+ timesLeft
+										+ " more times to win the game!");
+						JDialog dialog = optionPane.createDialog(":~)");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+					}
 
-      if (e.getSource() == attack)
-      {
-        attack(CurrentUnitSelected, EnemyUnitSelected);
-      }
-      if (e.getSource() == Shop || e.getSource() == closeShop)
-      {
-        shopscreen = !shopscreen;
-        toggleShopScreen();
+				}
 
-      }
-      if (e.getSource() == UnitInfo)
-      {
-        toggleUnitScreen();
-        unitdisplay = !unitdisplay;
-      }
-      if (shopbuttons == null)
-      {
 				if (player1FlagPoints >= 5) {
 					// tell them they win
 					Object[] options = { "New Game", "Quit" };
@@ -1711,609 +1238,519 @@ public class GUI extends JFrame
 						}
 					}
 
-      }
-      else
-      {
-        for (JRadioButton element : shopbuttons)
-        {
-          if (e.getSource() == element)
-          {
+				}
 
-          }
-        }
-      }
-      if (e.getSource() == buyItem)
-      {
-        if (shopgroup.getSelection() == null)
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("Please select an item first!");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        else
-        {
-          String selection = shopgroup.getSelection().getActionCommand();
-          Item item = inv.get(selection);
-          int cost = item.getCost();
-          if (p1inv.getCredits() < cost)
-          {
-            JOptionPane optionPane = new JOptionPane();
-            optionPane.setMessage("You are too poor to buy this item!");
-            JDialog dialog = optionPane.createDialog(":~(");
-            dialog.setAlwaysOnTop(true);
-            dialog.setVisible(true);
-          }
-          else
-          {
-            p1inv.setCredits(p1inv.getCredits() - cost);
-            p1inv.addItem(item);
-            credits.setText("Credits: " + p1inv.getCredits());
-            UpdateItemScreen();
-            toggleShopScreen();
-            repaint();
-            revalidate();
-          }
-        }
+				System.out.println("end of " + player1 + " turn");
+				Inventory tempinventory = p1inv;
+				p1inv = p2inv;
+				p2inv = tempinventory;
+				gameboard.turnOver2(player1units, player2units, player1,
+						player2);
+				player1units = gameboard.getPlayer1Units();
+				player2units = gameboard.getPlayer2Units();
+				int tempPoints = player1FlagPoints;
+				player1FlagPoints = player2FlagPoints;
+				player2FlagPoints = tempPoints;
+				usernamestring.setText("Current Player: " + player1);
+				inventorystring.setText(player1 + "'s inventory: "
+						+ p1inv.toString());
+				p2inv.setCredits(p2inv.getCredits() + 5);
+				UpdateUnitScreen();
+				clearAttackScreen();
+				UpdateItemScreen();
+				CurrentUnitSelected = null;
+				EnemyUnitSelected = null;
+				unitdisplay = true;
+				toggleUnitScreen();
+				unitdisplay = false;
+				revalidate();
+				movePanel.repaint();
+				AttackPanel.repaint();
+				imagePanel.repaint();
 
-      }
-      if (radiobuttons.isEmpty() || radiobuttons.equals(null))
-      {
+			}
+			if (e.getSource() == endTurnAI) {
+				Inventory tempinventory = p1inv;
+				p1inv = p2inv;
+				p2inv = tempinventory;
 
-      }
-      else
-      {
-        for (int i = 0; i < radiobuttons.size(); i++)
-        {
-          if (e.getSource() == radiobuttons.get(i))
-          {
-            CurrentUnitSelected = player1units.get(i);
-            System.out.println(CurrentUnitSelected.getUnit().getUnitStatus());
-            targets(CurrentUnitSelected);
-            layoutAttackScreen();
-            repaint();
+				gameboard.turnOverComputer(player1units, player2units, player1,
+						player2);
+				computer.makeMove();
+				endTurn.doClick();
+				player1units = gameboard.getPlayer1Units();
+				player2units = gameboard.getPlayer2Units();
 
-          }
-        }
-      }
-      if (targetButtons.isEmpty() || targetButtons.equals(null))
-      {
+				usernamestring.setText("Current Player: " + player1);
+				inventorystring.setText(player1 + "'s inventory: "
+						+ p1inv.toString());
+				UpdateUnitScreen();
+				clearAttackScreen();
+				UpdateItemScreen();
+				CurrentUnitSelected = null;
+				EnemyUnitSelected = null;
+				unitdisplay = true;
+				toggleUnitScreen();
+				unitdisplay = false;
+				revalidate();
+				movePanel.repaint();
+				AttackPanel.repaint();
+				imagePanel.repaint();
+			}
 
-      }
-      else
-      {
-        for (int i = 0; i < targetButtons.size(); i++)
-        {
-          if (e.getSource() == targetButtons.get(i))
-          {
-            EnemyUnitSelected = targets.get(i);
-            System.out.println(EnemyUnitSelected.getUnit().getUnitStatus());
-            repaint();
-          }
-        }
-      }
+			if (e.getSource() == attack) {
+				attack(CurrentUnitSelected, EnemyUnitSelected);
+			}
+			if (e.getSource() == Shop || e.getSource() == closeShop) {
+				shopscreen = !shopscreen;
+				toggleShopScreen();
 
-      revalidate();
-      repaint();
+			}
+			if (e.getSource() == UnitInfo) {
+				toggleUnitScreen();
+				unitdisplay = !unitdisplay;
+			}
+			if (shopbuttons == null) {
 
-    }
+			} else {
+				for (JRadioButton element : shopbuttons) {
+					if (e.getSource() == element) {
 
-  }
+					}
+				}
+			}
+			if (e.getSource() == buyItem) {
+				if (shopgroup.getSelection()==null) {
+					JOptionPane optionPane = new JOptionPane();
+					optionPane.setMessage("Please select an item first!");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				}
+				else {
+					String selection = shopgroup.getSelection().getActionCommand();
+					Item item = inv.get(selection);
+					int cost = item.getCost();
+					if (p1inv.getCredits() < cost) {
+						JOptionPane optionPane = new JOptionPane();
+						optionPane.setMessage("You are too poor to buy this item!");
+						JDialog dialog = optionPane.createDialog(":~(");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+					} else {
+						p1inv.setCredits(p1inv.getCredits() - cost);
+						p1inv.addItem(item);
+						credits.setText("Credits: " + p1inv.getCredits());
+						UpdateItemScreen();
+						toggleShopScreen();
+						repaint();
+						revalidate();
+					}
+				}
+				
+				
 
-  private class itemListener implements ItemListener
-  {
+			}
+			if (radiobuttons.isEmpty() || radiobuttons.equals(null)) {
 
-    @Override
-    public void itemStateChanged(ItemEvent e)
-    {
-      for (int i = 0; i < itemBoxes.size(); i++)
-      {
-        if (e.getSource() == itemBoxes.get(i))
-        {
-          if (e.getStateChange() == 1)
-          {
-            items.add(itemBoxes.get(i).getText());
-          }
-          else
-          {
-            items.remove(itemBoxes.get(i).getText());
-          }
-          System.out.println(items.toString() + "\n");
-        }
-      }
+			} else {
+				for (int i = 0; i < radiobuttons.size(); i++) {
+					if (e.getSource() == radiobuttons.get(i)) {
+						CurrentUnitSelected = player1units.get(i);
+						System.out.println(CurrentUnitSelected.getUnit()
+								.getUnitStatus());
+						targets(CurrentUnitSelected);
+						layoutAttackScreen();
+						repaint();
 
-    }
+					}
+				}
+			}
+			if (targetButtons.isEmpty() || targetButtons.equals(null)) {
 
-  }
+			} else {
+				for (int i = 0; i < targetButtons.size(); i++) {
+					if (e.getSource() == targetButtons.get(i)) {
+						EnemyUnitSelected = targets.get(i);
+						System.out.println(EnemyUnitSelected.getUnit()
+								.getUnitStatus());
+						repaint();
+					}
+				}
+			}
 
-  private class MapButtonListener implements ActionListener
-  {
+			revalidate();
+			repaint();
 
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-      if (e.getSource() == toMap)
-      {
-        layoutMapScreen();
-      }
-      if (e.getSource() == startAI)
-      {
-        player1 = username1.getText();
-        player2 = username2.getText();
-        if (player1.equals("") || player1.equals(null) || player2.equals("")
-            || player2.equals(null))
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("You need to enter valid usernames!");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        else if (player1.equals(player2) || player2.equals(player1))
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("User names must be unique!");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        else
-        {
+		}
 
-          if (checkUserSelections() == false)
-          {
+	}
 
-          }
-          else
-          {
+	private class itemListener implements ItemListener {
 
-            AIgame = true;
-            computer = new AI();
-            setVisible(false);
-            newGame("vsAi", units);
-            layoutGUI();
-            registerListeners();
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+			for (int i = 0; i < itemBoxes.size(); i++) {
+				if (e.getSource() == itemBoxes.get(i)) {
+					if (e.getStateChange() == 1) {
+						items.add(itemBoxes.get(i).getText());
+					} else {
+						items.remove(itemBoxes.get(i).getText());
+					}
+					System.out.println(items.toString() + "\n");
+				}
+			}
 
-            repaint();
-          }
+		}
 
-        }
+	}
 
-      }
-      if (e.getSource() == next)
-      {
+	private class MapButtonListener implements ActionListener {
 
-        player1 = username1.getText();
-        player2 = username2.getText();
-        if (player1.equals("") || player1.equals(null) || player2.equals("")
-            || player2.equals(null))
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("You need to enter valid usernames!");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        else if (player1.equals(player2) || player2.equals(player1))
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("User names must be unique!");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        else
-        {
+		@Override
+		public void actionPerformed(ActionEvent e) {
 
-          if (checkUserSelections() == false)
-          {
+			if (e.getSource() == next) {
+				
+				player1 = username1.getText();
+				player2 = username2.getText();
+				if (player1.equals("") || player1.equals(null)
+						|| player2.equals("") || player2.equals(null)) {
+					JOptionPane optionPane = new JOptionPane();
+					optionPane
+							.setMessage("You need to enter valid usernames!");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				}
+				else if (player1.equals(player2) || player2.equals(player1)) {
+					JOptionPane optionPane = new JOptionPane();
+					optionPane
+							.setMessage("User names must be unique!");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				}
+				else {
 
-          }
-          else
-          {
+					
+					if (checkUserSelections() == false) {
 
-            selectNumberOfCloneTrooper.setText("0");
-            selectNumberOfBattleDroid.setText("0");
-            selectNumberOfImperialMedic.setText("0");
-            selectNumberOfLukeSkywalker.setText("0");
-            selectNumberOfDarthVader.setText("0");
-            selectNumberOfSpiderTank.setText("0");
-            selectNumberOfDroideka.setText("0");
-            selectNumberOfArtilleryDroid.setText("0");
-            selectNumberOfWalker.setText("0");
+					} else {
 
-            JOptionPane optionPane = new JOptionPane();
-            optionPane
-                .setMessage("Player 2 make your unit selections, then click the map desired ");
-            JDialog dialog = optionPane.createDialog(":~)");
-            dialog.setAlwaysOnTop(true);
-            dialog.setVisible(true);
-            teamSelect.remove(next);
-            username1.setEditable(false);
-            username2.setEditable(false);
-            repaint();
-          }
+						selectNumberOfCloneTrooper.setText("0");
+						selectNumberOfBattleDroid.setText("0");
+						selectNumberOfImperialMedic.setText("0");
+						selectNumberOfLukeSkywalker.setText("0");
+						selectNumberOfDarthVader.setText("0");
+						selectNumberOfSpiderTank.setText("0");
+						selectNumberOfDroideka.setText("0");
+						selectNumberOfArtilleryDroid.setText("0");
+						selectNumberOfWalker.setText("0");
 
-        }
+						JOptionPane optionPane = new JOptionPane();
+						optionPane
+								.setMessage("Player 2 make your unit selections, then click the map desired ");
+						JDialog dialog = optionPane.createDialog(":~)");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+						teamSelect.remove(next);
+						username1.setEditable(false);
+						username2.setEditable(false);
+						
+					}
 
-      }
+				}
+				
+				
+			}
 
-      if (e.getSource() == Map)
-      {
-        if (units.isEmpty())
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("Pick your units first, fool! ");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        else
-        {
-          player1 = username1.getText();
-          player2 = username2.getText();
-          if (player1.equals("") || player1.equals(null) || player2.equals("")
-              || player2.equals(null))
-          {
-            JOptionPane optionPane = new JOptionPane();
-            optionPane.setMessage("You need to enter valid usernames!");
-            JDialog dialog = optionPane.createDialog(":~(");
-            dialog.setAlwaysOnTop(true);
-            dialog.setVisible(true);
-          }
-          else if (player1.equals(player2) || player2.equals(player1))
-          {
-            JOptionPane optionPane = new JOptionPane();
-            optionPane.setMessage("User names must be unique!");
-            JDialog dialog = optionPane.createDialog(":~(");
-            dialog.setAlwaysOnTop(true);
-            dialog.setVisible(true);
-          }
+			if (e.getSource() == Map) {
+				if (units.isEmpty()) {
+					JOptionPane optionPane = new JOptionPane();
+					optionPane.setMessage("Pick your units first, fool! ");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				} else {
+					player1 = username1.getText();
+					player2 = username2.getText();
+					if (player1.equals("") || player1.equals(null)
+							|| player2.equals("") || player2.equals(null)) {
+						JOptionPane optionPane = new JOptionPane();
+						optionPane
+								.setMessage("You need to enter valid usernames!");
+						JDialog dialog = optionPane.createDialog(":~(");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+					}
+					else if (player1.equals(player2) || player2.equals(player1)) {
+						JOptionPane optionPane = new JOptionPane();
+						optionPane
+								.setMessage("User names must be unique!");
+						JDialog dialog = optionPane.createDialog(":~(");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+					}
 
-          else if (checkPlayer2UnitSelecions() == false)
-          {
+					else if (checkPlayer2UnitSelecions() == false) {
 
-          }
+					}
 
-          else
-          {
-            newGame("Map 1", units);
-            layoutGUI();
-            registerListeners();
-          }
-        }
+					else {
+						newGame("Map 1", units);
+						layoutGUI();
+						registerListeners();
+					}
+				}
 
-      }
-      else if (e.getSource() == RandomMap)
-      {
-        if (units.isEmpty())
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("Pick your units first, fool! ");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        else
-        {
-          player1 = username1.getText();
-          player2 = username2.getText();
-          if (player1.equals("") || player1.equals(null) || player2.equals("")
-              || player2.equals(null))
-          {
-            JOptionPane optionPane = new JOptionPane();
-            optionPane.setMessage("You need to enter valid usernames!");
-            JDialog dialog = optionPane.createDialog(":~(");
-            dialog.setAlwaysOnTop(true);
-            dialog.setVisible(true);
-          }
-          else if (player1.equals(player2) || player2.equals(player1))
-          {
-            JOptionPane optionPane = new JOptionPane();
-            optionPane.setMessage("User names must be unique!");
-            JDialog dialog = optionPane.createDialog(":~(");
-            dialog.setAlwaysOnTop(true);
-            dialog.setVisible(true);
-          }
+			} else if (e.getSource() == RandomMap) {
+				if (units.isEmpty()) {
+					JOptionPane optionPane = new JOptionPane();
+					optionPane.setMessage("Pick your units first, fool! ");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				} else {
+					player1 = username1.getText();
+					player2 = username2.getText();
+					if (player1.equals("") || player1.equals(null)
+							|| player2.equals("") || player2.equals(null)) {
+						JOptionPane optionPane = new JOptionPane();
+						optionPane
+								.setMessage("You need to enter valid usernames!");
+						JDialog dialog = optionPane.createDialog(":~(");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+					}
+					else if (player1.equals(player2) || player2.equals(player1)) {
+						JOptionPane optionPane = new JOptionPane();
+						optionPane
+								.setMessage("User names must be unique!");
+						JDialog dialog = optionPane.createDialog(":~(");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+					}
 
-          else if (checkPlayer2UnitSelecions() == false)
-          {
+					else if (checkPlayer2UnitSelecions() == false) {
 
-          }
+					}
 
-          else
-          {
-            newGame("Random", units);
-            layoutGUI();
-            registerListeners();
-          }
-        }
-      }
-      else if (e.getSource() == Map2)
-      {
-        if (units.isEmpty())
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("Pick your units first, fool! ");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        else
-        {
-          player1 = username1.getText();
-          player2 = username2.getText();
-          if (player1.equals("") || player1.equals(null) || player2.equals("")
-              || player2.equals(null))
-          {
-            JOptionPane optionPane = new JOptionPane();
-            optionPane.setMessage("You need to enter valid usernames!");
-            JDialog dialog = optionPane.createDialog(":~(");
-            dialog.setAlwaysOnTop(true);
-            dialog.setVisible(true);
-          }
-          else if (player1.equals(player2) || player2.equals(player1))
-          {
-            JOptionPane optionPane = new JOptionPane();
-            optionPane.setMessage("User names must be unique!");
-            JDialog dialog = optionPane.createDialog(":~(");
-            dialog.setAlwaysOnTop(true);
-            dialog.setVisible(true);
-          }
+					else {
+						newGame("Random", units);
+						layoutGUI();
+						registerListeners();
+					}
+				}
+			} else if (e.getSource() == Map2) {
+				if (units.isEmpty()) {
+					JOptionPane optionPane = new JOptionPane();
+					optionPane.setMessage("Pick your units first, fool! ");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				} else {
+					player1 = username1.getText();
+					player2 = username2.getText();
+					if (player1.equals("") || player1.equals(null)
+							|| player2.equals("") || player2.equals(null)) {
+						JOptionPane optionPane = new JOptionPane();
+						optionPane
+								.setMessage("You need to enter valid usernames!");
+						JDialog dialog = optionPane.createDialog(":~(");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+					}
+					else if (player1.equals(player2) || player2.equals(player1)) {
+						JOptionPane optionPane = new JOptionPane();
+						optionPane
+								.setMessage("User names must be unique!");
+						JDialog dialog = optionPane.createDialog(":~(");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+					}
 
-          else if (checkPlayer2UnitSelecions() == false)
-          {
+					else if (checkPlayer2UnitSelecions() == false) {
 
-          }
+					}
 
-          else
-          {
-            newGame("Map 2", units);
-            layoutGUI();
-            registerListeners();
-          }
-        }
-      }
-      else if (e.getSource() == vsAI)
-      {
+					else {
+						newGame("Map 2", units);
+						layoutGUI();
+						registerListeners();
+					}
+				}
+			} else if (e.getSource() == vsAI) {
 
-        player1 = username1.getText();
-        player2 = username2.getText();
-        if (player1.equals("") || player1.equals(null) || player2.equals("")
-            || player2.equals(null))
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("You need to enter valid usernames!");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        else if (player1.equals(player2) || player2.equals(player1))
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("User names must be unique!");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        else
-        {
-          AIgame = true;
-          computer = new AI();
-          setVisible(false);
-          newGame("vsAi", units);
-          layoutGUI();
-          registerListeners();
-        }
-      }
-      else if (e.getSource() == load)
-      {
+				player1 = username1.getText();
+				player2 = username2.getText();
+				if (player1.equals("") || player1.equals(null)
+						|| player2.equals("") || player2.equals(null)) {
+					JOptionPane optionPane = new JOptionPane();
+					optionPane.setMessage("You need to enter valid usernames!");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				} 
+				else if (player1.equals(player2) || player2.equals(player1)) {
+					JOptionPane optionPane = new JOptionPane();
+					optionPane
+							.setMessage("User names must be unique!");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				}
+				else {
+					AIgame = true;
+					computer = new AI();
 
-        player1 = username1.getText();
-        player2 = username2.getText();
-        if (player1.equals("") || player1.equals(null) || player2.equals("")
-            || player2.equals(null))
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("You need to enter valid usernames!");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        else if (player1.equals(player2) || player2.equals(player1))
-        {
-          JOptionPane optionPane = new JOptionPane();
-          optionPane.setMessage("User names must be unique!");
-          JDialog dialog = optionPane.createDialog(":~(");
-          dialog.setAlwaysOnTop(true);
-          dialog.setVisible(true);
-        }
-        else
-        {
-          frame.setVisible(false);
-          if (new File(saveDir + player1 + "-" + player2 + "-"
-              + "gameboard.dat").exists())
-          {
-            loadData();
-          }
-          else
-          {
-            System.out
-                .println("You don't have a save file! Creating new game...");
-            newGame("Map 1", units);
-          }
-          layoutGUI();
-          registerListeners();
-        }
 
-      }
-    }
+					setVisible(false);
 
-  }
+					setVisible(true);
 
-  /**
-   * This listener triggers when the frame is closed, and saves the gameboard
-   * data.
-   */
-  private class SaveDataListener implements WindowListener
-  {
-    @Override
-    public void windowClosing(WindowEvent arg0)
-    {
-      saveData();
-    }
+					newGame("vsAi", units);
+					layoutGUI();
+					registerListeners();
+				}
+			} else if (e.getSource() == load) {
 
-    public void windowActivated(WindowEvent arg0)
-    {
-    }
+				player1 = username1.getText();
+				player2 = username2.getText();
+				if (player1.equals("") || player1.equals(null)
+						|| player2.equals("") || player2.equals(null)) {
+					JOptionPane optionPane = new JOptionPane();
+					optionPane.setMessage("You need to enter valid usernames!");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				} 
+				else if (player1.equals(player2) || player2.equals(player1)) {
+					JOptionPane optionPane = new JOptionPane();
+					optionPane
+							.setMessage("User names must be unique!");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				}
+				else {
+					frame.setVisible(false);
+					if (new File(saveDir + player1 + "-" + player2 + "-"
+							+ "gameboard.dat").exists()) {
+						loadData();
+					} else {
+						System.out
+								.println("You don't have a save file! Creating new game...");
+						newGame("Map 1", units);
+					}
+					layoutGUI();
+					registerListeners();
+				}
 
-    public void windowClosed(WindowEvent arg0)
-    {
-    }
+			}
+		}
 
-    public void windowDeactivated(WindowEvent arg0)
-    {
-    }
+	}
 
-    public void windowDeiconified(WindowEvent arg0)
-    {
-    }
+	/**
+	 * This listener triggers when the frame is closed, and saves the gameboard
+	 * data.
+	 */
+	private class SaveDataListener implements WindowListener {
+		@Override
+		public void windowClosing(WindowEvent arg0) {
+			saveData();
+		}
 
-    public void windowIconified(WindowEvent arg0)
-    {
-    }
+		public void windowActivated(WindowEvent arg0) {
+		}
 
-    public void windowOpened(WindowEvent arg0)
-    {
-    }
-  }
+		public void windowClosed(WindowEvent arg0) {
+		}
 
-  /**
-   * This method attempts to load gameboard data from
-   * "./player 1-player 2-gameboard.dat"
-   * 
-   * @return true if successful, false otherwise
-   */
-  @SuppressWarnings("unchecked")
-  public boolean loadData()
-  {
-    try
-    {
+		public void windowDeactivated(WindowEvent arg0) {
+		}
 
-      // loads saved data into the gameboard if there is a saved game
-      gameboard = new GameBoard("Map 2", units);
-      if (new File(saveDir + player1 + "-" + player2 + "-" + "gameboard.dat")
-          .exists())
-      {
-        gameboard.loadData(player1, player2);
-      }
+		public void windowDeiconified(WindowEvent arg0) {
+		}
 
-      // create inventories for both players
-      // both players start with a super item. WOW. how generous of us.
-      p1inv = new Inventory(player1);
-      if (new File(saveDir + player1 + "-inventory.dat").exists())
-      {
-        p1inv.loadData(player1);
-      }
-      else
-      {
-        p1inv.addItem(Item.superitem);
-      }
-      p2inv = new Inventory(player2);
-      if (new File(saveDir + player2 + "-inventory.dat").exists())
-      {
-        p2inv.loadData(player2);
-      }
-      else
-      {
-        p2inv.addItem(Item.superitem);
-      }
-      System.out.println(player1 + "'s inventory: " + p1inv.toString());
-      System.out.println(player2 + "'s inventory: " + p2inv.toString());
-      player1units = gameboard.getPlayer1Units();
-      player2units = gameboard.getPlayer2Units();
-      CurrentUnitSelected = null;
-      EnemyUnitSelected = null;
+		public void windowIconified(WindowEvent arg0) {
+		}
 
-      return true;
-    }
-    catch (Exception e)
-    {
-      System.err.println("Unable to load data!");
-    }
-    return false;
-  }
+		public void windowOpened(WindowEvent arg0) {
+		}
+	}
 
-  /**
-   * This method attempts to save the gameboard and local inventories in
-   * "./player 1-player 2-gameboard.dat" and "./player1-inventory.dat"
-   * respectively.
-   */
-  public void saveData()
-  {
-    try
-    {
-      gameboard.saveData(player1, player2);
-      p1inv.saveData();
-      p2inv.saveData();
-    }
-    catch (Exception e)
-    {
-      System.err.println("Error! Could not save data.");
-    }
-  }
+	/**
+	 * This method attempts to load gameboard data from
+	 * "./player 1-player 2-gameboard.dat"
+	 * 
+	 * @return true if successful, false otherwise
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean loadData() {
+		try {
 
-  public class Animate implements Runnable
-  {
-    Cell cell;
-    String d;
+			// loads saved data into the gameboard if there is a saved game
+			gameboard = new GameBoard("Map 2", units);
+			if (new File(saveDir + player1 + "-" + player2 + "-"
+					+ "gameboard.dat").exists()) {
+				gameboard.loadData(player1, player2);
+			}
 
-    public Animate(Cell cell, String direction)
-    {
-      this.cell = cell;
-      this.d = direction;
-      System.out.println("hello it is i, starting");
-    }
+			// create inventories for both players
+			// both players start with a super item. WOW. how generous of us.
+			p1inv = new Inventory(player1);
+			if (new File(saveDir + player1 + "-inventory.dat").exists()) {
+				p1inv.loadData(player1);
+			} else {
+				p1inv.addItem(Item.superitem);
+			}
+			p2inv = new Inventory(player2);
+			if (new File(saveDir + player2 + "-inventory.dat").exists()) {
+				p2inv.loadData(player2);
+			} else {
+				p2inv.addItem(Item.superitem);
+			}
+			System.out.println(player1 + "'s inventory: " + p1inv.toString());
+			System.out.println(player2 + "'s inventory: " + p2inv.toString());
+			player1units = gameboard.getPlayer1Units();
+			player2units = gameboard.getPlayer2Units();
+			CurrentUnitSelected = null;
+			EnemyUnitSelected = null;
 
-    @Override
-    public void run()
-    {
-      System.out.println("hello it is i, running");
-      if (cell != null)
-        System.out.println(cell.getUnit());
-      Image image = Imageview.getSheet("lukeSkywalker");
-      System.out.println(image.toString());
-      // for (Image image : b) {
-      // if(cell.getUnit().equals(image)){}
-      Image scaledImg = image.getScaledInstance(24, 63, Image.SCALE_DEFAULT);
-      int initX = cell.getLocation().x;
-      int x = cell.getLocation().x;
-      int initY = cell.getLocation().y;
-      int y = cell.getLocation().y;
-      int endX = initX + 24;
-      int endY = initY + 63;
-      if (d == "N")
-      {
-        while (initY < endY)
-        {
-          System.out.println("hello it is i, DRAWING" + "lukeSkywalker");
-          initY = initY + 9;
-          cell.getLocation().translate(0, 9);
-          imagePanel.getGraphics().drawImage(scaledImg, initX, initY, null);
-          imagePanel.repaint();
-          repaint();
-          this.cell.setLocation(new Point(x, y + 1));
-          // set the cell to the next one up
-        }
-      }
-      else
-        return; // TODO get rid of this else and add conditionals
-      // for S, L, & R.
-      // update where the image is drawn
-      // }
-    }
-  }
+			return true;
+		} catch (Exception e) {
+			System.err.println("Unable to load data!");
+		}
+		return false;
+	}
+
+	/**
+	 * This method attempts to save the gameboard and local inventories in
+	 * "./player 1-player 2-gameboard.dat" and "./player1-inventory.dat"
+	 * respectively.
+	 */
+	public void saveData() {
+		try {
+			gameboard.saveData(player1, player2);
+			p1inv.saveData();
+			p2inv.saveData();
+		} catch (Exception e) {
+			System.err.println("Error! Could not save data.");
+		}
+	}
+
+	public class Animate implements Runnable {
+		Cell cell;
+		String d;
+
+		public Animate(Cell cell, String direction) {
+			this.cell = cell;
+			this.d = direction;
+			System.out.println("hello it is i, starting");
+		}
+
 		@Override
 		public void run() {
 			System.out.println("hello it is i, running");
