@@ -25,72 +25,58 @@ public class AI {
 		myunits = GUI.gameboard.getPlayer1Units();
 		playerunits = GUI.gameboard.getPlayer2Units();
 		Cell flag = GUI.gameboard.getCell(10, 10);
-		Cell cell = myunits.get(0);
+		
 
-		ChangeUnitCommand command = new ChangeUnitCommand(cell);
-		GUI.gameboard.commandqueue.add(command);
-		System.out.println("change unit command");
-		Stack<Point> path = findNearestUnit(cell, myunits);
-		int amountofmoves = cell.getUnit().getMoveRange();
-		int attackrange = cell.getUnit().getAttackRange();
-		Point prev = cell.getLocation();
-		for (int i = 0; i < path.size() || i < amountofmoves; i++) {
-			if (!path.isEmpty()) {
-				Point p = path.pop();
-				Point cellpoint;
-				if (!path.isEmpty() && i != 0) {
-					cellpoint = path.peek();
-				} else {
-					cellpoint = p;
-				}
-				System.out.println("This is my current point" + cell.getLocation());
-				System.out.println("This is my 'previous' point " + prev);
-				System.out.println("this is the point i am going to go next"
-						+ p);
-				
-				System.out.println("This is the next point" + cellpoint);
-				int x = p.x;
-
-				int y = p.y;
-				int cellx = cell.getLocation().x;
-				int celly = cell.getLocation().y;
-				if (x == cellx && y == celly) {
-				} /*else if (path.size() == attackrange) {
-					Point attackpoint = null;
-					while (!path.isEmpty()) {
-						attackpoint = path.pop();
+		
+		
+		for(int unit = 0; unit < myunits.size(); unit++){
+			Cell cell = myunits.get(unit);
+			ChangeUnitCommand command = new ChangeUnitCommand(cell);
+			GUI.gameboard.commandqueue.add(command);
+			System.out.println("change unit command. Current UNIT: " + cell.getUnit().toString());
+			Stack<Point> path = findNearestUnit(cell, myunits);
+			int amountofmoves = cell.getUnit().getMoveRange();
+			int attackrange = cell.getUnit().getAttackRange();
+			Point prev = cell.getLocation();
+			for (int i = 0; i < amountofmoves; i++) {
+				if (!path.isEmpty()) {
+					Point p = path.pop();
+					Point cellpoint;
+					if (!path.isEmpty() && i != 0) {
+						cellpoint = path.peek();
+					} else {
+						cellpoint = p;
 					}
+					System.out.println("This is my current point" + cell.getLocation());
+					System.out.println("This is my 'previous' point " + prev);
+					System.out.println("this is the point i am going to go next"
+							+ p);
+					
+					System.out.println("This is the next point" + cellpoint);
+					int x = p.x;
 
-					Cell attackcell = GUI.gameboard.getCell(prev.y, prev.x);
-					Cell defensecell = GUI.gameboard.getCell(attackpoint.x,
-							attackpoint.y);
-					AttackCommand attack = new AttackCommand(attackcell,
-							defensecell);
-					System.out.println(attackpoint + "attackpoint");
-					System.out.println("x" + prev.x + "y" + prev.y);
-					System.out.println("x" + attackpoint.y + "y"
-							+ attackpoint.y);
-				}*/ 
-				else if(p.x == flag.getLocation().x && p.y== flag.getLocation().y){
-					System.out.println(p);
-					String direction = findDirection(prev, p);
-					System.out.println(direction);
-					ActionCommand move = new ActionCommand(direction, cell);
-					GUI.gameboard.commandqueue.add(move);
+					int y = p.y;
+					int cellx = cell.getLocation().x;
+					int celly = cell.getLocation().y;
+					if (x == cellx && y == celly) {
+					} 
+					else {
+						System.out.println(p);
+						String direction = findDirection(prev, p);
+						System.out.println(direction);
+						ActionCommand move = new ActionCommand(direction, cell);
+						GUI.gameboard.commandqueue.add(move);
+					}
+					prev = p;
+
+				}
+				else{
 					return;
 				}
-				else {
-					System.out.println(p);
-					String direction = findDirection(prev, p);
-					System.out.println(direction);
-					ActionCommand move = new ActionCommand(direction, cell);
-					GUI.gameboard.commandqueue.add(move);
-				}
-				prev = p;
 
 			}
-
 		}
+		
 		System.out.println(GUI.gameboard.commandqueue.size());
 
 	}

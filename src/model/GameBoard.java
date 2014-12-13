@@ -677,7 +677,17 @@ public class GameBoard extends JFrame implements Serializable {
 				numberOfUnits++;
 			}
 		}
-				board[3][19].setUnit(units.get(0));
+		/*unit = factory.makeUnit("SpiderTank", GUI.getPlayer2());
+		units.add(0,unit);
+		unit = factory.makeUnit("ArtilleryDroid", GUI.getPlayer2());
+		units.add(1,unit);
+		unit = factory.makeUnit("ImperialMedic", GUI.getPlayer2());
+		units.add(2,unit);
+		unit = factory.makeUnit("Droideka", GUI.getPlayer2());
+		units.add(3,unit);
+		unit = factory.makeUnit("Walker", GUI.getPlayer2());
+		units.add(4,unit);	*/	
+		board[3][19].setUnit(units.get(0));
 				board[3][19].setHasUnit(true);
 				player2Units.add(board[3][19]);
 				
