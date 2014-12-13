@@ -521,7 +521,7 @@ public class GUI extends JFrame
     this.setSize(1280, 800);
     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     titleScreen = new TitleScreen();
-    this.setVisible(true);
+    
     titleScreen.setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
 
@@ -549,7 +549,7 @@ public class GUI extends JFrame
     titleScreen.add(vsHuman, c);
 
     this.add(titleScreen);
-
+    this.setVisible(true);
   }
 
   private class SelectionButtonListener implements ActionListener
@@ -1339,7 +1339,7 @@ public class GUI extends JFrame
         // animation.run();
         int i = player1units.indexOf(cellwithunit);
         player1units.remove(i);
-
+        
         CurrentUnitSelected = gameboard.move(cellwithunit, direction);
         if (CurrentUnitSelected.hasUnit())
         {
@@ -1408,8 +1408,7 @@ public class GUI extends JFrame
             System.out.println("does it get here?");
             Command<GUI> command = GUI.gameboard.commandqueue.poll();
             command.execute(GUI.this);
-            GUI.gameboard.commandqueue.element().setCurrentCell(
-                CurrentUnitSelected);
+           
             if (GUI.gameboard.commandqueue.isEmpty())
             {
 
