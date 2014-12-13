@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-public class CharacterSelectionScreen extends JPanel
+public class MapSelectionScreen extends JPanel
 {
   private static final String imageDir = System.getProperty("user.dir")
       + File.separator + "images" + File.separator;
@@ -24,11 +24,11 @@ public class CharacterSelectionScreen extends JPanel
 
   private JLabel jlabel;
 
-  public CharacterSelectionScreen()
+  public MapSelectionScreen()
   {
 
-    jlabel = new JLabel("Select 5 Units!");
-    jlabel.setFont(new Font("Verdana", Font.BOLD, 76));
+    jlabel = new JLabel("Choose Your Map!");
+    jlabel.setFont(new Font("Verdana", Font.BOLD, 16));
     jlabel.setForeground(Color.RED);
     this.setBorder(new LineBorder(Color.BLACK)); // make it easy to see
     this.setVisible(true);
