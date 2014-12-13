@@ -264,61 +264,13 @@ public class GameBoard extends JFrame implements Serializable {
 			}
 		}		
 		// Quicksand pit:
-		board[10][9].setTerrain(Terrain.QuickSand);
-		board[11][9].setTerrain(Terrain.QuickSand);
-		board[9][9].setTerrain(Terrain.QuickSand);
-		board[9][10].setTerrain(Terrain.QuickSand);
-		board[11][10].setTerrain(Terrain.QuickSand);
-		board[11][11].setTerrain(Terrain.QuickSand);
-		board[9][11].setTerrain(Terrain.QuickSand);
-		board[10][11].setTerrain(Terrain.QuickSand);
 		
 		// place flag:
 		board[10][10].setTerrain(Terrain.Flag);
 		
 		// Boulders and Lavas:
-		board[8][8].setTerrain(Terrain.Boulder);
-		board[8][12].setTerrain(Terrain.Boulder);
-		board[12][8].setTerrain(Terrain.Boulder);
-		board[12][12].setTerrain(Terrain.Boulder);
-		board[9][8].setTerrain(Terrain.Lava);
-		board[11][8].setTerrain(Terrain.Lava);
-		board[9][12].setTerrain(Terrain.Lava);
-		board[11][12].setTerrain(Terrain.Lava);
-		board[10][12].setTerrain(Terrain.Boulder);
-		board[10][8].setTerrain(Terrain.Boulder);
-		board[8][9].setTerrain(Terrain.Lava);
-		board[8][10].setTerrain(Terrain.Boulder);
-		board[8][11].setTerrain(Terrain.Lava);
-		board[12][9].setTerrain(Terrain.Lava);
-		board[12][10].setTerrain(Terrain.Boulder);
-		board[12][11].setTerrain(Terrain.Lava);
 		
 		// Ice
-		for (int i = 3; i < 17; i++) 
-			board[3][i].setTerrain(Terrain.Ice);
-		for (int i = 3; i < 17; i++) 
-			board[17][i].setTerrain(Terrain.Ice);
-		for (int i = 3; i < 17; i++)
-			board[7][i].setTerrain(Terrain.Ice);
-		for (int i = 3; i < 17; i++)
-			board[13][i].setTerrain(Terrain.Ice);
-		
-		board[17][17].setTerrain(Terrain.Lava);
-		board[3][2].setTerrain(Terrain.Lava);
-		board[7][17].setTerrain(Terrain.QuickSand);		
-		board[13][2].setTerrain(Terrain.QuickSand);
-
-		for (int i = 0; i < 20; i++) { 
-			board[i][5].setTerrain(Terrain.Boulder);
-			i++;
-		}
-		for (int i = 0; i < 20; i++) { 
-			board[i][15].setTerrain(Terrain.Boulder);
-			i++;
-		}
-		for (int i = 3; i < 17; i++)
-			board[7][i].setTerrain(Terrain.Ice);
 		
 //		ArrayList<Unit> unitsToAdd = new ArrayList<Unit>();
 //		unitsToAdd = createUnitSelection();

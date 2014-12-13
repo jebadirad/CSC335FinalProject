@@ -1602,11 +1602,10 @@ public class GUI extends JFrame {
 				else {
 					AIgame = true;
 					computer = new AI();
-<<<<<<< HEAD
-					setVisible(true);
-=======
+
+
 					setVisible(false);
->>>>>>> branch 'master' of https://github.com/jebadirad/CSC335FinalProject
+
 					newGame("vsAi", units);
 					layoutGUI();
 					registerListeners();

@@ -111,11 +111,13 @@ public class AI {
 		// base: check if bolder
 		ArrayList<Stack<Point>> distances = new ArrayList<Stack<Point>>();
 		for (int k = 0; k < playerunits.size(); k++) {
-			Cell endcell = playerunits.get(k);
-			int x = endcell.getLocation().x;
-			int y = endcell.getLocation().y;
-			int startx = cell.getLocation().x;
-			int starty = cell.getLocation().y;
+			Cell endcell = GUI.gameboard.getCell(10,10);
+			int x = cell.getLocation().x;
+			int y = cell.getLocation().y;
+			
+			int startx = endcell.getLocation().x;
+			int starty = endcell.getLocation().y;
+
 			Cell[][] dupeboard = new Cell[20][20];
 			for (int i = 0; i < 20; i++) {
 				for (int j = 0; j < 20; j++) {
