@@ -1045,8 +1045,8 @@ public class GUI extends JFrame {
 				} else {
 					if (n == JOptionPane.NO_OPTION) {
 						System.out.println("no option");
-						frame.dispatchEvent(new WindowEvent(frame,
-								WindowEvent.WINDOW_CLOSING));
+						System.exit(0);
+						
 					}
 				}
 			}
@@ -1107,8 +1107,8 @@ public class GUI extends JFrame {
 					} else {
 						if (n == JOptionPane.NO_OPTION) {
 							System.out.println("no option");
-							frame.dispatchEvent(new WindowEvent(frame,
-									WindowEvent.WINDOW_CLOSING));
+							System.exit(0);
+							
 						}
 					}
 				}
@@ -1232,8 +1232,9 @@ public class GUI extends JFrame {
 					} else {
 						if (n == JOptionPane.NO_OPTION) {
 							System.out.println("no option");
-							frame.dispatchEvent(new WindowEvent(frame,
-									WindowEvent.WINDOW_CLOSING));
+							//GUI.this.dispatchEvent(new WindowEvent(frame,
+								//	WindowEvent.WINDOW_CLOSING));
+							System.exit(0);
 						}
 					}
 
