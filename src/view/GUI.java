@@ -1075,7 +1075,7 @@ public class GUI extends JFrame {
                 animation.start();
                 animation.run();
 
-				CurrentUnitSelected = gameboard.move(cellwithunit, direction);
+//				CurrentUnitSelected = gameboard.move(cellwithunit, direction);
 				if (CurrentUnitSelected.hasUnit()) {
 					player1units.add(i, CurrentUnitSelected);
 					targets(CurrentUnitSelected);
@@ -1755,23 +1755,25 @@ public class GUI extends JFrame {
 				Image scaledImg = image
 						.getScaledInstance(24, 63, Image.SCALE_DEFAULT);
 				int initX = cell.getLocation().x;
-				int x = cell.getLocation().x;
 				int initY = cell.getLocation().y;
-				int y = cell.getLocation().y;
 				int endX = initX + 24;
 				int endY = initY + 63;
 				if (d == "N") {
-					while (initY < endY) {
-						System.out.println("hello it is i, DRAWING" + "lukeSkywalker");
-						initY = initY + 9;
-						cell.getLocation().translate(0, 9);
+					while (initY > endY) {
+						System.out.println("hello it is i, DRAWING" + " lukeSkywalker");
+						initY = initY - 9;
+//						cell.getLocation().translate(0, 1);
 						imagePanel.getGraphics().drawImage(scaledImg, initX, initY,
 								null);
 						imagePanel.repaint();
+						imagePanel.revalidate();
+						revalidate();
 						repaint();
-						this.cell.setLocation(new Point(x, y+1));
 						// set the cell to the next one up
 					}
+					System.out.println(cell.hasUnit());
+					CurrentUnitSelected = gameboard.move(cell, d);
+					return;
 				} else
 					return; // TODO get rid of this else and add conditionals
 							// for S, L, & R.
