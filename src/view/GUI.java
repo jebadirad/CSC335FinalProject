@@ -44,7 +44,6 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -72,35 +71,34 @@ import model.Terrain;
  * @author JonDavid Ebadirad
  * 
  */
-public class GUI extends JFrame
-{
-  private static final long serialVersionUID = -2853985771911325020L;
-  private static final String saveDir = System.getProperty("user.dir")
-      + File.separator + "gamesaves" + File.separator;
+public class GUI extends JFrame {
+	private static final long serialVersionUID = -2853985771911325020L;
+	private static final String saveDir = System.getProperty("user.dir")
+			+ File.separator + "gamesaves" + File.separator;
 
-  public static String player1;
-  public static String player2;
-  public static int player1FlagPoints;
-  public static int player2FlagPoints;
+	public static String player1;
+	public static String player2;
+	public static int player1FlagPoints;
+	public static int player2FlagPoints;
 
-  public ArrayList<Cell> playerunits = new ArrayList<Cell>();
-  AI computer;
+	public ArrayList<Cell> playerunits = new ArrayList<Cell>();
+	AI computer;
 
-  JFrame frame;
-  JPanel shop;
-  JPanel movePanel;
-  JPanel listItems;
-  JPanel shopNav;
-  JPanel unitPanel;
-  JPanel playerstatus;
-  JPanel imagePanel;
-  JPanel contentContainer;
-  JPanel playerContainer;
-  JPanel playerInfoContainer;
-  JTabbedPane tabbedpane;
-  JPanel listOfTargets;
+	JFrame frame;
+	JPanel shop;
+	JPanel movePanel;
+	JPanel listItems;
+	JPanel shopNav;
+	JPanel unitPanel;
+	JPanel playerstatus;
+	JPanel imagePanel;
+	JPanel contentContainer;
+	JPanel playerContainer;
+	JPanel playerInfoContainer;
+	JTabbedPane tabbedpane;
+	JPanel listOfTargets;
 
-  JLabel usernamestring, inventorystring, credits;
+	JLabel usernamestring, inventorystring, credits;
 
   JPanel inventoryPanel;
   JPanel attackButtonPanel;
