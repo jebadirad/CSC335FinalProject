@@ -2964,7 +2964,7 @@ public class GameBoard extends JFrame implements Serializable {
 		for (int i = 0; i < player2Units.size(); i++) 
 			units.add(i, player2Units.get(i).getUnit());
 		
-		return new GameBoard("Map 1",new ArrayList<Unit>());
+		return new GameBoard("AI",new ArrayList<Unit>());
 	}
 
 	/**
