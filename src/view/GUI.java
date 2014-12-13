@@ -20,6 +20,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
@@ -280,6 +282,7 @@ public class GUI extends JFrame
     {
       AI computer = new AI();
     }
+
     gameboard = new GameBoard(map, units);
     new Thread(new Runner()).start();
     // create inventories for both players
@@ -295,6 +298,46 @@ public class GUI extends JFrame
     CurrentUnitSelected = null;
     EnemyUnitSelected = null;
     targetButtons = new ArrayList();
+
+  }
+
+  private class GameKeyListener implements KeyListener
+  {
+
+    public void keyPressed(KeyEvent e)
+    {
+
+      System.out.println("Key Pressed!!!");
+      System.out.println("" + e.getKeyCode());
+
+      if (e.getKeyCode() == 37)
+      {
+        moveLeft.doClick();
+      }
+      if (e.getKeyCode() == 38)
+      {
+        moveUp.doClick();
+
+      }
+      if (e.getKeyCode() == 39)
+      {
+        moveRight.doClick();
+
+      }
+      if (e.getKeyCode() == 40)
+      {
+        moveDown.doClick();
+
+      }
+    }
+
+    public void keyReleased(KeyEvent e)
+    {
+    }
+
+    public void keyTyped(KeyEvent e)
+    {
+    }
 
   }
 
@@ -1066,6 +1109,9 @@ public class GUI extends JFrame
     movePanel = new JPanel();
     movePanel.setPreferredSize(new Dimension(450, 150));
     movePanel.setLayout(new BorderLayout());
+
+    // KeyListener listener = new GameKeyListener();
+    // addKeyListener(listener);
 
     JPanel DirectionPanel = new JPanel();
     DirectionPanel.setPreferredSize(new Dimension(250, 150));
