@@ -1316,7 +1316,9 @@ public class GameBoard extends JFrame implements Serializable {
 					.getUnit()
 					.setMovesLeft(
 							board[cellWithUnit.getLocation().x][cellWithUnit
-									.getLocation().y].getUnit().getMovesLeft() - 1);
+									.getLocation().y]
+											.getUnit()
+											.getMovesLeft() - 1);
 
 			// Add unit to the cell above it
 			board[cellWithUnit.getLocation().x - 1][cellWithUnit.getLocation().y]

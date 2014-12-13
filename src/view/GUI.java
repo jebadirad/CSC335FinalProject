@@ -10,6 +10,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -35,6 +36,8 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.sound.sampled.AudioFormat;
@@ -55,7 +58,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 
+import view.Explosion;
+import unit.SpriteObject;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 import unit.Unit;
@@ -76,10 +82,11 @@ public class GUI extends JFrame {
 	private static final String saveDir = System.getProperty("user.dir")
 			+ File.separator + "gamesaves" + File.separator;
 
-	public static String player1;
-	public static String player2;
+	public static String player1 = "1";
+	public static String player2 = "2";
 	public static int player1FlagPoints;
 	public static int player2FlagPoints;
+	JPanel panel;
 
 	public ArrayList<Cell> playerunits = new ArrayList<Cell>();
 	AI computer;
@@ -121,6 +128,7 @@ public class GUI extends JFrame {
   JButton vsAI = new JButton("vs AI");
   JButton toMap = new JButton("Choose Map");
   JButton startAI = new JButton("Start AI Game");
+  private List<SpriteObject> splosions;
 
   ArrayList<JRadioButton> radiobuttons;
   ArrayList<JRadioButton> targetButtons;
@@ -669,8 +677,10 @@ public class GUI extends JFrame {
 
     usernamelabel1 = new JLabel("Team 1 username: ");
     username1 = new JTextField(15);
+    username1.setText("1");
     usernamelabel2 = new JLabel("Team 2 username: ");
     username2 = new JTextField(15);
+    username2.setText("2");
 
     teamSelect.add(usernamelabel1);
     teamSelect.add(username1);
@@ -694,7 +704,7 @@ public class GUI extends JFrame {
     selectNumberOfImperialMedic = new JTextField(10);
     selectNumberOfImperialMedic.setText("0");
     selectNumberOfLukeSkywalker = new JTextField(10);
-    selectNumberOfLukeSkywalker.setText("0");
+    selectNumberOfLukeSkywalker.setText("05");
     selectNumberOfDarthVader = new JTextField(10);
     selectNumberOfDarthVader.setText("0");
     selectNumberOfSpiderTank = new JTextField(10);
@@ -1220,6 +1230,49 @@ public class GUI extends JFrame {
     {
       System.out.println(EnemyUnitSelected.getUnit().getHealth());
       gameboard.attack(CurrentUnitSelected, EnemyUnitSelected);
+
+		splosions = new LinkedList<SpriteObject>();
+		panel = new JPanel(){
+			public void paintComponent(Graphics g){
+				super.paintComponent(g);
+				for (SpriteObject explosion : splosions)
+					explosion.draw(g);
+			}
+		};
+		panel.setLocation(0,0);
+		panel.setPreferredSize(new Dimension(63, 24));
+
+		Timer animTimer = new Timer(15, new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try{
+					//splosions.stream().filter(s -> s.isFinished()).forEach(d -> splosions.remove(d));
+
+				  LinkedList<SpriteObject> dead = new LinkedList<SpriteObject>();
+					for (SpriteObject s : splosions)
+						if (((Explosion) s).isFinished())
+							dead.add(s);
+					for (SpriteObject s: dead)
+						splosions.remove(s);
+					panel.getGraphics().drawImage(Imageview.getBackgroundSheet(), panel.getX(), panel.getY(), 63, 24, null);
+					
+				} catch(Exception e){}
+				panel.repaint();
+			}
+			
+		});
+
+		imagePanel.add(panel);
+		imagePanel.repaint();
+		imagePanel.revalidate();
+		animTimer.start();
+		repaint();
+
+		Explosion explosion = new Explosion(EnemyUnitSelected.getLocation().x, EnemyUnitSelected.getLocation().y);
+		
+		splosions.add(explosion);
+		explosion.start();
+
       targets(CurrentUnitSelected);
       layoutAttackScreen();
       if (gameboard.CheckgameOverBooleanVersion(player2units))
@@ -1271,11 +1324,11 @@ public class GUI extends JFrame {
     {
       if (gameboard.canMove(cellwithunit, direction))
       {
+//    	  Thread animation = new Thread(new Animate(cellwithunit, direction));
+//    	  animation.start();
+//    	  animation.run();
         int i = player1units.indexOf(cellwithunit);
         player1units.remove(i);
-        Thread animation = new Thread(new Animate(cellwithunit, direction));
-        animation.start();
-        animation.run();
 
         CurrentUnitSelected = gameboard.move(cellwithunit, direction);
         if (CurrentUnitSelected.hasUnit())
@@ -1769,7 +1822,7 @@ public class GUI extends JFrame {
             selectNumberOfBattleDroid.setText("0");
             selectNumberOfImperialMedic.setText("0");
             selectNumberOfLukeSkywalker.setText("0");
-            selectNumberOfDarthVader.setText("0");
+            selectNumberOfDarthVader.setText("5");
             selectNumberOfSpiderTank.setText("0");
             selectNumberOfDroideka.setText("0");
             selectNumberOfArtilleryDroid.setText("0");
@@ -2132,8 +2185,10 @@ public class GUI extends JFrame {
     public void run()
     {
       System.out.println("hello it is i, running");
-      if (cell != null)
+      if (cell.getUnit() != null){
+    	  System.out.println("The unit we're looking for: ");
         System.out.println(cell.getUnit());
+      }
       Image image = Imageview.getSheet("lukeSkywalker");
       System.out.println(image.toString());
       // for (Image image : b) {
@@ -2147,17 +2202,24 @@ public class GUI extends JFrame {
       int endY = initY + 63;
       if (d == "N")
       {
-        while (initY < endY)
-        {
-          System.out.println("hello it is i, DRAWING" + "lukeSkywalker");
-          initY = initY + 9;
-          cell.getLocation().translate(0, 9);
-          imagePanel.getGraphics().drawImage(scaledImg, initX, initY, null);
-          imagePanel.repaint();
-          repaint();
-          this.cell.setLocation(new Point(x, y + 1));
-          // set the cell to the next one up
-        }
+    	  while (initY > endY) {
+    		  System.out.println("hello it is i, DRAWING" + " lukeSkywalker");
+    		  initY = initY - 1;
+    		  // cell.getLocation().translate(0, 1);
+    		  imagePanel.getGraphics().drawImage(scaledImg, initX, initY,
+    		  null);
+    		  imagePanel.repaint();
+    		  imagePanel.revalidate();
+    		  revalidate();
+    		  repaint();
+    		  // set the cell to the next one up
+    		  }
+    	  System.out.println(cell.hasUnit());
+    	  System.out.println("moving unit...");
+    	  CurrentUnitSelected = gameboard.move(cell, d);
+    	  this.cell = CurrentUnitSelected;
+    		  System.out.println(CurrentUnitSelected.hasUnit());
+    		  return;
       }
       else
         return; // TODO get rid of this else and add conditionals
