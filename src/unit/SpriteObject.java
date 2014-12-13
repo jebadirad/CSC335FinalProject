@@ -38,7 +38,7 @@ public abstract class SpriteObject {
 	
 	public void draw(Graphics g){
 		if (sprite != null && !sprite.isFinished())
-			g.drawImage(frame, position.x  - sprite.getWidth()/2, position.y - sprite.getHeight()/2, null);
+			g.drawImage(frame, position.x , position.y , null);
 	}
 	
 	public void moveLeft(){

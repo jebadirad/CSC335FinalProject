@@ -1320,7 +1320,7 @@ public class GUI extends JFrame
             explosion.draw(g);
         }
       };
-      panel.setLocation(0, 0);
+
       panel.setPreferredSize(new Dimension(63, 24));
 
       Timer animTimer = new Timer(15, new ActionListener()
@@ -1330,8 +1330,8 @@ public class GUI extends JFrame
         {
           try
           {
-            // splosions.stream().filter(s -> s.isFinished()).forEach(d ->
-            // splosions.remove(d));
+//             splosions.stream().filter(s -> s.isFinished()).forEach(d ->
+//             splosions.remove(d));
 
             LinkedList<SpriteObject> dead = new LinkedList<SpriteObject>();
             for (SpriteObject s : splosions)
@@ -1344,17 +1344,16 @@ public class GUI extends JFrame
 
           }
           catch (Exception e)
-          {
-          }
+          {}
           panel.repaint();
         }
-
       });
 
       imagePanel.add(panel);
       imagePanel.repaint();
       imagePanel.revalidate();
       animTimer.start();
+      imagePanel.repaint();
       repaint();
 
       Explosion explosion = new Explosion(EnemyUnitSelected.getLocation().x,
