@@ -257,7 +257,7 @@ public class GUI extends JFrame {
 		p1inv = new Inventory(player1);
 		p2inv = new Inventory(player2);
 		// both players start with a super item. WOW. how generous of us.
-		p1inv.addItem(Item.superitem);
+		p1inv.addItem(Item.hyperpotion);
 		System.out.println(player1 + "'s inventory: " + p1inv.toString());
 		p2inv.addItem(Item.superitem);
 		System.out.println(player2 + "'s inventory: " + p2inv.toString());
@@ -466,7 +466,7 @@ public class GUI extends JFrame {
 		this.setSize(1280, 800);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		titleScreen = new TitleScreen();
-		this.setVisible(true);
+		
 		titleScreen.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 
@@ -494,6 +494,7 @@ public class GUI extends JFrame {
 		titleScreen.add(vsHuman, c);
 
 		this.add(titleScreen);
+		this.setVisible(true);
 
 	}
 
@@ -1023,7 +1024,7 @@ public class GUI extends JFrame {
 			dialog.setAlwaysOnTop(true);
 			dialog.setVisible(true);
 		} else {
-			System.out.println(EnemyUnitSelected.getUnit().getHealth());
+			//System.out.println(EnemyUnitSelected.getUnit().getHealth());
 			gameboard.attack(CurrentUnitSelected, EnemyUnitSelected);
 			targets(CurrentUnitSelected);
 			layoutAttackScreen();
@@ -1133,13 +1134,9 @@ public class GUI extends JFrame {
 						Command<GUI> command = GUI.gameboard.commandqueue
 								.poll();
 						command.execute(GUI.this);
+						if(!GUI.gameboard.commandqueue.isEmpty()){
 						GUI.gameboard.commandqueue.element().setCurrentCell(
 								CurrentUnitSelected);
-						if (GUI.gameboard.commandqueue.isEmpty()) {
-
-						} else {
-							GUI.gameboard.commandqueue.element()
-									.setCurrentCell(CurrentUnitSelected);
 						}
 
 						System.out.println("this should execute");
@@ -1165,13 +1162,18 @@ public class GUI extends JFrame {
 					dialog.setAlwaysOnTop(true);
 					dialog.setVisible(true);
 				} else {
-					for (int i = 0; i < items.size(); i++) {
-						Item item = p1inv.getItem(items.get(i));
-						CurrentUnitSelected = gameboard.useItem(item,
-								CurrentUnitSelected);
-						p1inv.removeItem(item);
-						UpdateItemScreen();
+					for (int i = 0; i < itemBoxes.size(); i++) {
+						if(itemBoxes.get(i).isSelected()){
+							Item item = p1inv.getItem(itemBoxes.get(i).getText());
+							CurrentUnitSelected = gameboard.useItem(item,
+									CurrentUnitSelected);
+							p1inv.removeItem(item);
+						}
+						
+						
+						
 					}
+					UpdateItemScreen();
 					items.clear();
 				}
 			}
@@ -1600,7 +1602,8 @@ public class GUI extends JFrame {
 				else {
 					AIgame = true;
 					computer = new AI();
-					setVisible(false);
+					setVisible(true);
+
 					newGame("vsAi", units);
 					layoutGUI();
 					registerListeners();
