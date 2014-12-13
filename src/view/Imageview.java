@@ -360,4 +360,8 @@ public class Imageview extends JPanel implements Runnable
     return img;
   }
 
+  public static Image getBackgroundSheet() {
+	  return backgroundSheet;
+  }
+
 }
