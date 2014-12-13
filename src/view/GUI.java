@@ -1412,15 +1412,15 @@ public class GUI extends JFrame
     }
     else
     {
-      if (gameboard.canMove(cellwithunit, direction))
+      if (gameboard.canMove(CurrentUnitSelected, direction))
       {
         // Thread animation = new Thread(new Animate(cellwithunit, direction));
         // animation.start();
         // animation.run();
-        int i = player1units.indexOf(cellwithunit);
+        int i = player1units.indexOf(CurrentUnitSelected);
         player1units.remove(i);
 
-        CurrentUnitSelected = gameboard.move(cellwithunit, direction);
+        CurrentUnitSelected = gameboard.move(CurrentUnitSelected, direction);
         if (CurrentUnitSelected.hasUnit())
         {
           player1units.add(i, CurrentUnitSelected);
