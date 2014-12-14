@@ -38,8 +38,8 @@ public abstract class SpriteObject {
 	
 	public void draw(Graphics g){
 		if (sprite != null && !sprite.isFinished())
-			g.drawImage(frame, position.x, position.y, position.x + 63, position.y + 24, 0, 0, 96, 96, null);
-//			g.drawImage(frame, position.x , position.y , null);
+//			g.drawImage(frame, position.x, position.y, position.x + 63, position.y + 24, 0, 0, 96, 96, null);
+			g.drawImage(frame, position.x , position.y , null);
 	}
 	
 	public void moveLeft(){

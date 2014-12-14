@@ -877,6 +877,7 @@ public class GUI extends JFrame
       }
       catch (Exception e)
       {
+    	  // TODO @bug After this popup we need to go back to the team selection instead of map select
         JOptionPane optionPane = new JOptionPane();
         optionPane.setMessage("Please make better units selections... ");
         JDialog dialog = optionPane.createDialog(":~(");
@@ -1317,11 +1318,11 @@ public class GUI extends JFrame
         {
           super.paintComponent(g);
           for (SpriteObject explosion : splosions)
-            explosion.draw(g);
+            explosion.draw(imagePanel.getGraphics()); // replace imagePanel.getGraphics() w/ g
         }
       };
 
-      panel.setPreferredSize(new Dimension(63, 24));
+      panel.setPreferredSize(new Dimension(1, 1)); // animation doesn't work if it's 0, 0 and any larger it's... ugly.
 
       Timer animTimer = new Timer(15, new ActionListener()
       {
@@ -1340,8 +1341,6 @@ public class GUI extends JFrame
             for (SpriteObject s : dead)
               splosions.remove(s);
 
-//            imagePanel.getGraphics().drawImage(Imageview.getBackgroundSheet(), // TODO this works only if panel is drawn in the correct spot
-//                panel.getX(), panel.getY(), 63, 24, null);
           }
           catch (Exception e)
           {
@@ -1352,12 +1351,12 @@ public class GUI extends JFrame
 
       imagePanel.add(panel);
       imagePanel.repaint();
-      imagePanel.revalidate();
       animTimer.start();
       repaint();
+      revalidate();
 
-      Explosion explosion = new Explosion(EnemyUnitSelected.getLocation().x,
-          EnemyUnitSelected.getLocation().y);
+      Explosion explosion = new Explosion(EnemyUnitSelected.getLocation().x * 63,
+          EnemyUnitSelected.getLocation().y * 24);
 
       splosions.add(explosion);
       explosion.start();
@@ -2315,5 +2314,12 @@ public class GUI extends JFrame
 
   public static List<SpriteObject> getSplosions() {
 	  return splosions;
+  }
+
+  public void paintComponents(Graphics g) {
+      super.paintComponents(g);
+      if(!splosions.isEmpty())
+    	  for (SpriteObject explosion : splosions)
+    		  explosion.draw(g);
   }
 }
