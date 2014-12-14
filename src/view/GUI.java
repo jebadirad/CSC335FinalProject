@@ -1330,8 +1330,8 @@ public class GUI extends JFrame
         {
           try
           {
-//             splosions.stream().filter(s -> s.isFinished()).forEach(d ->
-//             splosions.remove(d));
+            // splosions.stream().filter(s -> s.isFinished()).forEach(d ->
+            // splosions.remove(d));
 
             LinkedList<SpriteObject> dead = new LinkedList<SpriteObject>();
             for (SpriteObject s : splosions)
@@ -1344,7 +1344,8 @@ public class GUI extends JFrame
 //                panel.getX(), panel.getY(), 63, 24, null);
           }
           catch (Exception e)
-          {}
+          {
+          }
           panel.repaint();
         }
       });
@@ -1400,7 +1401,7 @@ public class GUI extends JFrame
   public void move(String direction, Cell cellwithunit)
   {
 
-    if (cellwithunit == null)
+    if (CurrentUnitSelected == null)
     {
       JOptionPane optionPane = new JOptionPane();
       optionPane.setMessage("Please Select a Unit");
@@ -1487,16 +1488,6 @@ public class GUI extends JFrame
             Command<GUI> command = GUI.gameboard.commandqueue.poll();
             command.execute(GUI.this);
 
-            if (GUI.gameboard.commandqueue.isEmpty())
-            {
-
-            }
-            else
-            {
-              GUI.gameboard.commandqueue.element().setCurrentCell(
-                  CurrentUnitSelected);
-            }
-
             System.out.println("this should execute");
 
           }
@@ -1528,9 +1519,9 @@ public class GUI extends JFrame
         }
         else
         {
-          for (int i = 0; i < items.size(); i++)
+          for (int i = 0; i < itemBoxes.size(); i++)
           {
-            Item item = p1inv.getItem(items.get(i));
+            Item item = p1inv.getItem(itemBoxes.get(i).getText());
             CurrentUnitSelected = gameboard.useItem(item, CurrentUnitSelected);
             p1inv.removeItem(item);
             UpdateItemScreen();
@@ -1642,7 +1633,10 @@ public class GUI extends JFrame
 
         gameboard
             .turnOverComputer(player1units, player2units, player1, player2);
-        computer.makeMove();
+        for(int i = 0; i <player1units.size(); i ++){
+        	 computer.makeMove(player1units.get(i));
+        }
+       
         endTurn.doClick();
         player1units = gameboard.getPlayer1Units();
         player2units = gameboard.getPlayer2Units();
@@ -1829,7 +1823,12 @@ public class GUI extends JFrame
 
         else
         {
-          layoutMapScreen();
+          if (checkUserSelections() == false)
+          {
+
+          }
+          else
+            layoutMapScreen();
         }
       }
       if (e.getSource() == instructionButton)

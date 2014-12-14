@@ -17,7 +17,7 @@ public abstract class HealerUnit extends Unit
   public HealerUnit(String imagestring, String username)
   {
     // Base states for HealerUnit
-    super(2, 6, 10, 5, imagestring, username);
+    super(5, 6, 10, 5, imagestring, username);
   }
 
   public void attack(Unit target)

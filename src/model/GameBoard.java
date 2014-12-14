@@ -267,14 +267,11 @@ public class GameBoard extends JFrame implements Serializable {
 		board[10][10].setTerrain(Terrain.Flag);
 		
 		// Boulders:
-		board[8][8].setTerrain(Terrain.Boulder);
-		board[8][12].setTerrain(Terrain.Boulder);
-		board[12][8].setTerrain(Terrain.Boulder);
-		board[12][12].setTerrain(Terrain.Boulder);
-		board[10][12].setTerrain(Terrain.Boulder);
-		board[10][8].setTerrain(Terrain.Boulder);
-		board[8][10].setTerrain(Terrain.Boulder);
-		board[12][10].setTerrain(Terrain.Boulder);
+		board[6][7].setTerrain(Terrain.Boulder);
+		board[6][13].setTerrain(Terrain.Boulder);
+		board[13][13].setTerrain(Terrain.Boulder);
+		board[13][7].setTerrain(Terrain.Boulder);
+		
 
 		addPlayerUnitsAndGenerateComputerUnits(units);
 
@@ -633,6 +630,7 @@ public class GameBoard extends JFrame implements Serializable {
 		while (numberOfUnits < 5) {
 			random = rand.nextInt(8);
 			if (random == 0) {
+				unit = factory.makeUnit("CloneTrooper", GUI.getPlayer2());
 				units.add(numberOfUnits, unit);
 				numberOfUnits++;
 			}
@@ -677,16 +675,7 @@ public class GameBoard extends JFrame implements Serializable {
 				numberOfUnits++;
 			}
 		}
-		/*unit = factory.makeUnit("SpiderTank", GUI.getPlayer2());
-		units.add(0,unit);
-		unit = factory.makeUnit("ArtilleryDroid", GUI.getPlayer2());
-		units.add(1,unit);
-		unit = factory.makeUnit("ImperialMedic", GUI.getPlayer2());
-		units.add(2,unit);
-		unit = factory.makeUnit("Droideka", GUI.getPlayer2());
-		units.add(3,unit);
-		unit = factory.makeUnit("Walker", GUI.getPlayer2());
-		units.add(4,unit);	*/	
+	
 		board[3][19].setUnit(units.get(0));
 				board[3][19].setHasUnit(true);
 				player2Units.add(board[3][19]);
