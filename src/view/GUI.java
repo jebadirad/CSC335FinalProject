@@ -1330,8 +1330,8 @@ public class GUI extends JFrame
         {
           try
           {
-//             splosions.stream().filter(s -> s.isFinished()).forEach(d ->
-//             splosions.remove(d));
+            // splosions.stream().filter(s -> s.isFinished()).forEach(d ->
+            // splosions.remove(d));
 
             LinkedList<SpriteObject> dead = new LinkedList<SpriteObject>();
             for (SpriteObject s : splosions)
@@ -1344,7 +1344,8 @@ public class GUI extends JFrame
 
           }
           catch (Exception e)
-          {}
+          {
+          }
           panel.repaint();
         }
       });
@@ -1830,7 +1831,12 @@ public class GUI extends JFrame
 
         else
         {
-          layoutMapScreen();
+          if (checkUserSelections() == false)
+          {
+
+          }
+          else
+            layoutMapScreen();
         }
       }
       if (e.getSource() == instructionButton)
