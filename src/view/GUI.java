@@ -1520,11 +1520,15 @@ public class GUI extends JFrame
         {
           for (int i = 0; i < itemBoxes.size(); i++)
           {
-            Item item = p1inv.getItem(itemBoxes.get(i).getText());
-            CurrentUnitSelected = gameboard.useItem(item, CurrentUnitSelected);
-            p1inv.removeItem(item);
-            UpdateItemScreen();
+        	  if(itemBoxes.get(i).isSelected()){
+        		  Item item = p1inv.getItem(itemBoxes.get(i).getText());
+              CurrentUnitSelected = gameboard.useItem(item, CurrentUnitSelected);
+              p1inv.removeItem(item); 
+        	  }
+            
+            
           }
+          UpdateItemScreen();
           items.clear();
         }
       }
