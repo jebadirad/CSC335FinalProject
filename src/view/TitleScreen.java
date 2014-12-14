@@ -27,6 +27,8 @@ public class TitleScreen extends JPanel
   private JButton vsAI;
   private JButton vsHuman;
 
+  private JLabel byWho;
+
   public TitleScreen()
   {
     try
@@ -41,10 +43,17 @@ public class TitleScreen extends JPanel
     jlabel = new JLabel("Star Wars TRPG");
     jlabel.setFont(new Font("Verdana", 0, 100));
     jlabel.setForeground(Color.RED);
+
+    byWho = new JLabel("By Aaron, Cramer, Ebadirad, Garcia");
+    byWho.setFont(new Font("Verdana", 0, 12));
+    byWho.setForeground(Color.RED);
     this.setBorder(new LineBorder(Color.BLACK)); // make it easy to see
     this.setVisible(true);
     jlabel.setLocation(0, 300);
     this.add(jlabel);
+
+    byWho.setLocation(0, 600);
+    this.add(byWho);
   }
 
   @Override
