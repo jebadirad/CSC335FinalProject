@@ -50,7 +50,7 @@ public class CharacterSelectionScreen extends JPanel
     this.add(jlabel);
 
     units = new ArrayList();
-    //units = GUI.gameboard.getAllUnits();
+    // units = GUI.gameboard.getAllUnits
   }
 
   @Override
@@ -59,8 +59,6 @@ public class CharacterSelectionScreen extends JPanel
     super.paintComponent(g);
 
     Graphics2D g2 = (Graphics2D) g;
-    g2.setPaint(Color.WHITE);
-    g2.fillRect(0, 0, 1280, 500);
     g2.setPaint(Color.BLACK);
     g2.setFont(new Font("Courier New", Font.BOLD, 17));
     int y = 100;
