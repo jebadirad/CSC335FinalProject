@@ -32,8 +32,10 @@ public class AI {
 			
 			ChangeUnitCommand command = new ChangeUnitCommand(cell);
 			GUI.gameboard.commandqueue.add(command);
+			String unitname = cell.getUnit().toString();
 			if(!unitsToAttack.isEmpty()){
 				if(cell.getUnit().toString().equals("Imperial Medic")){
+					
 				}
 				else{
 					GUI.gameboard.attack(cell, unitsToAttack.get(0));
@@ -77,6 +79,16 @@ public class AI {
 						System.out.println(p);
 						String direction = findDirection(prev, p);
 						System.out.println(direction);
+						if(unitname.equals("Imperial Medic")){
+							if(x == 10 && y == 10){
+								if(GUI.gameboard.getCell(10, 10).hasUnit()){
+									if(GUI.gameboard.getCell(10,10).getUnit().getUsername().equals(GUI.player2)){
+										return;
+									}
+								}
+							}
+						}
+						
 						ActionCommand move = new ActionCommand(direction, cell);
 						GUI.gameboard.commandqueue.add(move);
 					}
