@@ -29,11 +29,18 @@ public class AI {
 		
 			Cell cell = unit;
 			ArrayList<Cell> unitsToAttack = GUI.gameboard.getUnitsInAttackRange(GUI.gameboard.getCell(unit.getLocation().x,unit.getLocation().y));
+			
 			ChangeUnitCommand command = new ChangeUnitCommand(cell);
 			GUI.gameboard.commandqueue.add(command);
 			if(!unitsToAttack.isEmpty()){
-				GUI.gameboard.attack(cell, unitsToAttack.get(0));
-				return;
+				if(cell.getUnit().toString().equals("Imperial Medic")){
+				}
+				else{
+					GUI.gameboard.attack(cell, unitsToAttack.get(0));
+					return;
+				}
+				
+				unitsToAttack.clear();
 			}
 			System.out.println("change unit command. Current UNIT: " + cell.getUnit().toString());
 			Stack<Point> path = findNearestUnit(cell, myunits);
