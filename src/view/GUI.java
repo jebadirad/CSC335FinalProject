@@ -224,7 +224,7 @@ public class GUI extends JFrame
     }
     catch (FileNotFoundException e)
     {
-      System.out.println("Media file not present in C drive.");
+      System.out.println("Media file not present in main drive.");
     }
 
     try
@@ -247,7 +247,7 @@ public class GUI extends JFrame
     }
     catch (FileNotFoundException e)
     {
-      System.out.println("Media file not present in C drive.");
+      System.out.println("Media file not present in main drive.");
     }
 
     try
