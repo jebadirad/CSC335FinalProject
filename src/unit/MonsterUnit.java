@@ -5,7 +5,7 @@ public abstract class MonsterUnit extends Unit
 
   public MonsterUnit(String imagestring, String username)
   {
-    super(1, 10, 100, 3, imagestring, username);
+    super(1, 10, 100, 4, imagestring, username);
   }
 
   public void attack(Unit victim)

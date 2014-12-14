@@ -5,7 +5,7 @@ public abstract class ArtilleryUnit extends Unit
 
   public ArtilleryUnit(String imagestring, String username)
   {
-    super(12, 6, 5, 3, imagestring, username);
+    super(10, 5, 5, 3, imagestring, username);
   }
 
   public void attack(Unit victim)
