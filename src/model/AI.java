@@ -19,24 +19,25 @@ public class AI {
 
 	}
 
-	public void makeMove() {
-		ArrayList<Cell> playerunits = new ArrayList<Cell>();
+	public void makeMove(Cell unit) {
 		ArrayList<Cell> myunits = new ArrayList<Cell>();
 		myunits = GUI.gameboard.getPlayer1Units();
-		playerunits = GUI.gameboard.getPlayer2Units();
 		Cell flag = GUI.gameboard.getCell(10, 10);
 		
 
 		
 		
-		for(int unit = 0; unit < myunits.size(); unit++){
-			Cell cell = myunits.get(unit);
+			Cell cell = unit;
+			ArrayList<Cell> unitsToAttack = GUI.gameboard.getUnitsInAttackRange(GUI.gameboard.getCell(unit.getLocation().x,unit.getLocation().y));
 			ChangeUnitCommand command = new ChangeUnitCommand(cell);
 			GUI.gameboard.commandqueue.add(command);
+			if(!unitsToAttack.isEmpty()){
+				GUI.gameboard.attack(cell, unitsToAttack.get(0));
+				return;
+			}
 			System.out.println("change unit command. Current UNIT: " + cell.getUnit().toString());
 			Stack<Point> path = findNearestUnit(cell, myunits);
 			int amountofmoves = cell.getUnit().getMoveRange();
-			int attackrange = cell.getUnit().getAttackRange();
 			Point prev = cell.getLocation();
 			for (int i = 0; i < amountofmoves; i++) {
 				if (!path.isEmpty()) {
@@ -58,8 +59,13 @@ public class AI {
 					int y = p.y;
 					int cellx = cell.getLocation().x;
 					int celly = cell.getLocation().y;
+					
 					if (x == cellx && y == celly) {
 					} 
+					
+					else if (GUI.gameboard.getCell(x, y).hasUnit()){
+						return;
+					}
 					else {
 						System.out.println(p);
 						String direction = findDirection(prev, p);
@@ -75,7 +81,7 @@ public class AI {
 				}
 
 			}
-		}
+		
 		
 		System.out.println(GUI.gameboard.commandqueue.size());
 
@@ -130,8 +136,8 @@ public class AI {
 				}
 			}
 		}
-		for (int i = 0; i < 19; i++) {
-			for (int j = 0; j < 19; j++) {
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 20; j++) {
 				System.out.print(" " + leeboard[i][j].getValue() + " ");
 			}
 			System.out.println("\n");
@@ -175,12 +181,14 @@ public class AI {
 					} else if (i == 0 && j == 0) {
 
 					} else if (leeboard[a.x + i][a.y + j].getmarked()) {
-					} else {
+					} 
+					else {
 
 						
-
-						leeboard[a.x + i][a.y + j].setvalue(leeboard[a.x][a.y]
-								.getValue() + 1);
+							leeboard[a.x + i][a.y + j].setvalue(leeboard[a.x][a.y]
+									.getValue() + 1);
+						
+						
 
 						leeboard[a.x + i][a.y + j].setmarked();
 						
@@ -192,6 +200,13 @@ public class AI {
 			}
 
 		}
+		/*for(int i = 0; i < 20; i++){
+			for(int j = 0; j < 20; j ++){
+				if(GUI.gameboard.getCell(i, j).hasUnit()){
+					leeboard[i][j].setvalue(9999);
+				}
+			}
+		}*/
 		leeboard[8][8].setvalue(9999);
 		leeboard[8][12].setvalue(9999);
 		leeboard[12][8].setvalue(9999);
@@ -200,8 +215,8 @@ public class AI {
 		leeboard[10][8].setvalue(9999);
 		leeboard[8][10].setvalue(9999);
 		leeboard[12][10].setvalue(9999);
-		for (int i = 0; i < 19; i++) {
-			for (int j = 0; j < 19; j++) {
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 20; j++) {
 				System.out.print(" " + leeboard[i][j].getValue() + " ");
 			}
 			System.out.println("\n");
@@ -235,6 +250,23 @@ public class AI {
 							j = 2;
 
 						}
+						/*else if(leeboard[next.x + i][next.y + j].getValue() == 1){
+							Point add = new Point();
+							add.x = next.x + i;
+							add.y = next.y + j;
+							stack.add(add);
+							count--;
+							i = 2;
+							j = 2;
+						}
+						else{
+							Point add = new Point();
+							add.x = next.x + i;
+							add.y = next.y + j;
+							stack.add(add);
+							i = 2;
+							j = 2;
+						}*/
 					}
 				}
 			}
