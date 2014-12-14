@@ -31,7 +31,7 @@ public class ExplosionSprite extends Sprite {
     } else
       frame++;
     Image temp = sheet.getSubimage(col * width, row * height, width, height);
-    return temp.getScaledInstance(63, 24, Image.SCALE_DEFAULT);
+    return temp;//.getScaledInstance(63, 24, Image.SCALE_DEFAULT);
   }
 
   public int getHeight() {

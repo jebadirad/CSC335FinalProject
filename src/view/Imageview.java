@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import unit.SpriteObject;
 import model.Cell;
 import model.Terrain;
 
@@ -55,7 +56,6 @@ public class Imageview extends JPanel implements Runnable
 
   private static final String imageDir = System.getProperty("user.dir")
       + File.separator + "images" + File.separator;
-  private Lava l;
 
   public Imageview(String background)
   {

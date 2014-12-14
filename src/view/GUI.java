@@ -133,7 +133,7 @@ public class GUI extends JFrame
   JButton startAI = new JButton("Start AI Game");
   JButton instructionButton = new JButton("Okay");
 
-  private List<SpriteObject> splosions;
+  private static List<SpriteObject> splosions;
 
   ArrayList<JRadioButton> radiobuttons;
   ArrayList<JRadioButton> targetButtons;
@@ -1339,9 +1339,9 @@ public class GUI extends JFrame
                 dead.add(s);
             for (SpriteObject s : dead)
               splosions.remove(s);
-            panel.getGraphics().drawImage(Imageview.getBackgroundSheet(),
-                panel.getX(), panel.getY(), 63, 24, null);
 
+//            imagePanel.getGraphics().drawImage(Imageview.getBackgroundSheet(), // TODO this works only if panel is drawn in the correct spot
+//                panel.getX(), panel.getY(), 63, 24, null);
           }
           catch (Exception e)
           {}
@@ -1353,7 +1353,6 @@ public class GUI extends JFrame
       imagePanel.repaint();
       imagePanel.revalidate();
       animTimer.start();
-      imagePanel.repaint();
       repaint();
 
       Explosion explosion = new Explosion(EnemyUnitSelected.getLocation().x,
@@ -2313,5 +2312,9 @@ public class GUI extends JFrame
       // update where the image is drawn
       // }
     }
+  }
+
+  public static List<SpriteObject> getSplosions() {
+	  return splosions;
   }
 }
