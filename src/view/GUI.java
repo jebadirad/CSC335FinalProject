@@ -614,6 +614,15 @@ public class GUI extends JFrame
       if(e.getSource() == LoadTitleButton){
     	  String s1 = (String)JOptionPane.showInputDialog(frame, "Enter Player 1 Username From Previous Game \n", "Loading Game", JOptionPane.QUESTION_MESSAGE,null,null,"");
     	  String s2 = (String)JOptionPane.showInputDialog(frame, "Enter Player 2 Username From Previous Game \n", "Loading Game", JOptionPane.QUESTION_MESSAGE,null,null,"");
+    	  if(s1.equals("") || s1.isEmpty() || s1 == null || s2.equals("") || s2.isEmpty() || s2 == null){
+    		  JOptionPane optionPane = new JOptionPane();
+    	        optionPane.setMessage("Invalid load file, try again");
+    	  }
+    	  else{
+    		  load = new JButton("Load game");
+    		    load.addActionListener(MapButtonListener);
+    		    load.doClick();
+    	  }
       }
     	  
     }
@@ -876,9 +885,7 @@ public class GUI extends JFrame
     mapSelect.add(Map);
     mapSelect.add(Map2);
     mapSelect.add(RandomMap);
-    load = new JButton("Load game");
-    load.addActionListener(MapButtonListener);
-    mapSelect.add(load);
+    
 
     this.add(mapSelect);
     this.setVisible(true);
@@ -1395,7 +1402,8 @@ public class GUI extends JFrame
             for (SpriteObject s : dead)
             {
               splosions.remove(s);
-              imagePanel.repaint();
+              repaint();
+
             }
           }
           catch (Exception e)
@@ -1448,6 +1456,8 @@ public class GUI extends JFrame
 
       revalidate();
       repaint();
+      playerContainer.repaint();
+      playerContainer.revalidate();
     }
   }
 
