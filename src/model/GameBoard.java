@@ -1228,395 +1228,483 @@ public class GameBoard extends JFrame implements Serializable {
 	 * @return Returns the new cell with the unit in it
 	 */
 	public Cell move(Cell cellWithUnit, String direction) {
-		if (direction.equals("N")) {
-
-			// Check to see what terrain we are about to step in:
-			Terrain t = board[cellWithUnit.getLocation().x - 1][cellWithUnit
-					.getLocation().y].getTerrain();
-			// Lava reduced moves left and health left by 2:
-			if (t == Terrain.Lava) {
+		
+		if (cellWithUnit.getUnit().toString().equals("Rancor") || cellWithUnit.getUnit().toString().equals("Wampa")) {
+			if (direction.equals("N")) {
+				// Reduce movement by 1:
 				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
 						.getUnit()
 						.setMovesLeft(
 								board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit()
-										.getMovesLeft() - 2);
+										.getLocation().y]
+												.getUnit()
+												.getMovesLeft() - 1);
+
+				// Add unit to the cell above it
+				board[cellWithUnit.getLocation().x - 1][cellWithUnit.getLocation().y]
+						.setUnit(cellWithUnit.getUnit());
+				board[cellWithUnit.getLocation().x - 1][cellWithUnit.getLocation().y]
+						.setHasUnit(true);
+				// Remove Unit from old cell
 				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
-						.getUnit()
-						.setHealth(
-								board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit().getHealth() - 2);
-
-				// Tell the user of their foolish actions:
-				JOptionPane optionPane = new JOptionPane();
-				optionPane
-						.setMessage("Your Unit "
-								+ board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit().toString()
-								+ " has lost 2 heath, and 2 movement due to lava, fool");
-				JDialog dialog = optionPane.createDialog(":~(");
-				dialog.setAlwaysOnTop(true);
-				dialog.setVisible(true);
-
-				// Check see if unit has died:
-				if (board[cellWithUnit.getLocation().x][cellWithUnit
-						.getLocation().y].getUnit().getHealth() <= 0) {
-					// Unit has died:
-					board[cellWithUnit.getLocation().x][cellWithUnit
-							.getLocation().y].getUnit().setMovesLeft(0);
-					board[cellWithUnit.getLocation().x][cellWithUnit
-							.getLocation().y].getUnit().setCanAttack(false);
-					// Check which player owned the unit:
-					optionPane.setMessage("Your Unit "
-							+ board[cellWithUnit.getLocation().x][cellWithUnit
-									.getLocation().y].getUnit().toString()
-							+ " Has Died!");
-					dialog.setAlwaysOnTop(true);
-					dialog.setVisible(true);
-					// Will always be player1Units since this is in the move
-					// method:
-					player1Units
-							.remove(board[cellWithUnit.getLocation().x][cellWithUnit
-									.getLocation().y]);
-					board[cellWithUnit.getLocation().x][cellWithUnit
-							.getLocation().y].removeUnit();
-					return board[cellWithUnit.getLocation().x][cellWithUnit
-							.getLocation().y];
-
-				}
-
+						.removeUnit();
+				// return the cell the unit moved to:
+				return board[cellWithUnit.getLocation().x - 1][cellWithUnit
+						.getLocation().y];
 			}
-			// Quick-sand reduces moves by 4:
-			if (t == Terrain.QuickSand) {
+			else if (direction.equals("S")) { 
+				// Reduce movement by 1:
 				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
 						.getUnit()
 						.setMovesLeft(
 								board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit()
-										.getMovesLeft() - 4);
+										.getLocation().y].getUnit().getMovesLeft() - 1);
 
-				// Tell the user of their foolish actions:
-				JOptionPane optionPane = new JOptionPane();
-				optionPane.setMessage("Your Unit "
-						+ board[cellWithUnit.getLocation().x][cellWithUnit
-								.getLocation().y].getUnit().toString()
-						+ " has 4 movement due to Quicksand, fool");
-				JDialog dialog = optionPane.createDialog(":~(");
-				dialog.setAlwaysOnTop(true);
-				dialog.setVisible(true);
+				// Add unit to the cell below it
+				board[cellWithUnit.getLocation().x + 1][cellWithUnit.getLocation().y]
+						.setUnit(cellWithUnit.getUnit());
+				board[cellWithUnit.getLocation().x + 1][cellWithUnit.getLocation().y]
+						.setHasUnit(true);
+				// Remove Unit from old cell
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.removeUnit();
+				// return the cell the unit moved to:
+				return board[cellWithUnit.getLocation().x + 1][cellWithUnit
+						.getLocation().y];
 			}
-			// Ice moves the user according to the slipping principle:
-			if (t == Terrain.Ice) {
-				return iceMoveNorth(cellWithUnit);
-			}
-			// Reduce movement by 1:
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
-					.getUnit()
-					.setMovesLeft(
-							board[cellWithUnit.getLocation().x][cellWithUnit
-									.getLocation().y]
-											.getUnit()
-											.getMovesLeft() - 1);
-
-			// Add unit to the cell above it
-			board[cellWithUnit.getLocation().x - 1][cellWithUnit.getLocation().y]
-					.setUnit(cellWithUnit.getUnit());
-			board[cellWithUnit.getLocation().x - 1][cellWithUnit.getLocation().y]
-					.setHasUnit(true);
-			// Remove Unit from old cell
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
-					.removeUnit();
-			// return the cell the unit moved to:
-			return board[cellWithUnit.getLocation().x - 1][cellWithUnit
-					.getLocation().y];
-		} else if (direction.equals("S")) {
-
-			// Check to see what terrain we are about to step in:
-			Terrain t = board[cellWithUnit.getLocation().x + 1][cellWithUnit
-					.getLocation().y].getTerrain();
-			// Lava reduced moves left and health left by 2:
-			if (t == Terrain.Lava) {
+			else if (direction.equals("L")) {
+				// Reduce movement by 1:
 				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
 						.getUnit()
 						.setMovesLeft(
 								board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit()
-										.getMovesLeft() - 2);
+										.getLocation().y].getUnit().getMovesLeft() - 1);
+
+				// Add unit to the cell to the left
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y - 1]
+						.setUnit(cellWithUnit.getUnit());
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y - 1]
+						.setHasUnit(true);
+				// Remove Unit from old cell
 				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
-						.getUnit()
-						.setHealth(
-								board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit().getHealth() - 2);
-				// Tell the user of their foolish actions:
-				JOptionPane optionPane = new JOptionPane();
-				optionPane
-						.setMessage("Your Unit "
-								+ board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit().toString()
-								+ " has lost 2 heath, and 2 movement due to lava, fool");
-				JDialog dialog = optionPane.createDialog(":~(");
-				dialog.setAlwaysOnTop(true);
-				dialog.setVisible(true);
-
-				// Check see if unit has died:
-				if (board[cellWithUnit.getLocation().x][cellWithUnit
-						.getLocation().y].getUnit().getHealth() <= 0) {
-					// Unit has died:
-					board[cellWithUnit.getLocation().x][cellWithUnit
-							.getLocation().y].getUnit().setMovesLeft(0);
-					board[cellWithUnit.getLocation().x][cellWithUnit
-							.getLocation().y].getUnit().setCanAttack(false);
-					// Check which player owned the unit:
-					optionPane.setMessage("Your Unit "
-							+ board[cellWithUnit.getLocation().x][cellWithUnit
-									.getLocation().y].getUnit().toString()
-							+ " Has Died!");
-
-					dialog.setAlwaysOnTop(true);
-					dialog.setVisible(true);
-					// Will always be player1Units since this is in the move
-					// method:
-					player1Units
-							.remove(board[cellWithUnit.getLocation().x][cellWithUnit
-									.getLocation().y]);
-					board[cellWithUnit.getLocation().x][cellWithUnit
-							.getLocation().y].removeUnit();
-					return board[cellWithUnit.getLocation().x][cellWithUnit
-							.getLocation().y];
-
-				}
+						.removeUnit();
+				// return the cell the unit moved to:
+				return board[cellWithUnit.getLocation().x][cellWithUnit
+						.getLocation().y - 1];
 			}
-			// Quick-sand reduces moves by 4:
-			if (t == Terrain.QuickSand) {
+			else {
+				// Reduce movement by 1:
 				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
 						.getUnit()
 						.setMovesLeft(
 								board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit()
-										.getMovesLeft() - 4);
-				// Tell the user of their foolish actions:
-				JOptionPane optionPane = new JOptionPane();
-				optionPane.setMessage("Your Unit "
-						+ board[cellWithUnit.getLocation().x][cellWithUnit
-								.getLocation().y].getUnit().toString()
-						+ " has 4 movement due to Quicksand, fool");
-				JDialog dialog = optionPane.createDialog(":~(");
-				dialog.setAlwaysOnTop(true);
-				dialog.setVisible(true);
-			}
-			// Ice moves the user according to the slipping principle:
-			if (t == Terrain.Ice) {
-				return iceMoveSouth(cellWithUnit);
-			}
-			// Reduce movement by 1:
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
-					.getUnit()
-					.setMovesLeft(
-							board[cellWithUnit.getLocation().x][cellWithUnit
-									.getLocation().y].getUnit().getMovesLeft() - 1);
+										.getLocation().y].getUnit().getMovesLeft() - 1);
 
-			// Add unit to the cell below it
-			board[cellWithUnit.getLocation().x + 1][cellWithUnit.getLocation().y]
-					.setUnit(cellWithUnit.getUnit());
-			board[cellWithUnit.getLocation().x + 1][cellWithUnit.getLocation().y]
-					.setHasUnit(true);
-			// Remove Unit from old cell
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
-					.removeUnit();
-			// return the cell the unit moved to:
-			return board[cellWithUnit.getLocation().x + 1][cellWithUnit
-					.getLocation().y];
-		} else if (direction.equals("L")) {
-			// Check to see what terrain we are about to step in:
-			Terrain t = board[cellWithUnit.getLocation().x][cellWithUnit
-					.getLocation().y - 1].getTerrain();
-			// Lava reduced moves left and health left by 2:
-			if (t == Terrain.Lava) {
+				// Better be Right, adds unit to the cell to the right
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y + 1]
+						.setUnit(cellWithUnit.getUnit());
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y + 1]
+						.setHasUnit(true);
+				// Remove Unit from old cell
 				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
-						.getUnit()
-						.setMovesLeft(
-								board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit()
-										.getMovesLeft() - 2);
-				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
-						.getUnit()
-						.setHealth(
-								board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit().getHealth() - 2);
-				// Tell the user of their foolish actions:
-				JOptionPane optionPane = new JOptionPane();
-				optionPane
-						.setMessage("Your Unit "
-								+ board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit().toString()
-								+ " has lost 2 heath, and 2 movement due to lava, fool");
-				JDialog dialog = optionPane.createDialog(":~(");
-				dialog.setAlwaysOnTop(true);
-				dialog.setVisible(true);
-
-				// Check see if unit has died:
-				if (board[cellWithUnit.getLocation().x][cellWithUnit
-						.getLocation().y].getUnit().getHealth() <= 0) {
-					// Unit has died:
-					board[cellWithUnit.getLocation().x][cellWithUnit
-							.getLocation().y].getUnit().setMovesLeft(0);
-					board[cellWithUnit.getLocation().x][cellWithUnit
-							.getLocation().y].getUnit().setCanAttack(false);
-					// Check which player owned the unit:
-					optionPane.setMessage("Your Unit "
-							+ board[cellWithUnit.getLocation().x][cellWithUnit
-									.getLocation().y].getUnit().toString()
-							+ " Has Died!");
-					dialog.setAlwaysOnTop(true);
-					dialog.setVisible(true);
-					// Will always be player1Units since this is in the move
-					// method:
-					player1Units
-							.remove(board[cellWithUnit.getLocation().x][cellWithUnit
-									.getLocation().y]);
-					board[cellWithUnit.getLocation().x][cellWithUnit
-							.getLocation().y].removeUnit();
-					return board[cellWithUnit.getLocation().x][cellWithUnit
-							.getLocation().y];
-
-				}
+						.removeUnit();
+				// return the cell the unit moved to:
+				return board[cellWithUnit.getLocation().x][cellWithUnit
+						.getLocation().y + 1];
 			}
-			// Quick-sand reduces moves by 4:
-			if (t == Terrain.QuickSand) {
-				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
-						.getUnit()
-						.setMovesLeft(
-								board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit()
-										.getMovesLeft() - 4);
-				// Tell the user of their foolish actions:
-				JOptionPane optionPane = new JOptionPane();
-				optionPane.setMessage("Your Unit "
-						+ board[cellWithUnit.getLocation().x][cellWithUnit
-								.getLocation().y].getUnit().toString()
-						+ " has 4 movement due to Quicksand, fool");
-				JDialog dialog = optionPane.createDialog(":~(");
-				dialog.setAlwaysOnTop(true);
-				dialog.setVisible(true);
-			}
-			// Ice moves the user according to the slipping principle:
-			if (t == Terrain.Ice) {
-				return iceMoveLeft(cellWithUnit);
-			}
-			// Reduce movement by 1:
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
-					.getUnit()
-					.setMovesLeft(
-							board[cellWithUnit.getLocation().x][cellWithUnit
-									.getLocation().y].getUnit().getMovesLeft() - 1);
-
-			// Add unit to the cell to the left
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y - 1]
-					.setUnit(cellWithUnit.getUnit());
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y - 1]
-					.setHasUnit(true);
-			// Remove Unit from old cell
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
-					.removeUnit();
-			// return the cell the unit moved to:
-			return board[cellWithUnit.getLocation().x][cellWithUnit
-					.getLocation().y - 1];
-		} else {
-			// Check to see what terrain we are about to step in:
-			Terrain t = board[cellWithUnit.getLocation().x][cellWithUnit
-					.getLocation().y + 1].getTerrain();
-			// Lava reduced moves left and health left by 2:
-			if (t == Terrain.Lava) {
-				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
-						.getUnit()
-						.setMovesLeft(
-								board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit()
-										.getMovesLeft() - 2);
-				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
-						.getUnit()
-						.setHealth(
-								board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit().getHealth() - 2);
-				// Tell the user of their foolish actions:
-				JOptionPane optionPane = new JOptionPane();
-				optionPane
-						.setMessage("Your Unit "
-								+ board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit().toString()
-								+ " has lost 2 heath, and 2 movement due to lava, fool");
-				JDialog dialog = optionPane.createDialog(":~(");
-				dialog.setAlwaysOnTop(true);
-				dialog.setVisible(true);
-
-				// Check see if unit has died:
-				if (board[cellWithUnit.getLocation().x][cellWithUnit
-						.getLocation().y].getUnit().getHealth() <= 0) {
-					// Unit has died:
-					board[cellWithUnit.getLocation().x][cellWithUnit
-							.getLocation().y].getUnit().setMovesLeft(0);
-					board[cellWithUnit.getLocation().x][cellWithUnit
-							.getLocation().y].getUnit().setCanAttack(false);
-					// Check which player owned the unit:
-					optionPane.setMessage("Your Unit "
-							+ board[cellWithUnit.getLocation().x][cellWithUnit
-									.getLocation().y].getUnit().toString()
-							+ " Has Died!");
-					dialog.setAlwaysOnTop(true);
-					dialog.setVisible(true);
-					// Will always be player1Units since this is in the move
-					// method:
-					player1Units
-							.remove(board[cellWithUnit.getLocation().x][cellWithUnit
-									.getLocation().y]);
-					board[cellWithUnit.getLocation().x][cellWithUnit
-							.getLocation().y].removeUnit();
-					return board[cellWithUnit.getLocation().x][cellWithUnit
-							.getLocation().y];
-
-				}
-			}
-			// Quick-sand reduces moves by 4:
-			if (t == Terrain.QuickSand) {
-				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
-						.getUnit()
-						.setMovesLeft(
-								board[cellWithUnit.getLocation().x][cellWithUnit
-										.getLocation().y].getUnit()
-										.getMovesLeft() - 4);
-				// Tell the user of their foolish actions:
-				JOptionPane optionPane = new JOptionPane();
-				optionPane.setMessage("Your Unit "
-						+ board[cellWithUnit.getLocation().x][cellWithUnit
-								.getLocation().y].getUnit().toString()
-						+ " has 4 movement due to Quicksand, fool");
-				JDialog dialog = optionPane.createDialog(":~(");
-				dialog.setAlwaysOnTop(true);
-				dialog.setVisible(true);
-			}
-			// Ice for now does nothing but tell the user its cold here:
-			if (t == Terrain.Ice) {
-				return iceMoveRight(cellWithUnit);
-			}
-			// Reduce movement by 1:
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
-					.getUnit()
-					.setMovesLeft(
-							board[cellWithUnit.getLocation().x][cellWithUnit
-									.getLocation().y].getUnit().getMovesLeft() - 1);
-
-			// Better be Right, adds unit to the cell to the right
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y + 1]
-					.setUnit(cellWithUnit.getUnit());
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y + 1]
-					.setHasUnit(true);
-			// Remove Unit from old cell
-			board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
-					.removeUnit();
-			// return the cell the unit moved to:
-			return board[cellWithUnit.getLocation().x][cellWithUnit
-					.getLocation().y + 1];
 		}
+		else {
+			if (direction.equals("N")) {
+
+				// Check to see what terrain we are about to step in:
+				Terrain t = board[cellWithUnit.getLocation().x - 1][cellWithUnit
+						.getLocation().y].getTerrain();
+				// Lava reduced moves left and health left by 2:
+				if (t == Terrain.Lava) {
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+							.getUnit()
+							.setMovesLeft(
+									board[cellWithUnit.getLocation().x][cellWithUnit
+											.getLocation().y].getUnit()
+											.getMovesLeft() - 2);
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+							.getUnit()
+							.setHealth(
+									board[cellWithUnit.getLocation().x][cellWithUnit
+											.getLocation().y].getUnit().getHealth() - 2);
+
+					// Tell the user of their foolish actions:
+					JOptionPane optionPane = new JOptionPane();
+					optionPane
+							.setMessage("Your Unit "
+									+ board[cellWithUnit.getLocation().x][cellWithUnit
+											.getLocation().y].getUnit().toString()
+									+ " has lost 2 heath, and 2 movement due to lava, fool");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+
+					// Check see if unit has died:
+					if (board[cellWithUnit.getLocation().x][cellWithUnit
+							.getLocation().y].getUnit().getHealth() <= 0) {
+						// Unit has died:
+						board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y].getUnit().setMovesLeft(0);
+						board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y].getUnit().setCanAttack(false);
+						// Check which player owned the unit:
+						optionPane.setMessage("Your Unit "
+								+ board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit().toString()
+								+ " Has Died!");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+						// Will always be player1Units since this is in the move
+						// method:
+						player1Units
+								.remove(board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y]);
+						board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y].removeUnit();
+						return board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y];
+
+					}
+
+				}
+				// Quick-sand reduces moves by 4:
+				if (t == Terrain.QuickSand) {
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+							.getUnit()
+							.setMovesLeft(
+									board[cellWithUnit.getLocation().x][cellWithUnit
+											.getLocation().y].getUnit()
+											.getMovesLeft() - 4);
+
+					// Tell the user of their foolish actions:
+					JOptionPane optionPane = new JOptionPane();
+					optionPane.setMessage("Your Unit "
+							+ board[cellWithUnit.getLocation().x][cellWithUnit
+									.getLocation().y].getUnit().toString()
+							+ " has 4 movement due to Quicksand, fool");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				}
+				// Ice moves the user according to the slipping principle:
+				if (t == Terrain.Ice) {
+					return iceMoveNorth(cellWithUnit);
+				}
+				// Reduce movement by 1:
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.getUnit()
+						.setMovesLeft(
+								board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y]
+												.getUnit()
+												.getMovesLeft() - 1);
+
+				// Add unit to the cell above it
+				board[cellWithUnit.getLocation().x - 1][cellWithUnit.getLocation().y]
+						.setUnit(cellWithUnit.getUnit());
+				board[cellWithUnit.getLocation().x - 1][cellWithUnit.getLocation().y]
+						.setHasUnit(true);
+				// Remove Unit from old cell
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.removeUnit();
+				// return the cell the unit moved to:
+				return board[cellWithUnit.getLocation().x - 1][cellWithUnit
+						.getLocation().y];
+			} else if (direction.equals("S")) {
+
+				// Check to see what terrain we are about to step in:
+				Terrain t = board[cellWithUnit.getLocation().x + 1][cellWithUnit
+						.getLocation().y].getTerrain();
+				// Lava reduced moves left and health left by 2:
+				if (t == Terrain.Lava) {
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+							.getUnit()
+							.setMovesLeft(
+									board[cellWithUnit.getLocation().x][cellWithUnit
+											.getLocation().y].getUnit()
+											.getMovesLeft() - 2);
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+							.getUnit()
+							.setHealth(
+									board[cellWithUnit.getLocation().x][cellWithUnit
+											.getLocation().y].getUnit().getHealth() - 2);
+					// Tell the user of their foolish actions:
+					JOptionPane optionPane = new JOptionPane();
+					optionPane
+							.setMessage("Your Unit "
+									+ board[cellWithUnit.getLocation().x][cellWithUnit
+											.getLocation().y].getUnit().toString()
+									+ " has lost 2 heath, and 2 movement due to lava, fool");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+
+					// Check see if unit has died:
+					if (board[cellWithUnit.getLocation().x][cellWithUnit
+							.getLocation().y].getUnit().getHealth() <= 0) {
+						// Unit has died:
+						board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y].getUnit().setMovesLeft(0);
+						board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y].getUnit().setCanAttack(false);
+						// Check which player owned the unit:
+						optionPane.setMessage("Your Unit "
+								+ board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit().toString()
+								+ " Has Died!");
+
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+						// Will always be player1Units since this is in the move
+						// method:
+						player1Units
+								.remove(board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y]);
+						board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y].removeUnit();
+						return board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y];
+
+					}
+				}
+				// Quick-sand reduces moves by 4:
+				if (t == Terrain.QuickSand) {
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+							.getUnit()
+							.setMovesLeft(
+									board[cellWithUnit.getLocation().x][cellWithUnit
+											.getLocation().y].getUnit()
+											.getMovesLeft() - 4);
+					// Tell the user of their foolish actions:
+					JOptionPane optionPane = new JOptionPane();
+					optionPane.setMessage("Your Unit "
+							+ board[cellWithUnit.getLocation().x][cellWithUnit
+									.getLocation().y].getUnit().toString()
+							+ " has 4 movement due to Quicksand, fool");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				}
+				// Ice moves the user according to the slipping principle:
+				if (t == Terrain.Ice) {
+					return iceMoveSouth(cellWithUnit);
+				}
+				// Reduce movement by 1:
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.getUnit()
+						.setMovesLeft(
+								board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit().getMovesLeft() - 1);
+
+				// Add unit to the cell below it
+				board[cellWithUnit.getLocation().x + 1][cellWithUnit.getLocation().y]
+						.setUnit(cellWithUnit.getUnit());
+				board[cellWithUnit.getLocation().x + 1][cellWithUnit.getLocation().y]
+						.setHasUnit(true);
+				// Remove Unit from old cell
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.removeUnit();
+				// return the cell the unit moved to:
+				return board[cellWithUnit.getLocation().x + 1][cellWithUnit
+						.getLocation().y];
+			} else if (direction.equals("L")) {
+				// Check to see what terrain we are about to step in:
+				Terrain t = board[cellWithUnit.getLocation().x][cellWithUnit
+						.getLocation().y - 1].getTerrain();
+				// Lava reduced moves left and health left by 2:
+				if (t == Terrain.Lava) {
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+							.getUnit()
+							.setMovesLeft(
+									board[cellWithUnit.getLocation().x][cellWithUnit
+											.getLocation().y].getUnit()
+											.getMovesLeft() - 2);
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+							.getUnit()
+							.setHealth(
+									board[cellWithUnit.getLocation().x][cellWithUnit
+											.getLocation().y].getUnit().getHealth() - 2);
+					// Tell the user of their foolish actions:
+					JOptionPane optionPane = new JOptionPane();
+					optionPane
+							.setMessage("Your Unit "
+									+ board[cellWithUnit.getLocation().x][cellWithUnit
+											.getLocation().y].getUnit().toString()
+									+ " has lost 2 heath, and 2 movement due to lava, fool");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+
+					// Check see if unit has died:
+					if (board[cellWithUnit.getLocation().x][cellWithUnit
+							.getLocation().y].getUnit().getHealth() <= 0) {
+						// Unit has died:
+						board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y].getUnit().setMovesLeft(0);
+						board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y].getUnit().setCanAttack(false);
+						// Check which player owned the unit:
+						optionPane.setMessage("Your Unit "
+								+ board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit().toString()
+								+ " Has Died!");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+						// Will always be player1Units since this is in the move
+						// method:
+						player1Units
+								.remove(board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y]);
+						board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y].removeUnit();
+						return board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y];
+
+					}
+				}
+				// Quick-sand reduces moves by 4:
+				if (t == Terrain.QuickSand) {
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+							.getUnit()
+							.setMovesLeft(
+									board[cellWithUnit.getLocation().x][cellWithUnit
+											.getLocation().y].getUnit()
+											.getMovesLeft() - 4);
+					// Tell the user of their foolish actions:
+					JOptionPane optionPane = new JOptionPane();
+					optionPane.setMessage("Your Unit "
+							+ board[cellWithUnit.getLocation().x][cellWithUnit
+									.getLocation().y].getUnit().toString()
+							+ " has 4 movement due to Quicksand, fool");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				}
+				// Ice moves the user according to the slipping principle:
+				if (t == Terrain.Ice) {
+					return iceMoveLeft(cellWithUnit);
+				}
+				// Reduce movement by 1:
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.getUnit()
+						.setMovesLeft(
+								board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit().getMovesLeft() - 1);
+
+				// Add unit to the cell to the left
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y - 1]
+						.setUnit(cellWithUnit.getUnit());
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y - 1]
+						.setHasUnit(true);
+				// Remove Unit from old cell
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.removeUnit();
+				// return the cell the unit moved to:
+				return board[cellWithUnit.getLocation().x][cellWithUnit
+						.getLocation().y - 1];
+			} else {
+				// Check to see what terrain we are about to step in:
+				Terrain t = board[cellWithUnit.getLocation().x][cellWithUnit
+						.getLocation().y + 1].getTerrain();
+				// Lava reduced moves left and health left by 2:
+				if (t == Terrain.Lava) {
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+							.getUnit()
+							.setMovesLeft(
+									board[cellWithUnit.getLocation().x][cellWithUnit
+											.getLocation().y].getUnit()
+											.getMovesLeft() - 2);
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+							.getUnit()
+							.setHealth(
+									board[cellWithUnit.getLocation().x][cellWithUnit
+											.getLocation().y].getUnit().getHealth() - 2);
+					// Tell the user of their foolish actions:
+					JOptionPane optionPane = new JOptionPane();
+					optionPane
+							.setMessage("Your Unit "
+									+ board[cellWithUnit.getLocation().x][cellWithUnit
+											.getLocation().y].getUnit().toString()
+									+ " has lost 2 heath, and 2 movement due to lava, fool");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+
+					// Check see if unit has died:
+					if (board[cellWithUnit.getLocation().x][cellWithUnit
+							.getLocation().y].getUnit().getHealth() <= 0) {
+						// Unit has died:
+						board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y].getUnit().setMovesLeft(0);
+						board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y].getUnit().setCanAttack(false);
+						// Check which player owned the unit:
+						optionPane.setMessage("Your Unit "
+								+ board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit().toString()
+								+ " Has Died!");
+						dialog.setAlwaysOnTop(true);
+						dialog.setVisible(true);
+						// Will always be player1Units since this is in the move
+						// method:
+						player1Units
+								.remove(board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y]);
+						board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y].removeUnit();
+						return board[cellWithUnit.getLocation().x][cellWithUnit
+								.getLocation().y];
+
+					}
+				}
+				// Quick-sand reduces moves by 4:
+				if (t == Terrain.QuickSand) {
+					board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+							.getUnit()
+							.setMovesLeft(
+									board[cellWithUnit.getLocation().x][cellWithUnit
+											.getLocation().y].getUnit()
+											.getMovesLeft() - 4);
+					// Tell the user of their foolish actions:
+					JOptionPane optionPane = new JOptionPane();
+					optionPane.setMessage("Your Unit "
+							+ board[cellWithUnit.getLocation().x][cellWithUnit
+									.getLocation().y].getUnit().toString()
+							+ " has 4 movement due to Quicksand, fool");
+					JDialog dialog = optionPane.createDialog(":~(");
+					dialog.setAlwaysOnTop(true);
+					dialog.setVisible(true);
+				}
+				// Ice for now does nothing but tell the user its cold here:
+				if (t == Terrain.Ice) {
+					return iceMoveRight(cellWithUnit);
+				}
+				// Reduce movement by 1:
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.getUnit()
+						.setMovesLeft(
+								board[cellWithUnit.getLocation().x][cellWithUnit
+										.getLocation().y].getUnit().getMovesLeft() - 1);
+
+				// Better be Right, adds unit to the cell to the right
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y + 1]
+						.setUnit(cellWithUnit.getUnit());
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y + 1]
+						.setHasUnit(true);
+				// Remove Unit from old cell
+				board[cellWithUnit.getLocation().x][cellWithUnit.getLocation().y]
+						.removeUnit();
+				// return the cell the unit moved to:
+				return board[cellWithUnit.getLocation().x][cellWithUnit
+						.getLocation().y + 1];
+			}
+		}
+
 
 	}
 
