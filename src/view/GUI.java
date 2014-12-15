@@ -118,6 +118,7 @@ public class GUI extends JFrame
   JButton vsAI = new JButton("vs AI");
   JButton toMap = new JButton("Choose Map");
   JButton startAI = new JButton("Start AI Game");
+  JButton startAIMonster = new JButton("Start Monster Game");
   JButton instructionButton = new JButton("Okay");
   JButton LoadTitleButton;
   private static List<SpriteObject> splosions;
@@ -611,8 +612,8 @@ public class GUI extends JFrame
         layoutPregameGUI();
       }
       if(e.getSource() == LoadTitleButton){
-    	  String s = (String)JOptionPane.showInputDialog(frame, "Enter Player 1 Username From Previous Game \n", "Customized Dialog", JOptionPane.PLAIN_MESSAGE,null,null,"");
-    	  
+    	  String s1 = (String)JOptionPane.showInputDialog(frame, "Enter Player 1 Username From Previous Game \n", "Loading Game", JOptionPane.QUESTION_MESSAGE,null,null,"");
+    	  String s2 = (String)JOptionPane.showInputDialog(frame, "Enter Player 2 Username From Previous Game \n", "Loading Game", JOptionPane.QUESTION_MESSAGE,null,null,"");
       }
     	  
     }
@@ -704,7 +705,9 @@ public class GUI extends JFrame
     unitSelect.add(selectNumberOfWalker);
 
     usernameSelect.add(startAI);
+    usernameSelect.add(startAIMonster);
     startAI.addActionListener(MapButtonListener);
+    startAIMonster.addActionListener(MapButtonListener);
 
     UnitselectContainer.add(usernameSelect);
     UnitselectContainer.add(unitSelect);
@@ -1438,8 +1441,7 @@ public class GUI extends JFrame
           if (n == JOptionPane.NO_OPTION)
           {
             System.out.println("no option");
-            frame.dispatchEvent(new WindowEvent(frame,
-                WindowEvent.WINDOW_CLOSING));
+            System.exit(0);
           }
         }
       }
@@ -1511,8 +1513,7 @@ public class GUI extends JFrame
             if (n == JOptionPane.NO_OPTION)
             {
               System.out.println("no option");
-              frame.dispatchEvent(new WindowEvent(frame,
-                  WindowEvent.WINDOW_CLOSING));
+              System.exit(0);
             }
           }
         }
@@ -1904,6 +1905,14 @@ public class GUI extends JFrame
           layoutGUI();
           registerListeners();
         }
+        if(mapType.equals("Monster")){
+        	AIgame = true;
+        	computer = new AI();
+        	setVisible(false);
+        	newGame("Monster", units);
+        	layoutGUI();
+        	registerListeners();
+        }
         if (mapType.equals("Map1"))
         {
           newGame("Map 1", units);
@@ -1956,6 +1965,43 @@ public class GUI extends JFrame
           else
           {
             mapType = "AIMap";
+            layoutInstructionsGUI();
+          }
+
+        }
+
+      }
+      if (e.getSource() == startAIMonster)
+      {
+        player1 = username1.getText();
+        player2 = "Computer";
+        if (player1.equals("") || player1.equals(null) || player2.equals("")
+            || player2.equals(null))
+        {
+          JOptionPane optionPane = new JOptionPane();
+          optionPane.setMessage("You need to enter valid usernames!");
+          JDialog dialog = optionPane.createDialog(":~(");
+          dialog.setAlwaysOnTop(true);
+          dialog.setVisible(true);
+        }
+        else if (player1.equals(player2) || player2.equals(player1))
+        {
+          JOptionPane optionPane = new JOptionPane();
+          optionPane.setMessage("User names must be unique!");
+          JDialog dialog = optionPane.createDialog(":~(");
+          dialog.setAlwaysOnTop(true);
+          dialog.setVisible(true);
+        }
+        else
+        {
+
+          if (checkUserSelections() == false)
+          {
+
+          }
+          else
+          {
+            mapType = "Monster";
             layoutInstructionsGUI();
           }
 
