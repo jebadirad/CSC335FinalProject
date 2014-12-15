@@ -2720,7 +2720,6 @@ public class GameBoard extends JFrame implements Serializable {
 			}
 		}
 		for (int i = 0; i < unitsInRange.size(); i++) {
-			System.out.print(unitsInRange.get(i).getUnit() + " ");
 		}
 		return unitsInRange;
 	}
@@ -3009,13 +3008,11 @@ public class GameBoard extends JFrame implements Serializable {
 	 *            the new board to set Cell[][] to
 	 */
 	public void setBoard(Cell[][] board) {
-		System.out.println("are we here?");
 		for(int i = 0; i < 20; i ++){
 			for(int j = 0; j < 20; j++){
 				this.board[i][j] = board[i][j];
 			}
 		}
-		System.out.println("hello");
 	}
 
 	/**

@@ -245,7 +245,6 @@ public class Imageview extends JPanel implements Runnable
     catch (IOException e)
     {
       isLoaded = false;
-      System.out.println("Could not find an Image!");
     }
     isLoaded = true;
   }
@@ -270,7 +269,6 @@ public class Imageview extends JPanel implements Runnable
         }
         catch (InterruptedException e)
         {
-          System.out.println("Thread generates an error.");
         }
       }
     }
@@ -292,7 +290,6 @@ public class Imageview extends JPanel implements Runnable
         }
         catch (InterruptedException e)
         {
-          System.out.println("Thread generates an error.");
         }
       }
     }

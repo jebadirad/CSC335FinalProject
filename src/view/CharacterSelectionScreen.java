@@ -75,7 +75,6 @@ public class CharacterSelectionScreen extends JPanel
       catch (IOException e)
       {
         // TODO Auto-generated catch block
-        System.out.println("404:FILE NOT FOUND");
       }
       if (counter == 3)
       {

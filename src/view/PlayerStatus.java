@@ -44,7 +44,6 @@ for(Cell element:units){
 		image = ImageIO.read(new File(imageDir + element.getUnit().getIconImage()));
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
-		System.out.println("404:FILE NOT FOUND");
 	}
 	if(counter == 3 ){
 		x = x + 700;

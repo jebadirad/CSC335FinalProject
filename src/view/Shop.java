@@ -51,7 +51,6 @@ public class Shop extends JPanel {
 				image = ImageIO.read(new File(path));
 				
 			}catch (IOException e){
-				System.out.println("404: Image file not found");
 			}
 			g2.drawImage(image,0,y-100,null);
 			g2.drawString(key + ": " + modstring,110,y);

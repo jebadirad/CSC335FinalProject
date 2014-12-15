@@ -211,7 +211,6 @@ public class GUI extends JFrame
     }
     catch (FileNotFoundException e)
     {
-      System.out.println("Media file not present in main drive.");
     }
 
     try
@@ -234,7 +233,6 @@ public class GUI extends JFrame
     }
     catch (FileNotFoundException e)
     {
-      System.out.println("Media file not present in main drive.");
     }
 
     try
@@ -282,9 +280,7 @@ public class GUI extends JFrame
     p2inv = new Inventory(player2);
     // both players start with a super item. WOW. how generous of us.
     p1inv.addItem(Item.superitem);
-    System.out.println(player1 + "'s inventory: " + p1inv.toString());
     p2inv.addItem(Item.superitem);
-    System.out.println(player2 + "'s inventory: " + p2inv.toString());
     player1units = gameboard.getPlayer1Units();
     player2units = gameboard.getPlayer2Units();
     CurrentUnitSelected = null;
@@ -299,8 +295,6 @@ public class GUI extends JFrame
     public void keyPressed(KeyEvent e)
     {
 
-      System.out.println("Key Pressed!!!");
-      System.out.println("" + e.getKeyCode());
 
       if (e.getKeyCode() == 37)
       {
@@ -630,37 +624,32 @@ public class GUI extends JFrame
     		    if (new File(saveDir + "Map 1-" + player1 + "-" + player2 + "-" + "gameboard.dat")
                 .exists())
             {
-    		    	System.out.println("we got here");
     		    	mapName = "Map 1";
     		    	loadData();
             }
     		    else if (new File(saveDir + "Map 2-" + player1 + "-" + player2 + "-" + "gameboard.dat")
                 .exists())
             {
-    		    	System.out.println("we got here");
     		    	mapName = "Map 2";
               loadData();
             }
     		    else if (new File(saveDir + "Random-" + player1 + "-" + player2 + "-" + "gameboard.dat")
                 .exists())
             {
-    		    	System.out.println("we got here");
     		    	mapName = "Random";
     		    	loadData();
             }
     		    else if (new File(saveDir + "Monster-" + player1 + "-" + player2 + "-" + "gameboard.dat")
                 .exists())
             {
-    		    	System.out.println("we got here");
     		    	mapName = "Monster";
               loadData();
             }
-    		    else if (new File(saveDir + "AI-" + player1 + "-" + player2 + "-" + "gameboard.dat")
+    		    else if (new File(saveDir + "vsAi-" + player1 + "-" + player2 + "-" + "gameboard.dat")
                 .exists())
             {
     		    	
-    		    	mapName = "AI";
-    		    	System.out.println("we got here");
+    		    	mapName = "vsAi";
               loadData();
             }
             else
@@ -1412,7 +1401,6 @@ public class GUI extends JFrame
     }
     else
     {
-      System.out.println(EnemyUnitSelected.getUnit().getHealth());
       gameboard.attack(CurrentUnitSelected, EnemyUnitSelected);
       // TODO Auto-generated catch block
 
@@ -1491,7 +1479,6 @@ public class GUI extends JFrame
             JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
         if (n == JOptionPane.YES_OPTION)
         {
-          System.out.println("new game");
           dispose();
           new GUI();
         }
@@ -1499,7 +1486,6 @@ public class GUI extends JFrame
         {
           if (n == JOptionPane.NO_OPTION)
           {
-            System.out.println("no option");
             System.exit(0);
           }
         }
@@ -1565,7 +1551,6 @@ public class GUI extends JFrame
               JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
           if (n == JOptionPane.YES_OPTION)
           {
-            System.out.println("new game");
             dispose();
             new GUI();
           }
@@ -1573,7 +1558,6 @@ public class GUI extends JFrame
           {
             if (n == JOptionPane.NO_OPTION)
             {
-              System.out.println("no option");
               System.exit(0);
             }
           }
@@ -1606,11 +1590,9 @@ public class GUI extends JFrame
 
             if (!GUI.gameboard.commandqueue.isEmpty())
             {
-              System.out.println("does it get here?");
               Command<GUI> command = GUI.gameboard.commandqueue.poll();
               command.execute(GUI.this);
 
-              System.out.println("this should execute");
 
             }
           }
@@ -1721,7 +1703,6 @@ public class GUI extends JFrame
 
         }
 
-        System.out.println("end of " + player1 + " turn");
         Inventory tempinventory = p1inv;
         p1inv = p2inv;
         p2inv = tempinventory;
@@ -1857,7 +1838,6 @@ public class GUI extends JFrame
           if (e.getSource() == radiobuttons.get(i))
           {
             CurrentUnitSelected = player1units.get(i);
-            System.out.println(CurrentUnitSelected.getUnit().getUnitStatus());
             targets(CurrentUnitSelected);
             layoutAttackScreen();
             repaint();
@@ -1876,7 +1856,6 @@ public class GUI extends JFrame
           if (e.getSource() == targetButtons.get(i))
           {
             EnemyUnitSelected = targets.get(i);
-            System.out.println(EnemyUnitSelected.getUnit().getUnitStatus());
             repaint();
           }
         }
@@ -1907,7 +1886,6 @@ public class GUI extends JFrame
           {
             items.remove(itemBoxes.get(i).getText());
           }
-          System.out.println(items.toString() + "\n");
         }
       }
 
@@ -2241,10 +2219,7 @@ public class GUI extends JFrame
     			  }
     		  }
     	  }
-    	  System.out.println("why does it print this");
-    	System.out.println(gameboard.toString());
 
-    	System.out.println("this did work?");
       }
 
       // create inventories for both players
@@ -2253,7 +2228,6 @@ public class GUI extends JFrame
       if (new File(saveDir + player1 + "-inventory.dat").exists())
       {
         p1inv.loadData(player1);
-        System.out.println("p1 inv success");
       }
       else
       {
@@ -2263,23 +2237,18 @@ public class GUI extends JFrame
       if (new File(saveDir + player2 + "-inventory.dat").exists())
       {
         p2inv.loadData(player2);
-        System.out.println("p2 inv success");
       }
       else
       {
         //p2inv.addItem(Item.superitem);
       }
-      System.out.println(player1 + "'s inventory: " + p1inv.toString());
-      System.out.println(player2 + "'s inventory: " + p2inv.toString());
       //player1units = gameboard.getPlayer1Units();
       //player2units = gameboard.getPlayer2Units();
       
       CurrentUnitSelected = null;
       EnemyUnitSelected = null;
       
-      System.out.println("before the game");
-      System.out.println(mapName);
-      if (mapName.equals("AI"))
+      if (mapName.equals("vsAi"))
       {
         AIgame = true;
         computer = new AI();
@@ -2297,7 +2266,6 @@ public class GUI extends JFrame
       }
       if (mapName.equals("Map 1"))
       {
-    	  System.out.println("load map 1");
         layoutGUI();
         registerListeners();
       }
@@ -2316,7 +2284,8 @@ public class GUI extends JFrame
       
       
       
-      
+      endTurn.doClick();
+      endTurn.doClick();
       return true;
     }
     catch (Exception e)
@@ -2355,20 +2324,15 @@ public class GUI extends JFrame
     {
       this.cell = cell;
       this.d = direction;
-      System.out.println("hello it is i, starting");
     }
 
     @Override
     public void run()
     {
-      System.out.println("hello it is i, running");
       if (cell.getUnit() != null)
       {
-        System.out.println("The unit we're looking for: ");
-        System.out.println(cell.getUnit());
       }
       Image image = Imageview.getSheet("lukeSkywalker");
-      System.out.println(image.toString());
       // for (Image image : b) {
       // if(cell.getUnit().equals(image)){}
       Image scaledImg = image.getScaledInstance(24, 63, Image.SCALE_DEFAULT);
@@ -2382,7 +2346,6 @@ public class GUI extends JFrame
       {
         while (initY > endY)
         {
-          System.out.println("hello it is i, DRAWING" + " lukeSkywalker");
           initY = initY - 1;
           // cell.getLocation().translate(0, 1);
           imagePanel.getGraphics().drawImage(scaledImg, initX, initY, null);
@@ -2392,11 +2355,8 @@ public class GUI extends JFrame
           repaint();
           // set the cell to the next one up
         }
-        System.out.println(cell.hasUnit());
-        System.out.println("moving unit...");
         CurrentUnitSelected = gameboard.move(cell, d);
         this.cell = CurrentUnitSelected;
-        System.out.println(CurrentUnitSelected.hasUnit());
         return;
       }
       else
