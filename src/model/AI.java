@@ -38,8 +38,7 @@ public class AI {
 					
 				}
 				else{
-					AttackCommand attack = new AttackCommand(cell, unitsToAttack.get(0));
-					GUI.gameboard.commandqueue.add(attack);
+					GUI.gameboard.attack(cell, unitsToAttack.get(0));
 					return;
 				}
 				

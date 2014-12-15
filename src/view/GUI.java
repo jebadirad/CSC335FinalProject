@@ -119,7 +119,7 @@ public class GUI extends JFrame
   JButton toMap = new JButton("Choose Map");
   JButton startAI = new JButton("Start AI Game");
   JButton instructionButton = new JButton("Okay");
-
+  JButton LoadTitleButton;
   private static List<SpriteObject> splosions;
 
   ArrayList<JRadioButton> radiobuttons;
@@ -560,10 +560,12 @@ public class GUI extends JFrame
 
     vsAITitle = new JButton("Play VS. AI");
     vsHuman = new JButton("Play VS. Human");
+    LoadTitleButton = new JButton("Load Game");
 
     SelectionButtonListener SelectionButtonListener = new SelectionButtonListener();
     vsAITitle.addActionListener(SelectionButtonListener);
     vsHuman.addActionListener(SelectionButtonListener);
+    LoadTitleButton.addActionListener(SelectionButtonListener);
 
     c.fill = GridBagConstraints.HORIZONTAL;
     c.ipady = 30; // make this component tall
@@ -580,6 +582,14 @@ public class GUI extends JFrame
     c.gridx = 0;
     c.gridy = 2;
     titleScreen.add(vsHuman, c);
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.ipady = 30; // make this component tall
+    c.weightx = 0.0;
+    c.gridwidth = 3;
+    c.gridx = 0;
+    c.gridy = 3;
+    titleScreen.add(LoadTitleButton, c);
+    
 
     this.add(titleScreen);
     this.setVisible(true);
@@ -600,6 +610,11 @@ public class GUI extends JFrame
       {
         layoutPregameGUI();
       }
+      if(e.getSource() == LoadTitleButton){
+    	  String s = (String)JOptionPane.showInputDialog(frame, "Enter Player 1 Username From Previous Game \n", "Customized Dialog", JOptionPane.PLAIN_MESSAGE,null,null,"");
+    	  
+      }
+    	  
     }
 
   }
@@ -1396,12 +1411,12 @@ public class GUI extends JFrame
       repaint();
       revalidate();
 
-      /*
-       * Explosion explosion = new Explosion(EnemyUnitSelected.getLocation().y *
-       * 63, EnemyUnitSelected.getLocation().x * 24);
-       * 
-       * splosions.add(explosion); explosion.start();
-       */
+      Explosion explosion = new Explosion(EnemyUnitSelected.getLocation().y * 63, EnemyUnitSelected.getLocation().x * 24);
+       
+     
+       
+      splosions.add(explosion); 
+      explosion.start();
 
       targets(CurrentUnitSelected);
       layoutAttackScreen();
@@ -1532,10 +1547,6 @@ public class GUI extends JFrame
               System.out.println("does it get here?");
               Command<GUI> command = GUI.gameboard.commandqueue.poll();
               command.execute(GUI.this);
-              if (command.getCommandType().equals("attack"))
-              {
-                this.wait();
-              }
 
               System.out.println("this should execute");
 
@@ -1629,26 +1640,20 @@ public class GUI extends JFrame
         if (player1FlagPoints >= 5)
         {
           // tell them they win
-          Object[] options = {"New Game", "Quit"};
+          Object[] options = {"Quit", "Quit"};
           int n = JOptionPane.showOptionDialog(frame, player1
-              + " HAS WON THE GAME!! Would you like to start a new game?",
+              + " HAS WON THE GAME!!",
               "VICTORY!!", JOptionPane.YES_NO_OPTION,
               JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
           if (n == JOptionPane.YES_OPTION)
           {
-            System.out.println("new game");
-            dispose();
-            new GUI();
-            player1FlagPoints = 0;
-            player2FlagPoints = 0;
+        	  System.exit(0);
           }
           else
           {
             if (n == JOptionPane.NO_OPTION)
             {
-              System.out.println("no option");
-              frame.dispatchEvent(new WindowEvent(frame,
-                  WindowEvent.WINDOW_CLOSING));
+            	System.exit(0);
             }
           }
 
