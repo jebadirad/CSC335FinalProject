@@ -135,7 +135,7 @@ public class AI {
 			for (int j = 0; j < 20; j++) {
 				leeboard[i][j] = new leealgorithm();
 				if (GUI.gameboard.getCell(i, j).getTerrain() == Terrain.Lava) {
-					leeboard[i][j].setvalue(Terrain.Lava.getmodifier());
+					leeboard[i][j].setvalue(0);
 				} else if (GUI.gameboard.getCell(i, j).getTerrain() == Terrain.Boulder) {
 					leeboard[i][j].setvalue(Terrain.Boulder.getmodifier());
 				} else if (GUI.gameboard.getCell(i, j).getTerrain() == Terrain.QuickSand) {
