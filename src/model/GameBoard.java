@@ -58,9 +58,6 @@ public class GameBoard extends JFrame implements Serializable {
 			createRandomMap(units);
 		else if (mapName.equals("Monster"))
 			createMonsterMap(units);
-		else if (mapName.equals("Load")) {
-			
-		}
 		else
 			createVsComputerMap(units);
 
@@ -308,7 +305,7 @@ public class GameBoard extends JFrame implements Serializable {
 			board[i][15].setTerrain(Terrain.Lava);
 
 		}
-		board[10][8].setTerrain(Terrain.Flag);
+		board[10][10].setTerrain(Terrain.Flag);
 	
 		tempGenerateMonsterPlayer1Units(units);
 		// Still call generateMonster
