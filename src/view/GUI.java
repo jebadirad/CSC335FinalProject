@@ -1504,6 +1504,7 @@ public class GUI extends JFrame
       }
       else
       {
+
         JOptionPane optionPane = new JOptionPane();
         optionPane.setMessage("Move failed");
         JDialog dialog = optionPane.createDialog(":~(");
