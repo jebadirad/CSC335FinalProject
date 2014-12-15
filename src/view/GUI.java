@@ -95,6 +95,9 @@ public class GUI extends JFrame
   AI computer;
 
   JFrame frame;
+  
+  
+  JPanel title;
   JPanel shop;
   JPanel movePanel;
   JPanel listItems;
@@ -107,6 +110,8 @@ public class GUI extends JFrame
   JPanel playerInfoContainer;
   JTabbedPane tabbedpane;
   JPanel listOfTargets;
+  JPanel teamselectContainer;
+  JPanel usernameSelect;
 
   JLabel usernamestring, inventorystring, credits;
 
@@ -139,9 +144,6 @@ public class GUI extends JFrame
   ArrayList<JRadioButton> targetButtons;
   ArrayList<JCheckBox> itemBoxes;
   ArrayList<String> items;
-  Thread commandthread = new Thread();
-  Thread drawingthread = new Thread();
-  Thread gamethread = new Thread();
 
   MapButtonListener MapButtonListener = new MapButtonListener();
 
@@ -202,6 +204,7 @@ public class GUI extends JFrame
   private ArrayList<Unit> units = new ArrayList<Unit>();
   private MapSelectionScreen mapSelect;
   private InstructionsScreen InstructionPane;
+  Thread commandThread;
 
   private static final String clipsDir = System.getProperty("user.dir")
       + File.separator + "clips" + File.separator;
@@ -287,7 +290,9 @@ public class GUI extends JFrame
     }
 
     gameboard = new GameBoard(map, units);
-    new Thread(new Runner()).start();
+    commandThread = new Thread(new Runner());
+    commandThread.start();
+   
     // create inventories for both players
     p1inv = new Inventory(player1);
     p2inv = new Inventory(player2);
@@ -622,19 +627,29 @@ public class GUI extends JFrame
     // For Player Vs. AI
     this.remove(titleScreen);
     teamSelect = new CharacterSelectionScreen();
-
+    title = new TitleDrawingScreen("BUILD YOUR TEAM OF 5 UNITS");
+    teamselectContainer = new JPanel();
+    JPanel UnitselectContainer = new JPanel();
+    JPanel usernameSelect = new JPanel();
+    
+    JPanel unitSelect = new JPanel();
+    unitSelect.setLayout(new GridLayout(3,7,5,0));
+    
+    usernameSelect.setLayout(new FlowLayout());
+    usernameSelect.add(title);
+   
+    UnitselectContainer.setLayout(new GridLayout(2,1,0,0));
+    UnitselectContainer.setPreferredSize(new Dimension(1280,500));
+    
+    
+    teamselectContainer.setLayout(new GridLayout(2,1,0,0));
+    teamselectContainer.setPreferredSize(new Dimension(1280,300));
     teamSelect.setLayout(new FlowLayout());
 
-    usernamelabel1 = new JLabel("Team 1 username: ");
+    usernamelabel1 = new JLabel("Player 1 username: ");
     username1 = new JTextField(15);
-    usernamelabel2 = new JLabel("Team 2 username: ");
-    username2 = new JTextField(15);
-
-    teamSelect.add(usernamelabel1);
-    teamSelect.add(username1);
-    teamSelect.add(usernamelabel2);
-    teamSelect.add(username2);
-
+    
+    
     selectCloneTrooperLabel = new JLabel("Clone Trooper: ");
     selectBattleDroidLabel = new JLabel("Battle Droid: ");
     selectImperialMedicLabel = new JLabel("Imperial Medic: ");
@@ -664,36 +679,46 @@ public class GUI extends JFrame
     selectNumberOfWalker = new JTextField(10);
     selectNumberOfWalker.setText("0");
 
+    
+    usernameSelect.add(usernamelabel1);
+    usernameSelect.add(username1);
+    unitSelect.add(selectCloneTrooperLabel);
+    unitSelect.add(selectNumberOfCloneTrooper);
+
+    unitSelect.add(selectBattleDroidLabel);
+    unitSelect.add(selectNumberOfBattleDroid);
+
+    unitSelect.add(selectImperialMedicLabel);
+    unitSelect.add(selectNumberOfImperialMedic);
+
+    unitSelect.add(selectLukeSkywalkerLabel);
+    unitSelect.add(selectNumberOfLukeSkywalker);
+
+    unitSelect.add(selectDarthVaderLabel);
+    unitSelect.add(selectNumberOfDarthVader);
+
+    unitSelect.add(selectSpderTankLabel);
+    unitSelect.add(selectNumberOfSpiderTank);
+
+    unitSelect.add(selectDroidekaLabel);
+    unitSelect.add(selectNumberOfDroideka);
+
+    unitSelect.add(selectArtilleryDroidLabel);
+    unitSelect.add(selectNumberOfArtilleryDroid);
+
+    unitSelect.add(selectWalkerLabel);
+    unitSelect.add(selectNumberOfWalker);
+
+    usernameSelect.add(startAI); 
     startAI.addActionListener(MapButtonListener);
-
-    teamSelect.add(selectCloneTrooperLabel);
-    teamSelect.add(selectNumberOfCloneTrooper);
-
-    teamSelect.add(selectBattleDroidLabel);
-    teamSelect.add(selectNumberOfBattleDroid);
-
-    teamSelect.add(selectImperialMedicLabel);
-    teamSelect.add(selectNumberOfImperialMedic);
-
-    teamSelect.add(selectLukeSkywalkerLabel);
-    teamSelect.add(selectNumberOfLukeSkywalker);
-
-    teamSelect.add(selectDarthVaderLabel);
-    teamSelect.add(selectNumberOfDarthVader);
-
-    teamSelect.add(selectSpderTankLabel);
-    teamSelect.add(selectNumberOfSpiderTank);
-
-    teamSelect.add(selectDroidekaLabel);
-    teamSelect.add(selectNumberOfDroideka);
-
-    teamSelect.add(selectArtilleryDroidLabel);
-    teamSelect.add(selectNumberOfArtilleryDroid);
-
-    teamSelect.add(selectWalkerLabel);
-    teamSelect.add(selectNumberOfWalker);
-
-    teamSelect.add(startAI);
+    
+    
+    UnitselectContainer.add(usernameSelect);
+    UnitselectContainer.add(unitSelect);
+    
+    teamselectContainer.add(UnitselectContainer);
+    teamselectContainer.add(teamSelect);
+    
 
     // begin persistence code
     // if(new File(saveDir + player1 + "-" + player2 + "-" +
@@ -709,7 +734,7 @@ public class GUI extends JFrame
     // teamSelect.add(loadSave);
     // }
     // end persistence code
-    this.add(teamSelect);
+    this.add(teamselectContainer);
     this.setVisible(true);
     this.repaint();
   }
@@ -717,107 +742,131 @@ public class GUI extends JFrame
   private void layoutPregameGUI()
   {
     // For Player Vs. Player
-    this.remove(titleScreen);
-    teamSelect = new CharacterSelectionScreen();
+	  // For Player Vs. AI
+	    this.remove(titleScreen);
+	    next = new JButton("Next");
+	    teamSelect = new CharacterSelectionScreen();
+	    title = new TitleDrawingScreen("BUILD YOUR TEAM OF 5 UNITS");
+	    
+	    teamselectContainer = new JPanel();
+	    JPanel UnitselectContainer = new JPanel();
+	    usernameSelect = new JPanel();
+	    
+	    JPanel unitSelect = new JPanel();
+	    unitSelect.setLayout(new GridLayout(3,7,5,0));
+	    
+	    usernameSelect.setLayout(new FlowLayout());
+	    usernameSelect.add(title);
+	   
+	    UnitselectContainer.setLayout(new GridLayout(2,1,0,0));
+	    UnitselectContainer.setPreferredSize(new Dimension(1280,500));
+	    
+	    
+	    teamselectContainer.setLayout(new GridLayout(2,1,0,0));
+	    teamselectContainer.setPreferredSize(new Dimension(1280,300));
+	    teamSelect.setLayout(new FlowLayout());
 
-    teamSelect.setLayout(new FlowLayout());
+	    usernamelabel1 = new JLabel("Player 1 username: ");
+	    username1 = new JTextField(15);
+	    usernamelabel2= new JLabel("Player 2 username: ");
+	    username2 = new JTextField(15);
+	    
+	    
+	    selectCloneTrooperLabel = new JLabel("Clone Trooper: ");
+	    selectBattleDroidLabel = new JLabel("Battle Droid: ");
+	    selectImperialMedicLabel = new JLabel("Imperial Medic: ");
+	    selectLukeSkywalkerLabel = new JLabel("Luke Skywalker: ");
+	    selectDarthVaderLabel = new JLabel("Darth Vader: ");
+	    selectSpderTankLabel = new JLabel("Spider Tank: ");
+	    selectDroidekaLabel = new JLabel("Droideka: ");
+	    selectArtilleryDroidLabel = new JLabel("Artillery Droid: ");
+	    selectWalkerLabel = new JLabel("Walker: ");
 
-    usernamelabel1 = new JLabel("Team 1 username: ");
-    username1 = new JTextField(15);
-    username1.setText("1");
-    usernamelabel2 = new JLabel("Team 2 username: ");
-    username2 = new JTextField(15);
-    username2.setText("2");
+	    selectNumberOfCloneTrooper = new JTextField(10);
+	    selectNumberOfCloneTrooper.setText("0");
+	    selectNumberOfBattleDroid = new JTextField(10);
+	    selectNumberOfBattleDroid.setText("0");
+	    selectNumberOfImperialMedic = new JTextField(10);
+	    selectNumberOfImperialMedic.setText("0");
+	    selectNumberOfLukeSkywalker = new JTextField(10);
+	    selectNumberOfLukeSkywalker.setText("0");
+	    selectNumberOfDarthVader = new JTextField(10);
+	    selectNumberOfDarthVader.setText("0");
+	    selectNumberOfSpiderTank = new JTextField(10);
+	    selectNumberOfSpiderTank.setText("0");
+	    selectNumberOfDroideka = new JTextField(10);
+	    selectNumberOfDroideka.setText("0");
+	    selectNumberOfArtilleryDroid = new JTextField(10);
+	    selectNumberOfArtilleryDroid.setText("0");
+	    selectNumberOfWalker = new JTextField(10);
+	    selectNumberOfWalker.setText("0");
 
-    teamSelect.add(usernamelabel1);
-    teamSelect.add(username1);
-    teamSelect.add(usernamelabel2);
-    teamSelect.add(username2);
+	    
+	    usernameSelect.add(usernamelabel1);
+	    usernameSelect.add(username1);
+	    usernameSelect.add(usernamelabel2);
+	    usernameSelect.add(username2);
+	    unitSelect.add(selectCloneTrooperLabel);
+	    unitSelect.add(selectNumberOfCloneTrooper);
 
-    selectCloneTrooperLabel = new JLabel("Clone Trooper: ");
-    selectBattleDroidLabel = new JLabel("Battle Droid: ");
-    selectImperialMedicLabel = new JLabel("Imperial Medic: ");
-    selectLukeSkywalkerLabel = new JLabel("Luke Skywalker: ");
-    selectDarthVaderLabel = new JLabel("Darth Vader: ");
-    selectSpderTankLabel = new JLabel("Spider Tank: ");
-    selectDroidekaLabel = new JLabel("Droideka: ");
-    selectArtilleryDroidLabel = new JLabel("Artillery Droid: ");
-    selectWalkerLabel = new JLabel("Walker: ");
+	    unitSelect.add(selectBattleDroidLabel);
+	    unitSelect.add(selectNumberOfBattleDroid);
 
-    selectNumberOfCloneTrooper = new JTextField(10);
-    selectNumberOfCloneTrooper.setText("0");
-    selectNumberOfBattleDroid = new JTextField(10);
-    selectNumberOfBattleDroid.setText("0");
-    selectNumberOfImperialMedic = new JTextField(10);
-    selectNumberOfImperialMedic.setText("0");
-    selectNumberOfLukeSkywalker = new JTextField(10);
-    selectNumberOfLukeSkywalker.setText("05");
-    selectNumberOfDarthVader = new JTextField(10);
-    selectNumberOfDarthVader.setText("0");
-    selectNumberOfSpiderTank = new JTextField(10);
-    selectNumberOfSpiderTank.setText("0");
-    selectNumberOfDroideka = new JTextField(10);
-    selectNumberOfDroideka.setText("0");
-    selectNumberOfArtilleryDroid = new JTextField(10);
-    selectNumberOfArtilleryDroid.setText("0");
-    selectNumberOfWalker = new JTextField(10);
-    selectNumberOfWalker.setText("0");
+	    unitSelect.add(selectImperialMedicLabel);
+	    unitSelect.add(selectNumberOfImperialMedic);
 
-    next = new JButton("Continue to player 2 unit selection");
-    next.addActionListener(MapButtonListener);
+	    unitSelect.add(selectLukeSkywalkerLabel);
+	    unitSelect.add(selectNumberOfLukeSkywalker);
 
-    teamSelect.add(selectCloneTrooperLabel);
-    teamSelect.add(selectNumberOfCloneTrooper);
+	    unitSelect.add(selectDarthVaderLabel);
+	    unitSelect.add(selectNumberOfDarthVader);
 
-    teamSelect.add(selectBattleDroidLabel);
-    teamSelect.add(selectNumberOfBattleDroid);
+	    unitSelect.add(selectSpderTankLabel);
+	    unitSelect.add(selectNumberOfSpiderTank);
 
-    teamSelect.add(selectImperialMedicLabel);
-    teamSelect.add(selectNumberOfImperialMedic);
+	    unitSelect.add(selectDroidekaLabel);
+	    unitSelect.add(selectNumberOfDroideka);
 
-    teamSelect.add(selectLukeSkywalkerLabel);
-    teamSelect.add(selectNumberOfLukeSkywalker);
+	    unitSelect.add(selectArtilleryDroidLabel);
+	    unitSelect.add(selectNumberOfArtilleryDroid);
 
-    teamSelect.add(selectDarthVaderLabel);
-    teamSelect.add(selectNumberOfDarthVader);
+	    unitSelect.add(selectWalkerLabel);
+	    unitSelect.add(selectNumberOfWalker);
 
-    teamSelect.add(selectSpderTankLabel);
-    teamSelect.add(selectNumberOfSpiderTank);
+	    usernameSelect.add(next); 
+	    next.addActionListener(MapButtonListener);
+	    
+	    
+	    UnitselectContainer.add(usernameSelect);
+	    UnitselectContainer.add(unitSelect);
+	    
+	    teamselectContainer.add(UnitselectContainer);
+	    teamselectContainer.add(teamSelect);
+	    
 
-    teamSelect.add(selectDroidekaLabel);
-    teamSelect.add(selectNumberOfDroideka);
-
-    teamSelect.add(selectArtilleryDroidLabel);
-    teamSelect.add(selectNumberOfArtilleryDroid);
-
-    teamSelect.add(selectWalkerLabel);
-    teamSelect.add(selectNumberOfWalker);
-
-    teamSelect.add(next);
-
-    // begin persistence code
-    // if(new File(saveDir + player1 + "-" + player2 + "-" +
-    // "gameboard.dat").exists()) {
-    // JPanel loadSave = new JPanel();
-    // JCheckBox chkLoad = new JCheckBox("Load saved game?");
-    // chkLoad.addItemListener(new ItemListener() {
-    // public void itemStateChanged(ItemEvent e) {
-    // loadGame = e.getStateChange() == 1 ? true : false;
-    // }
-    // });
-    // loadSave.add(chkLoad).setVisible(true);
-    // teamSelect.add(loadSave);
-    // }
-    // end persistence code
-    this.add(teamSelect);
-    this.setVisible(true);
-    this.repaint();
+	    // begin persistence code
+	    // if(new File(saveDir + player1 + "-" + player2 + "-" +
+	    // "gameboard.dat").exists()) {
+	    // JPanel loadSave = new JPanel();
+	    // JCheckBox chkLoad = new JCheckBox("Load saved game?");
+	    // chkLoad.addItemListener(new ItemListener() {
+	    // public void itemStateChanged(ItemEvent e) {
+	    // loadGame = e.getStateChange() == 1 ? true : false;
+	    // }
+	    // });
+	    // loadSave.add(chkLoad).setVisible(true);
+	    // teamSelect.add(loadSave);
+	    // }
+	    // end persistence code
+	    this.add(teamselectContainer);
+	    this.setVisible(true);
+	    this.repaint();
   }
 
   private void layoutMapScreen()
   {
 
-    this.remove(teamSelect);
+    this.remove(teamselectContainer);
     mapSelect = new MapSelectionScreen();
 
     mapSelect.setLayout(new FlowLayout());
@@ -1075,7 +1124,7 @@ public class GUI extends JFrame
     }
     if (teamSelect != null)
     {
-      this.remove(teamSelect);
+      this.remove(teamselectContainer);
 
     }
 
@@ -1310,7 +1359,12 @@ public class GUI extends JFrame
     {
       System.out.println(EnemyUnitSelected.getUnit().getHealth());
       gameboard.attack(CurrentUnitSelected, EnemyUnitSelected);
-
+      try {
+		commandThread.wait();
+	} catch (InterruptedException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
       splosions = new LinkedList<SpriteObject>();
       panel = new JPanel()
       {
@@ -1323,7 +1377,7 @@ public class GUI extends JFrame
       };
 
       panel.setPreferredSize(new Dimension(1, 1)); // animation doesn't work if it's 0, 0 and any larger it's... ugly.
-
+      
       Timer animTimer = new Timer(15, new ActionListener()
       {
         @Override
@@ -1338,15 +1392,20 @@ public class GUI extends JFrame
             for (SpriteObject s : splosions)
               if (s.isFinished())
                 dead.add(s);
-            for (SpriteObject s : dead)
-              splosions.remove(s);
-
+            for (SpriteObject s : dead){
+             splosions.remove(s);
+             imagePanel.repaint();
+            }
           }
           catch (Exception e)
           {
           }
-          panel.repaint();
+          
+         panel.repaint();
+        
         }
+        notifyAll() {
+		}
       });
 
       imagePanel.add(panel);
@@ -1355,12 +1414,17 @@ public class GUI extends JFrame
       repaint();
       revalidate();
 
-      Explosion explosion = new Explosion(EnemyUnitSelected.getLocation().x * 63,
-          EnemyUnitSelected.getLocation().y * 24);
+      Explosion explosion = new Explosion(EnemyUnitSelected.getLocation().y * 63,
+          EnemyUnitSelected.getLocation().x * 24);
 
       splosions.add(explosion);
       explosion.start();
-
+      while(!explosion.isFinished()){
+    	  System.out.println("exploding");
+      }
+      notifyAll();
+      
+      
       targets(CurrentUnitSelected);
       layoutAttackScreen();
       if (gameboard.CheckgameOverBooleanVersion(player2units))
@@ -1485,8 +1549,9 @@ public class GUI extends JFrame
           {
             System.out.println("does it get here?");
             Command<GUI> command = GUI.gameboard.commandqueue.poll();
+           
             command.execute(GUI.this);
-
+           
             System.out.println("this should execute");
 
           }
@@ -1869,7 +1934,7 @@ public class GUI extends JFrame
       if (e.getSource() == startAI)
       {
         player1 = username1.getText();
-        player2 = username2.getText();
+        player2 = "Computer";
         if (player1.equals("") || player1.equals(null) || player2.equals("")
             || player2.equals(null))
         {
@@ -1934,7 +1999,9 @@ public class GUI extends JFrame
           else
           {
             toMap.addActionListener(MapButtonListener);
-            teamSelect.add(toMap);
+            usernameSelect.remove(next);
+            
+            usernameSelect.add(toMap);
 
             selectNumberOfCloneTrooper.setText("0");
             selectNumberOfBattleDroid.setText("0");
