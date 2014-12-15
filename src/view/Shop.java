@@ -43,8 +43,9 @@ public class Shop extends JPanel {
 		for(String key:inv.keySet()){
 			int[] modifiers = inv.get(key).getModifiers();
 			String modstring = "";
+			int cost = inv.get(key).getCost();
 			String path = inv.get(key).getPath();
-			modstring = "Modifies HP by: " + modifiers[0] + ", Attack by: " + modifiers[1] + ", Attack Range by: " + modifiers[2] + ", Move Range by: " + modifiers[3];
+			modstring = "Modifies HP by: " + modifiers[0] + ", Attack by: " + modifiers[1] + ", Attack Range by: " + modifiers[2] + ", Move Range by: " + modifiers[3] + " Cost: " + cost;
 			BufferedImage image = null;
 			try{
 				image = ImageIO.read(new File(path));

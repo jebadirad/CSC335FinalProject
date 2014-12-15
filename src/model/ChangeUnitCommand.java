@@ -20,4 +20,10 @@ public class ChangeUnitCommand extends Command<GUI> {
 		return;
 	}
 
+	@Override
+	public String getCommandType() {
+		// TODO Auto-generated method stub
+		return "changeunit";
+	}
+
 }

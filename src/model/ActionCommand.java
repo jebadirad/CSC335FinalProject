@@ -27,4 +27,10 @@ public class ActionCommand extends Command<GUI> {
 		// TODO Auto-generated method stub
 		this.cellwithunit = unit;
 	}
+
+	@Override
+	public String getCommandType() {
+		// TODO Auto-generated method stub
+		return "move";
+	}
 }

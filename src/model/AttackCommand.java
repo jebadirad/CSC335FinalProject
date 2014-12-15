@@ -32,4 +32,11 @@ public class AttackCommand extends Command<GUI>{
 		this.cellattack = unit;
 	}
 
+
+	@Override
+	public String getCommandType() {
+		// TODO Auto-generated method stub
+		return "attack";
+	}
+
 }

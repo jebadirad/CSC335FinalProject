@@ -38,13 +38,13 @@ public class AI {
 					
 				}
 				else{
-					GUI.gameboard.attack(cell, unitsToAttack.get(0));
+					AttackCommand attack = new AttackCommand(cell, unitsToAttack.get(0));
+					GUI.gameboard.commandqueue.add(attack);
 					return;
 				}
 				
 				unitsToAttack.clear();
 			}
-			System.out.println("change unit command. Current UNIT: " + cell.getUnit().toString());
 			Stack<Point> path = findNearestUnit(cell, myunits);
 			int amountofmoves = cell.getUnit().getMoveRange();
 			Point prev = cell.getLocation();
@@ -57,12 +57,6 @@ public class AI {
 					} else {
 						cellpoint = p;
 					}
-					System.out.println("This is my current point" + cell.getLocation());
-					System.out.println("This is my 'previous' point " + prev);
-					System.out.println("this is the point i am going to go next"
-							+ p);
-					
-					System.out.println("This is the next point" + cellpoint);
 					int x = p.x;
 
 					int y = p.y;
@@ -76,9 +70,7 @@ public class AI {
 						return;
 					}
 					else {
-						System.out.println(p);
 						String direction = findDirection(prev, p);
-						System.out.println(direction);
 						if(unitname.equals("Imperial Medic")){
 							if(x == 10 && y == 10){
 								if(GUI.gameboard.getCell(10, 10).hasUnit()){
@@ -102,7 +94,6 @@ public class AI {
 			}
 		
 		
-		System.out.println(GUI.gameboard.commandqueue.size());
 
 	}
 
@@ -155,12 +146,7 @@ public class AI {
 				}
 			}
 		}
-		for (int i = 0; i < 20; i++) {
-			for (int j = 0; j < 20; j++) {
-				System.out.print(" " + leeboard[i][j].getValue() + " ");
-			}
-			System.out.println("\n");
-		}
+		
 		leeboard[startx][starty].setmarked();
 		Stack<Point> temp = distance(startx, starty, x, y);
 		distances.add(temp);
@@ -234,12 +220,7 @@ public class AI {
 		leeboard[10][8].setvalue(9999);
 		leeboard[8][10].setvalue(9999);
 		leeboard[12][10].setvalue(9999);
-		for (int i = 0; i < 20; i++) {
-			for (int j = 0; j < 20; j++) {
-				System.out.print(" " + leeboard[i][j].getValue() + " ");
-			}
-			System.out.println("\n");
-		}
+		
 		Stack<Point> stack = new Stack<Point>();
 		Point min = new Point();
 		min.x = enemyx;
@@ -291,10 +272,7 @@ public class AI {
 			}
 
 		}
-		for (int i = 0; i < stack.size(); i++) {
-			System.out.println("------------");
-			System.out.println(stack.get(i));
-		}
+		
 
 		return stack;
 	}

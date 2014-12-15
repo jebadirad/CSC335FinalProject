@@ -1359,12 +1359,8 @@ public class GUI extends JFrame
     {
       System.out.println(EnemyUnitSelected.getUnit().getHealth());
       gameboard.attack(CurrentUnitSelected, EnemyUnitSelected);
-      try {
-		commandThread.wait();
-	} catch (InterruptedException e1) {
 		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
+	
       splosions = new LinkedList<SpriteObject>();
       panel = new JPanel()
       {
@@ -1390,8 +1386,10 @@ public class GUI extends JFrame
 
             LinkedList<SpriteObject> dead = new LinkedList<SpriteObject>();
             for (SpriteObject s : splosions)
-              if (s.isFinished())
+              if (s.isFinished()){
                 dead.add(s);
+                
+              }
             for (SpriteObject s : dead){
              splosions.remove(s);
              imagePanel.repaint();
@@ -1404,8 +1402,7 @@ public class GUI extends JFrame
          panel.repaint();
         
         }
-        notifyAll() {
-		}
+        
       });
 
       imagePanel.add(panel);
@@ -1414,16 +1411,12 @@ public class GUI extends JFrame
       repaint();
       revalidate();
 
-      Explosion explosion = new Explosion(EnemyUnitSelected.getLocation().y * 63,
+      /*Explosion explosion = new Explosion(EnemyUnitSelected.getLocation().y * 63,
           EnemyUnitSelected.getLocation().x * 24);
 
       splosions.add(explosion);
       explosion.start();
-      while(!explosion.isFinished()){
-    	  System.out.println("exploding");
-      }
-      notifyAll();
-      
+      */
       
       targets(CurrentUnitSelected);
       layoutAttackScreen();
@@ -1483,6 +1476,7 @@ public class GUI extends JFrame
         player1units.remove(i);
 
         CurrentUnitSelected = gameboard.move(CurrentUnitSelected, direction);
+        
         if (CurrentUnitSelected.hasUnit())
         {
           player1units.add(i, CurrentUnitSelected);
@@ -1542,20 +1536,25 @@ public class GUI extends JFrame
     {
       try
       {
-        while (true)
-        {
+    	  synchronized(this){
+    		  while (true)
+    	        {
 
-          if (!GUI.gameboard.commandqueue.isEmpty())
-          {
-            System.out.println("does it get here?");
-            Command<GUI> command = GUI.gameboard.commandqueue.poll();
-           
-            command.execute(GUI.this);
-           
-            System.out.println("this should execute");
+    	          if (!GUI.gameboard.commandqueue.isEmpty())
+    	          {
+    	            System.out.println("does it get here?");
+    	            Command<GUI> command = GUI.gameboard.commandqueue.poll();
+    	            command.execute(GUI.this);
+    	            if(command.getCommandType().equals("attack")){
+    	            	this.wait();
+    	            }
+    	            
+    	            System.out.println("this should execute");
 
-          }
-        }
+    	          }
+    	        }
+    	  }
+        
       }
       catch (Exception e)
       {
