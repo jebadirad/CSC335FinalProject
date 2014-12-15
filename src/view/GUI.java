@@ -1310,7 +1310,6 @@ public class GUI extends JFrame
   {
     CurrentUnitSelected = cellattack;
     EnemyUnitSelected = celldefense;
-    System.out.println("cell attack" + CurrentUnitSelected.toString() + "cell defense"+ EnemyUnitSelected.toString() );
     if (EnemyUnitSelected == null)
     {
       JOptionPane optionPane = new JOptionPane();
@@ -1339,8 +1338,6 @@ public class GUI extends JFrame
     {
       System.out.println(EnemyUnitSelected.getUnit().getHealth());
       gameboard.attack(CurrentUnitSelected, EnemyUnitSelected);
-      CurrentUnitSelected = cellattack;
-      System.out.println("DEBUG: searching for targets.... " + CurrentUnitSelected.getUnit().toString());
       // TODO Auto-generated catch block
 
       splosions = new LinkedList<SpriteObject>();
@@ -1406,7 +1403,8 @@ public class GUI extends JFrame
        * splosions.add(explosion); explosion.start();
        */
 
-      clearAttackScreen();
+      targets(CurrentUnitSelected);
+      layoutAttackScreen();
       if (gameboard.CheckgameOverBooleanVersion(player2units))
       {
         Object[] options = {"New Game", "Quit"};
@@ -1430,7 +1428,7 @@ public class GUI extends JFrame
           }
         }
       }
-      
+
       revalidate();
       repaint();
     }
@@ -1541,17 +1539,9 @@ public class GUI extends JFrame
 
               System.out.println("this should execute");
 
-    	          if (!GUI.gameboard.commandqueue.isEmpty())
-    	          {
-    	            Command<GUI> command = GUI.gameboard.commandqueue.poll();
-    	            command.execute(GUI.this);
-    	            if(command.getCommandType().equals("attack")){
-    	            
-    	            
-    	            
-    	            }
-    	            
-    	            
+            }
+          }
+        }
 
       }
       catch (Exception e)
@@ -1664,6 +1654,7 @@ public class GUI extends JFrame
 
         }
 
+        System.out.println("end of " + player1 + " turn");
         Inventory tempinventory = p1inv;
         p1inv = p2inv;
         p2inv = tempinventory;
@@ -1679,7 +1670,6 @@ public class GUI extends JFrame
         UpdateUnitScreen();
         clearAttackScreen();
         UpdateItemScreen();
-        System.out.println("SETTING OT NULL");
         CurrentUnitSelected = null;
         EnemyUnitSelected = null;
         unitdisplay = true;
@@ -1699,11 +1689,11 @@ public class GUI extends JFrame
 
         gameboard
             .turnOverComputer(player1units, player2units, player1, player2);
-        System.out.println("before move");
-        for(int i = 0; i <1; i ++){
-        	 computer.makeMove(player1units.get(i));
+        for (int i = 0; i < player1units.size(); i++)
+        {
+          computer.makeMove(player1units.get(i));
         }
-       System.out.println("DO CLICK END TURN");
+
         endTurn.doClick();
         player1units = gameboard.getPlayer1Units();
         player2units = gameboard.getPlayer2Units();
