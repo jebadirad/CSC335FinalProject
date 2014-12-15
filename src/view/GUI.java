@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -122,7 +123,7 @@ public class GUI extends JFrame
   JButton instructionButton = new JButton("Okay");
   JButton LoadTitleButton;
   private static List<SpriteObject> splosions;
-
+  String mapName;
   ArrayList<JRadioButton> radiobuttons;
   ArrayList<JRadioButton> targetButtons;
   ArrayList<JCheckBox> itemBoxes;
@@ -617,11 +618,60 @@ public class GUI extends JFrame
     	  if(s1.equals("") || s1.isEmpty() || s1 == null || s2.equals("") || s2.isEmpty() || s2 == null){
     		  JOptionPane optionPane = new JOptionPane();
     	        optionPane.setMessage("Invalid load file, try again");
+    	        JDialog dialog = optionPane.createDialog(":~(");
+    	        dialog.setAlwaysOnTop(true);
+    	        dialog.setVisible(true);
     	  }
     	  else{
-    		  load = new JButton("Load game");
-    		    load.addActionListener(MapButtonListener);
-    		    load.doClick();
+    		  player1 = s1;
+    		  player2 = s2;
+    		  //load = new JButton("Load game");
+    		    //load.addActionListener(MapButtonListener);
+    		    if (new File(saveDir + "Map 1-" + player1 + "-" + player2 + "-" + "gameboard.dat")
+                .exists())
+            {
+    		    	System.out.println("we got here");
+    		    	mapName = "Map 1";
+    		    	loadData();
+            }
+    		    else if (new File(saveDir + "Map 2-" + player1 + "-" + player2 + "-" + "gameboard.dat")
+                .exists())
+            {
+    		    	System.out.println("we got here");
+    		    	mapName = "Map 2";
+              loadData();
+            }
+    		    else if (new File(saveDir + "Random-" + player1 + "-" + player2 + "-" + "gameboard.dat")
+                .exists())
+            {
+    		    	System.out.println("we got here");
+    		    	mapName = "Random";
+    		    	loadData();
+            }
+    		    else if (new File(saveDir + "Monster-" + player1 + "-" + player2 + "-" + "gameboard.dat")
+                .exists())
+            {
+    		    	System.out.println("we got here");
+    		    	mapName = "Monster";
+              loadData();
+            }
+    		    else if (new File(saveDir + "AI-" + player1 + "-" + player2 + "-" + "gameboard.dat")
+                .exists())
+            {
+    		    	
+    		    	mapName = "AI";
+    		    	System.out.println("we got here");
+              loadData();
+            }
+            else
+            {
+            	JOptionPane optionPane = new JOptionPane();
+    	        optionPane.setMessage("You don't have a save file!");
+    	        JDialog dialog = optionPane.createDialog(":~(");
+    	        dialog.setAlwaysOnTop(true);
+    	        dialog.setVisible(true);
+             
+            }
     	  }
       }
     	  
@@ -1148,6 +1198,7 @@ public class GUI extends JFrame
 
   private void layoutGUI()
   {
+	this.remove(titleScreen);
     if (mapSelect != null)
     {
       this.remove(mapSelect);
@@ -1915,6 +1966,7 @@ public class GUI extends JFrame
           layoutGUI();
           registerListeners();
         }
+        
         if(mapType.equals("Monster")){
         	AIgame = true;
         	computer = new AI();
@@ -2097,22 +2149,7 @@ public class GUI extends JFrame
         mapType = "Map2";
         layoutInstructionsGUI();
       }
-      else if (e.getSource() == load)
-      {
-        if (new File(saveDir + player1 + "-" + player2 + "-" + "gameboard.dat")
-            .exists())
-        {
-          loadData();
-        }
-        else
-        {
-          System.out
-              .println("You don't have a save file! Creating new game...");
-          newGame("Map 1", units);
-        }
-        layoutGUI();
-        registerListeners();
-      }
+   
     }
   }
 
@@ -2164,13 +2201,50 @@ public class GUI extends JFrame
   {
     try
     {
-
+    
       // loads saved data into the gameboard if there is a saved game
-      gameboard = new GameBoard("Map 2", units);
-      if (new File(saveDir + player1 + "-" + player2 + "-" + "gameboard.dat")
+      if (new File(saveDir + mapName +"-"+ player1 + "-" + player2 + "-" + "gameboard.dat")
           .exists())
       {
-        gameboard.loadData(player1, player2);
+    	  units.clear();
+    	  for(int i = 0; i < 10; i ++){
+    		  UnitFactory factory = new UnitFactory();
+    			Unit unit = factory.makeUnit("CloneTrooper", GUI.getPlayer1());
+    			units.add(unit);
+    	  }
+    	  gameboard = new GameBoard("Map 1", units);
+    	  units.clear();
+    	  Cell[][] real = new Cell[20][20];
+    	  for(int i = 0; i < 20; i++){
+    		  for(int j = 0; j < 20; j ++){
+    			 real[i][j] = new Cell(Terrain.Nothing,i,j);
+    		  }
+    	  }
+    	  try{
+    		  FileInputStream fileIn = new FileInputStream(new File(saveDir + mapName +"-"+ player1 + "-" + player2 + "-" + "gameboard.dat"));
+    		ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+    		real = (Cell[][]) objectIn.readObject();
+    		  player1units = (ArrayList<Cell>) objectIn.readObject();
+    		  player2units = (ArrayList<Cell>) objectIn.readObject();
+    		  GameBoard.background = (String) objectIn.readObject();
+    		  objectIn.close();
+    		  
+    	  }
+    	  catch(Exception e){
+    		  e.printStackTrace();
+    	  }
+    	  for(int i = 0; i < 20; i++){
+    		  for(int j = 0; j < 20; j ++){
+    			  gameboard.getBoard()[i][j] = real[i][j];
+    			  if(gameboard.getBoard()[i][j].hasUnit()){
+    				  gameboard.getBoard()[i][j].setUnit(real[i][j].getUnit());
+    			  }
+    		  }
+    	  }
+    	  System.out.println("why does it print this");
+    	System.out.println(gameboard.toString());
+
+    	System.out.println("this did work?");
       }
 
       // create inventories for both players
@@ -2179,31 +2253,75 @@ public class GUI extends JFrame
       if (new File(saveDir + player1 + "-inventory.dat").exists())
       {
         p1inv.loadData(player1);
+        System.out.println("p1 inv success");
       }
       else
       {
-        p1inv.addItem(Item.superitem);
+        //p1inv.addItem(Item.superitem);
       }
       p2inv = new Inventory(player2);
       if (new File(saveDir + player2 + "-inventory.dat").exists())
       {
         p2inv.loadData(player2);
+        System.out.println("p2 inv success");
       }
       else
       {
-        p2inv.addItem(Item.superitem);
+        //p2inv.addItem(Item.superitem);
       }
       System.out.println(player1 + "'s inventory: " + p1inv.toString());
       System.out.println(player2 + "'s inventory: " + p2inv.toString());
-      player1units = gameboard.getPlayer1Units();
-      player2units = gameboard.getPlayer2Units();
+      //player1units = gameboard.getPlayer1Units();
+      //player2units = gameboard.getPlayer2Units();
+      
       CurrentUnitSelected = null;
       EnemyUnitSelected = null;
-
+      
+      System.out.println("before the game");
+      System.out.println(mapName);
+      if (mapName.equals("AI"))
+      {
+        AIgame = true;
+        computer = new AI();
+        setVisible(false);
+        layoutGUI();
+        registerListeners();
+      }
+      
+      if(mapName.equals("Monster")){
+      	AIgame = true;
+      	computer = new AI();
+      	setVisible(false);
+      	layoutGUI();
+      	registerListeners();
+      }
+      if (mapName.equals("Map 1"))
+      {
+    	  System.out.println("load map 1");
+        layoutGUI();
+        registerListeners();
+      }
+      if (mapName.equals("Map 2"))
+      {
+        layoutGUI();
+        registerListeners();
+      }
+      if (mapName.equals("Random"))
+      {
+        layoutGUI();
+        registerListeners();
+      }
+      repaint();
+      
+      
+      
+      
+      
       return true;
     }
     catch (Exception e)
     {
+    	e.printStackTrace();
       System.err.println("Unable to load data!");
     }
     return false;

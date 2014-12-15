@@ -41,6 +41,7 @@ public class GameBoard extends JFrame implements Serializable {
 	public volatile Queue<Command> commandqueue;
 	public static String background;
 	private AI computer;
+	String mapName;
 
 	/**
 	 * Constructor for the GameBoard object
@@ -50,6 +51,7 @@ public class GameBoard extends JFrame implements Serializable {
 	 */
 	public GameBoard(String mapName, ArrayList<Unit> units) {
 		commandqueue = new LinkedList<Command>();
+		this.mapName = mapName;
 		if (mapName.equals("Map 1"))
 			createMap1(units);
 		else if (mapName.equals("Map 2"))
@@ -2919,7 +2921,13 @@ public class GameBoard extends JFrame implements Serializable {
 	 *            the new board to set Cell[][] to
 	 */
 	public void setBoard(Cell[][] board) {
-		this.board = board;
+		System.out.println("are we here?");
+		for(int i = 0; i < 20; i ++){
+			for(int j = 0; j < 20; j++){
+				this.board[i][j] = board[i][j];
+			}
+		}
+		System.out.println("hello");
 	}
 
 	/**
@@ -2935,35 +2943,7 @@ public class GameBoard extends JFrame implements Serializable {
 		return board[x][y];
 	}
 
-	/**
-	 * This method attempts to load gameboard data from
-	 * "./player 1-player 2-gameboard.dat"
-	 * 
-	 * @return savedGameBoard if successful, a new GameBoard otherwise
-	 */
-	@SuppressWarnings("unchecked")
-	public GameBoard loadData(String p1, String p2) {
-		try {
-			FileInputStream fileIn = new FileInputStream(new File(saveDir + p1
-					+ "-" + p2 + "-" + "gameboard.dat"));
-			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-			this.board = (Cell[][]) objectIn.readObject();
-			this.player1Units = (ArrayList<Cell>) objectIn.readObject();
-			this.player2Units = (ArrayList<Cell>) objectIn.readObject();
-			GameBoard.background = (String) objectIn.readObject();
-			objectIn.close();
-			return this;
-		} catch (Exception e) {
-			System.err.println("Unable to load data!");
-		}
-		ArrayList<Unit> units = new ArrayList<Unit>();
-		for (int i = 0; i < player1Units.size(); i++) 
-			units.add(i, player1Units.get(i).getUnit());
-		for (int i = 0; i < player2Units.size(); i++) 
-			units.add(i, player2Units.get(i).getUnit());
-		
-		return new GameBoard("AI",new ArrayList<Unit>());
-	}
+	
 
 	/**
 	 * This method attempts to save the inventory map in
@@ -2971,7 +2951,7 @@ public class GameBoard extends JFrame implements Serializable {
 	 */
 	public void saveData(String p1, String p2) {
 		try {
-			FileOutputStream fileOut = new FileOutputStream(new File(saveDir
+			FileOutputStream fileOut = new FileOutputStream(new File(saveDir + mapName + "-"
 					+ p1 + "-" + p2 + "-" + "gameboard.dat"));
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 			objectOut.writeObject(board);

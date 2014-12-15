@@ -9,7 +9,7 @@ import sprites.*;
  * 
  * @author Kal
  */
-public abstract class Unit extends SpriteObject implements Serializable {
+public abstract class Unit implements Serializable {
 	private static final long serialVersionUID = -6513397727826295315L;
 	private int attackRange, damage, health, moveRange, movesLeft,
 			currentHealth;
@@ -28,9 +28,9 @@ public abstract class Unit extends SpriteObject implements Serializable {
 	 * @param imagestring
 	 * @param username
 	 */
+
 	public Unit(int attackRange, int damage, int health, int moveRange,
 			String imagestring, String username) {
-		super(new JediSprite(), 1, 1, 100);
 		this.attackRange = attackRange;
 		this.damage = damage;
 		this.health = health;
